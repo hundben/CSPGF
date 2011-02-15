@@ -1,0 +1,127 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{403AF715-CFDD-448D-BEB6-D29DB4A7F6D5}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>CSPGF</RootNamespace>
+    <AssemblyName>CSPGF</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Generator.cs" />
+    <Compile Include="linearizer\AppResult.cs" />
+    <Compile Include="linearizer\Bracket.cs" />
+    <Compile Include="linearizer\BracketedTokn.cs" />
+    <Compile Include="linearizer\CncType.cs" />
+    <Compile Include="linearizer\LeafKP.cs" />
+    <Compile Include="linearizer\LeafKS.cs" />
+    <Compile Include="linearizer\LinTriple.cs" />
+    <Compile Include="linearizer\RezDesc.cs" />
+    <Compile Include="linearizer\Tokn.cs" />
+    <Compile Include="Parser.cs" />
+    <Compile Include="PGF.cs" />
+    <Compile Include="PGFBuilder.cs" />
+    <Compile Include="PGFReader.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="reader\AbsCat.cs" />
+    <Compile Include="reader\AbsFun.cs" />
+    <Compile Include="reader\AbsNameExp.cs" />
+    <Compile Include="reader\Abstract.cs" />
+    <Compile Include="reader\Alternative.cs" />
+    <Compile Include="reader\AlternToksSymbol.cs" />
+    <Compile Include="reader\AppExp.cs" />
+    <Compile Include="reader\ApplProduction.cs" />
+    <Compile Include="reader\AppPattern.cs" />
+    <Compile Include="reader\ArgConstSymbol.cs" />
+    <Compile Include="reader\CncCat.cs" />
+    <Compile Include="reader\CncFun.cs" />
+    <Compile Include="reader\CoerceProduction.cs" />
+    <Compile Include="reader\Concrete.cs" />
+    <Compile Include="reader\Eq.cs" />
+    <Compile Include="reader\Expr.cs" />
+    <Compile Include="reader\FloatLit.cs" />
+    <Compile Include="reader\Hypo.cs" />
+    <Compile Include="reader\ImpArgPattern.cs" />
+    <Compile Include="reader\ImplExp.cs" />
+    <Compile Include="reader\InaccPattern.cs" />
+    <Compile Include="reader\IntLit.cs" />
+    <Compile Include="reader\LambdaExp.cs" />
+    <Compile Include="reader\LinDef.cs" />
+    <Compile Include="reader\LiteralExp.cs" />
+    <Compile Include="reader\LiteralPattern.cs" />
+    <Compile Include="reader\MetaExp.cs" />
+    <Compile Include="reader\Pattern.cs" />
+    <Compile Include="reader\PrintName.cs" />
+    <Compile Include="reader\Production.cs" />
+    <Compile Include="reader\ProductionSet.cs" />
+    <Compile Include="reader\Reader.cs" />
+    <Compile Include="reader\RLiteral.cs" />
+    <Compile Include="reader\Sequence.cs" />
+    <Compile Include="reader\StringLit.cs" />
+    <Compile Include="reader\Symbol.cs" />
+    <Compile Include="reader\ToksSymbol.cs" />
+    <Compile Include="reader\Type.cs" />
+    <Compile Include="reader\TypedExp.cs" />
+    <Compile Include="reader\VarAsPattern.cs" />
+    <Compile Include="reader\VarExp.cs" />
+    <Compile Include="reader\VarPattern.cs" />
+    <Compile Include="reader\WeightedIdent.cs" />
+    <Compile Include="reader\WildCardPattern.cs" />
+    <Compile Include="trees\AbstractVisitSkeleton.cs" />
+    <Compile Include="trees\Absyn.cs" />
+    <Compile Include="trees\Printer.cs" />
+    <Compile Include="trees\Test.cs" />
+    <Compile Include="trees\VisitSkeleton.cs" />
+    <Compile Include="UnknownLanguageException.cs" />
+    <Compile Include="util\MultiMap.cs" />
+    <Compile Include="util\Pair.cs" />
+    <Compile Include="util\PGFLogger.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="parser\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

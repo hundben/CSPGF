@@ -1,0 +1,3 @@
+Fixa i Abstract.cs
+Exception istället för runtimeexception i PGFBuilder, fixa?
+Gå igenom alla TODO's
