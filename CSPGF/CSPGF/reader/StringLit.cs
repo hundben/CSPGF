@@ -16,8 +16,7 @@ namespace CSPGF.reader
 
         public String toString()
         {
-            String s = "String literal : " + value;
-            return s;
+            return "String literal : " + value;
         }
 
         public String getValue()

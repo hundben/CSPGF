@@ -14,12 +14,12 @@ namespace CSPGF.reader
             symbs = _symbs;
         }
 
-        public Symbol symbol(int index)
+        public Symbol getSymbol(int index)
         {
             return symbs[index];
         }
 
-        public int length()
+        public int getLength()
         {
             return symbs.Length;
         }
@@ -32,10 +32,14 @@ namespace CSPGF.reader
         public String toString()
         {
             String ss = "Symbols : [";
-            for (int i = 0 ; i < symbs.Length ; i++)
+            foreach (Symbol s in symbs)
+            {
+                ss += " " + s.toString();
+            }
+            /*for (int i = 0 ; i < symbs.Length ; i++)
             {
                 ss += (" " + symbs[i].toString());
-            }
+            }*/
             ss += "]";
             return ss;
         }

@@ -21,15 +21,23 @@ namespace CSPGF.reader
         public String toString()
         {
             String ss = "Hypotheses : (";
-            for (int i = 0 ; i < hypos.Length ; i++)
+            foreach (Hypo h in hypos)
+            {
+                ss += " " + h.toString();
+            }
+            /*for (int i = 0 ; i < hypos.Length ; i++)
             {
                 ss += (" " + hypos[i].toString());
-            }
+            }*/
             ss += (") , Name : " + str + " , Expressions : (");
-            for (int i = 0 ; i < exprs.Length ; i++)
+            foreach (Expr e in exprs)
+            {
+                ss += " " + e.toString();
+            }
+            /*for (int i = 0 ; i < exprs.Length ; i++)
             {
                 ss += (" " + exprs[i].toString());
-            }
+            }*/
             ss += ")";
             return ss;
         }

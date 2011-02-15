@@ -32,8 +32,12 @@ namespace CSPGF.reader
         public String toString()
         {
             String s = "Tokens : ";
-            for (int i = 0 ; i < toks.Length ; i++)
-                s += (" " + toks[i]);
+            foreach (String st in toks)
+            {
+                s += " " + st;
+            }
+            //for (int i = 0 ; i < toks.Length ; i++)
+            //    s += (" " + toks[i]);
             return s;
         }
     }

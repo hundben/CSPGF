@@ -49,15 +49,5 @@ namespace CSPGF.reader
         {
             return lastFID;
         }
-
-        public int firstID()
-        {
-            return firstFID;
-        }
-
-        public int lastID()
-        {
-            return lastFID;
-        }
     }
 }

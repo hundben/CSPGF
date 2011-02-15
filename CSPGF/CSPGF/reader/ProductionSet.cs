@@ -29,10 +29,14 @@ namespace CSPGF.reader
         public String toString()
         {
             String ss = "Id : " + id + " , Productions : [";
-            for (int i = 0 ; i < prods.Length ; i++)
+            foreach (Production p in prods)
+            {
+                ss += " " + p.toString();
+            }
+            /*for (int i = 0 ; i < prods.Length ; i++)
             {
                 ss += (" " + prods[i].toString());
-            }
+            }*/
             ss += "]";
             return ss;
         }
@@ -49,10 +53,14 @@ namespace CSPGF.reader
         public HashSet<Production> getSetOfProductions()
         {
             HashSet<Production> hs = new HashSet<Production>();
-            for (int i = 0 ; i < prods.Length ; i++)
+            foreach (Production p in prods)
+            {
+                hs.Add(p);
+            }
+            /*for (int i = 0 ; i < prods.Length ; i++)
             {
                 hs.Add(prods[i]);
-            }
+            }*/
             return hs;
         }
     }

@@ -31,9 +31,8 @@ namespace CSPGF.reader
             if (cat == null)
                 return "Sentence";
             else
-                // TODO: OMG RETARDED, får fundera på hur man kan fixa...
-                //return ((StringLit)cat).getValue();
-                return null;
+                return ((StringLit)cat).getValue();
+                
         }
 
         public AbsFun[] getAbsFuns()
@@ -48,19 +47,27 @@ namespace CSPGF.reader
         public String toString()
         {
             String ss = "Name : " + name + " , Flags : (";
-            // Är bortkommenterat i javakoden också
+            // TODO: Är bortkommenterat i javakoden också kanske borde fixa?
             // for(int i=0; i<flags.length;i++)
             // 	ss+=(" "+flags[i].toString());
             ss += ") , Abstract Functions : (";
-            for (int i = 0 ; i < absFuns.Length ; i++)
+            foreach (AbsFun a in absFuns)
+            {
+                ss += " " + a.toString();
+            }
+            /*for (int i = 0 ; i < absFuns.Length ; i++)
             {
                 ss += (" " + absFuns[i].toString());
-            }
+            }*/
             ss += ") , Abstract Categories : (";
-            for (int i = 0 ; i < absCats.Length ; i++)
+            foreach (AbsCat a in absCats)
+            {
+                ss += " " + a.toString();
+            }
+            /*for (int i = 0 ; i < absCats.Length ; i++)
             {
                 ss += (" " + absCats[i].toString());
-            }
+            }*/
             ss += ")";
             return ss;
         }

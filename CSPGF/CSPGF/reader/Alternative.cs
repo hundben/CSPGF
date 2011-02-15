@@ -23,7 +23,7 @@ namespace CSPGF.reader
             {
                 sb += t + " ";
             }
-            sb += ("/ ");
+            sb += "/ ";
             foreach (String t in prefix)
             {
                 sb += t + " ";

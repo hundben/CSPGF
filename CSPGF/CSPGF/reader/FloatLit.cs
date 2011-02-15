@@ -16,8 +16,7 @@ namespace CSPGF.reader
 
         public String toString()
         {
-            String s = "Float literal : " + value;
-            return s;
+            return "Float literal : " + value;
         }
 
         public double getValue()

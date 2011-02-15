@@ -9,18 +9,18 @@ namespace CSPGF.reader
     {
         private Boolean bind;
         private String str;
-        private Type t;
+        private Type type;
 
-        public Hypo(Boolean _bind, String _str, Type _t)
+        public Hypo(Boolean _bind, String _str, Type _type)
         {
             bind = _bind;
             str = _str;
-            t = _t;
+            type = _type;
         }
 
         public String toString()
         {
-            return "Bound Type : " + bind + " , Name : " + str + " , Type : (" + t + ")";
+            return "Bound Type : " + bind + " , Name : " + str + " , Type : (" + type + ")";
         }
 
         public Boolean getBind()
@@ -33,7 +33,7 @@ namespace CSPGF.reader
         }
         public Type getType()
         {
-            return t;
+            return type;
         }
     }
 }

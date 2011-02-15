@@ -9,9 +9,8 @@ namespace CSPGF.reader
     {
         Alternative[] alts;
 
-        public AlternToksSymbol(String[] _toks, Alternative[] _alts)
+        public AlternToksSymbol(String[] _toks, Alternative[] _alts) : base(_toks)
         {
-            base.setTokens(_toks);
             alts = _alts;
         }
 

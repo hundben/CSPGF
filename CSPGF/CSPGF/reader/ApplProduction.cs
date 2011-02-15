@@ -10,10 +10,11 @@ namespace CSPGF.reader
         private CncFun function;
         private int[] domain;
 
-        public ApplProduction(int _fId, CncFun _function, int[] _domain)
+        public ApplProduction(int _fId, CncFun _function, int[] _domain) : base(0,_fId)
         {
-            base.fId = _fId;
-            base.sel = 0;
+            // Should not be needed anymore
+            //base.fId = _fId;
+            //base.sel = 0;
             function = _function;
             domain = _domain;
         }
@@ -40,8 +41,7 @@ namespace CSPGF.reader
             //     ss+=(" " + domain[i]);
             // ss+="]";
             // return ss;
-            String s = "";
-            s += fId + " -> " + function.getName() + "[ ";
+            String s = fId + " -> " + function.getName() + "[ ";
             foreach (int c in domain)
             {
                 s += c + " ";
@@ -52,7 +52,7 @@ namespace CSPGF.reader
 
         public Boolean equals(Object o)
         {
-            // TODO: Fi
+            // TODO: Fix?
             if (o is ApplProduction)
             {
                 ApplProduction newo = (ApplProduction)o;

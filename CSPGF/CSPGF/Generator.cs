@@ -81,13 +81,15 @@ namespace CSPGF
 	        int rand = random.Next(vs.Count());
 	        String funcName = vs.ElementAt(rand);
 	        AbsFun[] absFuns = pgf.getAbstract().getAbsFuns();
-            for (int i = 0 ; i < absFuns.Length ; i++)
+            foreach (AbsFun a in absFuns) 
+            //for (int i = 0 ; i < absFuns.Length ; i++)
             {
-                if (absFuns[i].getName().Equals(funcName))
+                if (a.getName().Equals(funcName))
                 {
-                    Hypo[] hypos = absFuns[i].getType().getHypos();
+                    Hypo[] hypos = a.getType().getHypos();
                     String[] tempCats = new String[hypos.Length];
                     Tree[] exps = new Tree[hypos.Length];
+                    // TODO: Går detta att göra om?
                     for (int k = 0 ; k < hypos.Length ; k++)
                     {
                         tempCats[k] = hypos[k].getType().getName();
@@ -98,9 +100,10 @@ namespace CSPGF
                         }
                     }
                     Tree rez = new Function(funcName);
-                    for (int j = 0 ; j < exps.Length ; j++)
+                    foreach (Tree t in exps)
+                    //for (int j = 0 ; j < exps.Length ; j++)
                     {
-                        rez = new Application(rez, exps[j]);
+                        rez = new Application(rez, t);
                     }
                     return rez;
                 }
@@ -162,7 +165,9 @@ namespace CSPGF
             int contor = 0;
             List<Tree> rez = new List<Tree>();
             if (contor >= count)
+            {
                 return rez;
+            }
             HashSet<String> dirFuns = dirRules[type];
             HashSet<String> indirFuns = indirRules[type];
             foreach (String it in dirFuns)

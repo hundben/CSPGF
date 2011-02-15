@@ -10,20 +10,20 @@ namespace CSPGF.reader
         protected int sel;
         protected int fId;
 
-        public Production(int selector, int fId)
+        public Production(int _sel, int _fId)
         {
-            this.sel = selector;
-            this.fId = fId;
+            sel = _sel;
+            fId = _fId;
         }
 
         public int getCategory()
         {
-            return this.fId;
+            return fId;
         }
 
         public int range()
         {
-            return this.fId;
+            return fId;
         }
 
         public abstract String toString();

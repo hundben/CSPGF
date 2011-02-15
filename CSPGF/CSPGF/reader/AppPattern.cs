@@ -19,10 +19,14 @@ namespace CSPGF.reader
         public String toString()
         {
             String ss = "Application pattern [ Name : " + name + " , Patterns : (";
-            for (int i = 0 ; i < patts.Length ; i++)
+            foreach (Pattern p in patts)
+            {
+                ss += " " + p.toString();
+            }
+            /*for (int i = 0 ; i < patts.Length ; i++)
             {
                 ss += (" " + patts[i].toString());
-            }
+            }*/
             ss += ")]";
             return ss;
         }

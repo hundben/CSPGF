@@ -86,19 +86,21 @@ namespace CSPGF.reader
         public Production[] getProductions()
         {
             int size = 0;
-            foreach (ProductionSet ps in this.prods)
+            foreach (ProductionSet ps in prods)
             {
                 size += ps.length();
             }
-            Production[] prods = new Production[size];
+            Production[] tprods = new Production[size];
             int i = 0;
-            foreach (ProductionSet ps in this.prods)
+            foreach (ProductionSet ps in prods)
+            {
                 foreach (Production p in ps.productions())
                 {
-                    prods[i] = p;
+                    tprods[i] = p;
                     i++;
                 }
-            return prods;
+            }
+            return tprods;
         }
 
         public String toString()
@@ -108,11 +110,14 @@ namespace CSPGF.reader
 
         public Dictionary<int, HashSet<Production>> getSetOfProductions()
         {
-            Dictionary<int, HashSet<Production>> hm =
-                new Dictionary<int, HashSet<Production>>();
-            for (int i = 0 ; i < prods.Length ; i++)
-                hm.Add(prods[i].getId(), prods[i].getSetOfProductions());
-            return hm;
+            Dictionary<int, HashSet<Production>> dict = new Dictionary<int, HashSet<Production>>();
+            foreach (ProductionSet p in prods)
+            {
+                dict.Add(p.getId(), p.getSetOfProductions());
+            }
+            //for (int i = 0 ; i < prods.Length ; i++)
+            //    hm.Add(prods[i].getId(), prods[i].getSetOfProductions());
+            return dict;
         }
     }
 }

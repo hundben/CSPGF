@@ -37,15 +37,23 @@ namespace CSPGF.reader
         public String toString()
         {
             String ss = "Name : " + name + " , Hypotheses : (";
-            for (int i = 0 ; i < hypos.Length ; i++)
+            foreach (Hypo h in hypos)
             {
-                ss += (" " + hypos[i].toString());
+                ss += " " + h.toString();
             }
+            //for (int i = 0 ; i < hypos.Length ; i++)
+            //{
+            //    ss += (" " + hypos[i].toString());
+            //}
             ss += ") , String Names : (";
-            for (int i = 0 ; i < functions.Length ; i++)
+            foreach (WeightedIdent w in functions)
+            {
+                ss += " " + w.toString();
+            }
+            /*for (int i = 0 ; i < functions.Length ; i++)
             {
                 ss += (" " + functions[i].toString());
-            }
+            }*/
             ss += ")";
             return ss;
         }

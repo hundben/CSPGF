@@ -21,8 +21,7 @@ namespace CSPGF.reader
 
         public String toString()
         {
-            String s = "Integer Literal : " + value;
-            return s;
+            return "Integer Literal : " + value;
         }
     }
 }

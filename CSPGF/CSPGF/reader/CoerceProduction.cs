@@ -9,10 +9,11 @@ namespace CSPGF.reader
     {
         private int initId;
 
-        public CoerceProduction(int _fId, int _initId)
+        public CoerceProduction(int _fId, int _initId) : base(1, _fId)
         {
-            base.fId = _fId;
-            base.sel = 1;
+            // Should not be needed anymore
+            //base.fId = _fId;
+            //base.sel = 1;
             initId = _initId;
         }
 

@@ -34,21 +34,25 @@ namespace CSPGF.reader
             return sequences[index];
         }
 
-        public Symbol symbol(int seqIndex, int symbIndex)
+        public Symbol getSymbol(int seqIndex, int symbIndex)
         {
             return sequences[seqIndex].symbol(symbIndex);
         }
 
-        public int size()
+        public int getSize()
         {
-            return this.sequences.Length;
+            return sequences.Length;
         }
 
         public String toString()
         {
             String ss = "Name : " + name + " , Indices : ";
-            for (int i = 0 ; i < sequences.Length ; i++)
-                ss += (" " + sequences[i]);
+            foreach (Sequence s in sequences)
+            {
+                ss += " " + s;
+            }
+            //for (int i = 0 ; i < sequences.Length ; i++)
+            //    ss += (" " + sequences[i]);
             return ss;
         }
     }
