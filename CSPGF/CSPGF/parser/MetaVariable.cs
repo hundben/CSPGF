@@ -8,9 +8,9 @@ namespace CSPGF.parser
     class MetaVariable : Tree
     {
         public int id;
-        public MetaVariable(int id)
+        public MetaVariable(int _id)
         {
-            this.id = id;
+            id = _id;
         }
     }
 }

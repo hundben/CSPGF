@@ -8,9 +8,9 @@ namespace CSPGF.parser
     class Literal : Tree
     {
         public String value;
-        public Literal(String value)
+        public Literal(String _value)
         {
-            this.value = value;
+            value = _value;
         }
     }
 }

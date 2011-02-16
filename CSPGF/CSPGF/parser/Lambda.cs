@@ -9,9 +9,9 @@ namespace CSPGF.parser
     {
         public List<Tuple<Boolean, String>> vars;   //går detta att göra smidigare kanske?
         public Tree body;
-        public Lambda(List<Tuple<Boolean, String>> vars, Tree body) {
-            this.vars = vars;
-            this.body = body;
+        public Lambda(List<Tuple<Boolean, String>> _vars, Tree _body) {
+            vars = _vars;
+            body = _body;
         }
     }
 }

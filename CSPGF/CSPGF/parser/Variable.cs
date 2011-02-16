@@ -8,9 +8,9 @@ namespace CSPGF.parser
     public class Variable : Tree
     {
         public String cid;
-        public Variable(String cid)
+        public Variable(String _cid)
         {
-            this.cid = cid;
+            cid = _cid;
         }
     }
 }

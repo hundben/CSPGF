@@ -9,10 +9,10 @@ namespace CSPGF.parser
     {
         public String fun;
         public List<Tree> args;
-        public Application(String fun, List<Tree> args)
+        public Application(String _fun, List<Tree> _args)
         {
-            this.fun = fun;
-            this.args = args;
+            fun = _fun;
+            args = _args;
         }
     }
 }
