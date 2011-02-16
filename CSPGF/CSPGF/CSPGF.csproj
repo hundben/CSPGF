@@ -54,6 +54,12 @@
     <Compile Include="linearizer\RezDesc.cs" />
     <Compile Include="linearizer\Tokn.cs" />
     <Compile Include="Parser.cs" />
+    <Compile Include="parser\Application.cs" />
+    <Compile Include="parser\Class1.cs" />
+    <Compile Include="parser\Literal.cs" />
+    <Compile Include="parser\Variable.cs" />
+    <Compile Include="parser\Lambda.cs" />
+    <Compile Include="parser\Tree.cs" />
     <Compile Include="PGF.cs" />
     <Compile Include="PGFBuilder.cs" />
     <Compile Include="PGFReader.cs" />
@@ -113,9 +119,7 @@
     <Compile Include="util\Pair.cs" />
     <Compile Include="util\PGFLogger.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="parser\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
