@@ -54,9 +54,16 @@
     <Compile Include="linearizer\RezDesc.cs" />
     <Compile Include="linearizer\Tokn.cs" />
     <Compile Include="Parser.cs" />
+    <Compile Include="parser\ActiveItem.cs" />
+    <Compile Include="parser\ActiveSet.cs" />
     <Compile Include="parser\Application.cs" />
-    <Compile Include="parser\Class1.cs" />
+    <Compile Include="parser\Chart.cs" />
     <Compile Include="parser\Literal.cs" />
+    <Compile Include="parser\MetaVariable.cs" />
+    <Compile Include="parser\ParseState.cs" />
+    <Compile Include="parser\ParseTrie.cs" />
+    <Compile Include="parser\TreeBuilder.cs" />
+    <Compile Include="parser\TreeConverter.cs" />
     <Compile Include="parser\Variable.cs" />
     <Compile Include="parser\Lambda.cs" />
     <Compile Include="parser\Tree.cs" />
