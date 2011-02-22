@@ -2,55 +2,78 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CncFun = CSPGF.reader.CncFun;
+using Symbol = CSPGF.reader.Symbol;
 
 namespace CSPGF.parser
 {
     class ActiveItem
     {
+        public int begin;
+        public int category;
+        public CncFun function;
+        public int[] domain;
+        public int constituent;
+        public int position;
+        public ActiveItem(int _begin, int _category, CncFun _function, int[] _domain, int _constituent, int _position)
+        {
+            begin = _begin;
+            category = _category;
+            function = _function;
+            domain = _domain;
+            constituent = _constituent;
+            position = _position;
+        }
+        //Notice that Option and Same is used together in scala, so ignore :D
+        public Symbol nextSymbol()
+        {
+            if (position < function.getSequence(constituent).getLength())
+            {
+                Symbol sym = function.getSequence(constituent).getSymbol(position);
+                return sym;
+            }
+            return null;    //this might be dangerous
+        }
+        //equals method
+        public override bool Equals(ActiveItem ai)
+        {
+            if (begin == ai.begin &&
+                category == ai.category &&
+                function == ai.function &&
+                constituent == ai.constituent &&
+                position == ai.position)
+            {
+                //Since there is no deep method in c# that we know of, use a crappy forloop
+                if (domain.Length == ai.domain.Length)
+                {
+                    for (int i = 0; i < domain.Length; i++)
+                    {
+                        if (domain[i] != ai.domain[i]) return false;
+                    }
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        //To string
+        public override string ToString()
+        {
+            String str = "[" + begin.ToString() + ";" + category.ToString() + 
+                "->" + this.function.getName() + "[" + domainToString() + "];" + 
+                constituent.ToString() + ";" + position.ToString() + "]";
+            return str;
+        }
+        //Helper method
+        public String domainToString()
+        {
+            String tot = "";
+            foreach(int d in domain)
+            {
+                tot += d.ToString();
+            }
+            return tot;
+        }
+
     }
 }
-
-//private class ActiveItem(val begin : Int,
-//                 val category:Int,
-//                 val function:CncFun,
-//                 val domain:Array[Int],
-//                 val constituent:Int,
-//                 val position:Int) {
-
-//  // get next symbol
-//  def nextSymbol():Option[Symbol] =
-//    if (position < function.sequence(constituent).length) {
-//      val symbol = function.sequence(constituent).symbol(position)
-//      return Some(symbol)
-//    }
-//    else
-//      return None
-
-//  /* ************************************ *
-//   * Overrides
-//   * ************************************ */
-
-//  override def equals(o:Any):Boolean = o match {
-//      case (o:ActiveItem) => this.begin == o.begin &&
-//                             this.category == o.category &&
-//                             this.function == o.function && // CncFun,
-//                             this.domain.deep.equals(o.domain.deep) &&
-//                             this.constituent == o.constituent &&
-//                             this.position == o.position
-//      case _ => false
-//  }
-
-//  override def toString() =
-//    "[" + this.begin + ";" +
-//          this.category + "->" + this.function.name +
-//          "[" + this.domainToString + "];" + this.constituent + ";" +
-//          this.position + "]"
-          
-//  def domainToString():String = {
-//    val buffer = new StringBuffer()
-//    for( d <- domain ) {
-//      buffer.append(d.toString)
-//    }
-//    buffer.toString
-//  }
-//}
