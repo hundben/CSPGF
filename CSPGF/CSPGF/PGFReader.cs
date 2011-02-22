@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CSPGF.reader;
+using System.IO;
 
 namespace CSPGF
 {
@@ -11,21 +12,27 @@ namespace CSPGF
 
         private static Boolean DBG = false;
 
-        private DataInputStream mDataInputStream;
+
+        private StreamReader inputstream; // Maybe filestream or streamreader instead?
+        //private DataInputStream mDataInputStream;
         // Was Set<String> before, but does not exist in c#
         private List<String> languages;
 
         // Visual Studio fails to check the rest of the code when the two constructors are uncommented.
-        public PGFReader(/*InputStream is*/)
+        public PGFReader(StreamReader _inputstream)
         {
+            inputstream = _inputstream;
             //this.mDataInputStream = new DataInputStream(is);
         }
 
-        public PGFReader(/*InputStream is, String[] _languages*/)
+        public PGFReader(StreamReader _inputstream, String[] _languages)
         {
+            inputstream = _inputstream;
             //this.mDataInputStream = new DataInputStream(is);
             //TODO: Convert from String[] to List<String>
             //languages = _languages;
+            languages = _languages.ToList<String>();
+            
         }
 
         public PGF readPGF()
@@ -35,7 +42,9 @@ namespace CSPGF
             int[] ii = new int[4];
             for (int i = 0 ; i < 4 ; i++)
             {
-                ii[i] = mDataInputStream.read();
+                //ii[i] = mDataInputStream.read();
+                // TODO: Reads one character at a time, so should be correct? Check this. Specification says int16 for version number
+                ii[i] = inputstream.Read();
             }
             if (DBG)
             {
@@ -85,7 +94,9 @@ namespace CSPGF
                 {
                     if (index != null)
                     {
-                        this.mDataInputStream.skip(index[name]);
+                        // TODO: CHECK! Maybe this will work?
+                        inputstream.BaseStream.Seek(index[name], SeekOrigin.Current);
+                        //this.mDataInputStream.skip(index[name]);
                         if (DBG)
                         {
                             System.Console.WriteLine("Skiping " + name);
@@ -108,7 +119,7 @@ namespace CSPGF
 
             // builds and returns the pgf object.
             PGF pgf = new PGF(makeInt16(ii[0], ii[1]), makeInt16(ii[2], ii[3]), flags, abs, concretes);
-            mDataInputStream.close();
+            inputstream.Close();
             return pgf;
         }
 
@@ -193,7 +204,8 @@ namespace CSPGF
             }
             CSPGF.reader.Type t = getType();
             int i = getInt();
-            int has_equations = mDataInputStream.read();
+            //TODO: Check!
+            int has_equations = inputstream.Read();
             Eq[] equations;
             if (has_equations == 0)
             {
@@ -272,7 +284,8 @@ namespace CSPGF
 
         private Hypo getHypo()
         {
-            int btype = mDataInputStream.read();
+            //TODO: Check!
+            int btype = inputstream.Read();
             Boolean b = btype == 0 ? false : true;
             String varName = getIdent();
             CSPGF.reader.Type t = getType();
@@ -308,12 +321,14 @@ namespace CSPGF
 
         private Expr getExpr()
         {
-            int sel = mDataInputStream.read();
+            //TODO: Check!
+            int sel = inputstream.Read();
             Expr expr = null;
             switch (sel)
             {
                 case 0: //lambda abstraction
-                    int bt = mDataInputStream.read();
+                    //TODO: Check!
+                    int bt = inputstream.Read();
                     Boolean btype = bt == 0 ? false : true;
                     String varName = getIdent();
                     Expr e1 = getExpr();
@@ -368,7 +383,8 @@ namespace CSPGF
 
         private Pattern getPattern()
         {
-            int sel = mDataInputStream.read();
+            //TODO: Check!
+            int sel = inputstream.Read();
             Pattern patt = null;
             switch (sel)
             {
@@ -409,7 +425,8 @@ namespace CSPGF
 
         private RLiteral getLiteral()
         {
-            int sel = mDataInputStream.read();
+            //TODO: CHECK!
+            int sel = inputstream.Read();
             RLiteral ss = null;
             switch (sel)
             {
@@ -518,7 +535,8 @@ namespace CSPGF
 
         private Symbol getSymbol()
         {
-            int sel = mDataInputStream.read();
+            //TODO: Check!
+            int sel = inputstream.Read();
             if (DBG)
             {
                 System.Console.WriteLine("Symbol: type=" + sel);
@@ -698,7 +716,8 @@ namespace CSPGF
          */
         private Production getProduction(int leftCat, CncFun[] cncFuns)
         {
-            int sel = mDataInputStream.read();
+            //TODO: CHECK!
+            int sel = inputstream.Read();
             if (DBG)
             {
                 System.Console.WriteLine("Production: type=" + sel);
@@ -798,7 +817,7 @@ namespace CSPGF
         private String getString()
         {
             // using a byte array for efficiency
-            // TODO : FIX!
+            // TODO : FIX! Skita i att köra en outputgrej och bara leka sträng? Kan ju bli segt så kanske någon typ av buffer?
             ByteArrayOutputStream os = null; //new java.io.ByteArrayOutputStream();
             int npoz = getInt();
             int r;
@@ -870,9 +889,13 @@ namespace CSPGF
         private String getIdent()
         {
             int nbChar = getInt();
-            byte[] bytes = new byte[nbChar];
-            this.mDataInputStream.read(bytes);
-            return new String(bytes, "ISO-8859-1");
+            //byte[] bytes = new byte[nbChar];
+            char[] bytes = new char[nbChar];
+            //TODO: Check!
+            inputstream.Read(bytes,0,nbChar);
+            //TODO: check if we have to change encoding!
+            return bytes.ToString();
+            //return new String(bytes, "ISO-8859-1");
         }
 
         private String[] getListIdent()
@@ -910,7 +933,8 @@ namespace CSPGF
         // to gain space.
         private int getInt()
         {
-            long rez = (long)mDataInputStream.read();
+            //TODO: Check!
+            long rez = (long)inputstream.Read();
             if (rez <= 0x7f)
             {
                 return (int)rez;
@@ -946,6 +970,7 @@ namespace CSPGF
         // Reading doubles
         private double getDouble()
         {
+            //TODO: How to read just a double in c#? D:
             return mDataInputStream.readDouble();
         }
     }
