@@ -9,37 +9,36 @@ namespace CSPGF.reader
     {
         Alternative[] alts;
 
-        public AlternToksSymbol(String[] _toks, Alternative[] _alts) : base(_toks)
+        public AlternToksSymbol(String[] _toks, Alternative[] _alts)
+            : base(_toks)
         {
             alts = _alts;
         }
 
-        public Boolean isTerminal()
+        public Boolean IsTerminal()
         {
             return true;
         }
 
-        public String toString()
+        public String ToString()
         {
             String sb = "pre { ";
-            foreach (String s in base.getTokens())
-            {
+            foreach (String s in base.getTokens()) {
                 sb += s + " ";
             }
             sb += ("; ");
-            foreach (Alternative a in alts)
-            {
+            foreach (Alternative a in alts) {
                 sb += a + "; ";
             }
             sb += "}";
             return sb;
         }
 
-        public String[] getToks()
+        public String[] GetToks()
         {
             return base.getTokens();
         }
-        public Alternative[] getAlternatives()
+        public Alternative[] GetAlternatives()
         {
             return alts;
         }

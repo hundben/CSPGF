@@ -14,12 +14,12 @@ namespace CSPGF.reader
             name = _name;
         }
 
-        public String toString()
+        public String ToString()
         {
             return "Abstract Name Expression : [Name : " + name + "]";
         }
 
-        public String getName()
+        public String GetName()
         {
             return name;
         }

@@ -16,7 +16,7 @@ namespace CSPGF
         public Parser(PGF pgf, Concrete language)
         {
             this.language = language;
-            this.startcat = pgf.getAbstract().startcat();
+            this.startcat = pgf.GetAbstract().StartCat();
         }
 
         public Parser(PGF pgf, String language)
@@ -25,7 +25,7 @@ namespace CSPGF
             //this(pgf, pgf.concrete(language));
         }
 
-        public void setStartcat(String startcat)
+        public void SetStartcat(String startcat)
         {
             this.startcat = startcat;
         }
@@ -37,13 +37,11 @@ namespace CSPGF
          * @return the corresponding parse-state
          **/
         // FIXME: not using the start category ??
-        public ParseState parse(String[] tokens)
+        public ParseState Parse(String[] tokens)
         {
             ParseState ps = new ParseState(language);
-            foreach (String w in tokens)
-            {
-                if (!ps.scan(w))
-                {
+            foreach (String w in tokens) {
+                if (!ps.scan(w)) {
                     break;
                 }
             }
@@ -58,9 +56,9 @@ namespace CSPGF
          * @return an array of trees
          **/
         // FIXME: not using the start category ??
-        public Tree[] parseToTrees(String[] tokens)
+        public Tree[] ParseToTrees(String[] tokens)
         {
-            return parse(tokens).getTrees();
+            return Parse(tokens).getTrees();
         }
 
         /**
@@ -69,9 +67,9 @@ namespace CSPGF
          * @param phrase the input string
          * @return the corresponding parse-state
          **/
-        public ParseState parse(String phrase)
+        public ParseState Parse(String phrase)
         {
-            return parse(phrase.Split(' '));
+            return Parse(phrase.Split(' '));
         }
 
         /**
@@ -80,9 +78,9 @@ namespace CSPGF
          * @param startcat the start category
          * @return the corresponding parse-state
          **/
-        public ParseState parse()
+        public ParseState Parse()
         {
-            return parse(new String[0]);
+            return Parse(new String[0]);
         }
 
     }

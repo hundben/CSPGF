@@ -9,33 +9,30 @@ namespace CSPGF.reader
     {
         private int initId;
 
-        public CoerceProduction(int _fId, int _initId) : base(1, _fId)
+        public CoerceProduction(int _fId, int _initId)
+            : base(1, _fId)
         {
-            // Should not be needed anymore
-            //base.fId = _fId;
-            //base.sel = 1;
             initId = _initId;
         }
 
-        public int getInitId()
+        public int GetInitId()
         {
             return initId;
         }
 
-        public int[] getDomain()
+        public int[] GetDomain()
         {
             return new int[] { this.initId };
         }
 
-        public String toString()
+        public String ToString()
         {
             return "Coercion(" + this.fId + " -> " + initId + ")";
         }
 
-        public Boolean equals(Object o)
+        public Boolean Equals(Object o)
         {
-            if (o is CoerceProduction)
-            {
+            if (o is CoerceProduction) {
                 return ((CoerceProduction)o).initId == initId;
             }
             return false;

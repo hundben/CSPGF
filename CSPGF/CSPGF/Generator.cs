@@ -23,33 +23,32 @@ namespace CSPGF
             pgf = _pgf;
             dirRules = new Dictionary<String, HashSet<String>>();
             indirRules = new Dictionary<String, HashSet<String>>();
-            AbsCat[] absCats = pgf.getAbstract().getAbsCats();
-            AbsFun[] absFuns = pgf.getAbstract().getAbsFuns();
+            AbsCat[] absCats = pgf.GetAbstract().GetAbsCats();
+            AbsFun[] absFuns = pgf.GetAbstract().GetAbsFuns();
             HashSet<String> dirFuns = new HashSet<String>();
             HashSet<String> indirFuns = new HashSet<String>();
-            for (int i = 0 ; i < absCats.Length ; i++)
-            {
+            for (int i = 0 ; i < absCats.Length ; i++) {
                 dirFuns = new HashSet<String>();
                 indirFuns = new HashSet<String>();
-                WeightedIdent[] functions = absCats[i].getFunctions();
+                WeightedIdent[] functions = absCats[i].GetFunctions();
                 for (int j = 0 ; j < functions.Length ; j++)
                     for (int k = 0 ; k < absFuns.Length ; k++)
-                        if (functions[j].getIdent().Equals(absFuns[k].getName()))
-                        {
-                            if (absFuns[k].getType().getHypos().Length == 0)
+                        if (functions[j].getIdent().Equals(absFuns[k].GetName())) {
+                            if (absFuns[k].GetType().getHypos().Length == 0)
                                 dirFuns.Add(functions[j].getIdent());
                             else
                                 indirFuns.Add(functions[j].getIdent());
                             break;
                         }
-                dirRules.Add(absCats[i].getName(), dirFuns);
-                indirRules.Add(absCats[i].getName(), indirFuns);
+                dirRules.Add(absCats[i].GetName(), dirFuns);
+                indirRules.Add(absCats[i].GetName(), indirFuns);
             }
         }
 
-        
-        public Tree gen() {
-	        return gen(pgf.getAbstract().startcat());
+
+        public Tree Gen()
+        {
+            return Gen(pgf.GetAbstract().StartCat());
         }
 
         /** generates a category with a random direct rule
@@ -57,45 +56,43 @@ namespace CSPGF
          **/
         // FIXME what is 'type' for ???
         // FIXME couldn't dirFuns be an array ?
-        public Tree getDirect(String type, HashSet<String> dirFuns) {
-	    int rand = this.random.Next(dirFuns.Count());
-	    return new Function((String)dirFuns.ToArray()[rand]);
+        public Tree GetDirect(String type, HashSet<String> dirFuns)
+        {
+            int rand = this.random.Next(dirFuns.Count());
+            return new Function((String)dirFuns.ToArray()[rand]);
         }
 
         /** generates a category with a random indirect rule
          * creates more complex expressions
          **/
-        public Tree getIndirect(String type, HashSet<String> indirFuns) {
-	        //Iterator<String> it = indirFuns.iterator();
-	        //Vector<String> vs = new Vector<String>();
+        public Tree GetIndirect(String type, HashSet<String> indirFuns)
+        {
+            //Iterator<String> it = indirFuns.iterator();
+            //Vector<String> vs = new Vector<String>();
             /*while (it.hasNext())
             {
                 vs.add(it.next());
             }*/
             List<String> vs = new List<String>();
-            foreach (String it in indirFuns)
-            {
+            foreach (String it in indirFuns) {
                 vs.Add(it);
             }
-            
-	        int rand = random.Next(vs.Count());
-	        String funcName = vs.ElementAt(rand);
-	        AbsFun[] absFuns = pgf.getAbstract().getAbsFuns();
-            foreach (AbsFun a in absFuns) 
+
+            int rand = random.Next(vs.Count());
+            String funcName = vs.ElementAt(rand);
+            AbsFun[] absFuns = pgf.GetAbstract().GetAbsFuns();
+            foreach (AbsFun a in absFuns)
             //for (int i = 0 ; i < absFuns.Length ; i++)
             {
-                if (a.getName().Equals(funcName))
-                {
-                    Hypo[] hypos = a.getType().getHypos();
+                if (a.GetName().Equals(funcName)) {
+                    Hypo[] hypos = a.GetType().getHypos();
                     String[] tempCats = new String[hypos.Length];
                     Tree[] exps = new Tree[hypos.Length];
                     // TODO: Går detta att göra om?
-                    for (int k = 0 ; k < hypos.Length ; k++)
-                    {
+                    for (int k = 0 ; k < hypos.Length ; k++) {
                         tempCats[k] = hypos[k].getType().getName();
-                        exps[k] = gen(tempCats[k]);
-                        if (exps[k] == null)
-                        {
+                        exps[k] = Gen(tempCats[k]);
+                        if (exps[k] == null) {
                             return null;
                         }
                     }
@@ -108,7 +105,7 @@ namespace CSPGF
                     return rez;
                 }
             }
-	        return null;
+            return null;
         }
 
 
@@ -116,19 +113,14 @@ namespace CSPGF
          * the empirical probability of using direct rules is 60%
          * this decreases the probability of having infinite trees for infinite grammars
          **/
-        public Tree gen(String type)
+        public Tree Gen(String type)
         {
-            if (type.Equals("Integer"))
-            {
-                return new Literal(new IntLiteral(generateInt()));
-            }
-            else if (type.Equals("Float"))
-            {
-                return new Literal(new FloatLiteral(generateFloat()));
-            }
-            else if (type.Equals("String"))
-            {
-                return new Literal(new StringLiteral(generateString()));
+            if (type.Equals("Integer")) {
+                return new Literal(new IntLiteral(GenerateInt()));
+            } else if (type.Equals("Float")) {
+                return new Literal(new FloatLiteral(GenerateFloat()));
+            } else if (type.Equals("String")) {
+                return new Literal(new StringLiteral(GenerateString()));
             }
             int depth = random.Next(5); //60% constants, 40% functions
             HashSet<String> dirFuns = dirRules[type];
@@ -136,62 +128,51 @@ namespace CSPGF
             // TODO: Check if it should be inverted?
             Boolean isEmptyDir = dirFuns.Any();
             Boolean isEmptyIndir = indirFuns.Any();
-            if (isEmptyDir && isEmptyIndir)
-            {
+            if (isEmptyDir && isEmptyIndir) {
                 throw new Exception("Cannot generate any expression of type " + type);
             }
-            if (isEmptyDir)
-            {
-                return getIndirect(type, indirFuns);
+            if (isEmptyDir) {
+                return GetIndirect(type, indirFuns);
             }
-            if (isEmptyIndir)
-            {
-                return getDirect(type, dirFuns);
+            if (isEmptyIndir) {
+                return GetDirect(type, dirFuns);
             }
-            if (depth <= 2)
-            {
-                return getDirect(type, dirFuns);
+            if (depth <= 2) {
+                return GetDirect(type, dirFuns);
             }
-            return getIndirect(type, indirFuns);
+            return GetIndirect(type, indirFuns);
         }
 
 
-         /** generates a number of expressions of a given category
-         * the expressions are independent
-         * the probability of having simple expressions is higher
-         **/
-        public List<Tree> generateMany(String type, int count)
+        /** generates a number of expressions of a given category
+        * the expressions are independent
+        * the probability of having simple expressions is higher
+        **/
+        public List<Tree> GenerateMany(String type, int count)
         {
             int contor = 0;
             List<Tree> rez = new List<Tree>();
-            if (contor >= count)
-            {
+            if (contor >= count) {
                 return rez;
             }
             HashSet<String> dirFuns = dirRules[type];
             HashSet<String> indirFuns = indirRules[type];
-            foreach (String it in dirFuns)
-            {
-                Tree interm = getDirect(type, dirFuns);
-                if (interm != null)
-                {
+            foreach (String it in dirFuns) {
+                Tree interm = GetDirect(type, dirFuns);
+                if (interm != null) {
                     contor++;
                     rez.Add(interm);
-                    if (contor == count)
-                    {
+                    if (contor == count) {
                         return rez;
                     }
                 }
             }
-            foreach (String it in indirFuns)
-            {
-                Tree interm = getIndirect(type, indirFuns);
-                if (interm != null)
-                {
+            foreach (String it in indirFuns) {
+                Tree interm = GetIndirect(type, indirFuns);
+                if (interm != null) {
                     contor++;
                     rez.Add(interm);
-                    if (contor == count)
-                    {
+                    if (contor == count) {
                         return rez;
                     }
                 }
@@ -203,7 +184,7 @@ namespace CSPGF
         /** generates a random string
         **/
 
-        public String generateString()
+        public String GenerateString()
         {
             String[] ss = { "x", "y", "foo", "bar" };
             return ss[random.Next(ss.Length)];
@@ -211,14 +192,14 @@ namespace CSPGF
 
         /** generates a random integer
          **/
-        public int generateInt()
+        public int GenerateInt()
         {
             return random.Next(100000);
         }
 
         /** generates a random float
          **/
-        public double generateFloat()
+        public double GenerateFloat()
         {
             return random.NextDouble();
         }

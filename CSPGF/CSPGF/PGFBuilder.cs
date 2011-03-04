@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
+using CSPGF.reader;
 
 namespace CSPGF {
     class PGFBuilder {
@@ -15,16 +17,16 @@ namespace CSPGF {
          *
          * @param filename the path of the pgf file.
          */
-
-
+        
         // No reason to pass an inputstream to the constructor? Could just as easily just use the filename?
-        public static PGF fromFile(String filename) {
+        public static PGF FromFile(String filename) {
 	        if (DBG) System.Console.WriteLine("Reading pgf from file : " + filename);
-                InputStream stream = new FileInputStream(filename);
+                // TODO: Check!
+                StreamReader stream = new StreamReader(new FileStream(filename, FileMode.Open, FileAccess.Read));
 	        try {
-	            return new PGFReader(stream).readPGF();
+	            return new PGFReader(stream).ReadPGF();
 	        } catch (UnknownLanguageException e) {
-	            throw new Exception();
+	            throw new Exception(e.ToString());
 	        }
         }
 
@@ -37,10 +39,10 @@ namespace CSPGF {
          * @param filename the path of the pgf file.
          * @param languages the list of desired languages
          */
-        public static PGF fromFile(String filename, String[] languages) {
+        public static PGF FromFile(String filename, String[] languages) {
 	        if (DBG) { System.Console.WriteLine("Reading pgf from file : " + filename); }
-            InputStream stream = new FileInputStream(filename);
-            return new PGFReader(stream, languages).readPGF();
+            StreamReader stream = new StreamReader(new FileStream(filename, FileMode.Open, FileAccess.Read));
+            return new PGFReader(stream, languages).ReadPGF();
         }
 
         /**
@@ -48,11 +50,12 @@ namespace CSPGF {
          *
          * @param inStream and InputStream to read the pgf binary from.
          */
-        public static PGF fromInputStream(InputStream stream) {
+        //TODO: Check inputstream -> streamreader
+        public static PGF FromInputStream(StreamReader stream) {
 	        try {
-	            return new PGFReader(stream).readPGF();
+	            return new PGFReader(stream).ReadPGF();
 	        } catch (UnknownLanguageException e) {
-                throw new Exception();
+                throw new Exception(e.ToString());
 	        }
         }
 
@@ -63,8 +66,9 @@ namespace CSPGF {
          *
          * @param inStream and InputStream to read the pgf binary from.
          */
-        public static PGF fromInputStream(InputStream stream, String[] languages) {
-            return new PGFReader(stream, languages).readPGF();
+        //TODO: Check inputstream -> streamreader
+        public static PGF FromInputStream(StreamReader stream, String[] languages) {
+            return new PGFReader(stream, languages).ReadPGF();
         }
 
 

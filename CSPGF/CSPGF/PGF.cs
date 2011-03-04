@@ -21,7 +21,7 @@ namespace CSPGF
             abstr = _abstr;
             concretes = new Dictionary<String, Concrete>();
             foreach (Concrete cnc in _concretes)
-                concretes.Add(cnc.getName(), cnc);
+                concretes.Add(cnc.GetName(), cnc);
         }
 
         /* ******************************** API ******************************** */
@@ -31,7 +31,7 @@ namespace CSPGF
          * @return the concrete grammar of null if there is no grammr with
          *             that name.
          */
-        public Concrete concrete(String name)
+        public Concrete GetConcrete(String name)
         {
             Concrete l = concretes[name];
             if (l == null)
@@ -43,17 +43,17 @@ namespace CSPGF
         /* Accessing the fields                              */
         /* ************************************************* */
 
-        public int getMajorVersion()
+        public int GetMajorVersion()
         {
             return majorVersion;
         }
 
-        public int getMinorVersion()
+        public int GetMinorVersion()
         {
             return minorVersion;
         }
 
-        public Abstract getAbstract()
+        public Abstract GetAbstract()
         {
             return abstr;
         }
@@ -61,22 +61,20 @@ namespace CSPGF
         * Return true if the given name crrespond to a concrete grammar
         * in the pgf, false otherwise.
         */
-        public Boolean hasConcrete(String name)
+        public Boolean HasConcrete(String name)
         {
             return concretes.ContainsKey(name);
         }
 
         //TODO : cleanups
-        public String toString()
+        public String ToString()
         {
             String ss = "PGF : \nmajor version : " + majorVersion + ", minor version : " + minorVersion + "\n" + "flags : (";
-            foreach (String flagName in flags.Keys)
-            {
+            foreach (String flagName in flags.Keys) {
                 ss += flagName + ": " + flags[flagName].toString() + "\n";
             }
-            ss += (")\nabstract : (" + abstr.toString() + ")\nconcretes : (");
-            foreach (String name in concretes.Keys)
-            {
+            ss += (")\nabstract : (" + abstr.ToString() + ")\nconcretes : (");
+            foreach (String name in concretes.Keys) {
                 ss += name + ", ";
             }
             ss += ")";

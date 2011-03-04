@@ -12,62 +12,51 @@ namespace CSPGF.reader
         private AbsFun[] absFuns;
         private AbsCat[] absCats;
 
-        public Abstract(String _name, Dictionary<String, RLiteral> _flags,
-            AbsFun[] _absFuns, AbsCat[] _absCats)
+        public Abstract(String _name, Dictionary<String, RLiteral> _flags, AbsFun[] _absFuns, AbsCat[] _absCats)
         {
             name = _name;
             flags = _flags;
             absFuns = _absFuns;
             absCats = _absCats;
         }
-        public String getName()
+        public String GetName()
         {
             return name;
         }
 
-        public String startcat()
+        public String StartCat()
         {
             RLiteral cat = flags["startcat"];
             if (cat == null)
                 return "Sentence";
             else
                 return ((StringLit)cat).getValue();
-                
+
         }
 
-        public AbsFun[] getAbsFuns()
+        public AbsFun[] GetAbsFuns()
         {
             return absFuns;
         }
-        public AbsCat[] getAbsCats()
+        public AbsCat[] GetAbsCats()
         {
             return absCats;
         }
 
-        public String toString()
+        public String ToString()
         {
             String ss = "Name : " + name + " , Flags : (";
             // TODO: Är bortkommenterat i javakoden också kanske borde fixa?
             // for(int i=0; i<flags.length;i++)
             // 	ss+=(" "+flags[i].toString());
             ss += ") , Abstract Functions : (";
-            foreach (AbsFun a in absFuns)
-            {
-                ss += " " + a.toString();
+            foreach (AbsFun a in absFuns) {
+                ss += " " + a.ToString();
             }
-            /*for (int i = 0 ; i < absFuns.Length ; i++)
-            {
-                ss += (" " + absFuns[i].toString());
-            }*/
             ss += ") , Abstract Categories : (";
-            foreach (AbsCat a in absCats)
-            {
-                ss += " " + a.toString();
+            foreach (AbsCat a in absCats) {
+                ss += " " + a.ToString();
             }
-            /*for (int i = 0 ; i < absCats.Length ; i++)
-            {
-                ss += (" " + absCats[i].toString());
-            }*/
             ss += ")";
             return ss;
         }

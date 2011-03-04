@@ -16,43 +16,37 @@ namespace CSPGF.reader
             sequences = _sequences;
         }
 
-        /**
-         * Accessors
-         */
-        public String getName()
+        public String GetName()
         {
             return name;
         }
 
-        public Sequence[] getSequences()
+        public Sequence[] GetSequences()
         {
             return sequences;
         }
 
-        public Sequence getSequence(int index)
+        public Sequence GetSequence(int index)
         {
             return sequences[index];
         }
 
-        public Symbol getSymbol(int seqIndex, int symbIndex)
+        public Symbol GetSymbol(int seqIndex, int symbIndex)
         {
-            return sequences[seqIndex].symbol(symbIndex);
+            return sequences[seqIndex].getSymbol(symbIndex);
         }
 
-        public int getSize()
+        public int GetSize()
         {
             return sequences.Length;
         }
 
-        public String toString()
+        public String ToString()
         {
             String ss = "Name : " + name + " , Indices : ";
-            foreach (Sequence s in sequences)
-            {
+            foreach (Sequence s in sequences) {
                 ss += " " + s;
             }
-            //for (int i = 0 ; i < sequences.Length ; i++)
-            //    ss += (" " + sequences[i]);
             return ss;
         }
     }

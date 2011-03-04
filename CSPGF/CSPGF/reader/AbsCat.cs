@@ -19,41 +19,31 @@ namespace CSPGF.reader
             functions = _functions;
         }
 
-        public String getName()
+        public String GetName()
         {
             return name;
         }
 
-        public Hypo[] getHypos()
+        public Hypo[] GetHypos()
         {
             return hypos;
         }
 
-        public WeightedIdent[] getFunctions()
+        public WeightedIdent[] GetFunctions()
         {
             return functions;
         }
 
-        public String toString()
+        public String ToString()
         {
             String ss = "Name : " + name + " , Hypotheses : (";
-            foreach (Hypo h in hypos)
-            {
+            foreach (Hypo h in hypos) {
                 ss += " " + h.toString();
             }
-            //for (int i = 0 ; i < hypos.Length ; i++)
-            //{
-            //    ss += (" " + hypos[i].toString());
-            //}
             ss += ") , String Names : (";
-            foreach (WeightedIdent w in functions)
-            {
+            foreach (WeightedIdent w in functions) {
                 ss += " " + w.toString();
             }
-            /*for (int i = 0 ; i < functions.Length ; i++)
-            {
-                ss += (" " + functions[i].toString());
-            }*/
             ss += ")";
             return ss;
         }

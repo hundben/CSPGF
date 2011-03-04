@@ -16,17 +16,12 @@ namespace CSPGF.reader
             patts = _patts;
         }
 
-        public String toString()
+        public String ToString()
         {
             String ss = "Application pattern [ Name : " + name + " , Patterns : (";
-            foreach (Pattern p in patts)
-            {
+            foreach (Pattern p in patts) {
                 ss += " " + p.toString();
             }
-            /*for (int i = 0 ; i < patts.Length ; i++)
-            {
-                ss += (" " + patts[i].toString());
-            }*/
             ss += ")]";
             return ss;
         }

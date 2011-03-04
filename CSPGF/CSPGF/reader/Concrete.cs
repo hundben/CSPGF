@@ -31,50 +31,49 @@ namespace CSPGF.reader
             startCat = _defaultStartCat;
         }
 
-        public String getName()
+        public String GetName()
         {
             return name;
         }
 
-        public CncCat getConcreteCats(String absCat)
+        public CncCat GetConcreteCats(String absCat)
         {
             return cncCats[absCat];
         }
 
-        public Sequence[] getSequences()
+        public Sequence[] GetSequences()
         {
             return seqs;
         }
 
-        public CncFun[] getCncFuns()
+        public CncFun[] GetCncFuns()
         {
             return cncFuns;
         }
 
-        public ProductionSet[] getProductionSet()
+        public ProductionSet[] GetProductionSet()
         {
             return prods;
         }
 
-        public CncCat[] getCncCat()
+        public CncCat[] GetCncCat()
         {
             //TODO Fixa koden så den blir snyggare?
             CncCat[] array = new CncCat[cncCats.Count];
             int i = 0;
-            foreach (KeyValuePair<String, CncCat> c in cncCats)
-            {
+            foreach (KeyValuePair<String, CncCat> c in cncCats) {
                 array[i] = c.Value;
                 i++;
             }
             return array;
         }
 
-        public int getFId()
+        public int GetFId()
         {
             return fId;
         }
 
-        public CncCat getStartCat()
+        public CncCat GetStartCat()
         {
             CncCat cat = cncCats[startCat];
             if (cat == null)
@@ -83,19 +82,16 @@ namespace CSPGF.reader
                 return cat;
         }
 
-        public Production[] getProductions()
+        public Production[] GetProductions()
         {
             int size = 0;
-            foreach (ProductionSet ps in prods)
-            {
+            foreach (ProductionSet ps in prods) {
                 size += ps.length();
             }
             Production[] tprods = new Production[size];
             int i = 0;
-            foreach (ProductionSet ps in prods)
-            {
-                foreach (Production p in ps.productions())
-                {
+            foreach (ProductionSet ps in prods) {
+                foreach (Production p in ps.productions()) {
                     tprods[i] = p;
                     i++;
                 }
@@ -103,20 +99,17 @@ namespace CSPGF.reader
             return tprods;
         }
 
-        public String toString()
+        public String ToString()
         {
             return "concrete" + name;
         }
 
-        public Dictionary<int, HashSet<Production>> getSetOfProductions()
+        public Dictionary<int, HashSet<Production>> GetSetOfProductions()
         {
             Dictionary<int, HashSet<Production>> dict = new Dictionary<int, HashSet<Production>>();
-            foreach (ProductionSet p in prods)
-            {
+            foreach (ProductionSet p in prods) {
                 dict.Add(p.getId(), p.getSetOfProductions());
             }
-            //for (int i = 0 ; i < prods.Length ; i++)
-            //    hm.Add(prods[i].getId(), prods[i].getSetOfProductions());
             return dict;
         }
     }

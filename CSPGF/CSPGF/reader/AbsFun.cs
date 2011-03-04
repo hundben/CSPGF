@@ -22,30 +22,29 @@ namespace CSPGF.reader
             weight = _weight;
         }
 
-        public String toString()
+        public String ToString()
         {
             String sb = "<function name = " + str + " type = " + type + " arity = " + arit + " equations = [";
-            foreach (Eq e in eqs)
-            {
+            foreach (Eq e in eqs) {
                 sb += eqs + ", ";
             }
             sb += "] weight = " + weight + " > ";
             return sb;
         }
 
-        public String getName()
+        public String GetName()
         {
             return str;
         }
-        public Type getType()
+        public Type GetType()
         {
             return type;
         }
-        public int getArit()
+        public int GetArit()
         {
             return arit;
         }
-        public Eq[] getEqs()
+        public Eq[] GetEqs()
         {
             return eqs;
         }

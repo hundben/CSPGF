@@ -47,7 +47,7 @@ namespace CSPGF.linearizer
             rez += "] , Alternatives : [";
             for (int i = 0 ; i < alternatives.Length ; i++)
             {
-                rez += " " + alternatives[i].toString();
+                rez += " " + alternatives[i].ToString();
             }
             rez += "]";
             return rez;

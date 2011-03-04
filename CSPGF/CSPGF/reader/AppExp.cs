@@ -16,16 +16,16 @@ namespace CSPGF.reader
             rExp = _rExp;
         }
 
-        public String toString()
+        public String ToString()
         {
             return "Expression application [Left-hand side : ( " + lExp.toString() + "), Right-hand side : (" + rExp.toString() + ")]";
         }
 
-        public Expr getLeftExpr()
+        public Expr GetLeftExpr()
         {
             return lExp;
         }
-        public Expr getRightExpr()
+        public Expr GetRightExpr()
         {
             return rExp;
         }

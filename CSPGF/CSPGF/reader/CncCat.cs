@@ -30,22 +30,22 @@ namespace CSPGF.reader
             labels = _labels; // was also commented out.
         }
 
-        public String toString()
+        public String ToString()
         {
             return name + " [C" + firstFID + " ... C" + lastFID + "]";
         }
 
-        public String getName()
+        public String GetName()
         {
             return name;
         }
 
-        public int getFirstId()
+        public int GetFirstId()
         {
             return firstFID;
         }
 
-        public int getLastId()
+        public int GetLastId()
         {
             return lastFID;
         }

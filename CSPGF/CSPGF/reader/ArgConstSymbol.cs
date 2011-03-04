@@ -16,19 +16,18 @@ namespace CSPGF.reader
             cons = _cons;
         }
 
-        public int getArg()
+        public int GetArg()
         {
             return arg;
         }
-        public int getCons()
+        public int GetCons()
         {
             return cons;
         }
 
-        public String toString()
+        public String ToString()
         {
             return "Argument : " + arg + " Constituent : " + cons;
         }
     }
-
 }

@@ -16,27 +16,25 @@ namespace CSPGF.reader
             prefix = _alt2;
         }
 
-        public String toString()
+        public String ToString()
         {
             String sb = "";
-            foreach (String t in tokens)
-            {
+            foreach (String t in tokens) {
                 sb += t + " ";
             }
             sb += "/ ";
-            foreach (String t in prefix)
-            {
+            foreach (String t in prefix) {
                 sb += t + " ";
             }
             return sb;
         }
 
-        public String[] getAlt1()
+        public String[] GetAlt1()
         {
             return tokens;
         }
 
-        public String[] getAlt2()
+        public String[] GetAlt2()
         {
             return prefix;
         }
