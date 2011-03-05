@@ -18,15 +18,15 @@ namespace CSPGF.linearizer
             cncType = _cncType;
             cncTypes = _cncTypes;
         }
-        public CncFun getCncFun()
+        public CncFun GetCncFun()
         {
             return cncFun;
         }
-        public CncType getCncType()
+        public CncType GetCncType()
         {
             return cncType;
         }
-        public List<CncType> getCncTypes()
+        public List<CncType> GetCncTypes()
         {
             return cncTypes;
         }

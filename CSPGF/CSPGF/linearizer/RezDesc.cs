@@ -18,15 +18,15 @@ namespace CSPGF.linearizer
             bss = _bss;
         }
 
-        public int getFid()
+        public int GetFid()
         {
             return fid;
         }
-        public List<CncType> getCncTypes()
+        public List<CncType> GetCncTypes()
         {
             return cncTypes;
         }
-        public List<List<List<BracketedTokn>>> getBracketedTokens()
+        public List<List<List<BracketedTokn>>> GetBracketedTokens()
         {
             return bss;
         }

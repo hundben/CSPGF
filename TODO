@@ -1,3 +1,4 @@
-Fixa i Abstract.cs
 Exception istället för runtimeexception i PGFBuilder, fixa?
 Gå igenom alla TODO's
+Byts till BinaryReader istället för StreamReader? Så har vi readDouble och liknande metoder direkt.
+Just nu är det inputstream.BaseStream.ReadByte() istället för binarystream.ReadByte()

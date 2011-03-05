@@ -29,15 +29,15 @@ namespace CSPGF.linearizer
             this.alternatives = _alts;
         }
 
-        public String[] getStrs()
+        public String[] GetStrs()
         {
             return this.defaultTokens;
         }
-        public Alternative[] getAlts()
+        public Alternative[] GetAlts()
         {
             return alternatives;
         }
-        public String toString()
+        public String ToString()
         {
             String rez = "string names : [";
             for (int i = 0 ; i < defaultTokens.Length ; i++)

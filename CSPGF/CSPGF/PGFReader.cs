@@ -42,7 +42,7 @@ namespace CSPGF
             int[] ii = new int[4];
             for (int i = 0 ; i < 4 ; i++) {
                 //ii[i] = mDataInputStream.read();
-                // TODO: Reads one character at a time, so should be correct? Check this. Specification says int16 for version number
+                // TODO: Reads one character at a time, so should be correct? Check this. Specification says int16 for version number so maybe 2 bytes added together instead?
                 ii[i] = inputstream.Read();
             }
             if (DBG) {
@@ -122,6 +122,8 @@ namespace CSPGF
         private Dictionary<String, int> ReadIndex(String str)
         {
             //TODO: check if new implementation works
+            // Note: WTH did i think when i wrote this? :D
+            // Split on '+' and trim? Chech what the input really is.
             //String[] items = s.Split(" +");
             String[] items = str.Split(new Char[] { '+', ' ' }, StringSplitOptions.RemoveEmptyEntries);
             Dictionary<String, int> index = new Dictionary<String, int>();
@@ -246,7 +248,7 @@ namespace CSPGF
         private Hypo GetHypo()
         {
             //TODO: Check!
-            int btype = inputstream.Read();
+            int btype = inputstream.BaseStream.ReadByte();
             Boolean b = btype == 0 ? false : true;
             String varName = GetIdent();
             CSPGF.reader.Type t = GetType();
@@ -281,12 +283,12 @@ namespace CSPGF
         private Expr GetExpr()
         {
             //TODO: Check!
-            int sel = inputstream.Read();
+            int sel = inputstream.BaseStream.ReadByte();
             Expr expr = null;
             switch (sel) {
                 case 0: //lambda abstraction
                     //TODO: Check!
-                    int bt = inputstream.Read();
+                    int bt = inputstream.BaseStream.ReadByte();
                     Boolean btype = bt == 0 ? false : true;
                     String varName = GetIdent();
                     Expr e1 = GetExpr();
@@ -341,7 +343,7 @@ namespace CSPGF
         private Pattern GetPattern()
         {
             //TODO: Check!
-            int sel = inputstream.Read();
+            int sel = inputstream.BaseStream.ReadByte();
             Pattern patt = null;
             switch (sel) {
                 case 0: //application pattern
@@ -382,7 +384,7 @@ namespace CSPGF
         private RLiteral GetLiteral()
         {
             //TODO: CHECK!
-            int sel = inputstream.Read();
+            int sel = inputstream.BaseStream.ReadByte();
             RLiteral ss = null;
             switch (sel) {
                 case 0:
@@ -410,8 +412,6 @@ namespace CSPGF
         {
             if (DBG) {
                 System.Console.WriteLine("Concrete: " + name);
-            }
-            if (DBG) {
                 System.Console.WriteLine("Concrete: Reading flags");
             }
             Dictionary<String, RLiteral> flags = GetListFlag();
@@ -482,7 +482,7 @@ namespace CSPGF
         private Symbol GetSymbol()
         {
             //TODO: Check!
-            int sel = inputstream.Read();
+            int sel = inputstream.BaseStream.ReadByte();
             if (DBG) {
                 System.Console.WriteLine("Symbol: type=" + sel);
             }
@@ -653,7 +653,7 @@ namespace CSPGF
         private Production GetProduction(int leftCat, CncFun[] cncFuns)
         {
             //TODO: CHECK!
-            int sel = inputstream.Read();
+            int sel = inputstream.BaseStream.ReadByte();
             if (DBG) {
                 System.Console.WriteLine("Production: type=" + sel);
             }
@@ -749,7 +749,7 @@ namespace CSPGF
             // TODO : FIX! Skita i att köra en outputgrej och bara leka sträng? Kan ju bli segt så kanske någon typ av buffer?
             // ByteArrayOutputStream os = null; //new java.io.ByteArrayOutputStream();
             int npoz = GetInt();
-            //TODO: Check :D Kan funka
+            //TODO: Check :D Kan funka, antagligen inte ;D i värsta fall blir det sträng =+
             BinaryWriter os = new BinaryWriter(new MemoryStream(), Encoding.UTF8);
             int r;
             for (int i = 0 ; i < npoz ; i++) {
@@ -849,7 +849,7 @@ namespace CSPGF
         private int GetInt()
         {
             //TODO: Check!
-            long rez = (long)inputstream.Read();
+            long rez = (long)inputstream.BaseStream.ReadByte();
             if (rez <= 0x7f) {
                 return (int)rez;
             } else {
@@ -883,7 +883,9 @@ namespace CSPGF
         {
             //TODO: How to read just a double in c#? D:
             //return mDataInputStream.readDouble();
-            return 0.0;
+            //Might work? Maybe use the binaryreader everywhere?
+            BinaryReader tmp = new BinaryReader(inputstream.BaseStream);
+            return tmp.ReadDouble();
         }
     }
 }

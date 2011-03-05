@@ -18,19 +18,19 @@ namespace CSPGF.linearizer
             linTable = _linTable;
         }
 
-        public int getFId()
+        public int GetFId()
         {
             return fId;
         }
-        public CncType getCncType()
+        public CncType GetCncType()
         {
             return cncType;
         }
-        public List<List<BracketedTokn>> getLinTable()
+        public List<List<BracketedTokn>> GetLinTable()
         {
             return linTable;
         }
-        public String toString()
+        public String ToString()
         {
             String rez = "id : " + fId + " cncType : (" + cncType.toString() + ") bracketedToken :[" + linTable.ToString() + "]";
             return rez;

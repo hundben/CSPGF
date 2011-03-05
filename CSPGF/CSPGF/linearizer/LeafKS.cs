@@ -14,12 +14,12 @@ namespace CSPGF.linearizer
             tokens = _tokens;
         }
 
-        public String[] getStrs()
+        public String[] GetStrs()
         {
             return tokens;
         }
 
-        public String toString()
+        public String ToString()
         {
             String rez = "string names : [";
             for (int i = 0 ; i < tokens.Length ; i++)

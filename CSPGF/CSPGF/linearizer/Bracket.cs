@@ -20,25 +20,25 @@ namespace CSPGF.linearizer
             bss = _bss;
         }
 
-        public String getCId()
+        public String GetCId()
         {
             return cId;
         }
-        public int getLIndex()
+        public int GetLIndex()
         {
             return lIndex;
         }
-        public int getFId()
+        public int GetFId()
         {
             return fId;
         }
-        public List<BracketedTokn> getBracketedToks()
+        public List<BracketedTokn> GetBracketedToks()
         {
             return bss;
         }
-        public String toString()
+        public String ToString()
         {
-            String rez = "name : " + cId + ", linIndex : " + lIndex + ", fId : " + fId + ", bracketed tokens : " + bss.toString();
+            String rez = "name : " + cId + ", linIndex : " + lIndex + ", fId : " + fId + ", bracketed tokens : " + bss.ToString();
             //for(int i=0;i<bss.length;i++)
             //	 rez+=(" "+bss[i].toString());
             return rez;

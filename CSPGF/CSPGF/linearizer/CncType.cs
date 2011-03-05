@@ -15,15 +15,15 @@ namespace CSPGF.linearizer
             cId = _cId;
             fId = _fId;
         }
-        public String getCId()
+        public String GetCId()
         {
             return cId;
         }
-        public int getFId()
+        public int GetFId()
         {
             return fId;
         }
-        public String toString()
+        public String ToString()
         {
             return "name : " + cId + " , fId : " + fId;
         }
