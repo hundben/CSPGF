@@ -9,10 +9,10 @@ namespace CSPGF.parser
 {
     class ActiveSet
     {
-        Dictionary<int,Dictionary<int,Tuple<ActiveItem,int>>> store;
+        Dictionary<int,Dictionary<int,List<Tuple<ActiveItem,int>>>> store;
         public ActiveSet()
         {
-            store = new Dictionary<int,Dictionary<int, Tuple<ActiveItem, int>>>();
+            store = new Dictionary<int,Dictionary<int, List<Tuple<ActiveItem, int>>>>();
         }
         //använd logg :P
         public bool Add(int cat, int cons, ActiveItem item, int cons2)
@@ -20,11 +20,12 @@ namespace CSPGF.parser
             //Hämta värde ur hashmap
             if (store.ContainsKey(cat))
             {
-                Dictionary<int, Tuple<ActiveItem, int>> map = store[cat];
+                Dictionary<int, List<Tuple<ActiveItem, int>>> map = store[cat];
                 if (map.ContainsKey(cons))
                 {
-                    if (map[cons].Item1 == item && map[cons].Item2 == cons2)
-                        return false;
+                    foreach (Tuple<ActiveItem, int> value in map[cons])
+                        if (value.Item1 == item && value.Item2 == cons2)
+                            return false;
                 }
                 map.Add(cons, new Tuple<ActiveItem, int>(item,cons2));
                 return true;
