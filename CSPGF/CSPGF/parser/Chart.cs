@@ -7,7 +7,10 @@ namespace CSPGF.parser
 {
     class Chart
     {
+        public Chart(int nextCat)
+        {
 
+        }
     }
 }
 

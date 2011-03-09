@@ -3,10 +3,78 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+//Check this class, it seems retarded...
+
 namespace CSPGF.parser
 {
     class ActiveSet
     {
+        Dictionary<int,Dictionary<int,List<Tuple<ActiveItem,int>>>> store;
+        public ActiveSet()
+        {
+            store = new Dictionary<int,Dictionary<int, List<Tuple<ActiveItem, int>>>>();
+        }
+        //använd logg :P
+        public bool Add(int cat, int cons, ActiveItem item, int cons2)
+        {
+            //Hämta värde ur hashmap
+            if (store.ContainsKey(cat))
+            {
+                Dictionary<int, List<Tuple<ActiveItem, int>>> map = store[cat];
+                if (map.ContainsKey(cons))
+                {
+                    foreach (Tuple<ActiveItem, int> value in map[cons])
+                        if (value.Item1 == item && value.Item2 == cons2)
+                            return false;
+                }
+                map.Add(cons, new Tuple<ActiveItem, int>(item,cons2));
+                return true;
+            }
+            else
+            {
+                Tuple<ActiveItem,int> set = new Tuple<ActiveItem,int>(item,cons2);
+                Dictionary<int, Tuple<ActiveItem,int>> newMap = new Dictionary<int,Tuple<ActiveItem,int>>();
+                newMap.Add(cons,set);
+                store[cat] = newMap;    //TODO check if this is correct, might need to check if the key exists
+                return true;
+            }
+        }
+        public List<Tuple<ActiveItem, int, int>> Get(int cat)
+        {
+            if (store.ContainsKey(cat))
+            {
+                Dictionary<int, Tuple<ActiveItem, int>> amap = store[cat];
+                List<Tuple<ActiveItem, int, int>> tp = new List<Tuple<ActiveItem, int, int>>();
+                foreach (int key in amap.Keys)
+                {
+                    tp.Add(new Tuple<ActiveItem, int, int>(amap[key].Item1, amap[key].Item2, key));
+                }
+                return tp;
+            }
+            else
+            {
+                return new List<Tuple<ActiveItem, int, int>>();
+            }
+        }
+        public Tuple<ActiveItem, int> Get(int cat, int cons)
+        {
+            if (store.ContainsKey(cat))
+            {
+                Dictionary<int, Tuple<ActiveItem, int>> amap = store[cat];
+                if (amap.ContainsKey(cons))
+                {
+                    return amap[cons];
+                }
+                else
+                {
+                    return null;    //TODO check null :/
+                }
+            }
+            else
+            {
+                return null;    //TODO check this? I don't like null...
+            }
+        }
     }
 }
 
