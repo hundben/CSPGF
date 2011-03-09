@@ -7,6 +7,52 @@ namespace CSPGF.parser
 {
     class ParseTrie
     {
+        Stack<ActiveItem> value;
+        Dictionary<String, ParseTrie> child = new Dictionary<String, ParseTrie>();
+
+        ParseTrie(Stack<ActiveItem> _value)
+        {
+            value = _value;
+        }
+
+        public Unit Add(String[] key, Stack<ActiveItem> value)
+        {
+            return Add(key.ToList<String>(), value);
+        }
+
+
+        //------------------------------------- NOT DONE -------------------------------
+        public Unit Add(List<String> keys, Stack<ActiveItem> value)
+        {
+            foreach (String s in keys)
+            {
+                if (child.ContainsKey(s))
+                {
+                }
+                else
+                {
+                    ParseTrie newN = new ParseTrie(value);
+                    
+                }
+            }
+        }
+        //  def add(key:Seq[String], value:Stack[ActiveItem]):Unit =
+        //    this.add(key.toList, value)
+
+        //  def add(keys:List[String], value:Stack[ActiveItem]):Unit =
+        //    keys match {
+        //      case Nil => this.value = value
+        //      case x::l => this.child.get(x) match {
+        //        case None => {
+        //          val newN = new ParseTrie
+        //          newN.add(l,value)
+        //          this.child.update(x, newN)
+        //        }
+        //        case Some(n) => n.add(l,value)
+        //      }
+        //    }
+
+
     }
 }
 
