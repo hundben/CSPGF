@@ -2,11 +2,68 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CSPGF.reader;
 
 namespace CSPGF.parser
 {
     class ParseState
     {
+        private CncCat startCat;
+        private ParseTrie trie;
+        private Chart chart;
+        private Stack<ActiveItem> agenda;
+        private int position;
+        private Dictionary<int,ActiveSet> active;
+        public ParseState(Concrete grammar)
+        {
+            startCat = grammar.GetStartCat();
+            trie = new ParseTrie();
+            chart = new Chart(100); //TODO 100 is a bad value... (even in c#)
+            agenda = new Stack<ActiveItem>();
+            position = 0;
+            active = new Dictionary<int, ActiveSet>();
+
+            //initiate
+            foreach (Production k in grammar.GetProductions())
+            {
+                //TODO remove comment below
+                chart.AddProduction(k);
+            }
+            for (int id = startCat.firstFID; id <= startCat.lastFID + 1; id++)
+            {
+                //TODO remove comment below
+                Production prod = chart.GetProductions(id);
+                ActiveItem it = new ActiveItem(0, id, prod.function, prod.domain, 0, 0);
+                agenda.Push(it);
+            }
+            Compute();
+        }
+        private void Compute()
+        {
+            active[position] = new ActiveSet();
+            //redo this with iterator or something like that?
+            while (agenda.Count != 0)
+            {
+                ActiveItem e = agenda.Pop();
+                ProcessActiveItem(e);
+
+            }
+        }
+        private void ProcessActiveItem(ActiveItem item)
+        {
+            int j = item.begin;
+            int A = item.category;
+            CncFun f = item.function;
+            int[] B = item.domain;
+            int l = item.constituent;
+            int p = item.position;
+
+            if (item.nextSymbol is ToksSymbol)
+            {
+
+            }
+
+        }
     }
 }
 

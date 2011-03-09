@@ -25,11 +25,11 @@ namespace CSPGF.parser
             position = _position;
         }
         //Notice that Option and Same is used together in scala, so ignore :D
-        public Symbol nextSymbol()
+        public Symbol NextSymbol()
         {
-            if (position < function.getSequence(constituent).getLength())
+            if (position < function.GetSequence(constituent).GetLength())
             {
-                Symbol sym = function.getSequence(constituent).getSymbol(position);
+                Symbol sym = function.GetSequence(constituent).GetSymbol(position);
                 return sym;
             }
             return null;    //this might be dangerous
@@ -60,12 +60,12 @@ namespace CSPGF.parser
         public override string ToString()
         {
             String str = "[" + begin.ToString() + ";" + category.ToString() + 
-                "->" + this.function.getName() + "[" + domainToString() + "];" + 
+                "->" + this.function.name + "[" + DomainToString() + "];" + 
                 constituent.ToString() + ";" + position.ToString() + "]";
             return str;
         }
         //Helper method
-        public String domainToString()
+        public String DomainToString()
         {
             String tot = "";
             foreach(int d in domain)
