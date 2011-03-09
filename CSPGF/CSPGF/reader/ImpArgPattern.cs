@@ -16,7 +16,7 @@ namespace CSPGF.reader
 
         public String ToString()
         {
-            return "Implicit Argument Pattern : " + name.toString();
+            return "Implicit Argument Pattern : " + name.ToString();
         }
 
     }

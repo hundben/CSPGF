@@ -16,7 +16,7 @@ namespace CSPGF.reader
             printName = _printName;
         }
 
-        public String toString()
+        public String ToString()
         {
             return "Abstract Name : " + absName + " , Print Name : " + printName;
         }

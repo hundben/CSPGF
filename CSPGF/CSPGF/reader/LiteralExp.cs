@@ -7,21 +7,16 @@ namespace CSPGF.reader
 {
     public class LiteralExp : Expr
     {
-        private RLiteral literal;
+        public RLiteral literal { get; private set; }
 
         public LiteralExp(RLiteral _literal)
         {
             literal = _literal;
         }
 
-        public String toString()
+        public String ToString()
         {
-            return "Literal Expression : " + literal.toString();
-        }
-
-        public RLiteral getLiteral()
-        {
-            return literal;
+            return "Literal Expression : " + literal.ToString();
         }
     }
 }

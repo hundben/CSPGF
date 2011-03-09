@@ -7,39 +7,30 @@ namespace CSPGF.reader
 {
     public class Sequence
     {
-        Symbol[] symbs;
+        public Symbol[] symbs { get; private set; }
 
         public Sequence(Symbol[] _symbs)
         {
             symbs = _symbs;
         }
 
-        public Symbol getSymbol(int index)
+        public Symbol GetSymbol(int index)
         {
             return symbs[index];
         }
 
-        public int getLength()
+        public int GetLength()
         {
             return symbs.Length;
         }
 
-        public Symbol[] getSymbols()
-        {
-            return symbs;
-        }
-
-        public String toString()
+        public String ToString()
         {
             String ss = "Symbols : [";
             foreach (Symbol s in symbs)
             {
-                ss += " " + s.toString();
+                ss += " " + s.ToString();
             }
-            /*for (int i = 0 ; i < symbs.Length ; i++)
-            {
-                ss += (" " + symbs[i].toString());
-            }*/
             ss += "]";
             return ss;
         }

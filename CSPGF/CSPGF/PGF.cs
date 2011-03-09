@@ -21,7 +21,7 @@ namespace CSPGF
             abstr = _abstr;
             concretes = new Dictionary<String, Concrete>();
             foreach (Concrete cnc in _concretes)
-                concretes.Add(cnc.GetName(), cnc);
+                concretes.Add(cnc.name, cnc);
         }
 
         /* ******************************** API ******************************** */
@@ -71,7 +71,7 @@ namespace CSPGF
         {
             String ss = "PGF : \nmajor version : " + majorVersion + ", minor version : " + minorVersion + "\n" + "flags : (";
             foreach (String flagName in flags.Keys) {
-                ss += flagName + ": " + flags[flagName].toString() + "\n";
+                ss += flagName + ": " + flags[flagName].ToString() + "\n";
             }
             ss += (")\nabstract : (" + abstr.ToString() + ")\nconcretes : (");
             foreach (String name in concretes.Keys) {

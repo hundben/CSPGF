@@ -26,7 +26,7 @@ namespace CSPGF.reader
             if (cat == null)
                 return "Sentence";
             else
-                return ((StringLit)cat).getValue();
+                return ((StringLit)cat).value;
 
         }
 

@@ -62,12 +62,12 @@ namespace CSPGF.reader
         {
             int size = 0;
             foreach (ProductionSet ps in prods) {
-                size += ps.length();
+                size += ps.Length();
             }
             Production[] tprods = new Production[size];
             int i = 0;
             foreach (ProductionSet ps in prods) {
-                foreach (Production p in ps.productions()) {
+                foreach (Production p in ps.prods) {
                     tprods[i] = p;
                     i++;
                 }
@@ -84,7 +84,7 @@ namespace CSPGF.reader
         {
             Dictionary<int, HashSet<Production>> dict = new Dictionary<int, HashSet<Production>>();
             foreach (ProductionSet p in prods) {
-                dict.Add(p.getId(), p.getSetOfProductions());
+                dict.Add(p.id, p.GetSetOfProductions());
             }
             return dict;
         }

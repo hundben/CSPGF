@@ -7,28 +7,18 @@ namespace CSPGF.reader
 {
     public class TypedExp : Expr
     {
-        private Expr exp;
-        private Type t;
+        private Expr exp { get; private set; }
+        private Type type { get; private set; }
 
         public TypedExp(Expr _exp, Type _t)
         {
             exp = _exp;
-            t = _t;
+            type = _t;
         }
 
-        public String toString()
+        public String ToString()
         {
-            return "Typed Expression : [Expr : " + exp.ToString() + " , Type : " + t.toString() + "]";
+            return "Typed Expression : [Expr : " + exp.ToString() + " , Type : " + type.ToString() + "]";
         }
-
-        public Expr getExpr()
-        {
-            return exp;
-        }
-        public Type getType()
-        {
-            return t;
-        }
-
     }
 }

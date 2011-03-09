@@ -7,8 +7,8 @@ namespace CSPGF.reader
 {
     public abstract class Production
     {
-        protected int sel;
-        protected int fId;
+        public int sel { get; private set; }
+        public int fId { get; private set; }
 
         public Production(int _sel, int _fId)
         {
@@ -16,28 +16,9 @@ namespace CSPGF.reader
             fId = _fId;
         }
 
-        public int getCategory()
-        {
-            return fId;
-        }
-
-        public int range()
-        {
-            return fId;
-        }
-
-        public abstract String toString();
+        public abstract String ToString();
 
         // Domain is the domain of the concrete function
         public abstract int[] domain();
-
-        public int getSel()
-        {
-            return sel;
-        }
-        public int getFId()
-        {
-            return fId;
-        }
     }
 }

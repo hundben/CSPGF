@@ -7,21 +7,16 @@ namespace CSPGF.reader
 {
     public class LiteralPattern : Pattern
     {
-        private RLiteral value;
+        public RLiteral value { get; private set; }
 
         public LiteralPattern(RLiteral _value)
         {
             value = _value;
         }
 
-        public String toString()
+        public String ToString()
         {
-            return "Literal Pattern : " + value.toString();
-        }
-
-        public RLiteral getLit()
-        {
-            return value;
+            return "Literal Pattern : " + value.ToString();
         }
     }
 }

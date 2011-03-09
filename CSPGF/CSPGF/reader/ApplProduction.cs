@@ -20,11 +20,6 @@ namespace CSPGF.reader
         public String ToString()
         {
             // Was commented out in the java-code.
-            // String ss =  "Fuction : "+ function + " Arguments : [";
-            // for(int i=0; i<domain.length; i++)
-            //     ss+=(" " + domain[i]);
-            // ss+="]";
-            // return ss;
             String s = fId + " -> " + function.name + "[ ";
             foreach (int c in domain) {
                 s += c + " ";

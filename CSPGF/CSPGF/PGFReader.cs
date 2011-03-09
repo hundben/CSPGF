@@ -51,7 +51,7 @@ namespace CSPGF
             // Reading the global flags
             Dictionary<String, RLiteral> flags = GetListFlag();
             if (flags.ContainsKey("index")) {
-                index = ReadIndex(((StringLit)flags["index"]).getValue());
+                index = ReadIndex(((StringLit)flags["index"]).value);
                 if (DBG) {
                     foreach (KeyValuePair<String, int> kp in index) {
                         System.Console.WriteLine(kp.Key + ", " + kp.Value);
@@ -115,7 +115,7 @@ namespace CSPGF
             if (cat == null) {
                 return "Sentence";
             } else {
-                return ((StringLit)cat).getValue();
+                return ((StringLit)cat).value;
             }
         }
 

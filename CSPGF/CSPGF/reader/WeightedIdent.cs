@@ -7,8 +7,8 @@ namespace CSPGF.reader
 {
     public class WeightedIdent
     {
-        private Double weight;
-        private String ident;
+        public Double weight { get; private set; }
+        public String ident { get; private set; }
 
         public WeightedIdent(String _ident, Double _weight)
         {
@@ -16,19 +16,9 @@ namespace CSPGF.reader
             weight = _weight;
         }
 
-        public String getIdent()
-        {
-            return ident;
-        }
-
-        public double getWeight()
-        {
-            return weight;
-        }
-
         //CHECK LATER
         // Did not exist in the java-code
-        public String toString()
+        public String ToString()
         {
             return "Ident: " + ident + " Weight: " + weight;
         }

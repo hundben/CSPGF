@@ -7,8 +7,8 @@ namespace CSPGF.reader
 {
     public class ProductionSet
     {
-        private int id;
-        private Production[] prods;
+        public int id { get; private set; }
+        public Production[] prods { get; private set; }
 
         public ProductionSet(int _id, Production[] _prods)
         {
@@ -16,51 +16,28 @@ namespace CSPGF.reader
             prods = _prods;
         }
 
-        public int length()
+        public int Length()
         {
             return prods.Length;
         }
 
-        public Production[] productions()
-        {
-            return prods;
-        }
-
-        public String toString()
+        public String ToString()
         {
             String ss = "Id : " + id + " , Productions : [";
             foreach (Production p in prods)
             {
-                ss += " " + p.toString();
+                ss += " " + p.ToString();
             }
-            /*for (int i = 0 ; i < prods.Length ; i++)
-            {
-                ss += (" " + prods[i].toString());
-            }*/
             ss += "]";
             return ss;
         }
 
-        public int getId()
-        {
-            return id;
-        }
-        public Production[] getProductions()
-        {
-            return prods;
-        }
-
-        public HashSet<Production> getSetOfProductions()
+        public HashSet<Production> GetSetOfProductions()
         {
             HashSet<Production> hs = new HashSet<Production>();
-            foreach (Production p in prods)
-            {
+            foreach (Production p in prods) {
                 hs.Add(p);
             }
-            /*for (int i = 0 ; i < prods.Length ; i++)
-            {
-                hs.Add(prods[i]);
-            }*/
             return hs;
         }
     }

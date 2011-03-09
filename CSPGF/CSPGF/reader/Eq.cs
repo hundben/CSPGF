@@ -21,10 +21,8 @@ namespace CSPGF.reader
             String ss = "Patterns : (";
             foreach (Pattern p in patts)
             {
-                ss += " " + p.toString();
+                ss += " " + p.ToString();
             }
-            //for (int i = 0 ; i < patts.Length ; i++)
-            //    ss += (" " + patts[i].toString());
             ss += ") , Expression : " + expr.ToString();
             return ss;
         }

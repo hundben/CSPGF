@@ -23,10 +23,10 @@ namespace CSPGF.reader
 
         public Symbol GetSymbol(int seqIndex, int symbIndex)
         {
-            return sequences[seqIndex].getSymbol(symbIndex);
+            return sequences[seqIndex].symbs[symbIndex];
         }
 
-        public int GetSize()
+        public int Length()
         {
             return sequences.Length;
         }

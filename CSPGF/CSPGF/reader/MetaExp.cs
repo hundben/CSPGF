@@ -7,21 +7,16 @@ namespace CSPGF.reader
 {
     public class MetaExp : Expr
     {
-        private int id;
+        public int meta { get; private set; }
 
         public MetaExp(int _id)
         {
-            id = _id;
+            meta = _id;
         }
 
-        public String toString()
+        public String ToString()
         {
-            return "Meta Expression : [Id : " + id + "]";
-        }
-
-        public int getMeta()
-        {
-            return id;
+            return "Meta Expression : [Id : " + meta + "]";
         }
     }
 }

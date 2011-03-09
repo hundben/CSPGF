@@ -22,7 +22,7 @@ namespace CSPGF {
         public static PGF FromFile(String filename) {
 	        if (DBG) System.Console.WriteLine("Reading pgf from file : " + filename);
                 // TODO: Check!
-                StreamReader stream = new StreamReader(new FileStream(filename, FileMode.Open, FileAccess.Read));
+                BinaryReader stream = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read));
 	        try {
 	            return new PGFReader(stream).ReadPGF();
 	        } catch (UnknownLanguageException e) {
@@ -41,7 +41,7 @@ namespace CSPGF {
          */
         public static PGF FromFile(String filename, String[] languages) {
 	        if (DBG) { System.Console.WriteLine("Reading pgf from file : " + filename); }
-            StreamReader stream = new StreamReader(new FileStream(filename, FileMode.Open, FileAccess.Read));
+            BinaryReader stream = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read));
             return new PGFReader(stream, languages).ReadPGF();
         }
 
@@ -51,7 +51,7 @@ namespace CSPGF {
          * @param inStream and InputStream to read the pgf binary from.
          */
         //TODO: Check inputstream -> streamreader
-        public static PGF FromInputStream(StreamReader stream) {
+        public static PGF FromInputStream(BinaryReader stream) {
 	        try {
 	            return new PGFReader(stream).ReadPGF();
 	        } catch (UnknownLanguageException e) {
@@ -67,7 +67,7 @@ namespace CSPGF {
          * @param inStream and InputStream to read the pgf binary from.
          */
         //TODO: Check inputstream -> streamreader
-        public static PGF FromInputStream(StreamReader stream, String[] languages) {
+        public static PGF FromInputStream(BinaryReader stream, String[] languages) {
             return new PGFReader(stream, languages).ReadPGF();
         }
 

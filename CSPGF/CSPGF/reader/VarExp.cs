@@ -7,21 +7,16 @@ namespace CSPGF.reader
 {
     public class VarExp : Expr
     {
-        private int ind;
+        public int ind { get; private set; }
 
         public VarExp(int _ind)
         {
             ind = _ind;
         }
 
-        public String toString()
+        public String ToString()
         {
             return "Variable Expression : [Index : " + ind + "]";
-        }
-
-        public int getVarInd()
-        {
-            return ind;
         }
     }
 }

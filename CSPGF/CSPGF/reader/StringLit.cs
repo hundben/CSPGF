@@ -7,21 +7,16 @@ namespace CSPGF.reader
 {
     public class StringLit : RLiteral
     {
-        String value;
+        public String value { get; private set; }
 
         public StringLit(String _value)
         {
             value = _value;
         }
 
-        public String toString()
+        public String ToString()
         {
             return "String literal : " + value;
-        }
-
-        public String getValue()
-        {
-            return value;
         }
     }
 }

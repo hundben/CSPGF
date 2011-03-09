@@ -23,25 +23,25 @@ namespace CSPGF
             pgf = _pgf;
             dirRules = new Dictionary<String, HashSet<String>>();
             indirRules = new Dictionary<String, HashSet<String>>();
-            AbsCat[] absCats = pgf.GetAbstract().GetAbsCats();
-            AbsFun[] absFuns = pgf.GetAbstract().GetAbsFuns();
+            AbsCat[] absCats = pgf.GetAbstract().absCats;
+            AbsFun[] absFuns = pgf.GetAbstract().absFuns;
             HashSet<String> dirFuns = new HashSet<String>();
             HashSet<String> indirFuns = new HashSet<String>();
             for (int i = 0 ; i < absCats.Length ; i++) {
                 dirFuns = new HashSet<String>();
                 indirFuns = new HashSet<String>();
-                WeightedIdent[] functions = absCats[i].GetFunctions();
+                WeightedIdent[] functions = absCats[i].functions;
                 for (int j = 0 ; j < functions.Length ; j++)
                     for (int k = 0 ; k < absFuns.Length ; k++)
-                        if (functions[j].getIdent().Equals(absFuns[k].GetName())) {
-                            if (absFuns[k].GetType().getHypos().Length == 0)
-                                dirFuns.Add(functions[j].getIdent());
+                        if (functions[j].ident.Equals(absFuns[k].name)) {
+                            if (absFuns[k].type.hypos.Length == 0)
+                                dirFuns.Add(functions[j].ident);
                             else
-                                indirFuns.Add(functions[j].getIdent());
+                                indirFuns.Add(functions[j].ident);
                             break;
                         }
-                dirRules.Add(absCats[i].GetName(), dirFuns);
-                indirRules.Add(absCats[i].GetName(), indirFuns);
+                dirRules.Add(absCats[i].name, dirFuns);
+                indirRules.Add(absCats[i].name, indirFuns);
             }
         }
 
@@ -80,17 +80,17 @@ namespace CSPGF
 
             int rand = random.Next(vs.Count());
             String funcName = vs.ElementAt(rand);
-            AbsFun[] absFuns = pgf.GetAbstract().GetAbsFuns();
+            AbsFun[] absFuns = pgf.GetAbstract().absFuns;
             foreach (AbsFun a in absFuns)
             //for (int i = 0 ; i < absFuns.Length ; i++)
             {
-                if (a.GetName().Equals(funcName)) {
-                    Hypo[] hypos = a.GetType().getHypos();
+                if (a.name.Equals(funcName)) {
+                    Hypo[] hypos = a.type.hypos;
                     String[] tempCats = new String[hypos.Length];
                     Tree[] exps = new Tree[hypos.Length];
                     // TODO: Går detta att göra om?
                     for (int k = 0 ; k < hypos.Length ; k++) {
-                        tempCats[k] = hypos[k].getType().getName();
+                        tempCats[k] = hypos[k].type.name;
                         exps[k] = Gen(tempCats[k]);
                         if (exps[k] == null) {
                             return null;

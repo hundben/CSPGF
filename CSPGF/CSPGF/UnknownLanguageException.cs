@@ -7,18 +7,13 @@ namespace CSPGF
 {
     class UnknownLanguageException : Exception
     {
-        private String language;
+        public String language { get; private set; }
         public UnknownLanguageException(String language)
         {
             this.language = language;
         }
 
-        public String getLanguage()
-        {
-            return this.language;
-        }
-
-        public String toString()
+        public String ToString()
         {
             return "Unknown language: " + language;
         }

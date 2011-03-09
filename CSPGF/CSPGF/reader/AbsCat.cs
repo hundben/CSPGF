@@ -23,11 +23,11 @@ namespace CSPGF.reader
         {
             String ss = "Name : " + name + " , Hypotheses : (";
             foreach (Hypo h in hypos) {
-                ss += " " + h.toString();
+                ss += " " + h.ToString();
             }
             ss += ") , String Names : (";
             foreach (WeightedIdent w in functions) {
-                ss += " " + w.toString();
+                ss += " " + w.ToString();
             }
             ss += ")";
             return ss;

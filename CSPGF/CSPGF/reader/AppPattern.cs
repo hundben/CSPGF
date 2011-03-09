@@ -21,7 +21,7 @@ namespace CSPGF.reader
         {
             String ss = "Application pattern [ Name : " + name + " , Patterns : (";
             foreach (Pattern p in patts) {
-                ss += " " + p.toString();
+                ss += " " + p.ToString();
             }
             ss += ")]";
             return ss;
