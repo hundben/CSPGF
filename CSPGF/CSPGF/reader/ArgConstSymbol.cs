@@ -7,24 +7,15 @@ namespace CSPGF.reader
 {
     public class ArgConstSymbol : Symbol
     {
-        private int arg;
-        private int cons;
+        public int arg { get; private set; }
+        private int cons { get; private set; }
 
         public ArgConstSymbol(int _arg, int _cons)
         {
             arg = _arg;
             cons = _cons;
         }
-
-        public int GetArg()
-        {
-            return arg;
-        }
-        public int GetCons()
-        {
-            return cons;
-        }
-
+        
         public String ToString()
         {
             return "Argument : " + arg + " Constituent : " + cons;

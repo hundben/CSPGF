@@ -7,15 +7,15 @@ namespace CSPGF.reader
 {
     public class AbsFun
     {
-        private String str;
-        private Type type;
-        private int arit;
-        private Eq[] eqs;
+        public String name { get; private set; }
+        public Type type { get; private set; }
+        public int arit { get; private set; }
+        public Eq[] eqs { get; private set; }
         private double weight;
 
         public AbsFun(String _str, Type _type, int _arit, Eq[] _eqs, double _weight)
         {
-            str = _str;
+            name = _str;
             type = _type;
             arit = _arit;
             eqs = _eqs;
@@ -24,29 +24,12 @@ namespace CSPGF.reader
 
         public String ToString()
         {
-            String sb = "<function name = " + str + " type = " + type + " arity = " + arit + " equations = [";
+            String sb = "<function name = " + name + " type = " + type + " arity = " + arit + " equations = [";
             foreach (Eq e in eqs) {
                 sb += eqs + ", ";
             }
             sb += "] weight = " + weight + " > ";
             return sb;
-        }
-
-        public String GetName()
-        {
-            return str;
-        }
-        public Type GetType()
-        {
-            return type;
-        }
-        public int GetArit()
-        {
-            return arit;
-        }
-        public Eq[] GetEqs()
-        {
-            return eqs;
         }
     }
 }

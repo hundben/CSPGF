@@ -7,7 +7,7 @@ namespace CSPGF.reader
 {
     public class AbsNameExp : Expr
     {
-        String name;
+        public String name { get; private set; }
 
         public AbsNameExp(String _name)
         {
@@ -18,12 +18,5 @@ namespace CSPGF.reader
         {
             return "Abstract Name Expression : [Name : " + name + "]";
         }
-
-        public String GetName()
-        {
-            return name;
-        }
-
-
     }
 }

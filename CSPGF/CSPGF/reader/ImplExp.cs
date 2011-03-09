@@ -7,21 +7,16 @@ namespace CSPGF.reader
 {
     public class ImplExp : Expr
     {
-        private Expr arg;
+        public Expr exp { get; private set; }
 
         public ImplExp(Expr _arg)
         {
-            arg = _arg;
+            exp = _arg;
         }
 
-        public String toString()
+        public String ToString()
         {
-            return "Implicit Arguments Expression : [ Argument : " + arg.toString() + "]";
-        }
-
-        public Expr getExp()
-        {
-            return arg;
+            return "Implicit Arguments Expression : [ Argument : " + exp.ToString() + "]";
         }
     }
 

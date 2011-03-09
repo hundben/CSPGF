@@ -7,19 +7,14 @@ namespace CSPGF.reader
 {
     public class IntLit : RLiteral
     {
-        private int value;
+        public int value { get; private set; }
 
         public IntLit(int _value)
         {
             value = _value;
         }
 
-        public int getValue()
-        {
-            return value;
-        }
-
-        public String toString()
+        public String ToString()
         {
             return "Integer Literal : " + value;
         }

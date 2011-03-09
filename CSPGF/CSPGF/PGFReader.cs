@@ -12,27 +12,27 @@ namespace CSPGF
 
         private static Boolean DBG = false;
 
-
-        private StreamReader inputstream; // Maybe filestream or streamreader instead?
+        
+        private BinaryReader inputstream; // Maybe filestream or streamreader instead?
         //private DataInputStream mDataInputStream;
         // Was Set<String> before, but does not exist in c#
         private List<String> languages;
 
         // Visual Studio fails to check the rest of the code when the two constructors are uncommented.
-        public PGFReader(StreamReader _inputstream)
+        public PGFReader(BinaryReader _inputstream)
         {
             inputstream = _inputstream;
             //this.mDataInputStream = new DataInputStream(is);
         }
 
-        public PGFReader(StreamReader _inputstream, String[] _languages)
+        public PGFReader(BinaryReader _inputstream, String[] _languages)
         {
             inputstream = _inputstream;
             //this.mDataInputStream = new DataInputStream(is);
             //TODO: Convert from String[] to List<String>
             //languages = _languages;
             languages = _languages.ToList<String>();
-
+            
         }
 
         public PGF ReadPGF()
@@ -42,8 +42,8 @@ namespace CSPGF
             int[] ii = new int[4];
             for (int i = 0 ; i < 4 ; i++) {
                 //ii[i] = mDataInputStream.read();
-                // TODO: Reads one character at a time, so should be correct? Check this. Specification says int16 for version number so maybe 2 bytes added together instead?
-                ii[i] = inputstream.Read();
+                // TODO: Specification says int16 for version number so maybe 2 bytes added together instead?
+                ii[i] = inputstream.ReadInt16();
             }
             if (DBG) {
                 System.Console.WriteLine("PGF version : " + ii[0] + "." + ii[1] + "." + ii[2] + "." + ii[3]);
@@ -125,7 +125,7 @@ namespace CSPGF
             // Note: WTH did i think when i wrote this? :D
             // Split on '+' and trim? Chech what the input really is.
             //String[] items = s.Split(" +");
-            String[] items = str.Split(new Char[] { '+', ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            String[] items = str.Split('+');
             Dictionary<String, int> index = new Dictionary<String, int>();
             foreach (String item in items) {
                 String[] i = item.Split(':');
@@ -181,7 +181,7 @@ namespace CSPGF
             CSPGF.reader.Type t = GetType();
             int i = GetInt();
             //TODO: Check!
-            int has_equations = inputstream.Read();
+            int has_equations = inputstream.ReadByte();
             Eq[] equations;
             if (has_equations == 0) {
                 equations = new Eq[0];
@@ -248,7 +248,7 @@ namespace CSPGF
         private Hypo GetHypo()
         {
             //TODO: Check!
-            int btype = inputstream.BaseStream.ReadByte();
+            int btype = inputstream.ReadByte();
             Boolean b = btype == 0 ? false : true;
             String varName = GetIdent();
             CSPGF.reader.Type t = GetType();
@@ -276,19 +276,15 @@ namespace CSPGF
             return exprs;
         }
 
-        // Everything below here is not fixed yet.
-        //-------------------------------------------------------------------------------------------------------------------------------------------------------------------
-        //
-
         private Expr GetExpr()
         {
             //TODO: Check!
-            int sel = inputstream.BaseStream.ReadByte();
+            int sel = inputstream.ReadByte();
             Expr expr = null;
             switch (sel) {
                 case 0: //lambda abstraction
                     //TODO: Check!
-                    int bt = inputstream.BaseStream.ReadByte();
+                    int bt = inputstream.ReadByte();
                     Boolean btype = bt == 0 ? false : true;
                     String varName = GetIdent();
                     Expr e1 = GetExpr();
@@ -343,7 +339,7 @@ namespace CSPGF
         private Pattern GetPattern()
         {
             //TODO: Check!
-            int sel = inputstream.BaseStream.ReadByte();
+            int sel = inputstream.ReadByte();
             Pattern patt = null;
             switch (sel) {
                 case 0: //application pattern
@@ -384,7 +380,7 @@ namespace CSPGF
         private RLiteral GetLiteral()
         {
             //TODO: CHECK!
-            int sel = inputstream.BaseStream.ReadByte();
+            int sel = inputstream.ReadByte();
             RLiteral ss = null;
             switch (sel) {
                 case 0:
@@ -482,7 +478,7 @@ namespace CSPGF
         private Symbol GetSymbol()
         {
             //TODO: Check!
-            int sel = inputstream.BaseStream.ReadByte();
+            int sel = inputstream.ReadByte();
             if (DBG) {
                 System.Console.WriteLine("Symbol: type=" + sel);
             }
@@ -653,7 +649,7 @@ namespace CSPGF
         private Production GetProduction(int leftCat, CncFun[] cncFuns)
         {
             //TODO: CHECK!
-            int sel = inputstream.BaseStream.ReadByte();
+            int sel = inputstream.ReadByte();
             if (DBG) {
                 System.Console.WriteLine("Production: type=" + sel);
             }
@@ -753,30 +749,31 @@ namespace CSPGF
             BinaryWriter os = new BinaryWriter(new MemoryStream(), Encoding.UTF8);
             int r;
             for (int i = 0 ; i < npoz ; i++) {
-                r = inputstream.BaseStream.ReadByte();
+                r = inputstream.ReadByte();
                 os.Write((byte)r);
                 if (r <= 0x7f) {
                 }                              //lg = 0;
                 else if ((r >= 0xc0) && (r <= 0xdf))
-                    os.Write((byte)inputstream.BaseStream.ReadByte());   //lg = 1;
+                    os.Write((byte)inputstream.ReadByte());   //lg = 1;
                 else if ((r >= 0xe0) && (r <= 0xef)) {
-                    os.Write((byte)inputstream.BaseStream.ReadByte());   //lg = 2;
-                    os.Write((byte)inputstream.BaseStream.ReadByte());
+                    os.Write((byte)inputstream.ReadByte());   //lg = 2;
+                    os.Write((byte)inputstream.ReadByte());
                 } else if ((r >= 0xf0) && (r <= 0xf4)) {
-                    os.Write((byte)inputstream.BaseStream.ReadByte());   //lg = 3;
-                    os.Write((byte)inputstream.BaseStream.ReadByte());
-                    os.Write((byte)inputstream.BaseStream.ReadByte());
+                    os.Write((byte)inputstream.ReadByte());   //lg = 3;
+                    os.Write((byte)inputstream.ReadByte());
+                    os.Write((byte)inputstream.ReadByte());
                 } else if ((r >= 0xf8) && (r <= 0xfb)) {
-                    os.Write((byte)inputstream.BaseStream.ReadByte());   //lg = 4;
-                    os.Write((byte)inputstream.BaseStream.ReadByte());
-                    os.Write((byte)inputstream.BaseStream.ReadByte());
-                    os.Write((byte)inputstream.BaseStream.ReadByte());
-                } else if ((r >= 0xfc) && (r <= 0xfd)) {
-                    os.Write((byte)inputstream.BaseStream.ReadByte());   //lg =5;
-                    os.Write((byte)inputstream.BaseStream.ReadByte());
-                    os.Write((byte)inputstream.BaseStream.ReadByte());
-                    os.Write((byte)inputstream.BaseStream.ReadByte());
-                    os.Write((byte)inputstream.BaseStream.ReadByte());
+                    os.Write((byte)inputstream.ReadByte());   //lg = 4;
+                    os.Write((byte)inputstream.ReadByte());
+                    os.Write((byte)inputstream.ReadByte());
+                    os.Write((byte)inputstream.ReadByte());
+                    //} else if ((r >= 0xfc) && (r <= 0xfd)) { TODO: Check!
+                } else if ((r == 0xfc) || (r == 0xfd)) {
+                    os.Write((byte)inputstream.ReadByte());   //lg =5;
+                    os.Write((byte)inputstream.ReadByte());
+                    os.Write((byte)inputstream.ReadByte());
+                    os.Write((byte)inputstream.ReadByte());
+                    os.Write((byte)inputstream.ReadByte());
                     //IOException -> Exception
                 } else
                     throw new Exception("Undefined for now !!! ");
@@ -848,10 +845,11 @@ namespace CSPGF
         // to gain space.
         private int GetInt()
         {
-            //TODO: Check!
-            long rez = (long)inputstream.BaseStream.ReadByte();
+            //TODO: Check! WTF? Int räcker gott och väl!
+            // long -> int
+            int rez = inputstream.ReadByte();
             if (rez <= 0x7f) {
-                return (int)rez;
+                return rez;
             } else {
                 int ii = GetInt();
                 rez = (ii << 7) | (rez & 0x7f);
@@ -881,11 +879,7 @@ namespace CSPGF
         // Reading doubles
         private double GetDouble()
         {
-            //TODO: How to read just a double in c#? D:
-            //return mDataInputStream.readDouble();
-            //Might work? Maybe use the binaryreader everywhere?
-            BinaryReader tmp = new BinaryReader(inputstream.BaseStream);
-            return tmp.ReadDouble();
+            return inputstream.ReadDouble();
         }
     }
 }

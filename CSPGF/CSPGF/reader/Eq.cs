@@ -16,7 +16,7 @@ namespace CSPGF.reader
             expr = _expr;
         }
 
-        public String toString()
+        public String ToString()
         {
             String ss = "Patterns : (";
             foreach (Pattern p in patts)
@@ -25,7 +25,7 @@ namespace CSPGF.reader
             }
             //for (int i = 0 ; i < patts.Length ; i++)
             //    ss += (" " + patts[i].toString());
-            ss += ") , Expression : " + expr.toString();
+            ss += ") , Expression : " + expr.ToString();
             return ss;
         }
     }

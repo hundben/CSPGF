@@ -14,7 +14,7 @@ namespace CSPGF.reader
             name = _name;
         }
 
-        public String toString()
+        public String ToString()
         {
             return "Implicit Argument Pattern : " + name.toString();
         }

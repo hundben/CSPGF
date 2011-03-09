@@ -7,10 +7,10 @@ namespace CSPGF.reader
 {
     public class Abstract
     {
-        private String name;
+        public String name { get; private set; } 
         private Dictionary<String, RLiteral> flags;
-        private AbsFun[] absFuns;
-        private AbsCat[] absCats;
+        public AbsFun[] absFuns { get; private set; }
+        public AbsCat[] absCats { get; private set; }
 
         public Abstract(String _name, Dictionary<String, RLiteral> _flags, AbsFun[] _absFuns, AbsCat[] _absCats)
         {
@@ -18,10 +18,6 @@ namespace CSPGF.reader
             flags = _flags;
             absFuns = _absFuns;
             absCats = _absCats;
-        }
-        public String GetName()
-        {
-            return name;
         }
 
         public String StartCat()
@@ -32,15 +28,6 @@ namespace CSPGF.reader
             else
                 return ((StringLit)cat).getValue();
 
-        }
-
-        public AbsFun[] GetAbsFuns()
-        {
-            return absFuns;
-        }
-        public AbsCat[] GetAbsCats()
-        {
-            return absCats;
         }
 
         public String ToString()

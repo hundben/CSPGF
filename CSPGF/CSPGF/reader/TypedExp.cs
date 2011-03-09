@@ -18,7 +18,7 @@ namespace CSPGF.reader
 
         public String toString()
         {
-            return "Typed Expression : [Expr : " + exp.toString() + " , Type : " + t.toString() + "]";
+            return "Typed Expression : [Expr : " + exp.ToString() + " , Type : " + t.toString() + "]";
         }
 
         public Expr getExpr()

@@ -7,6 +7,6 @@ namespace CSPGF.reader
 {
     public abstract class Expr
     {
-        public abstract String toString();
+        public abstract String ToString();
     }
 }

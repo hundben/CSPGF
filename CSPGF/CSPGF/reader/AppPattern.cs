@@ -7,6 +7,7 @@ namespace CSPGF.reader
 {
     public class AppPattern : Pattern
     {
+        // Should be able to get?
         String name;
         Pattern[] patts;
 
@@ -25,6 +26,5 @@ namespace CSPGF.reader
             ss += ")]";
             return ss;
         }
-
     }
 }

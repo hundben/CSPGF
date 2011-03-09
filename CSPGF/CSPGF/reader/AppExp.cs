@@ -7,8 +7,8 @@ namespace CSPGF.reader
 {
     public class AppExp : Expr
     {
-        private Expr lExp;
-        private Expr rExp;
+        public Expr lExp { get; private set; }
+        public Expr rExp { get; private set; }
 
         public AppExp(Expr _lExp, Expr _rExp)
         {
@@ -18,17 +18,7 @@ namespace CSPGF.reader
 
         public String ToString()
         {
-            return "Expression application [Left-hand side : ( " + lExp.toString() + "), Right-hand side : (" + rExp.toString() + ")]";
-        }
-
-        public Expr GetLeftExpr()
-        {
-            return lExp;
-        }
-        public Expr GetRightExpr()
-        {
-            return rExp;
+            return "Expression application [Left-hand side : ( " + lExp.ToString() + "), Right-hand side : (" + rExp.ToString() + ")]";
         }
     }
-
 }

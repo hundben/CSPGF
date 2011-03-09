@@ -8,30 +8,15 @@ namespace CSPGF.reader
     public class AbsCat
     {
 
-        private String name;
-        private Hypo[] hypos;
-        private WeightedIdent[] functions;
+        public String name { get; private set; }
+        public Hypo[] hypos { get; private set; }
+        public WeightedIdent[] functions {get; private set; }
 
         public AbsCat(String _name, Hypo[] _hypos, WeightedIdent[] _functions)
         {
             name = _name;
             hypos = _hypos;
             functions = _functions;
-        }
-
-        public String GetName()
-        {
-            return name;
-        }
-
-        public Hypo[] GetHypos()
-        {
-            return hypos;
-        }
-
-        public WeightedIdent[] GetFunctions()
-        {
-            return functions;
         }
 
         public String ToString()

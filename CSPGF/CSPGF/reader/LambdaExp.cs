@@ -7,9 +7,9 @@ namespace CSPGF.reader
 {
     public class LambdaExp : Expr
     {
-        private Boolean bType;
-        private String vName;
-        private Expr body;
+        public Boolean bType { get; private set; }
+        public String vName { get; private set; }
+        public Expr body { get; private set; }
 
         public LambdaExp(Boolean _bType, String _vName, Expr _body)
         {
@@ -18,24 +18,9 @@ namespace CSPGF.reader
             body = _body;
         }
 
-        public String toString()
+        public String ToString()
         {
-            return "Lambda Expression : [Bound Type : " + bType + " , Name : " + vName + " , Body : " + body.toString() + "]";
+            return "Lambda Expression : [Bound Type : " + bType + " , Name : " + vName + " , Body : " + body.ToString() + "]";
         }
-
-        public Boolean getType()
-        {
-            return bType;
-        }
-        public String getVarName()
-        {
-            return vName;
-        }
-        public Expr getBody()
-        {
-            return body;
-        }
-
-
     }
 }

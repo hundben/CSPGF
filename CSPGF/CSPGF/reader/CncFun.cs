@@ -7,23 +7,13 @@ namespace CSPGF.reader
 {
     public class CncFun
     {
-        private String name;
-        private Sequence[] sequences;
+        public String name { get; private set; }
+        public Sequence[] sequences { get; private set; }
 
         public CncFun(String _name, Sequence[] _sequences)
         {
             name = _name;
             sequences = _sequences;
-        }
-
-        public String GetName()
-        {
-            return name;
-        }
-
-        public Sequence[] GetSequences()
-        {
-            return sequences;
         }
 
         public Sequence GetSequence(int index)

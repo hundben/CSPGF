@@ -8,14 +8,14 @@ namespace CSPGF.reader
 {
     public class Concrete
     {
-
-        private String name;
+        //TODO: Kolla igenom så inget failat!
+        public String name { get; private set; }
         private Dictionary<String, RLiteral> flags;
-        private Sequence[] seqs;
-        private CncFun[] cncFuns;
-        private ProductionSet[] prods;
-        private Dictionary<String, CncCat> cncCats;
-        private int fId;
+        public Sequence[] seqs { get; private set; }
+        public CncFun[] cncFuns { get; private set; }
+        public ProductionSet[] prods { get; private set; }
+        public Dictionary<String, CncCat> cncCats { get; private set; }
+        private int fId { get; private set; }
         private String startCat;
 
         public Concrete(String _name, Dictionary<String, RLiteral> _flags, Sequence[] _seqs, CncFun[] _cncFuns,
@@ -31,30 +31,11 @@ namespace CSPGF.reader
             startCat = _defaultStartCat;
         }
 
-        public String GetName()
-        {
-            return name;
-        }
-
-        public CncCat GetConcreteCats(String absCat)
-        {
-            return cncCats[absCat];
-        }
-
-        public Sequence[] GetSequences()
-        {
-            return seqs;
-        }
-
-        public CncFun[] GetCncFuns()
-        {
-            return cncFuns;
-        }
-
-        public ProductionSet[] GetProductionSet()
-        {
-            return prods;
-        }
+        //TODO: Check where its used
+        //public CncCat GetConcreteCats(String absCat)
+        //{
+        //    return cncCats[absCat];
+        //}
 
         public CncCat[] GetCncCat()
         {
@@ -66,11 +47,6 @@ namespace CSPGF.reader
                 i++;
             }
             return array;
-        }
-
-        public int GetFId()
-        {
-            return fId;
         }
 
         public CncCat GetStartCat()

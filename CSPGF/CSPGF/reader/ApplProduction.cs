@@ -7,29 +7,14 @@ namespace CSPGF.reader
 {
     public class ApplProduction : Production
     {
-        private CncFun function;
-        private int[] domain;
+        public CncFun function { get; private set; }
+        public int[] domain { get; private set; }
 
         public ApplProduction(int _fId, CncFun _function, int[] _domain)
             : base(0, _fId)
         {
             function = _function;
             domain = _domain;
-        }
-
-        public int[] GetDomain()
-        {
-            return domain;
-        }
-
-        public CncFun GetFunction()
-        {
-            return function;
-        }
-
-        public int[] GetArgs()
-        {
-            return domain;
         }
 
         public String ToString()
@@ -40,7 +25,7 @@ namespace CSPGF.reader
             //     ss+=(" " + domain[i]);
             // ss+="]";
             // return ss;
-            String s = fId + " -> " + function.GetName() + "[ ";
+            String s = fId + " -> " + function.name + "[ ";
             foreach (int c in domain) {
                 s += c + " ";
             }
@@ -54,14 +39,14 @@ namespace CSPGF.reader
             if (o is ApplProduction) {
                 ApplProduction newo = (ApplProduction)o;
 
-                if (!newo.GetFunction().Equals(function)) {
+                if (!newo.function.Equals(function)) {
                     return false;
                 }
-                if (domain.Length != newo.GetArgs().Length) {
+                if (domain.Length != newo.domain.Length) {
                     return false;
                 }
                 for (int i = 0 ; i < domain.Length ; i++) {
-                    if (domain[i] != newo.GetArgs()[i]) {
+                    if (domain[i] != newo.domain[i]) {
                         return false;
                     }
                 }

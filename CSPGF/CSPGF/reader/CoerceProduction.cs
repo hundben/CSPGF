@@ -7,7 +7,7 @@ namespace CSPGF.reader
 {
     public class CoerceProduction : Production
     {
-        private int initId;
+        public int initId { get; private set; }
 
         public CoerceProduction(int _fId, int _initId)
             : base(1, _fId)
@@ -15,14 +15,9 @@ namespace CSPGF.reader
             initId = _initId;
         }
 
-        public int GetInitId()
-        {
-            return initId;
-        }
-
         public int[] GetDomain()
         {
-            return new int[] { this.initId };
+            return new int[] { initId };
         }
 
         public String ToString()

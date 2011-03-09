@@ -32,7 +32,7 @@ namespace CSPGF.reader
             ss += (") , Name : " + str + " , Expressions : (");
             foreach (Expr e in exprs)
             {
-                ss += " " + e.toString();
+                ss += " " + e.ToString();
             }
             /*for (int i = 0 ; i < exprs.Length ; i++)
             {

@@ -14,9 +14,9 @@ namespace CSPGF.reader
             exp = _exp;
         }
 
-        public String toString()
+        public String ToString()
         {
-            return "Inaccessible Pattern : " + exp.toString();
+            return "Inaccessible Pattern : " + exp.ToString();
         }
 
 

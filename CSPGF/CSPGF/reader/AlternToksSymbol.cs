@@ -7,7 +7,7 @@ namespace CSPGF.reader
 {
     public class AlternToksSymbol : ToksSymbol
     {
-        Alternative[] alts;
+        public Alternative[] alts { get; private set; }
 
         public AlternToksSymbol(String[] _toks, Alternative[] _alts)
             : base(_toks)
@@ -23,7 +23,7 @@ namespace CSPGF.reader
         public String ToString()
         {
             String sb = "pre { ";
-            foreach (String s in base.getTokens()) {
+            foreach (String s in base.toks) {
                 sb += s + " ";
             }
             sb += ("; ");
@@ -33,15 +33,5 @@ namespace CSPGF.reader
             sb += "}";
             return sb;
         }
-
-        public String[] GetToks()
-        {
-            return base.getTokens();
-        }
-        public Alternative[] GetAlternatives()
-        {
-            return alts;
-        }
-
     }
 }
