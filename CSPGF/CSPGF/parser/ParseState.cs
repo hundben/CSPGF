@@ -94,21 +94,49 @@ namespace CSPGF.parser
                         ActiveItem it = new ActiveItem(position, Bd, prod.fId, prod.domain, r, 0);
                         agenda.Push(it);
                     }
-                   int cat = chart.GetCategory(Bd, r, position, position);
-                   //null here is wierd? :D
-                   if (cat != null)
-                   {
-                       int[] newDomain = (int[])B.Clone();  // WHAT TEH HELL??? clone returns an object :'(
-                       newDomain[d] = cat;
-                       ActiveItem it = new ActiveItem(j, A, f, newDomain, l, p + 1);
-                       agenda.Push(it);
-
-                   }
+                    int cat = chart.GetCategory(Bd, r, position, position);
+                    //null here is wierd? :D
+                    if (cat != null)
+                    {
+                        int[] newDomain = (int[])B.Clone();  // WHAT TEH HELL??? clone returns an object :'(
+                        newDomain[d] = cat;
+                        ActiveItem it = new ActiveItem(j, A, f, newDomain, l, p + 1);
+                        agenda.Push(it);
+                    }
                 }
+            }
+            else
+            {
+                int cat = chart.GetCategory(A, l, j, this.position);
+                if (cat == -1)  //TODO check this -1 == null in this case???
+                {
+                    int N = chart.GenerateFreshCategory(A, l, j, position);
+                    foreach (Tuple<ActiveItem, int> tmp in active[j].Get(A, l))
+                    {
+                        ActiveItem ip = tmp.Item1;
+                        int d = tmp.Item2;
+                        int[] domain = (int[])ip.domain.Clone();
+                        domain[d] = N;
+                        ActiveItem i = new ActiveItem(ip.begin, ip.category, ip.function, domain, ip.constituent, ip.position + 1);
+                        agenda.Push(i);
+                    }
+                }
+                else
+                {
+                    foreach (Tuple<ActiveItem,int,int> aset in active[position].Get(cat))
+                    {
+                        ActiveItem xprime = aset.Item1;
+                        int dprime = aset.Item2;
+                        int r = aset.Item3;
+                        ActiveItem i = new ActiveItem(position, cat, f, B, r, 0);
+                        agenda.Push(i);
 
-
+                    }
+                    chart.AddProduction(cat, f, B);
+                }
             }
         }
+        //TODO predict and so on
     }
 }
 
