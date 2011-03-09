@@ -7,17 +7,17 @@ namespace CSPGF.reader
 {
     public class ToksSymbol : Symbol
     {
-        public String[] toks { get; private set; }
+        public String[] tokens { get; private set; }
 
         public ToksSymbol(String[] _toks)
         {
-            toks = _toks;
+            tokens = _toks;
         }
 
         public String ToString()
         {
             String s = "Tokens : ";
-            foreach (String st in toks)
+            foreach (String st in tokens)
             {
                 s += " " + st;
             }

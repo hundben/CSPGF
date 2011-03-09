@@ -58,11 +58,56 @@ namespace CSPGF.parser
             int l = item.constituent;
             int p = item.position;
 
-            if (item.nextSymbol is ToksSymbol)
+            Symbol sym = item.NextSymbol(); //is this correct?
+
+            if (sym is ToksSymbol)
             {
+                ToksSymbol tok = (ToksSymbol)sym;
+                String[] tokens = tok.tokens;
+                ActiveItem i = new ActiveItem(j, A, f, B, l, p + 1);
+                //scan
+                Stack<ActiveItem> newAgenda;
+                Stack<ActiveItem> luAgenda = trie.LookUp(tokens);
+                if (luAgenda.Count == 0)
+                {
+                    Stack<ActiveItem> a = new Stack<ActiveItem>();
+                    trie.Add(tokens, a);
+                    newAgenda = a;
+                }
+                else
+                {
+                    newAgenda = luAgenda;
+                }
+                newAgenda.Push(i);
+            }
+            else if (sym is ArgConstSymbol)
+            {
+                ArgConstSymbol arg = (ArgConstSymbol)sym;
+                int d = arg.arg;
+                int r = arg.cons;
+                int Bd = item.domain[d];
+                if (active.ContainsKey(position))
+                {
+                    active[position].Add(Bd, r, item, d);
+                    foreach (Production prod in chart.GetProductions(Bd))
+                    {
+                        ActiveItem it = new ActiveItem(position, Bd, prod.fId, prod.domain, r, 0);
+                        agenda.Push(it);
+                    }
+                   int cat = chart.GetCategory(Bd, r, position, position);
+                   //null here is wierd? :D
+                   if (cat != null)
+                   {
+                       int[] newDomain = (int[])B.Clone();  // WHAT TEH HELL??? clone returns an object :'(
+                       newDomain[d] = cat;
+                       ActiveItem it = new ActiveItem(j, A, f, newDomain, l, p + 1);
+                       agenda.Push(it);
+
+                   }
+                }
+
 
             }
-
         }
     }
 }
