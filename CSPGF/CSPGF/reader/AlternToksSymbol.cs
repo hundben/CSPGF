@@ -23,7 +23,7 @@ namespace CSPGF.reader
         public String ToString()
         {
             String sb = "pre { ";
-            foreach (String s in base.toks) {
+            foreach (String s in base.tokens) {
                 sb += s + " ";
             }
             sb += ("; ");

@@ -8,7 +8,7 @@ namespace CSPGF.reader
     public class ArgConstSymbol : Symbol
     {
         public int arg { get; private set; }
-        private int cons { get; private set; }
+        public int cons { get; private set; }
 
         public ArgConstSymbol(int _arg, int _cons)
         {
