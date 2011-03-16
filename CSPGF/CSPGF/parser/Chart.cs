@@ -9,7 +9,7 @@ namespace CSPGF.parser
 {
     class Chart
     {
-        private MultiMap<int, AnyProduction> productionSets = new MultiMap<int, AnyProduction>();
+        private MultiMap<int, Object> productionSets = new MultiMap<int, Object>();
         private Dictionary<Tuple<int, int, int, int>, int> categoryBookKeeper = new Dictionary<Tuple<int, int, int, int>, int>();
         int nextCat;
 
@@ -18,34 +18,42 @@ namespace CSPGF.parser
             nextCat = _nextCat;
         }
         
-        public Boolean AddProduction(AnyProduction p) {
-            if(productionSets.ContainsKey(p.getCategory()/*, p.==*/)) {
-                return false;
+        public Boolean AddProduction(Object p) {
+            Production tmp = (Production)p;
+            if(productionSets.ContainsKey(tmp.fId) && productionSets.Get(tmp.fId).Contains(p)) {
+                    return false;
             } else {
-            //      productionSets.addBinding(p.getCategory(), p)
-            //      this.nextCat = this.nextCat.max(p.getCategory() + 1)
+                productionSets.Add(tmp.fId, p);
+                nextCat = Math.Max(nextCat, tmp.fId + 1);
                 return true;
             }
         }
 
+        // Borde vara rätt...
         public Boolean AddProduction(int cat, CncFun fun, int[] domain)
         {
-            return addProduction(new Production(cat, fun, domain));    
+            return AddProduction(new ApplProduction(cat, fun, domain));    
         }
-        //  def addProduction(cat:Int, fun: CncFun, domain:Array[Int]):Boolean =
-        //    this.addProduction(new Production(cat, fun, domain))
-
+        
+        //TODO: Kolla denna oxå xD
         public Production[] GetProductions(int resultCat)
         {
-            HashSet<AnyProduction> test = productionSets.Get(resultCat);
-            List<AnyProduction> test2 = new List<AnyProduction>();
+            HashSet<Object> test = productionSets.Get(resultCat);
+            List<Production> test2 = new List<Production>();
             if (test != null)
             {
-                foreach (AnyProduction p in test)
+                foreach (Object p in test)
                 {
-                    test2.Add(p);
+                    if (p is Production)
+                    {
+                        test2.Add((Production)p);
+                    }
+                    else
+                    {
+                        throw new Exception(p.ToString() + " is not a Production, and should be one");
+                    }
                 }
-                return test2.ToArray();
+                return test2.ToArray<Production>();
             }
             else
             {
@@ -53,20 +61,23 @@ namespace CSPGF.parser
             }
         }
 
-        //private Production[] uncoerce(AnyProduction p)
-        //{
-        //    if (p is Production)
-        //    {
-        //        p.ToArray<Production>();
-        //    }
-        //    else if (p is Coercion)
-        //    {
-        //        foreach (Production prod in p.prods
-        //                    //    case (c:Coercion) => for (prod <- this.getProductions(c.getInitId()) ;
-        //                    // a <- this.uncoerce(prod) )
-        //                    // yield a
-        //    }
-        //}
+        //TODO: Denna kan vara helt åt helvete :D
+        private Production[] Uncoerce(Object p)
+        {
+            List<Production> tmp = new List<Production>();
+            if (p is Production) {
+                tmp.Add((Production)p);
+            }
+            else if (p is CoerceProduction) {
+                CoerceProduction tmp2 = (CoerceProduction)p;
+                foreach (Production prod in GetProductions(tmp2.initId)) {
+                    foreach (Production prod2 in Uncoerce(prod)) {
+                        tmp.Add(prod2);
+                    }
+                }
+            }
+            return tmp.ToArray<Production>();
+        }
 
         public int getFreshCategory(int oldCat, int l, int j, int k)
         {
@@ -77,11 +88,11 @@ namespace CSPGF.parser
             }
             else
             {
-                return generateFreshCategory(oldCat, l, j, k);
+                return GenerateFreshCategory(oldCat, l, j, k);
             }
         }
 
-        public Int32 getCategory(int oldCat, int cons, int begin, int end)
+        public int GetCategory(int oldCat, int cons, int begin, int end)
         {
             Tuple<int, int, int, int> temp = new Tuple<int, int, int, int>(oldCat, cons, begin, end);
             //TODO: Check if it returns null if none is found
@@ -96,7 +107,7 @@ namespace CSPGF.parser
             return -1;
         }
 
-        public int generateFreshCategory(int oldCat, int l, int j, int k)
+        public int GenerateFreshCategory(int oldCat, int l, int j, int k)
         {
             int cat = nextCat;
             nextCat++;

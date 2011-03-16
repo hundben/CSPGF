@@ -15,14 +15,14 @@ namespace CSPGF.parser
             value = _value;
         }
 
-        public Unit Add(String[] key, Stack<ActiveItem> value)
+        public void Add(String[] key, Stack<ActiveItem> value)
         {
-            return Add(key.ToList<String>(), value);
+            Add(key.ToList<String>(), value);
         }
 
 
         //------------------------------------- NOT DONE -------------------------------
-        public Unit Add(List<String> keys, Stack<ActiveItem> value)
+        public void Add(List<String> keys, Stack<ActiveItem> value)
         {
             foreach (String s in keys)
             {
@@ -32,7 +32,6 @@ namespace CSPGF.parser
                 else
                 {
                     ParseTrie newN = new ParseTrie(value);
-                    
                 }
             }
         }
