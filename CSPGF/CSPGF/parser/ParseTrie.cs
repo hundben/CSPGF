@@ -20,23 +20,32 @@ namespace CSPGF.parser
             Add(key.ToList<String>(), value);
         }
 
-
-        //------------------------------------- NOT DONE -------------------------------
         public void Add(List<String> keys, Stack<ActiveItem> value)
         {
-            foreach (String s in keys)
-            {
-                if (child.ContainsKey(s))
-                {
+
+            //TODO: HAHA, kolla xDDD
+            if (keys.Count == 0 || keys == null) {
+                this.value = value;
+            }
+            else {
+                if (child[keys.First<String>()] == null || child.Count == 0) {
+                    ParseTrie newN = new ParseTrie(null);
+                    String[] tmp = new String[keys.Count];
+                    keys.CopyTo(tmp);
+                    List<String> tmp2 = tmp.ToList<String>();
+                    tmp2.Remove(keys.First<String>());
+                    newN.Add(tmp2, value);
+                    child[keys.First<String>()] = newN;
                 }
-                else
-                {
-                    ParseTrie newN = new ParseTrie(value);
+                else {
+                    String[] tmp = new String[keys.Count];
+                    keys.CopyTo(tmp);
+                    List<String> tmp2 = tmp.ToList<String>();
+                    tmp2.Remove(keys.First<String>());
+                    child[keys.First<String>()].Add(tmp2, value);
                 }
             }
         }
-        //  def add(key:Seq[String], value:Stack[ActiveItem]):Unit =
-        //    this.add(key.toList, value)
 
         //  def add(keys:List[String], value:Stack[ActiveItem]):Unit =
         //    keys match {
@@ -50,7 +59,98 @@ namespace CSPGF.parser
         //        case Some(n) => n.add(l,value)
         //      }
         //    }
+        public Stack<ActiveItem> Lookup(String[] key)
+        {
+            return Lookup(key.ToList<String>());
+        }
+        //  def lookup(key:Seq[String]):Option[Stack[ActiveItem]] =
+        //    this.lookup(key.toList)
 
+        public Stack<ActiveItem> Lookup(List<String> key)
+        {
+            if (GetSubTrie(key) != null) {
+                return GetSubTrie(key).value;
+            }
+            else {
+                return null;
+            }
+        }
+        //  def lookup(key:List[String]):Option[Stack[ActiveItem]] =
+        //    getSubTrie(key) match {
+        //      case None => None
+        //      case Some(t) => Some(t.value)
+        //    }
+
+        public Stack<ActiveItem> Lookup(String key)
+        {
+            String[] tmp = new String[1];
+            tmp[0] = key;
+            return Lookup(tmp);
+        }
+
+        //  def lookup(key:String):Option[Stack[ActiveItem]] =
+        //    this.lookup(key::Nil)
+
+        public ParseTrie GetSubTrie(List<String> key)
+        {
+            if (key.Count == 0 || key == null) {
+                return this;
+            }
+            else {
+                // TODO: FIXA!
+                if (child[key.First<String>()] != null) {
+                    String[] tmp = new String[key.Count];
+                    key.CopyTo(tmp);
+                    List<String> tmp2 = tmp.ToList<String>();
+                    tmp2.Remove(key.First<String>());
+                    return child[key.First<String>()].GetSubTrie(tmp2);
+                }
+                return null;
+            }
+        }
+        //  def getSubTrie(key:List[String]):Option[ParseTrie] =
+        //    key match {
+        //      case Nil => Some(this)
+        //      case x::l => this.child.get(x) match {
+        //        case None => None
+        //        case Some(n) => n.getSubTrie(l)
+        //      }
+        //    }
+
+        public ParseTrie GetSubTrie(String key)
+        {
+            List<String> tmp = new List<string>();
+            tmp.Add(key);
+            return GetSubTrie(tmp);
+        }
+        //  def getSubTrie(key:String):Option[ParseTrie] =
+        //    this.getSubTrie(key::Nil)
+
+        public String[] Predict()
+        {
+            return child.Keys.ToArray<String>();
+        }
+        //  def predict():Array[String] = this.child.keySet.toArray
+
+        public String ToString()
+        {
+            return ToStringWithPrefix("");
+        }
+        //  override def toString() = this.toStringWithPrefix("")
+
+        public String ToStringWithPrefix(String prefix)
+        {
+            //RETARDKOD!
+            String tmp = prefix + "<" + value.ToString() + ">";
+            return tmp;
+        }
+        //  def toStringWithPrefix(prefix:String):String = {
+        //    prefix + "<" + this.value + ">" +
+        //    this.child.keys.map(k =>
+        //      prefix + k.toString + ":\n" +
+        //      this.child(k).toStringWithPrefix(prefix + "  ")
+        //    ).foldLeft("")((a:String,b:String) => a + "\n" + b)
+        //  }
 
     }
 }
