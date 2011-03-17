@@ -10,7 +10,7 @@ namespace CSPGF.parser
         Stack<ActiveItem> value;
         Dictionary<String, ParseTrie> child = new Dictionary<String, ParseTrie>();
 
-        ParseTrie(Stack<ActiveItem> _value)
+        public ParseTrie(Stack<ActiveItem> _value)
         {
             value = _value;
         }
@@ -22,7 +22,6 @@ namespace CSPGF.parser
 
         public void Add(List<String> keys, Stack<ActiveItem> value)
         {
-
             //TODO: HAHA, kolla xDDD
             if (keys.Count == 0 || keys == null) {
                 this.value = value;

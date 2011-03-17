@@ -17,7 +17,7 @@ namespace CSPGF.parser
         public ParseState(Concrete grammar)
         {
             startCat = grammar.GetStartCat();
-            trie = new ParseTrie();
+            trie = new ParseTrie(null);
             chart = new Chart(100); //TODO 100 is a bad value... (even in c#)
             agenda = new Stack<ActiveItem>();
             position = 0;
@@ -32,9 +32,17 @@ namespace CSPGF.parser
             for (int id = startCat.firstFID; id <= startCat.lastFID + 1; id++)
             {
                 //TODO remove comment below
-                Production prod = chart.GetProductions(id);
-                ActiveItem it = new ActiveItem(0, id, prod.function, prod.domain, 0, 0);
-                agenda.Push(it);
+                // Får gå igenom och kolla om objektet är en ApplProduction, antar att foreach inte kör en is på alla objekt.
+                foreach (Object obj in chart.GetProductions(id)) {
+                    if (obj is ApplProduction) {
+                        ApplProduction tmp = (ApplProduction)obj;
+                        ActiveItem it = new ActiveItem(0, id, tmp.function, tmp.domain, 0, 0);
+                        agenda.Push(it);
+                    }
+                }
+                //Production[] prod = chart.GetProductions(id);
+                //ActiveItem it = new ActiveItem(0, id, prod.function, prod.domain, 0, 0);
+                //agenda.Push(it);
             }
             Compute();
         }
