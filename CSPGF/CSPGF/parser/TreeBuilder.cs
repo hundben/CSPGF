@@ -7,6 +7,26 @@ namespace CSPGF.parser
 {
     class TreeBuilder
     {
+
+        public List<Tree> buildTrees(Chart chart, CSPGF.reader.CncCat startCat, int length) {
+            //TODO
+            return new List<Tree>();
+        }
+        public List<Tree> MkTreesForCat(int cat, Chart chart)
+        {
+            //TODO
+            return new List<Tree>();
+        }
+        public List<Tree> MkTreesForProduction(CSPGF.reader.Production p, Chart chart)
+        {
+            //TODO
+            return new List<Tree>();
+        }
+        public List<List<Tree>> ListMixer(List<List<Tree>> l)
+        {
+            //TODO
+            return new List<List<Tree>>();
+        }
     }
 }
 

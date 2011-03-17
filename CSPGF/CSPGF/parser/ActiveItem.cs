@@ -74,6 +74,5 @@ namespace CSPGF.parser
             }
             return tot;
         }
-
     }
 }
