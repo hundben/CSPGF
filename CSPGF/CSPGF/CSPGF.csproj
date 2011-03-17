@@ -59,6 +59,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Generator.cs" />
+    <Compile Include="Linearizer.cs" />
+    <Compile Include="LinearizerException.cs" />
     <Compile Include="linearizer\AppResult.cs" />
     <Compile Include="linearizer\Bracket.cs" />
     <Compile Include="linearizer\BracketedTokn.cs" />

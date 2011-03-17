@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CSPGF.linearizer
 {
-    class Bracket
+    class Bracket : BracketedTokn
     {
         private String cId;
         private int lIndex;
