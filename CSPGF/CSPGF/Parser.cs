@@ -54,7 +54,7 @@ namespace CSPGF
          * @return an array of trees
          **/
         // FIXME: not using the start category ??
-        public Tree[] ParseToTrees(String[] tokens)
+        public CSPGF.trees.Absyn.Tree[] ParseToTrees(String[] tokens)
         {
             return Parse(tokens).GetTrees();
         }
