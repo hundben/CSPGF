@@ -75,7 +75,7 @@ namespace CSPGF.parser
                 ActiveItem i = new ActiveItem(j, A, f, B, l, p + 1);
                 //scan
                 Stack<ActiveItem> newAgenda;
-                Stack<ActiveItem> luAgenda = trie.LookUp(tokens);
+                Stack<ActiveItem> luAgenda = trie.Lookup(tokens);
                 if (luAgenda.Count == 0)
                 {
                     Stack<ActiveItem> a = new Stack<ActiveItem>();
@@ -93,16 +93,20 @@ namespace CSPGF.parser
                 ArgConstSymbol arg = (ArgConstSymbol)sym;
                 int d = arg.arg;
                 int r = arg.cons;
-                int Bd = item.domain[d];
+                int bd = item.domain[d];
                 if (active.ContainsKey(position))
                 {
-                    active[position].Add(Bd, r, item, d);
-                    foreach (Production prod in chart.GetProductions(Bd))
+                    active[position].Add(bd, r, item, d);
+                    foreach (Production prod in chart.GetProductions(bd))
                     {
-                        ActiveItem it = new ActiveItem(position, Bd, prod.fId, prod.domain, r, 0);
-                        agenda.Push(it);
+                        if (prod is ApplProduction) 
+                        {
+                            ApplProduction prodAp = (ApplProduction)prod;
+                            ActiveItem it = new ActiveItem(position, bd,prodAp.function, prod.Domain(), r, 0);
+                            agenda.Push(it);
+                        }
                     }
-                    int cat = chart.GetCategory(Bd, r, position, position);
+                    int cat = chart.GetCategory(bd, r, position, position);
                     //null here is wierd? :D
                     if (cat != null)
                     {
@@ -152,7 +156,7 @@ namespace CSPGF.parser
             TreeBuilder tb = new TreeBuilder();
             TreeConverter tc = new TreeConverter();
             List<Tree> tmp = new List<Tree>();
-            foreach (Tree t in tb.buildTrees(chart, startCat, position)) {
+            foreach (Tree t in tb.BuildTrees(chart, startCat, position)) {
                 tmp.Add(tc.Intermediate2Abstract(t));
             }
             return tmp.ToArray<Tree>();
