@@ -50,12 +50,16 @@ namespace CSPGF.parser
                 //retard kod >P
                     foreach (int i in p.Domain())
                     {
-                        MkTreesForCat(i, chart);
-                    
-                    //foreach(List<List<Tree>> args in ListMixer(
-                //foreach(List<List<Tree>> args in ListMixer(p.domain().ToList<int>
-                   // for (args <- listMixer( p.domain.toList.map(mkTreesForCat(_,chart)) ) )
-            //         yield new Application(p.function.name, args)
+                        List<Tree> t2 = MkTreesForCat(i, chart);
+                        temp.Add(new Application(prod.function.name, t2));
+                        //Use listmixer above? or what does listmixer actually do?
+
+
+                        //foreach(List<List<Tree>> args in ListMixer(
+                        //foreach(List<List<Tree>> args in ListMixer(p.domain().ToList<int>
+                        // for (args <- listMixer( p.domain.toList.map(mkTreesForCat(_,chart)) ) )
+                        //         yield new Application(p.function.name, args)
+                    }
                 }
 
             }
@@ -64,8 +68,9 @@ namespace CSPGF.parser
         }
         public List<List<Tree>> ListMixer(List<List<Tree>> l)
         {
-            foreach (List<Tree> lt in l)
-            {
+            return l;   //TODO check what this thing actually does
+            //foreach (List<Tree> lt in l)
+            //{
                 //  def listMixer(l:List[List[Tree]]):List[List[Tree]] = l match {
                 //    case Nil => Nil
                 //    case List(subL) => subL.map(List(_))
@@ -73,9 +78,9 @@ namespace CSPGF.parser
                 //      for {first <- head;
                 //           then <- listMixer(tail)}
                 //      yield first::then
-            }
+            //}
             //TODO
-            return new List<List<Tree>>();
+            //return new List<List<Tree>>();
         }
     }
 }
