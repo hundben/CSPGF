@@ -36,28 +36,44 @@ namespace CSPGF.parser
         public List<Tree> MkTreesForProduction(CSPGF.reader.Production p, Chart chart)
         {
             List<Tree> temp = new List<Tree>();
-            //if (p.domain.
-            if (p.Domain().Length == 0)
+            if (p is ApplProduction)
             {
-                //????
-            }
-            else
-            {
+                ApplProduction prod = (ApplProduction)p;
+                
+                //if (p.domain.
+                if (p.Domain().Length == 0)
+                {
+                    temp.Add(new Application(prod.function.name, new List<Tree>()));
+                }
+                else
+                {
                 //retard kod >P
+                    foreach (int i in p.Domain())
+                    {
+                        MkTreesForCat(i, chart);
+                    
+                    //foreach(List<List<Tree>> args in ListMixer(
                 //foreach(List<List<Tree>> args in ListMixer(p.domain().ToList<int>
-            }
-
-            //TODO
-            //      if (p.domain.length == 0)
-            //         List(new Application(p.function.name, Nil))
-            //      else
-            //         for (args <- listMixer( p.domain.toList.map(mkTreesForCat(_,chart)) ) )
+                   // for (args <- listMixer( p.domain.toList.map(mkTreesForCat(_,chart)) ) )
             //         yield new Application(p.function.name, args)
+                }
+
+            }
 
             return temp;
         }
         public List<List<Tree>> ListMixer(List<List<Tree>> l)
         {
+            foreach (List<Tree> lt in l)
+            {
+                //  def listMixer(l:List[List[Tree]]):List[List[Tree]] = l match {
+                //    case Nil => Nil
+                //    case List(subL) => subL.map(List(_))
+                //    case head::tail => {
+                //      for {first <- head;
+                //           then <- listMixer(tail)}
+                //      yield first::then
+            }
             //TODO
             return new List<List<Tree>>();
         }
