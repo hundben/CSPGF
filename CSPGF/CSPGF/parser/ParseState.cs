@@ -108,7 +108,7 @@ namespace CSPGF.parser
                     }
                     int cat = chart.GetCategory(bd, r, position, position);
                     //null here is wierd? :D
-                    if (cat != null)
+                    if (cat != -1)
                     {
                         int[] newDomain = (int[])B.Clone();  // WHAT TEH HELL??? clone returns an object :'(
                         newDomain[d] = cat;
