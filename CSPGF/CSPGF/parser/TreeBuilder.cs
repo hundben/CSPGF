@@ -2,25 +2,59 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CSPGF.reader;
 
 namespace CSPGF.parser
 {
     class TreeBuilder
     {
-
-        public List<Tree> buildTrees(Chart chart, CSPGF.reader.CncCat startCat, int length) {
-            //TODO
-            return new List<Tree>();
+        public TreeBuilder() { }
+        public List<Tree> BuildTrees(Chart chart, CSPGF.reader.CncCat startCat, int length) {
+            List<Tree> temp = new List<Tree>();
+            for (int catID = startCat.firstFID; catID < startCat.lastFID + 1; catID++)
+            {
+                int cat = chart.GetCategory(catID, 0, 0, length);
+                if (cat != -1)
+                {
+                    temp.AddRange(MkTreesForCat(cat, chart)); //unsure about this???
+                }
+            }
+            return temp;
         }
         public List<Tree> MkTreesForCat(int cat, Chart chart)
         {
-            //TODO
-            return new List<Tree>();
+            List<Tree> temp = new List<Tree>();
+            foreach (Production p in chart.GetProductions(cat))
+            {
+                foreach (Tree t in MkTreesForProduction(p, chart))
+                {
+                    temp.Add(t);
+                }
+            }
+            return temp;
         }
         public List<Tree> MkTreesForProduction(CSPGF.reader.Production p, Chart chart)
         {
+            List<Tree> temp = new List<Tree>();
+            //if (p.domain.
+            if (p.domain().Length == 0)
+            {
+                //????
+            }
+            else
+            {
+                //retard kod >P
+                //foreach(List<List<Tree>> args in ListMixer(p.domain().ToList<int>
+            }
+
             //TODO
-            return new List<Tree>();
+            //      if (p.domain.length == 0)
+            //         List(new Application(p.function.name, Nil))
+            //      else
+            //         for (args <- listMixer( p.domain.toList.map(mkTreesForCat(_,chart)) ) )
+            //         yield new Application(p.function.name, args)
+
+            return temp;
         }
         public List<List<Tree>> ListMixer(List<List<Tree>> l)
         {
