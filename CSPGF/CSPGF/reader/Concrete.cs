@@ -15,7 +15,7 @@ namespace CSPGF.reader
         public CncFun[] cncFuns { get; private set; }
         public ProductionSet[] prods { get; private set; }
         public Dictionary<String, CncCat> cncCats { get; private set; }
-        private int fId { get; private set; }
+        public int fId { get; private set; }
         private String startCat;
 
         public Concrete(String _name, Dictionary<String, RLiteral> _flags, Sequence[] _seqs, CncFun[] _cncFuns,

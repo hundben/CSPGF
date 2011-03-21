@@ -82,7 +82,7 @@ namespace CSPGF.parser
         public int getFreshCategory(int oldCat, int l, int j, int k)
         {
             int i = categoryBookKeeper[new Tuple<int, int, int, int>(oldCat, l, j, k)];
-            if (i != null)
+            if (i != -1)
             {
                 return i;
             }

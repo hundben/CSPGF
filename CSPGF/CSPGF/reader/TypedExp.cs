@@ -7,8 +7,8 @@ namespace CSPGF.reader
 {
     public class TypedExp : Expr
     {
-        private Expr exp { get; private set; }
-        private Type type { get; private set; }
+        public Expr exp { get; private set; }
+        public Type type { get; private set; }
 
         public TypedExp(Expr _exp, Type _t)
         {

@@ -37,7 +37,7 @@ namespace CSPGF.parser
         {
             List<Tree> temp = new List<Tree>();
             //if (p.domain.
-            if (p.domain().Length == 0)
+            if (p.Domain().Length == 0)
             {
                 //????
             }
