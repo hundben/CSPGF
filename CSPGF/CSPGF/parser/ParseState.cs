@@ -151,15 +151,15 @@ namespace CSPGF.parser
         //TODO predict and so on
 
 
-        public Tree[] GetTrees()
+        public CSPGF.trees.Absyn.Tree[] GetTrees()
         {
             TreeBuilder tb = new TreeBuilder();
             TreeConverter tc = new TreeConverter();
-            List<Tree> tmp = new List<Tree>();
+            List<CSPGF.trees.Absyn.Tree> tmp = new List<CSPGF.trees.Absyn.Tree>();
             foreach (Tree t in tb.BuildTrees(chart, startCat, position)) {
                 tmp.Add(tc.Intermediate2Abstract(t));
             }
-            return tmp.ToArray<Tree>();
+            return tmp.ToArray<CSPGF.trees.Absyn.Tree>();
             
         }
 
