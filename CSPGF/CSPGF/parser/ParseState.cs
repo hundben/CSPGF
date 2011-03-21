@@ -93,16 +93,20 @@ namespace CSPGF.parser
                 ArgConstSymbol arg = (ArgConstSymbol)sym;
                 int d = arg.arg;
                 int r = arg.cons;
-                int Bd = item.domain[d];
+                int bd = item.domain[d];
                 if (active.ContainsKey(position))
                 {
-                    active[position].Add(Bd, r, item, d);
-                    foreach (Production prod in chart.GetProductions(Bd))
+                    active[position].Add(bd, r, item, d);
+                    foreach (Production prod in chart.GetProductions(bd))
                     {
-                        ActiveItem it = new ActiveItem(position, Bd, prod.fId, prod.Domain(), r, 0);
-                        agenda.Push(it);
+                        if (prod is ApplProduction) 
+                        {
+                            ApplProduction prodAp = (ApplProduction)prod;
+                            ActiveItem it = new ActiveItem(position, bd,prodAp.function, prod.Domain(), r, 0);
+                            agenda.Push(it);
+                        }
                     }
-                    int cat = chart.GetCategory(Bd, r, position, position);
+                    int cat = chart.GetCategory(bd, r, position, position);
                     //null here is wierd? :D
                     if (cat != null)
                     {
