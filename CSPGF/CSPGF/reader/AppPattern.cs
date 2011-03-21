@@ -17,7 +17,7 @@ namespace CSPGF.reader
             patts = _patts;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             String ss = "Application pattern [ Name : " + name + " , Patterns : (";
             foreach (Pattern p in patts) {

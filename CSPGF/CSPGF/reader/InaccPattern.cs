@@ -1,7 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.reader
 {
@@ -14,12 +11,9 @@ namespace CSPGF.reader
             exp = _exp;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "Inaccessible Pattern : " + exp.ToString();
         }
-
-
     }
-
 }

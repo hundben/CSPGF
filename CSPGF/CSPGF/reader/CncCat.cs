@@ -30,7 +30,7 @@ namespace CSPGF.reader
             labels = _labels; // was also commented out.
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return name + " [C" + firstFID + " ... C" + lastFID + "]";
         }

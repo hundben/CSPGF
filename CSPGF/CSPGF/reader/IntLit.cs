@@ -14,7 +14,7 @@ namespace CSPGF.reader
             value = _value;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "Integer Literal : " + value;
         }

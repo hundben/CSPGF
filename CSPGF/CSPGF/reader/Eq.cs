@@ -16,7 +16,7 @@ namespace CSPGF.reader
             expr = _expr;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             String ss = "Patterns : (";
             foreach (Pattern p in patts)

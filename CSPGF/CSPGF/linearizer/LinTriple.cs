@@ -30,9 +30,9 @@ namespace CSPGF.linearizer
         {
             return linTable;
         }
-        public String ToString()
+        public override String ToString()
         {
-            String rez = "id : " + fId + " cncType : (" + cncType.toString() + ") bracketedToken :[" + linTable.ToString() + "]";
+            String rez = "id : " + fId + " cncType : (" + cncType.ToString() + ") bracketedToken :[" + linTable.ToString() + "]";
             return rez;
         }
     }

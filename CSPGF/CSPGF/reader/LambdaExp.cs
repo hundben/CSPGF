@@ -18,7 +18,7 @@ namespace CSPGF.reader
             body = _body;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "Lambda Expression : [Bound Type : " + bType + " , Name : " + vName + " , Body : " + body.ToString() + "]";
         }

@@ -16,7 +16,7 @@ namespace CSPGF.reader
             rExp = _rExp;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "Expression application [Left-hand side : ( " + lExp.ToString() + "), Right-hand side : (" + rExp.ToString() + ")]";
         }

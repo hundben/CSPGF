@@ -37,7 +37,7 @@ namespace CSPGF.linearizer
         {
             return alternatives;
         }
-        public String ToString()
+        public override String ToString()
         {
             String rez = "string names : [";
             for (int i = 0 ; i < defaultTokens.Length ; i++)

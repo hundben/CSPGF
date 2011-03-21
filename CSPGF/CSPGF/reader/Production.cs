@@ -16,9 +16,9 @@ namespace CSPGF.reader
             fId = _fId;
         }
 
-        public abstract String ToString();
+        public override abstract String ToString();
 
         // Domain is the domain of the concrete function
-        public abstract int[] domain();
+        public abstract int[] Domain();
     }
 }

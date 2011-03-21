@@ -36,7 +36,7 @@ namespace CSPGF.linearizer
         {
             return bss;
         }
-        public String ToString()
+        public override String ToString()
         {
             String rez = "name : " + cId + ", linIndex : " + lIndex + ", fId : " + fId + ", bracketed tokens : " + bss.ToString();
             //for(int i=0;i<bss.length;i++)

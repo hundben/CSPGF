@@ -14,7 +14,7 @@ namespace CSPGF.reader
             ind = _ind;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "Variable Expression : [Index : " + ind + "]";
         }

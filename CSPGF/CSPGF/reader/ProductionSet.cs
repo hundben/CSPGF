@@ -21,7 +21,7 @@ namespace CSPGF.reader
             return prods.Length;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             String ss = "Id : " + id + " , Productions : [";
             foreach (Production p in prods)

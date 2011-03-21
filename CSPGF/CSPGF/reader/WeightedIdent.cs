@@ -18,7 +18,7 @@ namespace CSPGF.reader
 
         //CHECK LATER
         // Did not exist in the java-code
-        public String ToString()
+        public override String ToString()
         {
             return "Ident: " + ident + " Weight: " + weight;
         }

@@ -5,7 +5,7 @@ using System.Text;
 
 namespace CSPGF.reader
 {
-    public class ImplExp : Expr
+    public class ImplExp: Expr
     {
         public Expr exp { get; private set; }
 
@@ -19,5 +19,4 @@ namespace CSPGF.reader
             return "Implicit Arguments Expression : [ Argument : " + exp.ToString() + "]";
         }
     }
-
 }

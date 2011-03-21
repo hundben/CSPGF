@@ -19,7 +19,7 @@ namespace CSPGF.linearizer
             return tokens;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             String rez = "string names : [";
             for (int i = 0 ; i < tokens.Length ; i++)

@@ -14,7 +14,7 @@ namespace CSPGF.reader
             meta = _id;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "Meta Expression : [Id : " + meta + "]";
         }

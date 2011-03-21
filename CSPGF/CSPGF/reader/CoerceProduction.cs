@@ -15,17 +15,24 @@ namespace CSPGF.reader
             initId = _initId;
         }
 
+        public override int[] Domain()
+        {
+            int[] tmp = new int[1];
+            tmp[0] = initId;
+            return tmp;
+        }
+
         public int[] GetDomain()
         {
             return new int[] { initId };
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "Coercion(" + this.fId + " -> " + initId + ")";
         }
 
-        public Boolean Equals(Object o)
+        public override Boolean Equals(Object o)
         {
             if (o is CoerceProduction) {
                 return ((CoerceProduction)o).initId == initId;
@@ -33,5 +40,9 @@ namespace CSPGF.reader
             return false;
         }
 
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
     }
 }

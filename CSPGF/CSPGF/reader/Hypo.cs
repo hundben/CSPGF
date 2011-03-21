@@ -18,7 +18,7 @@ namespace CSPGF.reader
             type = _type;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "Bound Type : " + bind + " , Name : " + name + " , Type : (" + type + ")";
         }

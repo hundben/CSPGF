@@ -24,7 +24,7 @@ namespace CSPGF.reader
             return symbs.Length;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             String ss = "Symbols : [";
             foreach (Symbol s in symbs)

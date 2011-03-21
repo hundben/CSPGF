@@ -14,7 +14,7 @@ namespace CSPGF.reader
             tokens = _toks;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             String s = "Tokens : ";
             foreach (String st in tokens)

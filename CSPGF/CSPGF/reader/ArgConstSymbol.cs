@@ -16,7 +16,7 @@ namespace CSPGF.reader
             cons = _cons;
         }
         
-        public String ToString()
+        public override String ToString()
         {
             return "Argument : " + arg + " Constituent : " + cons;
         }

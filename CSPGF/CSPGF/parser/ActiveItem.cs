@@ -35,7 +35,7 @@ namespace CSPGF.parser
             return null;    //this might be dangerous
         }
         //equals method
-        public override bool Equals(ActiveItem ai)
+        public /*override*/ bool Equals(ActiveItem ai)
         {
             if (begin == ai.begin &&
                 category == ai.category &&

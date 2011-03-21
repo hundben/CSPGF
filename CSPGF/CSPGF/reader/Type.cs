@@ -18,7 +18,7 @@ namespace CSPGF.reader
             exprs = _exprs;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             String ss = "Hypotheses : (";
             foreach (Hypo h in hypos)

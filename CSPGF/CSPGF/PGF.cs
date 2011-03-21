@@ -67,7 +67,7 @@ namespace CSPGF
         }
 
         //TODO : cleanups
-        public String ToString()
+        public override String ToString()
         {
             String ss = "PGF : \nmajor version : " + majorVersion + ", minor version : " + minorVersion + "\n" + "flags : (";
             foreach (String flagName in flags.Keys) {

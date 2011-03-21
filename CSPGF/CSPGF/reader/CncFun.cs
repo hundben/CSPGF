@@ -31,7 +31,7 @@ namespace CSPGF.reader
             return sequences.Length;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             String ss = "Name : " + name + " , Indices : ";
             foreach (Sequence s in sequences) {

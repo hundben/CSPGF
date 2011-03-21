@@ -22,7 +22,7 @@ namespace CSPGF.reader
             weight = _weight;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             String sb = "<function name = " + name + " type = " + type + " arity = " + arit + " equations = [";
             foreach (Eq e in eqs) {

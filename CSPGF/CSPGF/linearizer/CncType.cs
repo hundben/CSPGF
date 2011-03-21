@@ -23,7 +23,7 @@ namespace CSPGF.linearizer
         {
             return fId;
         }
-        public String ToString()
+        public override String ToString()
         {
             return "name : " + cId + " , fId : " + fId;
         }

@@ -13,7 +13,7 @@ namespace CSPGF
             s = _str;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "LinearizerException: " + s;
         }

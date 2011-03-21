@@ -12,7 +12,7 @@ namespace CSPGF.reader
         {
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "Wild Card Pattern";
         }

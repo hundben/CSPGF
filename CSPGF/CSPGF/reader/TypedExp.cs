@@ -16,7 +16,7 @@ namespace CSPGF.reader
             type = _t;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "Typed Expression : [Expr : " + exp.ToString() + " , Type : " + type.ToString() + "]";
         }

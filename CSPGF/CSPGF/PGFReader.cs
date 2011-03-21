@@ -233,7 +233,7 @@ namespace CSPGF
             return absCats;
         }
 
-        private CSPGF.reader.Type GetType()
+        private override CSPGF.reader.Type GetType()
         {
             Hypo[] hypos = GetListHypo();
             String returnCat = GetIdent();

@@ -14,7 +14,7 @@ namespace CSPGF.reader
             literal = _literal;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "Literal Expression : " + literal.ToString();
         }

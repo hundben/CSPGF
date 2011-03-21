@@ -131,7 +131,7 @@ namespace CSPGF.parser
         }
         //  def predict():Array[String] = this.child.keySet.toArray
 
-        public String ToString()
+        public override String ToString()
         {
             return ToStringWithPrefix("");
         }

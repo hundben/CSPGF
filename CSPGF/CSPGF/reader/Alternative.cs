@@ -17,7 +17,7 @@ namespace CSPGF.reader
             alt2 = _alt2;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             String sb = "";
             foreach (String t in alt1) {

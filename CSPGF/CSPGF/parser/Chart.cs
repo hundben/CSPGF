@@ -115,7 +115,7 @@ namespace CSPGF.parser
             return cat;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             String s = "=== Productions: ===\n";
             foreach (int i in productionSets.KeySet())

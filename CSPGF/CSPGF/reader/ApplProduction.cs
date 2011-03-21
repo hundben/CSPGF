@@ -17,7 +17,7 @@ namespace CSPGF.reader
             domain = _domain;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             // Was commented out in the java-code.
             String s = fId + " -> " + function.name + "[ ";
@@ -28,7 +28,12 @@ namespace CSPGF.reader
             return s;
         }
 
-        public Boolean Equals(Object o)
+        public override int[] Domain()
+        {
+            return domain;
+        }
+
+        public override Boolean Equals(Object o)
         {
             // TODO: Fix?
             if (o is ApplProduction) {
@@ -48,6 +53,11 @@ namespace CSPGF.reader
                 return true;
             }
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
         }
     }
 }

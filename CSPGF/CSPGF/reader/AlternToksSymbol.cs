@@ -20,7 +20,7 @@ namespace CSPGF.reader
             return true;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             String sb = "pre { ";
             foreach (String s in base.tokens) {

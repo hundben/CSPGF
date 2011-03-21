@@ -13,7 +13,7 @@ namespace CSPGF
             this.language = language;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "Unknown language: " + language;
         }

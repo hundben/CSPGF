@@ -16,7 +16,7 @@ namespace CSPGF.reader
             patt = _patt;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "Variable as Pattern : [ Variable Name : " + name + " , Pattern : " + patt + "]";
         }

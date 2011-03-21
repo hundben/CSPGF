@@ -75,7 +75,7 @@ namespace CSPGF.reader
             return tprods;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "concrete" + name;
         }

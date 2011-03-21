@@ -30,7 +30,7 @@ namespace CSPGF.reader
 
         }
 
-        public String ToString()
+        public override String ToString()
         {
             String ss = "Name : " + name + " , Flags : (";
             // TODO: Är bortkommenterat i javakoden också kanske borde fixa?
