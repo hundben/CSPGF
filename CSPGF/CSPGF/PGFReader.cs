@@ -178,7 +178,7 @@ namespace CSPGF
             if (DBG) {
                 System.Console.WriteLine("AbsFun: '" + name + "'");
             }
-            CSPGF.reader.Type t = GetType();
+            CSPGF.reader.Type t = GetType2();
             int i = GetInt();
             //TODO: Check!
             int has_equations = inputstream.ReadByte();
@@ -233,7 +233,7 @@ namespace CSPGF
             return absCats;
         }
 
-        private override CSPGF.reader.Type GetType()
+        private CSPGF.reader.Type GetType2()
         {
             Hypo[] hypos = GetListHypo();
             String returnCat = GetIdent();
@@ -251,7 +251,7 @@ namespace CSPGF
             int btype = inputstream.ReadByte();
             Boolean b = btype == 0 ? false : true;
             String varName = GetIdent();
-            CSPGF.reader.Type t = GetType();
+            CSPGF.reader.Type t = GetType2();
             Hypo hh = new Hypo(b, varName, t);
             return hh;
         }
@@ -313,7 +313,7 @@ namespace CSPGF
                     break;
                 case 6: //type annotated expression
                     Expr e = GetExpr();
-                    CSPGF.reader.Type t = GetType();
+                    CSPGF.reader.Type t = GetType2();
                     expr = new TypedExp(e, t);
                     break;
                 case 7: //implicit argument
