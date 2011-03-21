@@ -150,7 +150,6 @@ namespace CSPGF.parser
         //      this.child(k).toStringWithPrefix(prefix + "  ")
         //    ).foldLeft("")((a:String,b:String) => a + "\n" + b)
         //  }
-
     }
 }
 

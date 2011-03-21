@@ -14,7 +14,7 @@ namespace CSPGF.reader
             exp = _arg;
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return "Implicit Arguments Expression : [ Argument : " + exp.ToString() + "]";
         }

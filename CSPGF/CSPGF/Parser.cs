@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using CSPGF.parser;
 using CSPGF.reader;
-using CSPGF.trees.Absyn;
+//using CSPGF.trees.Absyn;
 
 namespace CSPGF
 {
@@ -41,12 +41,10 @@ namespace CSPGF
         {
             ParseState ps = new ParseState(language);
             foreach (String w in tokens) {
-                if (!ps.scan(w)) {
+                if (!ps.Scan(w)) {
                     break;
                 }
             }
-
-
             return ps;
         }
 
@@ -58,7 +56,7 @@ namespace CSPGF
         // FIXME: not using the start category ??
         public Tree[] ParseToTrees(String[] tokens)
         {
-            return Parse(tokens).getTrees();
+            return Parse(tokens).GetTrees();
         }
 
         /**

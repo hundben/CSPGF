@@ -5,8 +5,17 @@ using System.Text;
 
 namespace CSPGF.parser
 {
-    class Class1
+    class TreeConverter
     {
+        public TreeConverter()
+        {
+
+        }
+
+        public Tree Intermediate2Abstract(Tree t)
+        {
+            return null;
+        }
     }
 }
 

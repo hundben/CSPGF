@@ -145,6 +145,54 @@ namespace CSPGF.parser
             }
         }
         //TODO predict and so on
+
+
+        public Tree[] GetTrees()
+        {
+            TreeBuilder tb = new TreeBuilder();
+            TreeConverter tc = new TreeConverter();
+            List<Tree> tmp = new List<Tree>();
+            foreach (Tree t in tb.buildTrees(chart, startCat, position)) {
+                tmp.Add(tc.Intermediate2Abstract(t));
+            }
+            return tmp.ToArray<Tree>();
+            
+        }
+
+        public Boolean Scan(String token)
+        {
+            ParseTrie tmp = trie.GetSubTrie(token);
+            if (tmp != null) {
+                Stack<ActiveItem> tmp2 = tmp.Lookup("");
+                if( tmp2 != null)
+                {
+                    trie = tmp;
+                    position++;
+                    agenda = tmp2;
+                    Compute();
+                    return true;
+                }
+            }
+            return false;
+        }
+        //  def scan(token:String):Boolean = this.trie.getSubTrie(token) match {
+        //    case None => return false
+        //    case Some(newTrie) => {
+        //      newTrie.lookup(Nil) match {
+        //        case None => return false
+        //        case Some(agenda) => {
+        //          this.trie = newTrie
+        //          this.position += 1
+        //          this.agenda = agenda
+        //          this.compute()
+        //        }
+        //      }
+        //    }
+        //    //log.finer(this.trie.toString)
+        //    return true
+        //  }
+
+
     }
 }
 
