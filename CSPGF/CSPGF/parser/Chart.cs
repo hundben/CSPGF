@@ -107,6 +107,8 @@ namespace CSPGF.parser
 
         public int getFreshCategory(int oldCat, int l, int j, int k)
         {
+            //Does this line actually work? since it's the reference we need to check...
+            //TODO rewrite this... or maybe just wait and rewrite the whole parser...
             int i = categoryBookKeeper[new Tuple<int, int, int, int>(oldCat, l, j, k)];
             if (i != -1)
             {
