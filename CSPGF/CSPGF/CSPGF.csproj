@@ -146,7 +146,6 @@
     <Compile Include="trees\VisitSkeleton.cs" />
     <Compile Include="UnknownLanguageException.cs" />
     <Compile Include="util\MultiMap.cs" />
-    <Compile Include="util\PGFLogger.cs" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
