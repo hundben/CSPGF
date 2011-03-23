@@ -179,6 +179,12 @@ namespace CSPGF.parser
             }
             return false;
         }
+
+        public String[] Predict()
+        {
+            return trie.Predict();
+        }
+        //  def predict():Array[String] = this.trie.predict
         //  def scan(token:String):Boolean = this.trie.getSubTrie(token) match {
         //    case None => return false
         //    case Some(newTrie) => {
