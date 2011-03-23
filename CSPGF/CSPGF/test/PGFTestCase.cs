@@ -25,6 +25,7 @@ namespace CSPGF.test
 
         protected Tree parseTree(String s)
         {
+            
             //Yylex l = new Yylex(new StringReader(s));
             //parser p = new parser(l);
             //try {

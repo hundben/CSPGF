@@ -39,7 +39,7 @@ namespace CSPGF.test
                 PGF pgf = PGFBuilder.FromFile("Phrasebook.pgf", new String[] { "PhrasebookEng", "PhrasebookBORK" });
                 Debug.Fail("PGFBuilder failed to raise an exception when an unknown language is selected.");
             }
-            catch (UnknownLanguageException e) { }
+            catch (UnknownLanguageException e) { System.Console.WriteLine(e.ToString()); }
         }
 
         public void testUninexedFoodsSelect()
