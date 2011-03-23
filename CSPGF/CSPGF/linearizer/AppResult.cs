@@ -1,5 +1,5 @@
 ﻿/*
-Copyright (c) 2011, Christian Ståhlfors, Erik Bergström (erktheorc@gmail.com)
+Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), Erik Bergström (erktheorc@gmail.com)
 All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
@@ -24,6 +24,7 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+
 using System;
 using System.Collections.Generic;
 using System.Linq;
