@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using CSPGF.trees;
 using CSPGF.trees.Absyn;
-using CSPGF.trees.VisitSkeleton;
+using System.IO;
 
 namespace CSPGF.test
 {
@@ -51,17 +51,16 @@ namespace CSPGF.test
 
         protected Tree parseTree(String s)
         {
-            
-            //Yylex l = new Yylex(new StringReader(s));
-            //parser p = new parser(l);
-            //try {
-            //    Tree parse_tree = p.pTree();
-            //    return parse_tree;
-            //}
-            //catch (Exception e) {
-            //    return null;
-            //}
-            return null;
+            Scanner l = new Scanner(new StreamReader(s).BaseStream);
+            CSPGF.trees.Parser p = new CSPGF.trees.Parser(l);
+            try {
+                Tree parse_tree = p.ParseTree();
+                return parse_tree;
+            }
+            catch (Exception e) {
+                System.Console.WriteLine(e.ToString());
+                return null;
+            }
         }
     }
 }
