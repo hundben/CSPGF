@@ -49,6 +49,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="QUT.ShiftReduceParser, Version=1.4.1.0, Culture=neutral, PublicKeyToken=402396ef6102baec, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>.\QUT.ShiftReduceParser.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -140,8 +144,9 @@
     <Compile Include="test\PGFTestCase.cs" />
     <Compile Include="trees\AbstractVisitSkeleton.cs" />
     <Compile Include="trees\Absyn.cs" />
-    <Compile Include="trees\Lex.cs" />
+    <Compile Include="trees\Parser.cs" />
     <Compile Include="trees\Printer.cs" />
+    <Compile Include="trees\Scanner.cs" />
     <Compile Include="trees\Test.cs" />
     <Compile Include="trees\VisitSkeleton.cs" />
     <Compile Include="UnknownLanguageException.cs" />
@@ -168,6 +173,9 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="QUT.ShiftReduceParser.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
