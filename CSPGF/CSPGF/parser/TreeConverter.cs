@@ -22,6 +22,7 @@ namespace CSPGF.parser
         {
             if (t is Lambda) {
                 Lambda tmp = (Lambda)t;
+                
                 //lvars.foldRight(c2a(body, lvars.map(_._2).reverse ++ vars))(mkELambda)
                 
             }
@@ -32,17 +33,15 @@ namespace CSPGF.parser
             if (t is Application) {
                 Application tmp = (Application)t;
                 List<CSPGF.trees.Absyn.Tree> tmp2 = new List<CSPGF.trees.Absyn.Tree>();
+                tmp2.Add(new CSPGF.trees.Absyn.Function(tmp.fun));
                 foreach (Tree tr in tmp.args) {
                     tmp2.Add(C2a(tr, vars));
                 }
-                List<CSPGF.trees.Absyn.Tree> tmp3 = new List<trees.Absyn.Tree>();
-                foreach (CSPGF.trees.Absyn.Tree tr in tmp2) {
-                    //TODO: Detta ska sluta som ett tree...
-                    tmp3.Add(MkEApp(new CSPGF.trees.Absyn.Function(tmp.fun), tr));
-                }
-
-                 //args.map(c2a(_, vars)).foldLeft(new EFunction(fun):ETree)(mkEApp)
+                //TODO: Check if it works :D
+                return tmp2.Aggregate<CSPGF.trees.Absyn.Tree>(MkEApp);
             }
+                 //args.map(c2a(_, vars)).foldLeft(new EFunction(fun):ETree)(mkEApp)
+    
             if (t is Literal) {
                 Literal tmp = (Literal)t;
                 return new CSPGF.trees.Absyn.Literal(new CSPGF.trees.Absyn.StringLiteral(tmp.value));
@@ -88,6 +87,27 @@ namespace CSPGF.parser
         //    def mkELambda(v :(Boolean, String) , body:ETree ):ETree = v match {
         //      case (bindType, name) => new ELambda(name, body)
         //    }
+
+        public delegate T Fun<T>(T val1, T val2);
+
+
+        public static T Foldl<T>(Fun<T> function,
+                         T accumulator,
+                         IEnumerable<T> list)
+        {
+            foreach (T listItem in list)
+                accumulator = function(listItem, accumulator);
+            return accumulator;
+        }
+        public static T Foldr<T>(Fun<T> function, T
+                                 accumulator,
+                                 IEnumerable<T> list)
+        {
+            list = list.Reverse<T>();
+            foreach (T listItem in list)
+                accumulator = function(listItem, accumulator);
+            return accumulator;
+        }
 
     }
 }
