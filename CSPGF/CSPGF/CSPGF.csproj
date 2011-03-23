@@ -133,8 +133,14 @@
     <Compile Include="reader\VarPattern.cs" />
     <Compile Include="reader\WeightedIdent.cs" />
     <Compile Include="reader\WildCardPattern.cs" />
+    <Compile Include="test\FoodsLinearizeTest.cs" />
+    <Compile Include="test\FoodsParseTest.cs" />
+    <Compile Include="test\FoodsPredictTest.cs" />
+    <Compile Include="test\IndexedPGFTest.cs" />
+    <Compile Include="test\PGFTestCase.cs" />
     <Compile Include="trees\AbstractVisitSkeleton.cs" />
     <Compile Include="trees\Absyn.cs" />
+    <Compile Include="trees\Lex.cs" />
     <Compile Include="trees\Printer.cs" />
     <Compile Include="trees\Test.cs" />
     <Compile Include="trees\VisitSkeleton.cs" />
