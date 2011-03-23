@@ -40,7 +40,6 @@ namespace CSPGF.parser
             {
                 ApplProduction prod = (ApplProduction)p;
                 
-                //if (p.domain.
                 if (p.Domain().Length == 0)
                 {
                     temp.Add(new Application(prod.function.name, new List<Tree>()));
