@@ -42,7 +42,7 @@ namespace CSPGF.trees
     // normally these declarations would come from the parser.
     // If you declare /noparser, or %option noparser then you get this.
     //
-
+    
     public enum Tokens
     {
         EOF = 0, maxParseToken = int.MaxValue
