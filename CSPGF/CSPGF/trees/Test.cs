@@ -10,22 +10,22 @@ using CSPGF.trees.Absyn;
 
 namespace CSPGF.trees
 {
-  public class Test
-  {
-    public static void Main(string[] args)
+    public class Test
     {
-      if (args.Length > 0)
-      {
-        Stream stream = File.OpenRead(args[0]);
-        /* The default entry point is used. For other options see class Parser */
-        Parser parser = new Parser();
-        Scanner scanner = Scanner.CreateScanner(stream);
+        /*public static void Main(string[] args)
+        {
+          if (args.Length > 0)
+          {
+            Stream stream = File.OpenRead(args[0]);
+            /* The default entry point is used. For other options see class Parser */
+        /*Parser parser = new Parser();
+        Scanner scanner = Scanner.CreateScanner(stream);*/
         // Uncomment to enable trace information:
         // parser.Trace shows what the parser is doing
         // parser.Trace = true;
         // scanner.Trace prints the tokens as they are parsed, one token per line
         // scanner.Trace = true;
-        parser.scanner = scanner;
+        /*parser.scanner = scanner;
         try
         {
           Tree parse_tree = parser.ParseTree();
@@ -58,5 +58,6 @@ namespace CSPGF.trees
         Console.Out.WriteLine("You must specify a filename!");
       }
     }
-  }
+  } */
+    }
 }

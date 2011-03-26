@@ -73,7 +73,7 @@ namespace CSPGF.util
             return map.ContainsKey(key);
         }
 
-        public String ToString()
+        public override String ToString()
         {
             return map.ToString();
         }

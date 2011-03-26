@@ -28,46 +28,63 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
+using CSPGF.trees.Absyn;
 
-namespace CSPGF.linearizer
+namespace CSPGF.test
 {
-    class Bracket : BracketedTokn
+    class FoodsLinearizeTest : PGFTestCase
     {
-        private String cId;
-        private int lIndex;
-        private int fId;
-        private List<BracketedTokn> bss;
-
-        public Bracket(String _cId, int _lIndex, int _fId, List<BracketedTokn> _bss)
+        public FoodsLinearizeTest(String name) : base(name)
         {
-            cId = _cId;
-            lIndex = _lIndex;
-            fId = _fId;
-            bss = _bss;
         }
 
-        public String GetCId()
+        PGF pgf;
+
+        public void setUp()
         {
-            return cId;
+            pgf = getPGF("Foods.pgf");
         }
-        public int GetLIndex()
+
+        public void testFoodsEng()
         {
-            return lIndex;
+            Linearizer linearizer = new Linearizer(pgf, "FoodsEng");
+
+            String ex1 = "this fresh pizza is Italian";
+            Tree tree1 = parseTree("((Pred (This ((Mod Fresh) Pizza))) Italian)");
+            String lin1 = linearizer.LinearizeString(tree1);
+            Debug.Assert(ex1.Equals(lin1));
+
+            String ex2 = "those boring fish are expensive";
+            Tree tree2 = parseTree("((Pred (Those ((Mod Boring) Fish))) Expensive)");
+            String lin2 = linearizer.LinearizeString(tree2);
+            Debug.Assert(ex2.Equals(lin2));
         }
-        public int GetFId()
+
+        public void testFoodsSwe()
         {
-            return fId;
+            Linearizer linearizer = new Linearizer(pgf, "FoodsSwe");
+
+            Tree tree1 = parseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
+            String ex1 = "den här läckra pizzan är färsk";
+            String lin1 = linearizer.LinearizeString(tree1);
+            Debug.Assert(ex1.Equals(lin1));
         }
-        public List<BracketedTokn> GetBracketedToks()
+
+        public void testFoodsIta()
         {
-            return bss;
+            Linearizer linearizer = new Linearizer(pgf, "FoodsIta");
+
+            String ex1 = "questa pizza deliziosa è fresca";
+            Tree tree1 = parseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
+            String lin1 = linearizer.LinearizeString(tree1);
+            Debug.Assert(ex1.Equals(lin1));
         }
-        public override String ToString()
+
+
+        public void tearDown()
         {
-            String rez = "name : " + cId + ", linIndex : " + lIndex + ", fId : " + fId + ", bracketed tokens : " + bss.ToString();
-            //for(int i=0;i<bss.length;i++)
-            //	 rez+=(" "+bss[i].toString());
-            return rez;
+            pgf = null;
         }
     }
 }

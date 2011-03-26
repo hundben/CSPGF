@@ -28,46 +28,63 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Diagnostics;
 
-namespace CSPGF.linearizer
+namespace CSPGF.test
 {
-    class Bracket : BracketedTokn
+    class FoodsPredictTest : PGFTestCase
     {
-        private String cId;
-        private int lIndex;
-        private int fId;
-        private List<BracketedTokn> bss;
-
-        public Bracket(String _cId, int _lIndex, int _fId, List<BracketedTokn> _bss)
+        public FoodsPredictTest(String name) : base(name)
         {
-            cId = _cId;
-            lIndex = _lIndex;
-            fId = _fId;
-            bss = _bss;
         }
 
-        public String GetCId()
+        PGF pgf;
+
+        public void setUp()
         {
-            return cId;
+            pgf = getPGF("Foods.pgf");
         }
-        public int GetLIndex()
+
+        public void testFoodsEng()
         {
-            return lIndex;
+            Parser parser = new Parser(pgf, "FoodsEng");
+            String[] words = new String[] { "that", "these", "this", "those" };
+            String[] predictions = parser.Parse().Predict();
+            Array.Sort(predictions);
+            Debug.Assert(words.Length == predictions.Length);
+            for (int i = 0; i < words.Length; i++)
+                Debug.Assert(words[i].Equals(predictions[i]));
         }
-        public int GetFId()
+
+        public void testFoodsSwe()
         {
-            return fId;
+            Parser parser = new Parser(pgf, "FoodsSwe");
+            String[] words = new String[] { "de", "den", "det" };
+            String[] predictions = parser.Parse().Predict();
+            Array.Sort(predictions);
+            Debug.Assert(words.Length == predictions.Length);
+            for (int i = 0; i < words.Length; i++)
+                Debug.Assert(words[i].Equals(predictions[i]));
         }
-        public List<BracketedTokn> GetBracketedToks()
+
+        public void testFoodsIta()
         {
-            return bss;
+            Parser parser = new Parser(pgf, "FoodsIta");
+
+            String[] words = new String[] {"quei", "quel",	"quella", "quelle",
+					"questa", "queste", "questi", "questo"};
+
+            String[] predictions = parser.Parse().Predict();
+            Array.Sort(predictions);
+            Debug.Assert(words.Length == predictions.Length);
+            for (int i = 0; i < words.Length; i++)
+                Debug.Assert(words[i].Equals(predictions[i]));
         }
-        public override String ToString()
+
+
+        public void tearDown()
         {
-            String rez = "name : " + cId + ", linIndex : " + lIndex + ", fId : " + fId + ", bracketed tokens : " + bss.ToString();
-            //for(int i=0;i<bss.length;i++)
-            //	 rez+=(" "+bss[i].toString());
-            return rez;
+            pgf = null;
         }
     }
 }

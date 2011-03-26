@@ -1,4 +1,30 @@
-﻿using System;
+﻿/*
+Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), Erik Bergström (erktheorc@gmail.com)
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the <organization> nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -75,7 +101,7 @@ namespace CSPGF.parser
                 ActiveItem i = new ActiveItem(j, A, f, B, l, p + 1);
                 //scan
                 Stack<ActiveItem> newAgenda;
-                Stack<ActiveItem> luAgenda = trie.LookUp(tokens);
+                Stack<ActiveItem> luAgenda = trie.Lookup(tokens);
                 if (luAgenda.Count == 0)
                 {
                     Stack<ActiveItem> a = new Stack<ActiveItem>();
@@ -93,18 +119,22 @@ namespace CSPGF.parser
                 ArgConstSymbol arg = (ArgConstSymbol)sym;
                 int d = arg.arg;
                 int r = arg.cons;
-                int Bd = item.domain[d];
+                int bd = item.domain[d];
                 if (active.ContainsKey(position))
                 {
-                    active[position].Add(Bd, r, item, d);
-                    foreach (Production prod in chart.GetProductions(Bd))
+                    active[position].Add(bd, r, item, d);
+                    foreach (Production prod in chart.GetProductions(bd))
                     {
-                        ActiveItem it = new ActiveItem(position, Bd, prod.fId, prod.domain, r, 0);
-                        agenda.Push(it);
+                        if (prod is ApplProduction) 
+                        {
+                            ApplProduction prodAp = (ApplProduction)prod;
+                            ActiveItem it = new ActiveItem(position, bd,prodAp.function, prod.Domain(), r, 0);
+                            agenda.Push(it);
+                        }
                     }
-                    int cat = chart.GetCategory(Bd, r, position, position);
+                    int cat = chart.GetCategory(bd, r, position, position);
                     //null here is wierd? :D
-                    if (cat != null)
+                    if (cat != -1)
                     {
                         int[] newDomain = (int[])B.Clone();  // WHAT TEH HELL??? clone returns an object :'(
                         newDomain[d] = cat;
@@ -145,6 +175,60 @@ namespace CSPGF.parser
             }
         }
         //TODO predict and so on
+
+
+        public CSPGF.trees.Absyn.Tree[] GetTrees()
+        {
+            TreeBuilder tb = new TreeBuilder();
+            TreeConverter tc = new TreeConverter();
+            List<CSPGF.trees.Absyn.Tree> tmp = new List<CSPGF.trees.Absyn.Tree>();
+            foreach (Tree t in tb.BuildTrees(chart, startCat, position)) {
+                tmp.Add(tc.Intermediate2Abstract(t));
+            }
+            return tmp.ToArray<CSPGF.trees.Absyn.Tree>();
+            
+        }
+
+        public Boolean Scan(String token)
+        {
+            ParseTrie tmp = trie.GetSubTrie(token);
+            if (tmp != null) {
+                Stack<ActiveItem> tmp2 = tmp.Lookup("");
+                if( tmp2 != null)
+                {
+                    trie = tmp;
+                    position++;
+                    agenda = tmp2;
+                    Compute();
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public String[] Predict()
+        {
+            return trie.Predict();
+        }
+        //  def predict():Array[String] = this.trie.predict
+        //  def scan(token:String):Boolean = this.trie.getSubTrie(token) match {
+        //    case None => return false
+        //    case Some(newTrie) => {
+        //      newTrie.lookup(Nil) match {
+        //        case None => return false
+        //        case Some(agenda) => {
+        //          this.trie = newTrie
+        //          this.position += 1
+        //          this.agenda = agenda
+        //          this.compute()
+        //        }
+        //      }
+        //    }
+        //    //log.finer(this.trie.toString)
+        //    return true
+        //  }
+
+
     }
 }
 

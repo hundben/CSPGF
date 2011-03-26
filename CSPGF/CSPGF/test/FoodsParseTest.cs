@@ -28,46 +28,70 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using CSPGF.trees.Absyn;
+using System.Diagnostics;
 
-namespace CSPGF.linearizer
+namespace CSPGF.test
 {
-    class Bracket : BracketedTokn
+    class FoodsParseTest : PGFTestCase
     {
-        private String cId;
-        private int lIndex;
-        private int fId;
-        private List<BracketedTokn> bss;
 
-        public Bracket(String _cId, int _lIndex, int _fId, List<BracketedTokn> _bss)
+        public FoodsParseTest(String name)
+            : base(name)
         {
-            cId = _cId;
-            lIndex = _lIndex;
-            fId = _fId;
-            bss = _bss;
+
         }
 
-        public String GetCId()
+        PGF pgf;
+
+        public void setUp()
         {
-            return cId;
+            pgf = getPGF("Foods.pgf");
         }
-        public int GetLIndex()
+
+        public void testFoodsEng()
         {
-            return lIndex;
+            Parser parser = new Parser(pgf, "FoodsEng");
+
+            String ex1 = "this fresh pizza is Italian";
+            Tree tree1 = parseTree("((Pred (This ((Mod Fresh) Pizza))) Italian)");
+            Tree[] trees1 = parser.Parse(ex1).GetTrees();
+            Debug.Assert(trees1.Length == 1);
+            Debug.Assert(trees1[0].Equals(tree1));
+
+            String ex2 = "those boring fish are expensive";
+            Tree tree2 = parseTree("((Pred (Those ((Mod Boring) Fish))) Expensive)");
+            Tree[] trees2 = parser.Parse(ex2).GetTrees();
+            Debug.Assert(trees2.Length == 1);
+            Debug.Assert(trees2[0].Equals(tree2));
         }
-        public int GetFId()
+
+        public void testFoodsSwe()
         {
-            return fId;
+            Parser parser = new Parser(pgf, "FoodsSwe");
+
+            String ex1 = "den här läckra pizzan är färsk";
+            Tree tree1 = parseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
+            Tree[] trees1 = parser.Parse(ex1).GetTrees();
+            Debug.Assert(trees1.Length == 1);
+            Debug.Assert(trees1[0].Equals(tree1));
         }
-        public List<BracketedTokn> GetBracketedToks()
+
+        public void testFoodsIta()
         {
-            return bss;
+            Parser parser = new Parser(pgf, "FoodsIta");
+
+            String ex1 = "questa pizza deliziosa è fresca";
+            Tree tree1 = parseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
+            Tree[] trees1 = parser.Parse(ex1).GetTrees();
+            Debug.Assert(trees1.Length == 1);
+            Debug.Assert(trees1[0].Equals(tree1));
         }
-        public override String ToString()
+
+
+        public void tearDown()
         {
-            String rez = "name : " + cId + ", linIndex : " + lIndex + ", fId : " + fId + ", bracketed tokens : " + bss.ToString();
-            //for(int i=0;i<bss.length;i++)
-            //	 rez+=(" "+bss[i].toString());
-            return rez;
+            pgf = null;
         }
     }
 }
