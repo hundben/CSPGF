@@ -48,7 +48,20 @@ namespace CSPGF.parser
         {
             if (t is Lambda) {
                 Lambda tmp = (Lambda)t;
-                
+                List<String> tmp2 = new List<String>();
+                foreach (Tuple<Boolean, String> tup in tmp.vars) {
+                    tmp2.Add(tup.Item2);
+                }
+                tmp2.Reverse();
+                foreach (String s in vars) {
+                    tmp2.Add(s);
+                }
+                tmp.vars.Reverse();
+                CSPGF.trees.Absyn.Tree tmptree = C2a(tmp.body, tmp2);
+                foreach (Tuple<Boolean, String> tup in tmp.vars) {
+                    tmptree = MkELambda(tup, tmptree);
+                }
+                return tmptree;
                 //lvars.foldRight(c2a(body, lvars.map(_._2).reverse ++ vars))(mkELambda)
                 
             }
