@@ -193,7 +193,8 @@ namespace CSPGF.parser
         {
             ParseTrie tmp = trie.GetSubTrie(token);
             if (tmp != null) {
-                Stack<ActiveItem> tmp2 = tmp.Lookup("");
+                String[] empt = new String[0];
+                Stack<ActiveItem> tmp2 = tmp.Lookup(empt);
                 if( tmp2 != null)
                 {
                     trie = tmp;

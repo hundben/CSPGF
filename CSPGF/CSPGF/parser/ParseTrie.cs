@@ -55,19 +55,22 @@ namespace CSPGF.parser
             else {
                 if (child[keys.First<String>()] == null || child.Count == 0) {
                     ParseTrie newN = new ParseTrie(null);
-                    String[] tmp = new String[keys.Count];
-                    keys.CopyTo(tmp);
-                    List<String> tmp2 = tmp.ToList<String>();
-                    tmp2.Remove(keys.First<String>());
-                    newN.Add(tmp2, value);
+                    List<String> tmp = new List<String>(keys);
+                    //String[] tmp = new String[keys.Count];
+                    //keys.CopyTo(tmp);
+                    //Might work with List<String> tmp = new List<String>(keys); instead
+                    //List<String> tmp2 = tmp.ToList<String>();
+                    tmp.Remove(keys.First<String>());
+                    newN.Add(tmp, value);
                     child[keys.First<String>()] = newN;
                 }
                 else {
-                    String[] tmp = new String[keys.Count];
-                    keys.CopyTo(tmp);
-                    List<String> tmp2 = tmp.ToList<String>();
-                    tmp2.Remove(keys.First<String>());
-                    child[keys.First<String>()].Add(tmp2, value);
+                    List<String> tmp = new List<String>(keys);
+                    //String[] tmp = new String[keys.Count];
+                    //keys.CopyTo(tmp);
+                    //List<String> tmp2 = tmp.ToList<String>();
+                    tmp.Remove(keys.First<String>());
+                    child[keys.First<String>()].Add(tmp, value);
                 }
             }
         }
@@ -84,12 +87,17 @@ namespace CSPGF.parser
         //        case Some(n) => n.add(l,value)
         //      }
         //    }
+
+        /*public Stack<ActiveItem> Lookup(String key)
+        {
+            List<String> tmp = new List<String>();
+            tmp.Add(key);
+            return Lookup(tmp);
+        }*/
         public Stack<ActiveItem> Lookup(String[] key)
         {
             return Lookup(key.ToList<String>());
         }
-        //  def lookup(key:Seq[String]):Option[Stack[ActiveItem]] =
-        //    this.lookup(key.toList)
 
         public Stack<ActiveItem> Lookup(List<String> key)
         {
@@ -106,16 +114,6 @@ namespace CSPGF.parser
         //      case Some(t) => Some(t.value)
         //    }
 
-        public Stack<ActiveItem> Lookup(String key)
-        {
-            String[] tmp = new String[1];
-            tmp[0] = key;
-            return Lookup(tmp);
-        }
-
-        //  def lookup(key:String):Option[Stack[ActiveItem]] =
-        //    this.lookup(key::Nil)
-
         public ParseTrie GetSubTrie(List<String> key)
         {
             if (key.Count == 0 || key == null) {
@@ -124,11 +122,12 @@ namespace CSPGF.parser
             else {
                 // TODO: FIXA!
                 if (child[key.First<String>()] != null) {
-                    String[] tmp = new String[key.Count];
-                    key.CopyTo(tmp);
-                    List<String> tmp2 = tmp.ToList<String>();
-                    tmp2.Remove(key.First<String>());
-                    return child[key.First<String>()].GetSubTrie(tmp2);
+                    //String[] tmp = new String[key.Count];
+                    //key.CopyTo(tmp);
+                    List<String> tmp = new List<String>(key);
+                    //List<String> tmp2 = tmp.ToList<String>();
+                    tmp.Remove(key.First<String>());
+                    return child[key.First<String>()].GetSubTrie(tmp);
                 }
                 return null;
             }
@@ -165,7 +164,7 @@ namespace CSPGF.parser
 
         public String ToStringWithPrefix(String prefix)
         {
-            //RETARDKOD!
+            //RETARDKOD! TODO: Gör klart!
             String tmp = prefix + "<" + value.ToString() + ">";
             return tmp;
         }
