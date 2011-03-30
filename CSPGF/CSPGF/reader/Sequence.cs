@@ -33,9 +33,9 @@ namespace CSPGF.reader
 {
     public class Sequence
     {
-        public Symbol[] symbs { get; private set; }
+        public List<Symbol> symbs { get; private set; }
 
-        public Sequence(Symbol[] _symbs)
+        public Sequence(List<Symbol> _symbs)
         {
             symbs = _symbs;
         }
@@ -43,11 +43,6 @@ namespace CSPGF.reader
         public Symbol GetSymbol(int index)
         {
             return symbs[index];
-        }
-
-        public int GetLength()
-        {
-            return symbs.Length;
         }
 
         public override String ToString()

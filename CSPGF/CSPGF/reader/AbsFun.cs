@@ -36,10 +36,10 @@ namespace CSPGF.reader
         public String name { get; private set; }
         public Type type { get; private set; }
         public int arit { get; private set; }
-        public Eq[] eqs { get; private set; }
+        public List<Eq> eqs { get; private set; }
         private double weight;
 
-        public AbsFun(String _str, Type _type, int _arit, Eq[] _eqs, double _weight)
+        public AbsFun(String _str, Type _type, int _arit, List<Eq> _eqs, double _weight)
         {
             name = _str;
             type = _type;

@@ -35,13 +35,12 @@ namespace CSPGF.parser
     class TreeBuilder
     {
         public TreeBuilder() { }
-        public List<Tree> BuildTrees(Chart chart, CSPGF.reader.CncCat startCat, int length) {
+        public List<Tree> BuildTrees(Chart chart, CncCat startCat, int length)
+        {
             List<Tree> temp = new List<Tree>();
-            for (int catID = startCat.firstFID; catID < startCat.lastFID + 1; catID++)
-            {
+            for (int catID = startCat.firstFID; catID < startCat.lastFID + 1; catID++) {
                 int cat = chart.GetCategory(catID, 0, 0, length);
-                if (cat != -1)
-                {
+                if (cat != -1) {
                     temp.AddRange(MkTreesForCat(cat, chart)); //unsure about this???
                 }
             }
@@ -50,10 +49,8 @@ namespace CSPGF.parser
         public List<Tree> MkTreesForCat(int cat, Chart chart)
         {
             List<Tree> temp = new List<Tree>();
-            foreach (Production p in chart.GetProductions(cat))
-            {
-                foreach (Tree t in MkTreesForProduction(p, chart))
-                {
+            foreach (Production p in chart.GetProductions(cat)) {
+                foreach (Tree t in MkTreesForProduction(p, chart)) {
                     temp.Add(t);
                 }
             }
@@ -62,19 +59,15 @@ namespace CSPGF.parser
         public List<Tree> MkTreesForProduction(CSPGF.reader.Production p, Chart chart)
         {
             List<Tree> temp = new List<Tree>();
-            if (p is ApplProduction)
-            {
+            if (p is ApplProduction) {
                 ApplProduction prod = (ApplProduction)p;
-                
-                if (p.Domain().Length == 0)
-                {
+
+                if (p.Domain().Count == 0) {
                     temp.Add(new Application(prod.function.name, new List<Tree>()));
                 }
-                else
-                {
-                //retard code >P
-                    foreach (int i in p.Domain())
-                    {
+                else {
+                    //retard code >P
+                    foreach (int i in p.Domain()) {
                         List<Tree> t2 = MkTreesForCat(i, chart);
                         temp.Add(new Application(prod.function.name, t2));
                         //Use listmixer above? or what does listmixer actually do?
@@ -91,13 +84,13 @@ namespace CSPGF.parser
             return l;   //TODO check what this thing actually does
             //foreach (List<Tree> lt in l)
             //{
-                //  def listMixer(l:List[List[Tree]]):List[List[Tree]] = l match {
-                //    case Nil => Nil
-                //    case List(subL) => subL.map(List(_))
-                //    case head::tail => {
-                //      for {first <- head;
-                //           then <- listMixer(tail)}
-                //      yield first::then
+            //  def listMixer(l:List[List[Tree]]):List[List[Tree]] = l match {
+            //    case Nil => Nil
+            //    case List(subL) => subL.map(List(_))
+            //    case head::tail => {
+            //      for {first <- head;
+            //           then <- listMixer(tail)}
+            //      yield first::then
             //}
             //TODO
             //return new List<List<Tree>>();

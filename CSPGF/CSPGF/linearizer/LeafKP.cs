@@ -46,34 +46,24 @@ namespace CSPGF.linearizer
      **/
     class LeafKP : BracketedTokn
     {
-        private String[] defaultTokens;
-        private Alternative[] alternatives;
+        public List<String> defaultTokens { get; private set; }
+        public List<Alternative> alternatives { get; private set; }
 
-        public LeafKP(String[] _strs, Alternative[] _alts)
+        public LeafKP(List<String> _strs, List<Alternative> _alts)
         {
             this.defaultTokens = _strs;
             this.alternatives = _alts;
         }
 
-        public String[] GetStrs()
-        {
-            return this.defaultTokens;
-        }
-        public Alternative[] GetAlts()
-        {
-            return alternatives;
-        }
         public override String ToString()
         {
             String rez = "string names : [";
-            for (int i = 0 ; i < defaultTokens.Length ; i++)
-            {
-                rez += " " + defaultTokens[i];
+            foreach(String str in defaultTokens) {
+                rez += " " + str;
             }
             rez += "] , Alternatives : [";
-            for (int i = 0 ; i < alternatives.Length ; i++)
-            {
-                rez += " " + alternatives[i].ToString();
+            foreach(Alternative a in alternatives) {
+                rez += " " + a.ToString();
             }
             rez += "]";
             return rez;

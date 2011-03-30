@@ -34,9 +34,9 @@ namespace CSPGF.reader
     public class ApplProduction : Production
     {
         public CncFun function { get; private set; }
-        public int[] domain { get; private set; }
+        public List<int> domain { get; private set; }
 
-        public ApplProduction(int _fId, CncFun _function, int[] _domain)
+        public ApplProduction(int _fId, CncFun _function, List<int> _domain)
             : base(0, _fId)
         {
             function = _function;
@@ -54,7 +54,7 @@ namespace CSPGF.reader
             return s;
         }
 
-        public override int[] Domain()
+        public override List<int> Domain()
         {
             return domain;
         }
@@ -68,10 +68,10 @@ namespace CSPGF.reader
                 if (!newo.function.Equals(function)) {
                     return false;
                 }
-                if (domain.Length != newo.domain.Length) {
+                if (domain.Count != newo.domain.Count) {
                     return false;
                 }
-                for (int i = 0 ; i < domain.Length ; i++) {
+                for (int i = 0 ; i < domain.Count ; i++) {
                     if (domain[i] != newo.domain[i]) {
                         return false;
                     }

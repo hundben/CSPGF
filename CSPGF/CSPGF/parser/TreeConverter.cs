@@ -36,7 +36,6 @@ namespace CSPGF.parser
     {
         public TreeConverter()
         {
-
         }
 
         public CSPGF.trees.Absyn.Tree Intermediate2Abstract(Tree t)
@@ -62,14 +61,12 @@ namespace CSPGF.parser
                     tmptree = MkELambda(tup, tmptree);
                 }
                 return tmptree;
-                //lvars.foldRight(c2a(body, lvars.map(_._2).reverse ++ vars))(mkELambda)
-                
             }
-            if (t is Variable) {
+            else if (t is Variable) {
                 Variable tmp = (Variable)t;
                 return new CSPGF.trees.Absyn.Variable(vars.IndexOf(tmp.cid));
             }
-            if (t is Application) {
+            else if (t is Application) {
                 Application tmp = (Application)t;
                 List<CSPGF.trees.Absyn.Tree> tmp2 = new List<CSPGF.trees.Absyn.Tree>();
                 tmp2.Add(new CSPGF.trees.Absyn.Function(tmp.fun));
@@ -79,41 +76,22 @@ namespace CSPGF.parser
                 //TODO: Check if it works :D
                 return tmp2.Aggregate<CSPGF.trees.Absyn.Tree>(MkEApp);
             }
-                 //args.map(c2a(_, vars)).foldLeft(new EFunction(fun):ETree)(mkEApp)
-    
-            if (t is Literal) {
+            else if (t is Literal) {
                 Literal tmp = (Literal)t;
                 return new CSPGF.trees.Absyn.Literal(new CSPGF.trees.Absyn.StringLiteral(tmp.value));
             }
-            if (t is MetaVariable) {
+            else if (t is MetaVariable) {
                 MetaVariable tmp = (MetaVariable)t;
                 return new CSPGF.trees.Absyn.MetaVariable(tmp.id);
             }
             return null;
         }
-        //        def c2a(t : Tree, vars:List[String]): ETree = t match {
-        //      // Here we have to convert sugarized λ-abstraction (λx,y,z → ...)
-        //      // to canonical ones (λx→λy→λz→...)
-        //      case Lambda(lvars, body) =>
-        //        lvars.foldRight(c2a(body, lvars.map(_._2).reverse ++ vars))(mkELambda)
-        //      // Here variables are index by name but abstract
-        //      // syntax uses de Bruijn indices
-        //      case Variable(x) => new EVariable(vars.indexOf(x))
-        //      // Here we have to desugarized applicaton :
-        //      // f a b c becomes (((f a) b) c)
-        //      case Application(fun,args) =>
-        //        args.map(c2a(_, vars)).foldLeft(new EFunction(fun):ETree)(mkEApp)
-        //      case Literal(value) => new ELiteral(new StringLiteral(value))
-        //      case MetaVariable(id) => new EMetaVariable(id)
-        //    }
 
         public CSPGF.trees.Absyn.Tree MkEApp(CSPGF.trees.Absyn.Tree f, CSPGF.trees.Absyn.Tree x)
         {
-            return new CSPGF.trees.Absyn.Application(f,x);
+            return new CSPGF.trees.Absyn.Application(f, x);
         }
-        //    def mkEApp(f : ETree, x : ETree):ETree = new EApplication(f,x)
-
-
+        
         public CSPGF.trees.Absyn.Tree MkELambda(Tuple<Boolean, String> v, CSPGF.trees.Absyn.Tree body)
         {
             if (v != null) {
@@ -123,31 +101,6 @@ namespace CSPGF.parser
                 return null;
             }
         }
-        //    def mkELambda(v :(Boolean, String) , body:ETree ):ETree = v match {
-        //      case (bindType, name) => new ELambda(name, body)
-        //    }
-
-        public delegate T Fun<T>(T val1, T val2);
-
-
-        public static T Foldl<T>(Fun<T> function,
-                         T accumulator,
-                         IEnumerable<T> list)
-        {
-            foreach (T listItem in list)
-                accumulator = function(listItem, accumulator);
-            return accumulator;
-        }
-        public static T Foldr<T>(Fun<T> function, T
-                                 accumulator,
-                                 IEnumerable<T> list)
-        {
-            list = list.Reverse<T>();
-            foreach (T listItem in list)
-                accumulator = function(listItem, accumulator);
-            return accumulator;
-        }
-
     }
 }
 

@@ -49,9 +49,9 @@ namespace CSPGF.test
         {
             Parser parser = new Parser(pgf, "FoodsEng");
             String[] words = new String[] { "that", "these", "this", "those" };
-            String[] predictions = parser.Parse().Predict();
-            Array.Sort(predictions);
-            Debug.Assert(words.Length == predictions.Length);
+            List<String> predictions = parser.Parse().Predict();
+            predictions.Sort();
+            Debug.Assert(words.Length == predictions.Count);
             for (int i = 0; i < words.Length; i++)
                 Debug.Assert(words[i].Equals(predictions[i]));
         }
@@ -60,9 +60,9 @@ namespace CSPGF.test
         {
             Parser parser = new Parser(pgf, "FoodsSwe");
             String[] words = new String[] { "de", "den", "det" };
-            String[] predictions = parser.Parse().Predict();
-            Array.Sort(predictions);
-            Debug.Assert(words.Length == predictions.Length);
+            List<String> predictions = parser.Parse().Predict();
+            predictions.Sort();
+            Debug.Assert(words.Length == predictions.Count);
             for (int i = 0; i < words.Length; i++)
                 Debug.Assert(words[i].Equals(predictions[i]));
         }
@@ -74,9 +74,9 @@ namespace CSPGF.test
             String[] words = new String[] {"quei", "quel",	"quella", "quelle",
 					"questa", "queste", "questi", "questo"};
 
-            String[] predictions = parser.Parse().Predict();
-            Array.Sort(predictions);
-            Debug.Assert(words.Length == predictions.Length);
+            List<String> predictions = parser.Parse().Predict();
+            predictions.Sort();
+            Debug.Assert(words.Length == predictions.Count);
             for (int i = 0; i < words.Length; i++)
                 Debug.Assert(words[i].Equals(predictions[i]));
         }

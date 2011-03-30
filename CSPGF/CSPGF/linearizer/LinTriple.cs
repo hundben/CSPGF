@@ -33,28 +33,15 @@ namespace CSPGF.linearizer
 {
     class LinTriple
     {
-        private int fId;
-        private CncType cncType;
-        private List<List<BracketedTokn>> linTable;
+        public int fId { get; private set; }
+        public CncType cncType { get; private set; }
+        public List<List<BracketedTokn>> linTable { get; private set; }
 
         public LinTriple(int _fId, CncType _cncType, List<List<BracketedTokn>> _linTable)
         {
             fId = _fId;
             cncType = _cncType;
             linTable = _linTable;
-        }
-
-        public int GetFId()
-        {
-            return fId;
-        }
-        public CncType GetCncType()
-        {
-            return cncType;
-        }
-        public List<List<BracketedTokn>> GetLinTable()
-        {
-            return linTable;
         }
         public override String ToString()
         {

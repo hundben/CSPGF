@@ -33,21 +33,13 @@ namespace CSPGF.linearizer
 {
     class CncType
     {
-        private String cId;
-        private int fId;
+        public String cId { get; private set; }
+        public int fId { get; private set; }
 
         public CncType(String _cId, int _fId)
         {
             cId = _cId;
             fId = _fId;
-        }
-        public String GetCId()
-        {
-            return cId;
-        }
-        public int GetFId()
-        {
-            return fId;
         }
         public override String ToString()
         {

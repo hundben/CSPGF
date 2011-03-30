@@ -65,7 +65,7 @@ namespace CSPGF {
          * @param filename the path of the pgf file.
          * @param languages the list of desired languages
          */
-        public static PGF FromFile(String filename, String[] languages) {
+        public static PGF FromFile(String filename, List<String> languages) {
 	        if (DBG) { System.Console.WriteLine("Reading pgf from file : " + filename); }
             BinaryReader stream = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read));
             return new PGFReader(stream, languages).ReadPGF();
@@ -93,7 +93,7 @@ namespace CSPGF {
          * @param inStream and InputStream to read the pgf binary from.
          */
         //TODO: Check inputstream -> streamreader
-        public static PGF FromInputStream(BinaryReader stream, String[] languages) {
+        public static PGF FromInputStream(BinaryReader stream, List<String> languages) {
             return new PGFReader(stream, languages).ReadPGF();
         }
 

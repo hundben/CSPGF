@@ -34,17 +34,12 @@ namespace CSPGF.reader
     public class ProductionSet
     {
         public int id { get; private set; }
-        public Production[] prods { get; private set; }
+        public List<Production> prods { get; private set; }
 
-        public ProductionSet(int _id, Production[] _prods)
+        public ProductionSet(int _id, List<Production> _prods)
         {
             id = _id;
             prods = _prods;
-        }
-
-        public int Length()
-        {
-            return prods.Length;
         }
 
         public override String ToString()

@@ -33,9 +33,9 @@ namespace CSPGF.reader
 {
     public class AlternToksSymbol : ToksSymbol
     {
-        public Alternative[] alts { get; private set; }
+        public List<Alternative> alts { get; private set; }
 
-        public AlternToksSymbol(String[] _toks, Alternative[] _alts)
+        public AlternToksSymbol(List<String> _toks, List<Alternative> _alts)
             : base(_toks)
         {
             alts = _alts;

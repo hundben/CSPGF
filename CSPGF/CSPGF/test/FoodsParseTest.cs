@@ -55,14 +55,14 @@ namespace CSPGF.test
 
             String ex1 = "this fresh pizza is Italian";
             Tree tree1 = parseTree("((Pred (This ((Mod Fresh) Pizza))) Italian)");
-            Tree[] trees1 = parser.Parse(ex1).GetTrees();
-            Debug.Assert(trees1.Length == 1);
+            List<Tree> trees1 = parser.Parse(ex1).GetTrees();
+            Debug.Assert(trees1.Count == 1);
             Debug.Assert(trees1[0].Equals(tree1));
 
             String ex2 = "those boring fish are expensive";
             Tree tree2 = parseTree("((Pred (Those ((Mod Boring) Fish))) Expensive)");
-            Tree[] trees2 = parser.Parse(ex2).GetTrees();
-            Debug.Assert(trees2.Length == 1);
+            List<Tree> trees2 = parser.Parse(ex2).GetTrees();
+            Debug.Assert(trees2.Count == 1);
             Debug.Assert(trees2[0].Equals(tree2));
         }
 
@@ -72,8 +72,8 @@ namespace CSPGF.test
 
             String ex1 = "den här läckra pizzan är färsk";
             Tree tree1 = parseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
-            Tree[] trees1 = parser.Parse(ex1).GetTrees();
-            Debug.Assert(trees1.Length == 1);
+            List<Tree> trees1 = parser.Parse(ex1).GetTrees();
+            Debug.Assert(trees1.Count == 1);
             Debug.Assert(trees1[0].Equals(tree1));
         }
 
@@ -83,8 +83,8 @@ namespace CSPGF.test
 
             String ex1 = "questa pizza deliziosa è fresca";
             Tree tree1 = parseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
-            Tree[] trees1 = parser.Parse(ex1).GetTrees();
-            Debug.Assert(trees1.Length == 1);
+            List<Tree> trees1 = parser.Parse(ex1).GetTrees();
+            Debug.Assert(trees1.Count == 1);
             Debug.Assert(trees1[0].Equals(tree1));
         }
 

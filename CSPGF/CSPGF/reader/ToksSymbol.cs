@@ -33,9 +33,9 @@ namespace CSPGF.reader
 {
     public class ToksSymbol : Symbol
     {
-        public String[] tokens { get; private set; }
+        public List<String> tokens { get; private set; }
 
-        public ToksSymbol(String[] _toks)
+        public ToksSymbol(List<String> _toks)
         {
             tokens = _toks;
         }

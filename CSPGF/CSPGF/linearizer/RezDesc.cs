@@ -33,28 +33,15 @@ namespace CSPGF.linearizer
 {
     class RezDesc
     {
-        private int fid;
-        private List<CncType> cncTypes;
-        private List<List<List<BracketedTokn>>> bss;
+        public int fid { get; private set; }
+        public List<CncType> cncTypes { get; private set; }
+        public List<List<List<BracketedTokn>>> bracketedtokn { get; private set; }
 
         public RezDesc(int _fid, List<CncType> _cncTypes, List<List<List<BracketedTokn>>> _bss)
         {
             fid = _fid;
             cncTypes = _cncTypes;
-            bss = _bss;
-        }
-
-        public int GetFid()
-        {
-            return fid;
-        }
-        public List<CncType> GetCncTypes()
-        {
-            return cncTypes;
-        }
-        public List<List<List<BracketedTokn>>> GetBracketedTokens()
-        {
-            return bss;
+            bracketedtokn = _bss;
         }
     }
 }

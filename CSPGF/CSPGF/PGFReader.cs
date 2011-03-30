@@ -51,13 +51,13 @@ namespace CSPGF
             //this.mDataInputStream = new DataInputStream(is);
         }
 
-        public PGFReader(BinaryReader _inputstream, String[] _languages)
+        public PGFReader(BinaryReader _inputstream, List<String> _languages)
         {
             inputstream = _inputstream;
             //this.mDataInputStream = new DataInputStream(is);
             //TODO: Convert from String[] to List<String>
             //languages = _languages;
-            languages = _languages.ToList<String>();
+            languages = _languages;
             
         }
 
@@ -176,24 +176,25 @@ namespace CSPGF
                 System.Console.WriteLine("Abstract syntax [" + name + "]");
             }
             Dictionary<String, RLiteral> flags = GetListFlag();
-            AbsFun[] absFuns = GetListAbsFun();
-            AbsCat[] absCats = GetListAbsCat();
+            List<AbsFun> absFuns = GetListAbsFun();
+            List<AbsCat> absCats = GetListAbsCat();
             return new Abstract(name, flags, absFuns, absCats);
         }
 
-        private Pattern[] GetListPattern()
+        private List<Pattern> GetListPattern()
         {
             int npoz = GetInt();
-            Pattern[] patts = new Pattern[npoz];
+            List<Pattern> tmp = new List<Pattern>();
+            //Pattern[] patts = new Pattern[npoz];
             for (int i = 0 ; i < npoz ; i++) {
-                patts[i] = GetPattern();
+                tmp.Add(GetPattern());
             }
-            return patts;
+            return tmp;
         }
 
         private Eq GetEq()
         {
-            Pattern[] patts = GetListPattern();
+            List<Pattern> patts = GetListPattern();
             Expr exp = GetExpr();
             return new Eq(patts, exp);
         }
@@ -208,9 +209,9 @@ namespace CSPGF
             int i = GetInt();
             //TODO: Check!
             int has_equations = inputstream.ReadByte();
-            Eq[] equations;
+            List<Eq> equations;
             if (has_equations == 0) {
-                equations = new Eq[0];
+                equations = new List<Eq>();
             } else {
                 equations = GetListEq();
             }
@@ -225,45 +226,49 @@ namespace CSPGF
         private AbsCat GetAbsCat()
         {
             String name = GetIdent();
-            Hypo[] hypos = GetListHypo();
-            WeightedIdent[] functions = GetListWeightedIdent();
+            List<Hypo> hypos = GetListHypo();
+            List<WeightedIdent> functions = GetListWeightedIdent();
             AbsCat abcC = new AbsCat(name, hypos, functions);
             return abcC;
         }
 
-        private AbsFun[] GetListAbsFun()
+        private List<AbsFun> GetListAbsFun()
         {
             int npoz = GetInt();
-            AbsFun[] absFuns = new AbsFun[npoz];
+            List<AbsFun> tmp = new List<AbsFun>();
+            //AbsFun[] absFuns = new AbsFun[npoz];
             if (npoz == 0) {
-                return absFuns;
+                return tmp;
             } else {
                 for (int i = 0 ; i < npoz ; i++) {
-                    absFuns[i] = GetAbsFun();
+                    tmp.Add(GetAbsFun());
+                    //absFuns[i] = GetAbsFun();
                 }
             }
-            return absFuns;
+            return tmp;
         }
 
-        private AbsCat[] GetListAbsCat()
+        private List<AbsCat> GetListAbsCat()
         {
             int npoz = GetInt();
-            AbsCat[] absCats = new AbsCat[npoz];
+            List<AbsCat> tmp = new List<AbsCat>();
+            //AbsCat[] absCats = new AbsCat[npoz];
             if (npoz == 0) {
-                return absCats;
+                return tmp;
             } else {
                 for (int i = 0 ; i < npoz ; i++) {
-                    absCats[i] = GetAbsCat();
+                    tmp.Add(GetAbsCat());
+                    //absCats[i] = GetAbsCat();
                 }
             }
-            return absCats;
+            return tmp;
         }
 
         private CSPGF.reader.Type GetType2()
         {
-            Hypo[] hypos = GetListHypo();
+            List<Hypo> hypos = GetListHypo();
             String returnCat = GetIdent();
-            Expr[] exprs = GetListExpr();
+            List<Expr> exprs = GetListExpr();
             CSPGF.reader.Type t = new CSPGF.reader.Type(hypos, returnCat, exprs);
             if (DBG) {
                 System.Console.WriteLine("Type: " + t);
@@ -282,24 +287,24 @@ namespace CSPGF
             return hh;
         }
 
-        private Hypo[] GetListHypo()
+        private List<Hypo> GetListHypo()
         {
             int npoz = GetInt();
-            Hypo[] hypos = new Hypo[npoz];
+            List<Hypo> tmp = new List<Hypo>();
             for (int i = 0 ; i < npoz ; i++) {
-                hypos[i] = GetHypo();
+                tmp.Add(GetHypo());
             }
-            return hypos;
+            return tmp;
         }
 
-        private Expr[] GetListExpr()
+        private List<Expr> GetListExpr()
         {
             int npoz = GetInt();
-            Expr[] exprs = new Expr[npoz];
+            List<Expr> tmp = new List<Expr>();
             for (int i = 0 ; i < npoz ; i++) {
-                exprs[i] = GetExpr();
+                tmp.Add(GetExpr());
             }
-            return exprs;
+            return tmp;
         }
 
         private Expr GetExpr()
@@ -352,14 +357,14 @@ namespace CSPGF
             return expr;
         }
 
-        private Eq[] GetListEq()
+        private List<Eq> GetListEq()
         {
             int npoz = GetInt();
-            Eq[] eqs = new Eq[npoz];
+            List<Eq> tmp = new List<Eq>();
             for (int i = 0 ; i < npoz ; i++) {
-                eqs[i] = GetEq();
+                tmp.Add(GetEq());
             }
-            return eqs;
+            return tmp;
         }
 
         private Pattern GetPattern()
@@ -370,7 +375,7 @@ namespace CSPGF
             switch (sel) {
                 case 0: //application pattern
                     String absFun = GetIdent();
-                    Pattern[] patts = GetListPattern();
+                    List<Pattern> patts = GetListPattern();
                     patt = new AppPattern(absFun, patts);
                     break;
                 case 1: //variable pattern
@@ -445,12 +450,12 @@ namespace CSPGF
             if (DBG) {
                 System.Console.WriteLine("Concrete: Reading sequences");
             }
-            Sequence[] seqs = GetListSequence();
-            CncFun[] cncFuns = GetListCncFun(seqs);
+            List<Sequence> seqs = GetListSequence();
+            List<CncFun> cncFuns = GetListCncFun(seqs);
             // We don't need the lindefs for now but again we need to
             // parse them to skip them
             GetListLinDef();
-            ProductionSet[] prods = GetListProductionSet(cncFuns);
+            List<ProductionSet> prods = GetListProductionSet(cncFuns);
             Dictionary<String, CncCat> cncCats = GetListCncCat();
             int i = GetInt();
             return new Concrete(name, flags, seqs, cncFuns, prods, cncCats, i, startCat);
@@ -468,18 +473,18 @@ namespace CSPGF
 
         }
 
-        private PrintName[] GetListPrintName()
+        private List<PrintName> GetListPrintName()
         {
             int npoz = GetInt();
-            PrintName[] pnames = new PrintName[npoz];
+            List<PrintName> tmp = new List<PrintName>();
             if (npoz == 0) {
-                return pnames;
+                return tmp;
             } else {
                 for (int i = 0 ; i < npoz ; i++) {
-                    pnames[i] = GetPrintName();
+                    tmp.Add(GetPrintName());
                 }
             }
-            return pnames;
+            return tmp;
         }
 
         /* ************************************************* */
@@ -487,18 +492,18 @@ namespace CSPGF
         /* ************************************************* */
         private Sequence GetSequence()
         {
-            Symbol[] symbols = GetListSymbol();
+            List<Symbol> symbols = GetListSymbol();
             return new Sequence(symbols);
         }
 
-        private Sequence[] GetListSequence()
+        private List<Sequence> GetListSequence()
         {
             int npoz = GetInt();
-            Sequence[] seqs = new Sequence[npoz];
+            List<Sequence> tmp = new List<Sequence>();
             for (int i = 0 ; i < npoz ; i++) {
-                seqs[i] = GetSequence();
+                tmp.Add(GetSequence());
             }
-            return seqs;
+            return tmp;
         }
 
         private Symbol GetSymbol()
@@ -520,12 +525,12 @@ namespace CSPGF
                     //UnsupportedOperationException -> Exception
                     throw new Exception("Var symbols are not supported yet");
                 case 3: //sequence of tokens
-                    String[] strs = GetListString();
+                    List<String> strs = GetListString();
                     symb = new ToksSymbol(strs);
                     break;
                 case 4: //alternative tokens
-                    String[] altstrs = GetListString();
-                    Alternative[] la = GetListAlternative();
+                    List<String> altstrs = GetListString();
+                    List<Alternative> la = GetListAlternative();
                     symb = new AlternToksSymbol(altstrs, la);
                     break;
                 // IOException -> Exception
@@ -538,56 +543,56 @@ namespace CSPGF
             return symb;
         }
 
-        private Alternative[] GetListAlternative()
+        private List<Alternative> GetListAlternative()
         {
             int npoz = GetInt();
-            Alternative[] alts = new Alternative[npoz];
+            List<Alternative> tmp = new List<Alternative>();
             for (int i = 0 ; i < npoz ; i++) {
-                alts[i] = GetAlternative();
+                tmp.Add(GetAlternative());
             }
-            return alts;
+            return tmp;
         }
 
         private Alternative GetAlternative()
         {
-            String[] s1 = GetListString();
-            String[] s2 = GetListString();
+            List<String> s1 = GetListString();
+            List<String> s2 = GetListString();
             return new Alternative(s1, s2);
         }
 
-        private Symbol[] GetListSymbol()
+        private List<Symbol> GetListSymbol()
         {
             int npoz = GetInt();
-            Symbol[] symbols = new Symbol[npoz];
+            List<Symbol> tmp = new List<Symbol>();
             for (int i = 0 ; i < npoz ; i++) {
-                symbols[i] = GetSymbol();
+                tmp.Add(GetSymbol());
             }
-            return symbols;
+            return tmp;
         }
 
         /* ************************************************* */
         /* Reading concrete functions                        */
         /* ************************************************* */
-        private CncFun GetCncFun(Sequence[] sequences)
+        private CncFun GetCncFun(List<Sequence> sequences)
         {
             String name = GetIdent();
-            int[] sIndices = GetListInt();
-            int l = sIndices.Length;
-            Sequence[] seqs = new Sequence[l];
+            List<int> sIndices = GetListInt();
+            int l = sIndices.Count;
+            List<Sequence> seqs = new List<Sequence>();
             for (int i = 0 ; i < l ; i++) {
                 seqs[i] = sequences[sIndices[i]];
             }
             return new CncFun(name, seqs);
         }
 
-        private CncFun[] GetListCncFun(Sequence[] sequences)
+        private List<CncFun> GetListCncFun(List<Sequence> sequences)
         {
             int npoz = GetInt();
-            CncFun[] cncFuns = new CncFun[npoz];
+            List<CncFun> tmp = new List<CncFun>();
             for (int i = 0 ; i < npoz ; i++) {
-                cncFuns[i] = GetCncFun(sequences);
+                tmp.Add(GetCncFun(sequences));
             }
-            return cncFuns;
+            return tmp;
         }
 
         /* ************************************************* */
@@ -595,22 +600,22 @@ namespace CSPGF
         /* ************************************************* */
         // LinDefs are stored as an int map (Int -> [Int])
 
-        private LinDef[] GetListLinDef()
+        private List<LinDef> GetListLinDef()
         {
             int size = GetInt();
-            LinDef[] linDefs = new LinDef[size];
+            List<LinDef> tmp = new List<LinDef>();
             for (int i = 0 ; i < size ; i++)
-                linDefs[i] = GetLinDef();
-            return linDefs;
+                tmp.Add(GetLinDef());
+            return tmp;
         }
 
         private LinDef GetLinDef()
         {
             int key = GetInt();
             int listSize = GetInt();
-            int[] funIds = new int[listSize];
+            List<int> funIds = new List<int>();
             for (int i = 0 ; i < listSize ; i++) {
-                funIds[i] = GetInt();
+                funIds.Add(GetInt());
             }
             return new LinDef(key, funIds);
         }
@@ -623,10 +628,10 @@ namespace CSPGF
          * @param is is the input stream to read from
          * @param cncFuns is the list of concrete function
          */
-        private ProductionSet GetProductionSet(CncFun[] cncFuns)
+        private ProductionSet GetProductionSet(List<CncFun> cncFuns)
         {
             int id = GetInt();
-            Production[] prods = GetListProduction(id, cncFuns);
+            List<Production> prods = GetListProduction(id, cncFuns);
             ProductionSet ps = new ProductionSet(id, prods);
             return ps;
         }
@@ -636,14 +641,14 @@ namespace CSPGF
          * @param is is the input stream to read from
          * @param cncFuns is the list of concrete function
          */
-        private ProductionSet[] GetListProductionSet(CncFun[] cncFuns)
+        private List<ProductionSet> GetListProductionSet(List<CncFun> cncFuns)
         {
             int npoz = GetInt();
-            ProductionSet[] prods = new ProductionSet[npoz];
+            List<ProductionSet> tmp = new List<ProductionSet>();
             for (int i = 0 ; i < npoz ; i++) {
-                prods[i] = GetProductionSet(cncFuns);
+                tmp.Add(GetProductionSet(cncFuns));
             }
-            return prods;
+            return tmp;
         }
 
         /**
@@ -653,14 +658,14 @@ namespace CSPGF
          * read only once for the whole production set)
          * @param cncFuns is the list of concrete function
          */
-        private Production[] GetListProduction(int leftCat, CncFun[] cncFuns)
+        private List<Production> GetListProduction(int leftCat, List<CncFun> cncFuns)
         {
             int npoz = GetInt();
-            Production[] prods = new Production[npoz];
+            List<Production> tmp = new List<Production>();
             for (int i = 0 ; i < npoz ; i++) {
-                prods[i] = GetProduction(leftCat, cncFuns);
+                tmp.Add(GetProduction(leftCat, cncFuns));
             }
-            return prods;
+            return tmp;
         }
 
         /**
@@ -672,7 +677,7 @@ namespace CSPGF
          *                function of the production (only given by its index in
          *                the list)
          */
-        private Production GetProduction(int leftCat, CncFun[] cncFuns)
+        private Production GetProduction(int leftCat, List<CncFun> cncFuns)
         {
             //TODO: CHECK!
             int sel = inputstream.ReadByte();
@@ -683,7 +688,7 @@ namespace CSPGF
             switch (sel) {
                 case 0: //application
                     int i = GetInt();
-                    int[] domain = GetDomainFromPArgs();
+                    List<int> domain = GetDomainFromPArgs();
                     prod = new ApplProduction(leftCat, cncFuns[i], domain);
                     break;
                 case 1: //coercion
@@ -703,16 +708,16 @@ namespace CSPGF
         // This function reads a list of PArgs (Productions arguments)
         // but returns only the actual domain (the category of the argumetns)
         // since we don't need the rest for now...
-        private int[] GetDomainFromPArgs()
+        private List<int> GetDomainFromPArgs()
         {
             int size = GetInt();
-            int[] domain = new int[size];
+            List<int> tmp = new List<int>();
             for (int i = 0 ; i < size ; i++) {
                 // Skiping the list of integers
                 GetListInt();
-                domain[i] = GetInt();
+                tmp.Add(GetInt());
             }
-            return domain;
+            return tmp;
         }
 
         /* ************************************************* */
@@ -723,7 +728,7 @@ namespace CSPGF
             String sname = GetIdent();
             int firstFId = GetInt();
             int lastFId = GetInt();
-            String[] ss = GetListString();
+            List<String> ss = GetListString();
             return new CncCat(sname, firstFId, lastFId, ss);
         }
 
@@ -733,7 +738,7 @@ namespace CSPGF
             Dictionary<String, CncCat> cncCats = new Dictionary<String, CncCat>();
             String name;
             int firstFID, lastFID;
-            String[] ss;
+            List<String> ss;
             for (int i = 0 ; i < npoz ; i++) {
                 name = GetIdent();
                 firstFID = GetInt();
@@ -807,18 +812,19 @@ namespace CSPGF
             return os.ToString();
         }
 
-        private String[] GetListString()
+        private List<String> GetListString()
         {
             int npoz = GetInt();
-            String[] strs = new String[npoz];
+            List<String> tmp = new List<String>();
+            //String[] strs = new String[npoz];
             if (npoz == 0) {
-                return strs;
+                return tmp;
             } else {
                 for (int i = 0 ; i < npoz ; i++) {
-                    strs[i] = GetString();
+                    tmp.Add(GetString());
                 }
             }
-            return strs;
+            return tmp;
         }
 
         /**
@@ -838,29 +844,29 @@ namespace CSPGF
             //return new String(bytes, "ISO-8859-1");
         }
 
-        private String[] GetListIdent()
+        private List<String> GetListIdent()
         {
             int nb = GetInt();
-            String[] strs = new String[nb];
+            List<String> tmp = new List<String>();
             for (int i = 0 ; i < nb ; i++) {
-                strs[i] = GetIdent();
+                tmp.Add(GetIdent());
             }
-            return strs;
+            return tmp;
         }
 
 
         // Weighted idents are a pair of a String (the ident) and a double
         // (the ident).
-        private WeightedIdent[] GetListWeightedIdent()
+        private List<WeightedIdent> GetListWeightedIdent()
         {
             int nb = GetInt();
-            WeightedIdent[] idents = new WeightedIdent[nb];
+            List<WeightedIdent> tmp = new List<WeightedIdent>();
             for (int i = 0 ; i < nb ; i++) {
                 double w = GetDouble();
                 String s = GetIdent();
-                idents[i] = new WeightedIdent(s, w);
+                tmp.Add(new WeightedIdent(s, w));
             }
-            return idents;
+            return tmp;
         }
 
         /* ************************************************* */
@@ -883,14 +889,14 @@ namespace CSPGF
             }
         }
 
-        private int[] GetListInt()
+        private List<int> GetListInt()
         {
             int npoz = GetInt();
-            int[] vec = new int[npoz];
+            List<int> tmp = new List<int>();
             for (int i = 0 ; i < npoz ; i++) {
-                vec[i] = GetInt();
+                tmp.Add(GetInt());
             }
-            return vec;
+            return tmp;
         }
 
         private int MakeInt16(int j1, int j2)

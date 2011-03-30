@@ -39,7 +39,7 @@ namespace CSPGF.parser
         private Chart chart;
         private Stack<ActiveItem> agenda;
         private int position;
-        private Dictionary<int,ActiveSet> active;
+        private Dictionary<int, ActiveSet> active;
         public ParseState(Concrete grammar)
         {
             startCat = grammar.GetStartCat();
@@ -50,13 +50,11 @@ namespace CSPGF.parser
             active = new Dictionary<int, ActiveSet>();
 
             //initiate
-            foreach (Production k in grammar.GetProductions())
-            {
+            foreach (Production k in grammar.GetProductions()) {
                 //TODO remove comment below
                 chart.AddProduction(k);
             }
-            for (int id = startCat.firstFID; id <= startCat.lastFID + 1; id++)
-            {
+            for (int id = startCat.firstFID; id <= startCat.lastFID + 1; id++) {
                 //TODO remove comment below
                 // Får gå igenom och kolla om objektet är en ApplProduction, antar att foreach inte kör en is på alla objekt.
                 foreach (Object obj in chart.GetProductions(id)) {
@@ -72,112 +70,98 @@ namespace CSPGF.parser
             }
             Compute();
         }
+
         private void Compute()
         {
             active[position] = new ActiveSet();
             //redo this with iterator or something like that?
-            while (agenda.Count != 0)
-            {
+            while (agenda.Count != 0) {
                 ActiveItem e = agenda.Pop();
                 ProcessActiveItem(e);
-
             }
         }
+
         private void ProcessActiveItem(ActiveItem item)
         {
             int j = item.begin;
             int A = item.category;
             CncFun f = item.function;
-            int[] B = item.domain;
+            List<int> B = item.domain;
             int l = item.constituent;
             int p = item.position;
 
             Symbol sym = item.NextSymbol(); //is this correct?
 
-            if (sym is ToksSymbol)
-            {
+            if (sym is ToksSymbol) {
                 ToksSymbol tok = (ToksSymbol)sym;
-                String[] tokens = tok.tokens;
+                List<String> tokens = tok.tokens;
                 ActiveItem i = new ActiveItem(j, A, f, B, l, p + 1);
                 //scan
                 Stack<ActiveItem> newAgenda;
                 Stack<ActiveItem> luAgenda = trie.Lookup(tokens);
-                if (luAgenda.Count == 0)
-                {
+                if (luAgenda.Count == 0) {
                     Stack<ActiveItem> a = new Stack<ActiveItem>();
                     trie.Add(tokens, a);
                     newAgenda = a;
                 }
-                else
-                {
+                else {
                     newAgenda = luAgenda;
                 }
                 newAgenda.Push(i);
             }
-            else if (sym is ArgConstSymbol)
-            {
+            else if (sym is ArgConstSymbol) {
                 ArgConstSymbol arg = (ArgConstSymbol)sym;
                 int d = arg.arg;
                 int r = arg.cons;
                 int bd = item.domain[d];
-                if (active.ContainsKey(position))
-                {
+                if (active.ContainsKey(position)) {
                     active[position].Add(bd, r, item, d);
-                    foreach (Production prod in chart.GetProductions(bd))
-                    {
-                        if (prod is ApplProduction) 
-                        {
+                    foreach (Production prod in chart.GetProductions(bd)) {
+                        if (prod is ApplProduction) {
                             ApplProduction prodAp = (ApplProduction)prod;
-                            ActiveItem it = new ActiveItem(position, bd,prodAp.function, prod.Domain(), r, 0);
+                            ActiveItem it = new ActiveItem(position, bd, prodAp.function, prod.Domain(), r, 0);
                             agenda.Push(it);
                         }
                     }
                     int cat = chart.GetCategory(bd, r, position, position);
                     //null here is wierd? :D
-                    if (cat != -1)
-                    {
-                        int[] newDomain = (int[])B.Clone();  // WHAT TEH HELL??? clone returns an object :'(
+                    if (cat != -1) {
+                        List<int> newDomain = new List<int>(B);
+                        //List<int> newDomain = (int[])B.Clone();  // WHAT TEH HELL??? clone returns an object :'(
                         newDomain[d] = cat;
                         ActiveItem it = new ActiveItem(j, A, f, newDomain, l, p + 1);
                         agenda.Push(it);
                     }
                 }
             }
-            else
-            {
+            else {
                 int cat = chart.GetCategory(A, l, j, this.position);
-                if (cat == -1)  //TODO check this -1 == null in this case???
-                {
+                if (cat == -1) { //TODO check this -1 == null in this case???
                     int N = chart.GenerateFreshCategory(A, l, j, position);
-                    foreach (Tuple<ActiveItem, int> tmp in active[j].Get(A, l))
-                    {
+                    foreach (Tuple<ActiveItem, int> tmp in active[j].Get(A, l)) {
                         ActiveItem ip = tmp.Item1;
                         int d = tmp.Item2;
-                        int[] domain = (int[])ip.domain.Clone();
+                        List<int> domain = new List<int>(ip.domain);
+                        //int[] domain = (int[])ip.domain.Clone();
                         domain[d] = N;
                         ActiveItem i = new ActiveItem(ip.begin, ip.category, ip.function, domain, ip.constituent, ip.position + 1);
                         agenda.Push(i);
                     }
                 }
-                else
-                {
-                    foreach (Tuple<ActiveItem,int,int> aset in active[position].Get(cat))
-                    {
+                else {
+                    foreach (Tuple<ActiveItem, int, int> aset in active[position].Get(cat)) {
                         ActiveItem xprime = aset.Item1;
                         int dprime = aset.Item2;
                         int r = aset.Item3;
                         ActiveItem i = new ActiveItem(position, cat, f, B, r, 0);
                         agenda.Push(i);
-
                     }
                     chart.AddProduction(cat, f, B);
                 }
             }
         }
-        //TODO predict and so on
 
-
-        public CSPGF.trees.Absyn.Tree[] GetTrees()
+        public List<CSPGF.trees.Absyn.Tree> GetTrees()
         {
             TreeBuilder tb = new TreeBuilder();
             TreeConverter tc = new TreeConverter();
@@ -185,8 +169,8 @@ namespace CSPGF.parser
             foreach (Tree t in tb.BuildTrees(chart, startCat, position)) {
                 tmp.Add(tc.Intermediate2Abstract(t));
             }
-            return tmp.ToArray<CSPGF.trees.Absyn.Tree>();
-            
+            return tmp;
+
         }
 
         public Boolean Scan(String token)
@@ -195,8 +179,7 @@ namespace CSPGF.parser
             if (tmp != null) {
                 String[] empt = new String[0];
                 Stack<ActiveItem> tmp2 = tmp.Lookup(empt);
-                if( tmp2 != null)
-                {
+                if (tmp2 != null) {
                     trie = tmp;
                     position++;
                     agenda = tmp2;
@@ -207,29 +190,10 @@ namespace CSPGF.parser
             return false;
         }
 
-        public String[] Predict()
+        public List<String> Predict()
         {
             return trie.Predict();
         }
-        //  def predict():Array[String] = this.trie.predict
-        //  def scan(token:String):Boolean = this.trie.getSubTrie(token) match {
-        //    case None => return false
-        //    case Some(newTrie) => {
-        //      newTrie.lookup(Nil) match {
-        //        case None => return false
-        //        case Some(agenda) => {
-        //          this.trie = newTrie
-        //          this.position += 1
-        //          this.agenda = agenda
-        //          this.compute()
-        //        }
-        //      }
-        //    }
-        //    //log.finer(this.trie.toString)
-        //    return true
-        //  }
-
-
     }
 }
 

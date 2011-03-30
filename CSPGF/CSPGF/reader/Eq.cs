@@ -33,10 +33,10 @@ namespace CSPGF.reader
 {
     public class Eq
     {
-        Pattern[] patts;
+        List<Pattern> patts;
         Expr expr;
 
-        public Eq(Pattern[] _patts, Expr _expr)
+        public Eq(List<Pattern> _patts, Expr _expr)
         {
             patts = _patts;
             expr = _expr;

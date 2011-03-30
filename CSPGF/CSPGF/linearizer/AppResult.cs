@@ -35,27 +35,15 @@ namespace CSPGF.linearizer
 {
     class AppResult
     {
-        private CncFun cncFun;
-        private CncType cncType;
-        private List<CncType> cncTypes;
+        public CncFun cncFun {get; private set;}
+        public CncType cncType { get; private set; }
+        public List<CncType> cncTypes { get; private set; }
 
         public AppResult(CncFun _cncFun, CncType _cncType, List<CncType> _cncTypes)
         {
             cncFun = _cncFun;
             cncType = _cncType;
             cncTypes = _cncTypes;
-        }
-        public CncFun GetCncFun()
-        {
-            return cncFun;
-        }
-        public CncType GetCncType()
-        {
-            return cncType;
-        }
-        public List<CncType> GetCncTypes()
-        {
-            return cncTypes;
         }
     }
 }

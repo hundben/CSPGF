@@ -35,9 +35,9 @@ namespace CSPGF.reader
     {
         // Should be able to get?
         String name;
-        Pattern[] patts;
+        List<Pattern> patts;
 
-        public AppPattern(String _name, Pattern[] _patts)
+        public AppPattern(String _name, List<Pattern> _patts)
         {
             name = _name;
             patts = _patts;

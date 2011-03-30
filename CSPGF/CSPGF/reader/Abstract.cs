@@ -35,10 +35,10 @@ namespace CSPGF.reader
     {
         public String name { get; private set; } 
         private Dictionary<String, RLiteral> flags;
-        public AbsFun[] absFuns { get; private set; }
-        public AbsCat[] absCats { get; private set; }
+        public List<AbsFun> absFuns { get; private set; }
+        public List<AbsCat> absCats { get; private set; }
 
-        public Abstract(String _name, Dictionary<String, RLiteral> _flags, AbsFun[] _absFuns, AbsCat[] _absCats)
+        public Abstract(String _name, Dictionary<String, RLiteral> _flags, List<AbsFun> _absFuns, List<AbsCat> _absCats)
         {
             name = _name;
             flags = _flags;

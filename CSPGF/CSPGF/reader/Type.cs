@@ -33,11 +33,11 @@ namespace CSPGF.reader
 {
     public class Type
     {
-        public Hypo[] hypos { get; private set; }
+        public List<Hypo> hypos { get; private set; }
         public String name { get; private set; }
-        public Expr[] exprs { get; private set; }
+        public List<Expr> exprs { get; private set; }
 
-        public Type(Hypo[] _hypos, String _str, Expr[] _exprs)
+        public Type(List<Hypo> _hypos, String _str, List<Expr> _exprs)
         {
             hypos = _hypos;
             name = _str;
