@@ -41,10 +41,10 @@ namespace CSPGF.reader
             initId = _initId;
         }
 
-        public override int[] Domain()
+        public override List<int> Domain()
         {
-            int[] tmp = new int[1];
-            tmp[0] = initId;
+            List<int> tmp = new List<int>();
+            tmp.Add(initId);
             return tmp;
         }
 

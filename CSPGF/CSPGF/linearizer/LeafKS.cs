@@ -33,24 +33,17 @@ namespace CSPGF.linearizer
 {
     class LeafKS : BracketedTokn
     {
-        private String[] tokens;
+        public List<String> tokens { get; private set; }
 
-        public LeafKS(String[] _tokens)
+        public LeafKS(List<String> _tokens)
         {
             tokens = _tokens;
         }
-
-        public String[] GetStrs()
-        {
-            return tokens;
-        }
-
         public override String ToString()
         {
             String rez = "string names : [";
-            for (int i = 0 ; i < tokens.Length ; i++)
-            {
-                rez += (" " + this.tokens[i]);
+            foreach(String s in tokens) {
+                rez += (" " + s);
             }
             rez += "]";
             return rez;

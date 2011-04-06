@@ -46,9 +46,9 @@ namespace CSPGF.reader
         public String name { get; private set; }
         public int firstFID { get; private set; }
         public int lastFID { get; private set; }
-        private String[] labels; //TODO: was commented out, have to check later.
+        private List<String> labels; //TODO: was commented out, have to check later.
 
-        public CncCat(String _name, int _firstFId, int _lastFId, String[] _labels)
+        public CncCat(String _name, int _firstFId, int _lastFId, List<String> _labels)
         {
             name = _name;
             firstFID = _firstFId;

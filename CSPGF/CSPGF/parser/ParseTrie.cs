@@ -49,47 +49,29 @@ namespace CSPGF.parser
         public void Add(List<String> keys, Stack<ActiveItem> value)
         {
             //TODO: HAHA, kolla xDDD
-            if (keys.Count == 0 || keys == null) {
+            if (keys == null || keys.Count == 0) {
                 this.value = value;
             }
             else {
                 if (child[keys.First<String>()] == null || child.Count == 0) {
                     ParseTrie newN = new ParseTrie(null);
-                    String[] tmp = new String[keys.Count];
-                    keys.CopyTo(tmp);
-                    List<String> tmp2 = tmp.ToList<String>();
-                    tmp2.Remove(keys.First<String>());
-                    newN.Add(tmp2, value);
+                    List<String> tmp = new List<String>(keys);
+                    tmp.Remove(keys.First<String>());
+                    newN.Add(tmp, value);
                     child[keys.First<String>()] = newN;
                 }
                 else {
-                    String[] tmp = new String[keys.Count];
-                    keys.CopyTo(tmp);
-                    List<String> tmp2 = tmp.ToList<String>();
-                    tmp2.Remove(keys.First<String>());
-                    child[keys.First<String>()].Add(tmp2, value);
+                    List<String> tmp = new List<String>(keys);
+                    tmp.Remove(keys.First<String>());
+                    child[keys.First<String>()].Add(tmp, value);
                 }
             }
         }
 
-        //  def add(keys:List[String], value:Stack[ActiveItem]):Unit =
-        //    keys match {
-        //      case Nil => this.value = value
-        //      case x::l => this.child.get(x) match {
-        //        case None => {
-        //          val newN = new ParseTrie
-        //          newN.add(l,value)
-        //          this.child.update(x, newN)
-        //        }
-        //        case Some(n) => n.add(l,value)
-        //      }
-        //    }
         public Stack<ActiveItem> Lookup(String[] key)
         {
             return Lookup(key.ToList<String>());
         }
-        //  def lookup(key:Seq[String]):Option[Stack[ActiveItem]] =
-        //    this.lookup(key.toList)
 
         public Stack<ActiveItem> Lookup(List<String> key)
         {
@@ -100,22 +82,7 @@ namespace CSPGF.parser
                 return null;
             }
         }
-        //  def lookup(key:List[String]):Option[Stack[ActiveItem]] =
-        //    getSubTrie(key) match {
-        //      case None => None
-        //      case Some(t) => Some(t.value)
-        //    }
-
-        public Stack<ActiveItem> Lookup(String key)
-        {
-            String[] tmp = new String[1];
-            tmp[0] = key;
-            return Lookup(tmp);
-        }
-
-        //  def lookup(key:String):Option[Stack[ActiveItem]] =
-        //    this.lookup(key::Nil)
-
+        
         public ParseTrie GetSubTrie(List<String> key)
         {
             if (key.Count == 0 || key == null) {
@@ -124,23 +91,16 @@ namespace CSPGF.parser
             else {
                 // TODO: FIXA!
                 if (child[key.First<String>()] != null) {
-                    String[] tmp = new String[key.Count];
-                    key.CopyTo(tmp);
-                    List<String> tmp2 = tmp.ToList<String>();
-                    tmp2.Remove(key.First<String>());
-                    return child[key.First<String>()].GetSubTrie(tmp2);
+                    //String[] tmp = new String[key.Count];
+                    //key.CopyTo(tmp);
+                    List<String> tmp = new List<String>(key);
+                    //List<String> tmp2 = tmp.ToList<String>();
+                    tmp.Remove(key.First<String>());
+                    return child[key.First<String>()].GetSubTrie(tmp);
                 }
                 return null;
             }
         }
-        //  def getSubTrie(key:List[String]):Option[ParseTrie] =
-        //    key match {
-        //      case Nil => Some(this)
-        //      case x::l => this.child.get(x) match {
-        //        case None => None
-        //        case Some(n) => n.getSubTrie(l)
-        //      }
-        //    }
 
         public ParseTrie GetSubTrie(String key)
         {
@@ -148,24 +108,20 @@ namespace CSPGF.parser
             tmp.Add(key);
             return GetSubTrie(tmp);
         }
-        //  def getSubTrie(key:String):Option[ParseTrie] =
-        //    this.getSubTrie(key::Nil)
-
-        public String[] Predict()
+        
+        public List<String> Predict()
         {
-            return child.Keys.ToArray<String>();
+            return child.Keys.ToList<String>();
         }
-        //  def predict():Array[String] = this.child.keySet.toArray
-
+        
         public override String ToString()
         {
             return ToStringWithPrefix("");
         }
-        //  override def toString() = this.toStringWithPrefix("")
-
+        
         public String ToStringWithPrefix(String prefix)
         {
-            //RETARDKOD!
+            //RETARDKOD! TODO: Gör klart!
             String tmp = prefix + "<" + value.ToString() + ">";
             return tmp;
         }

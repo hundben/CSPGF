@@ -35,10 +35,10 @@ namespace CSPGF.reader
     {
 
         public String name { get; private set; }
-        public Hypo[] hypos { get; private set; }
-        public WeightedIdent[] functions {get; private set; }
+        public List<Hypo> hypos { get; private set; }
+        public List<WeightedIdent> functions {get; private set; }
 
-        public AbsCat(String _name, Hypo[] _hypos, WeightedIdent[] _functions)
+        public AbsCat(String _name, List<Hypo> _hypos, List<WeightedIdent> _functions)
         {
             name = _name;
             hypos = _hypos;

@@ -262,8 +262,8 @@ namespace CSPGF
         private Boolean Is_ho_prod(Production p)
         {
             if (p is ApplProduction) {
-                int[] args = ((ApplProduction)p).domain;
-                if (args.Length == 1 && args[0] == -4)
+                List<int> args = ((ApplProduction)p).domain;
+                if (args.Count == 1 && args[0] == -4)
                     return true;
             }
             return false;
@@ -298,10 +298,10 @@ namespace CSPGF
         {
             List<String> rezTemp = new List<String>();
             Abstract abstr = pgf.GetAbstract();
-            AbsFun[] absFuns = abstr.absFuns;
+            List<AbsFun> absFuns = abstr.absFuns;
             foreach (AbsFun af in absFuns) {
             //for (int i = 0 ; i < absFuns.length ; i++) {
-                Hypo[] hypos = af.type.hypos;
+                List<Hypo> hypos = af.type.hypos;
                 //Hypo[] hypos = absFuns[i].getType().getHypos();
                 foreach(Hypo hypo in hypos) {
                 //for (int j = 0 ; j < hypos.length ; j++)
@@ -317,16 +317,16 @@ namespace CSPGF
 
 
         /**gets the types from the hypotheses of a type **/
-        private String[] HypoArgsOfType(CSPGF.reader.Type t)
+        private List<String> HypoArgsOfType(CSPGF.reader.Type t)
         {
-            Hypo[] hypos = t.hypos;
+            List<Hypo> hypos = t.hypos;
             List<String> tmp = new List<String>();
             foreach (Hypo h in hypos) {
                 //for (int i = 0 ; i < hypos.length ; i++)
                 tmp.Add(h.type.name);
                 //rez[i] = hypos[i].getType().getName();
             }
-            return tmp.ToArray<String>();
+            return tmp;
         }
 
         /** flattens a bracketed token
@@ -334,22 +334,22 @@ namespace CSPGF
         private List<String> Untokn(BracketedTokn bt, String after)
         {
             if (bt is LeafKS) {
-                String[] d = ((LeafKS)bt).GetStrs();
+                List<String> d = ((LeafKS)bt).tokens;
                 List<String> rez = new List<String>();
                 foreach (String str in d) {
                     rez.Add(str);
                 }
                 return rez;
             } else if (bt is LeafKP) {
-                String[] d = ((LeafKP)bt).GetStrs();
-                Alternative[] alts = ((LeafKP)bt).GetAlts();
+                List<String> d = ((LeafKP)bt).defaultTokens;
+                List<Alternative> alts = ((LeafKP)bt).alternatives;
                 List<String> rez = new List<String>();
                 foreach (Alternative alt in alts) {
-                    String[] ss2 = alt.alt2;
+                    List<String> ss2 = alt.alt2;
                     foreach (String str in ss2) {
                         //for (int j = 0; j<ss2.Length; j++)
                         if (after.StartsWith(str)) {
-                            String[] ss1 = alt.alt1;
+                            List<String> ss1 = alt.alt1;
                             foreach (String str2 in ss1) {
                                 //for(int k = ss1.Length-1; k>=0; k--)
                                 rez.Add(str2);
@@ -358,13 +358,13 @@ namespace CSPGF
                         }
                     }
                 }
-                for (int i = d.Length - 1 ; i >= 0 ; i--) {
+                for (int i = d.Count - 1 ; i >= 0 ; i--) {
                     rez.Add(d[i]);
                 }
                 return rez;
             } else {
                 List<String> rez = new List<String>();
-                List<BracketedTokn> bs = ((Bracket)bt).GetBracketedToks();
+                List<BracketedTokn> bs = ((Bracket)bt).bracketedtoks;
                 for (int i = bs.Count - 1 ; i >= 0 ; i--) {
                     foreach (String str in Untokn(bs.ElementAt(i), after)) {
                         rez.Add(str);
@@ -383,7 +383,7 @@ namespace CSPGF
         {
             List<String> rez = new List<String>();
             List<String> rezF = new List<String>();
-            List<List<BracketedTokn>> vtemp = v.GetLinTable();
+            List<List<BracketedTokn>> vtemp = v.linTable;
             String after = "";
             for (int k = vtemp.ElementAt(0).Count - 1 ; k >= 0 ; k--) {
                 //{rez.addAll(untokn(vtemp.elementAt(0).elementAt(k),after));
@@ -490,7 +490,7 @@ namespace CSPGF
                 List<AppResult> vApp = GetApps(prods, mb_cty, f);
                 List<LinTriple> rez = new List<LinTriple>();
                 for (int i = 0 ; i < vApp.Count ; i++) {
-                    List<CncType> copy_ctys = vApp.ElementAt(i).GetCncTypes();
+                    List<CncType> copy_ctys = vApp.ElementAt(i).cncTypes;
                     List<CncType> ctys = new List<CncType>();
                     for (int ind = copy_ctys.Count - 1 ; ind >= 0 ; ind--) {
                         ctys.Add(copy_ctys.ElementAt(ind));
@@ -499,8 +499,8 @@ namespace CSPGF
                         //LinearizerException -> Exception
                         throw new Exception("lengths of es and ctys don't match" + es.ToString() + " -- " + ctys.ToString());
                     }
-                    Sequence[] lins = vApp.ElementAt(i).GetCncFun().sequences;
-                    String cat = vApp.ElementAt(i).GetCncType().GetCId();
+                    List<Sequence> lins = vApp.ElementAt(i).cncFun.sequences;
+                    String cat = vApp.ElementAt(i).cncType.cId;
                     List<CSPGF.trees.Absyn.Tree> copy_expr = new List<CSPGF.trees.Absyn.Tree>();
                     for (int ind = 0 ; ind < es.Count ; ind++) {
                         copy_expr.Add(es.ElementAt(ind));
@@ -509,8 +509,8 @@ namespace CSPGF
                     for (int k = 0 ; k < rezDesc.Count ; k++) {
                         RezDesc intRez = rezDesc.ElementAt(k);
                         List<List<BracketedTokn>> linTab = new List<List<BracketedTokn>>();
-                        for (int ind = 0 ; ind < lins.Length ; ind++) {
-                            linTab.Add(ComputeSeq(lins[ind], intRez.GetCncTypes(), intRez.GetBracketedTokens()));
+                        for (int ind = 0 ; ind < lins.Count ; ind++) {
+                            linTab.Add(ComputeSeq(lins[ind], intRez.cncTypes, intRez.bracketedtokn));
                         }
                         rez.Add(new LinTriple(n_fid + 1, new CncType(cat, n_fid), linTab));
                     }
@@ -545,7 +545,7 @@ namespace CSPGF
                     return rez;
                 }
             } else {
-                int fid = mb_cty.GetFId();
+                int fid = mb_cty.fId;
                 HashSet<Production> setProd = prods[fid];
                 List<AppResult> rez = new List<AppResult>();
                 if (setProd == null)
@@ -571,27 +571,27 @@ namespace CSPGF
         {
             List<AppResult> rez = new List<AppResult>();
             if (p is ApplProduction) {
-                int[] args = ((ApplProduction)p).domain;
+                List<int> args = ((ApplProduction)p).domain;
                 CncFun cncFun = ((ApplProduction)p).function;
                 List<CncType> vtype = new List<CncType>();
                 if (f.Equals("V")) {
-                    for (int i = 0 ; i < args.Length ; i++) {
+                    for (int i = 0 ; i < args.Count ; i++) {
                         vtype.Add(new CncType("__gfVar", args[i]));
                     }
                     rez.Add(new AppResult(cncFun, cty, vtype));
                     return rez;
                 }
                 if (f.Equals("_B")) {
-                    vtype.Add(new CncType(cty.GetCId(), args[0]));
-                    for (int i = 1 ; i < args.Length ; i++) {
+                    vtype.Add(new CncType(cty.cId, args[0]));
+                    for (int i = 1 ; i < args.Count ; i++) {
                         vtype.Add(new CncType("__gfVar", args[i]));
                     }
                     rez.Add(new AppResult(cncFun, cty, vtype));
                     return rez;
                 } else {
-                    AbsFun[] absFuns = pgf.GetAbstract().absFuns;
+                    List<AbsFun> absFuns = pgf.GetAbstract().absFuns;
                     CSPGF.reader.Type t = null;
-                    for (int i = 0 ; i < absFuns.Length ; i++) {
+                    for (int i = 0 ; i < absFuns.Count ; i++) {
                         if (f.Equals(absFuns[i].name))
                             t = absFuns[i].type;
                     }
@@ -601,10 +601,10 @@ namespace CSPGF
                     }
                     List<String> catSkel = CatSkeleton(t);
                     String res = catSkel.ElementAt(0);
-                    for (int i = 0 ; i < args.Length ; i++) {
+                    for (int i = 0 ; i < args.Count ; i++) {
                         vtype.Add(new CncType(catSkel.ElementAt(i + 1), args[i]));
                     }
-                    rez.Add(new AppResult(cncFun, new CncType(res, cty.GetFId()), vtype));
+                    rez.Add(new AppResult(cncFun, new CncType(res, cty.fId), vtype));
                     return rez;
                 }
             } else {
@@ -627,7 +627,7 @@ namespace CSPGF
         {
             List<String> rez = new List<String>();
             rez.Add(t.name);
-            Hypo[] hypos = t.hypos;
+            List<Hypo> hypos = t.hypos;
             foreach (Hypo h in hypos) {
                 rez.Add(h.type.name);
             }
@@ -641,8 +641,8 @@ namespace CSPGF
         {
             List<List<BracketedTokn>> bt = new List<List<BracketedTokn>>();
             List<BracketedTokn> v = new List<BracketedTokn>();
-            String[] sts = new String[1];
-            sts[0] = s;
+            List<String> sts = new List<String>();
+            sts.Add(s);
             v.Add(new LeafKS(sts));
             bt.Add(v);
             return bt;
@@ -658,13 +658,13 @@ namespace CSPGF
                 int cons = ((ArgConstSymbol)s).cons;
                 return GetArg(arg, cons, cncTypes, linTables);
             } else if (s is AlternToksSymbol) {
-                String[] toks = ((AlternToksSymbol)s).tokens;
-                Alternative[] alts = ((AlternToksSymbol)s).alts;
+                List<String> toks = ((AlternToksSymbol)s).tokens;
+                List<Alternative> alts = ((AlternToksSymbol)s).alts;
                 List<BracketedTokn> v = new List<BracketedTokn>();
                 v.Add(new LeafKP(toks, alts));
                 return v;
             } else {
-                String[] toks = ((ToksSymbol)s).tokens;
+                List<String> toks = ((ToksSymbol)s).tokens;
                 List<BracketedTokn> v = new List<BracketedTokn>();
                 v.Add(new LeafKS(toks));
                 return v;
@@ -680,8 +680,8 @@ namespace CSPGF
                 return new List<BracketedTokn>();
             CncType cncType = cncTypes.ElementAt(d);
             List<List<BracketedTokn>> lin = linTables.ElementAt(d);
-            String cat = cncType.GetCId();
-            int fid = cncType.GetFId();
+            String cat = cncType.cId;
+            int fid = cncType.fId;
             List<BracketedTokn> arg_lin = lin.ElementAt(r);
             if (arg_lin.Count == 0) {
                 return arg_lin;
@@ -699,8 +699,8 @@ namespace CSPGF
         private List<BracketedTokn> ComputeSeq(Sequence seqId, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
             List<BracketedTokn> bt = new List<BracketedTokn>();
-            Symbol[] symbs = seqId.symbs;
-            for (int j = 0 ; j < symbs.Length ; j++)
+            List<Symbol> symbs = seqId.symbs;
+            for (int j = 0 ; j < symbs.Count ; j++)
                 foreach (BracketedTokn btn in Compute(symbs[j], cncTypes, linTables)) {
                     bt.Add(btn);
                 }
@@ -729,11 +729,11 @@ namespace CSPGF
                 List<RezDesc> rezDesc = Descend(n_fid, cncTypes, exps, xs);
                 for (int i = 0 ; i < rezLin.Count ; i++)
                     for (int j = 0 ; j < rezDesc.Count ; j++) {
-                        CncType c = rezLin.ElementAt(i).GetCncType();
-                        List<CncType> vcnc = rezDesc.ElementAt(j).GetCncTypes();
+                        CncType c = rezLin.ElementAt(i).cncType;
+                        List<CncType> vcnc = rezDesc.ElementAt(j).cncTypes;
                         vcnc.Add(c);
-                        List<List<List<BracketedTokn>>> vbt = rezDesc.ElementAt(j).GetBracketedTokens();
-                        List<List<BracketedTokn>> bt = rezLin.ElementAt(i).GetLinTable();
+                        List<List<List<BracketedTokn>>> vbt = rezDesc.ElementAt(j).bracketedtokn;
+                        List<List<BracketedTokn>> bt = rezLin.ElementAt(i).linTable;
                         vbt.Add(bt);
                         rez.Add(new RezDesc(n_fid, vcnc, vbt));
                     }

@@ -38,10 +38,10 @@ namespace CSPGF.parser
         public int begin;
         public int category;
         public CncFun function;
-        public int[] domain;
+        public List<int> domain;
         public int constituent;
         public int position;
-        public ActiveItem(int _begin, int _category, CncFun _function, int[] _domain, int _constituent, int _position)
+        public ActiveItem(int _begin, int _category, CncFun _function, List<int> _domain, int _constituent, int _position)
         {
             begin = _begin;
             category = _category;
@@ -53,8 +53,7 @@ namespace CSPGF.parser
         //Notice that Option and Same is used together in scala, so ignore :D
         public Symbol NextSymbol()
         {
-            if (position < function.GetSequence(constituent).GetLength())
-            {
+            if (position < function.GetSequence(constituent).symbs.Count) {
                 Symbol sym = function.GetSequence(constituent).GetSymbol(position);
                 return sym;
             }
@@ -67,13 +66,10 @@ namespace CSPGF.parser
                 category == ai.category &&
                 function == ai.function &&
                 constituent == ai.constituent &&
-                position == ai.position)
-            {
+                position == ai.position) {
                 //Since there is no deep method in c# that we know of, use a crappy forloop
-                if (domain.Length == ai.domain.Length)
-                {
-                    for (int i = 0; i < domain.Length; i++)
-                    {
+                if (domain.Count == ai.domain.Count) {
+                    for (int i = 0; i < domain.Count; i++) {
                         if (domain[i] != ai.domain[i]) return false;
                     }
                     return true;
@@ -85,8 +81,8 @@ namespace CSPGF.parser
         //To string
         public override string ToString()
         {
-            String str = "[" + begin.ToString() + ";" + category.ToString() + 
-                "->" + this.function.name + "[" + DomainToString() + "];" + 
+            String str = "[" + begin.ToString() + ";" + category.ToString() +
+                "->" + this.function.name + "[" + DomainToString() + "];" +
                 constituent.ToString() + ";" + position.ToString() + "]";
             return str;
         }
@@ -94,8 +90,7 @@ namespace CSPGF.parser
         public String DomainToString()
         {
             String tot = "";
-            foreach(int d in domain)
-            {
+            foreach (int d in domain) {
                 tot += d.ToString();
             }
             return tot;

@@ -34,9 +34,9 @@ namespace CSPGF.reader
     public class LinDef
     {
         private int key;
-        private int[] funIds;
+        private List<int> funIds;
 
-        public LinDef(int _key, int[] _funIds)
+        public LinDef(int _key, List<int> _funIds)
         {
             key = _key;
             funIds = _funIds;

@@ -37,15 +37,15 @@ namespace CSPGF.reader
         //TODO: Kolla igenom så inget failat!
         public String name { get; private set; }
         private Dictionary<String, RLiteral> flags;
-        public Sequence[] seqs { get; private set; }
-        public CncFun[] cncFuns { get; private set; }
-        public ProductionSet[] prods { get; private set; }
+        public List<Sequence> seqs { get; private set; }
+        public List<CncFun> cncFuns { get; private set; }
+        public List<ProductionSet> prods { get; private set; }
         public Dictionary<String, CncCat> cncCats { get; private set; }
         public int fId { get; private set; }
         private String startCat;
 
-        public Concrete(String _name, Dictionary<String, RLiteral> _flags, Sequence[] _seqs, CncFun[] _cncFuns,
-            ProductionSet[] _prods, Dictionary<String, CncCat> _cncCats, int _fId, String _defaultStartCat)
+        public Concrete(String _name, Dictionary<String, RLiteral> _flags, List<Sequence> _seqs, List<CncFun> _cncFuns,
+            List<ProductionSet> _prods, Dictionary<String, CncCat> _cncCats, int _fId, String _defaultStartCat)
         {
             name = _name;
             flags = _flags;
@@ -57,22 +57,14 @@ namespace CSPGF.reader
             startCat = _defaultStartCat;
         }
 
-        //TODO: Check where its used
-        //public CncCat GetConcreteCats(String absCat)
-        //{
-        //    return cncCats[absCat];
-        //}
-
-        public CncCat[] GetCncCat()
+        public List<CncCat> GetCncCat()
         {
             //TODO Fixa koden så den blir snyggare?
-            CncCat[] array = new CncCat[cncCats.Count];
-            int i = 0;
+            List<CncCat> tmp = new List<CncCat>();
             foreach (KeyValuePair<String, CncCat> c in cncCats) {
-                array[i] = c.Value;
-                i++;
+                tmp.Add(c.Value);
             }
-            return array;
+            return tmp;
         }
 
         public CncCat GetStartCat()
@@ -84,21 +76,15 @@ namespace CSPGF.reader
                 return cat;
         }
 
-        public Production[] GetProductions()
+        public List<Production> GetProductions()
         {
-            int size = 0;
-            foreach (ProductionSet ps in prods) {
-                size += ps.Length();
-            }
-            Production[] tprods = new Production[size];
-            int i = 0;
+            List<Production> tmp = new List<Production>();
             foreach (ProductionSet ps in prods) {
                 foreach (Production p in ps.prods) {
-                    tprods[i] = p;
-                    i++;
+                    tmp.Add(p);
                 }
             }
-            return tprods;
+            return tmp;
         }
 
         public override String ToString()

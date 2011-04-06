@@ -43,12 +43,14 @@ namespace CSPGF.parser
         {
             nextCat = _nextCat;
         }
-        
-        public Boolean AddProduction(Object p) {
+
+        public Boolean AddProduction(Object p)
+        {
             Production tmp = (Production)p;
-            if(productionSets.ContainsKey(tmp.fId) && productionSets.Get(tmp.fId).Contains(p)) {
-                    return false;
-            } else {
+            if (productionSets.ContainsKey(tmp.fId) && productionSets.Get(tmp.fId).Contains(p)) {
+                return false;
+            }
+            else {
                 productionSets.Add(tmp.fId, p);
                 nextCat = Math.Max(nextCat, tmp.fId + 1);
                 return true;
@@ -56,39 +58,36 @@ namespace CSPGF.parser
         }
 
         // Borde vara rätt...
-        public Boolean AddProduction(int cat, CncFun fun, int[] domain)
+        public Boolean AddProduction(int cat, CncFun fun, List<int> domain)
         {
-            return AddProduction(new ApplProduction(cat, fun, domain));    
+            return AddProduction(new ApplProduction(cat, fun, domain));
         }
-        
+
         //TODO: Kolla denna oxå xD
-        public Production[] GetProductions(int resultCat)
+        public List<Production> GetProductions(int resultCat)
         {
-            HashSet<Object> test = productionSets.Get(resultCat);
-            List<Production> test2 = new List<Production>();
-            if (test != null)
-            {
-                foreach (Object p in test)
-                {
-                    if (p is Production)
-                    {
-                        test2.Add((Production)p);
+            HashSet<Object> tmp = productionSets.Get(resultCat);
+            List<Production> tmp2 = new List<Production>();
+            if (tmp != null) {
+                foreach (Object p in tmp) {
+                    if (p is Production) {
+                        foreach (Production prod in Uncoerce(p)) {
+                            tmp2.Add(prod);
+                        }
                     }
-                    else
-                    {
+                    else {
                         throw new Exception(p.ToString() + " is not a Production, and should be one");
                     }
                 }
-                return test2.ToArray<Production>();
+                return tmp2;
             }
-            else
-            {
-                return null;
+            else {
+                return new List<Production>();
             }
         }
 
         //TODO: Denna kan vara helt åt helvete :D
-        private Production[] Uncoerce(Object p)
+        private List<Production> Uncoerce(Object p)
         {
             List<Production> tmp = new List<Production>();
             if (p is Production) {
@@ -102,7 +101,7 @@ namespace CSPGF.parser
                     }
                 }
             }
-            return tmp.ToArray<Production>();
+            return tmp;
         }
 
         public int getFreshCategory(int oldCat, int l, int j, int k)
@@ -110,12 +109,10 @@ namespace CSPGF.parser
             //Does this line actually work? since it's the reference we need to check...
             //TODO rewrite this... or maybe just wait and rewrite the whole parser...
             int i = categoryBookKeeper[new Tuple<int, int, int, int>(oldCat, l, j, k)];
-            if (i != -1)
-            {
+            if (i != -1) {
                 return i;
             }
-            else
-            {
+            else {
                 return GenerateFreshCategory(oldCat, l, j, k);
             }
         }
@@ -124,10 +121,8 @@ namespace CSPGF.parser
         {
             Tuple<int, int, int, int> temp = new Tuple<int, int, int, int>(oldCat, cons, begin, end);
             //TODO: Check if it returns null if none is found
-            foreach (KeyValuePair<Tuple<int, int, int, int>, int> tmp in categoryBookKeeper)
-            {
-                if (tmp.Key.Item1 == oldCat && tmp.Key.Item2 == cons && tmp.Key.Item3 == begin && tmp.Key.Item4 == end)
-                {
+            foreach (KeyValuePair<Tuple<int, int, int, int>, int> tmp in categoryBookKeeper) {
+                if (tmp.Key.Item1 == oldCat && tmp.Key.Item2 == cons && tmp.Key.Item3 == begin && tmp.Key.Item4 == end) {
                     return tmp.Value;
                 }
             }
@@ -146,13 +141,11 @@ namespace CSPGF.parser
         public override String ToString()
         {
             String s = "=== Productions: ===\n";
-            foreach (int i in productionSets.KeySet())
-            {
-                s += productionSets.Get(i).ToString()+'\n'; 
+            foreach (int i in productionSets.KeySet()) {
+                s += productionSets.Get(i).ToString() + '\n';
             }
             s += "=== passive items: ===\n";
-            foreach (KeyValuePair<Tuple<int, int, int, int>,int> ints in categoryBookKeeper)
-            {
+            foreach (KeyValuePair<Tuple<int, int, int, int>, int> ints in categoryBookKeeper) {
                 s += ints.Key.ToString() + " -> " + ints.Value + '\n';
             }
             return s;

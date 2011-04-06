@@ -39,50 +39,43 @@ namespace CSPGF.parser
         Dictionary<int, MultiMap<int, Tuple<ActiveItem, int>>> store;
         public ActiveSet()
         {
-            store = new Dictionary<int,MultiMap<int, Tuple<ActiveItem, int>>>();
+            store = new Dictionary<int, MultiMap<int, Tuple<ActiveItem, int>>>();
         }
         //använd logg :P
         public bool Add(int cat, int cons, ActiveItem item, int cons2)
         {
             //Hämta värde ur hashmap
-            if (store.ContainsKey(cat))
-            {
+            if (store.ContainsKey(cat)) {
                 MultiMap<int, Tuple<ActiveItem, int>> map = store[cat];
-                if (map.ContainsKey(cons))
-                {
+                if (map.ContainsKey(cons)) {
                     foreach (Tuple<ActiveItem, int> value in map.Get(cons))
                         if (value.Item1 == item && value.Item2 == cons2)
                             return false;
                 }
-                map.Add(cons, new Tuple<ActiveItem, int>(item,cons2));
+                map.Add(cons, new Tuple<ActiveItem, int>(item, cons2));
                 return true;
             }
-            else
-            {
-                Tuple<ActiveItem,int> set = new Tuple<ActiveItem,int>(item,cons2);
-                MultiMap<int, Tuple<ActiveItem,int>> newMap = new MultiMap<int,Tuple<ActiveItem,int>>();
-                newMap.Add(cons,set);
+            else {
+                Tuple<ActiveItem, int> set = new Tuple<ActiveItem, int>(item, cons2);
+                MultiMap<int, Tuple<ActiveItem, int>> newMap = new MultiMap<int, Tuple<ActiveItem, int>>();
+                newMap.Add(cons, set);
                 store[cat] = newMap;    //TODO check if this is correct, might need to check if the key exists
                 return true;
             }
         }
         public List<Tuple<ActiveItem, int, int>> Get(int cat)
         {
-            if (store.ContainsKey(cat))
-            {
+            if (store.ContainsKey(cat)) {
                 MultiMap<int, Tuple<ActiveItem, int>> amap = store[cat];
                 List<Tuple<ActiveItem, int, int>> tp = new List<Tuple<ActiveItem, int, int>>();
-                foreach (int key in amap.KeySet())
-                {
-                    foreach (Tuple<ActiveItem, int> k in amap.Get(key))
-                    {
+                foreach (int key in amap.KeySet()) {
+                    foreach (Tuple<ActiveItem, int> k in amap.Get(key)) {
                         tp.Add(new Tuple<ActiveItem, int, int>(k.Item1, k.Item2, key));
                     }
                 }
                 return tp;
             }
-            else
-            {
+            else {
                 return new List<Tuple<ActiveItem, int, int>>();
             }
         }
@@ -90,13 +83,10 @@ namespace CSPGF.parser
         public List<Tuple<ActiveItem, int>> Get(int cat, int cons)
         {
             List<Tuple<ActiveItem, int>> newList = new List<Tuple<ActiveItem, int>>();
-            if (store.ContainsKey(cat))
-            {
+            if (store.ContainsKey(cat)) {
                 MultiMap<int, Tuple<ActiveItem, int>> amap = store[cat];
-                if (amap.ContainsKey(cons))
-                {
-                    foreach (Tuple<ActiveItem, int> value in amap.Get(cons))
-                    {
+                if (amap.ContainsKey(cons)) {
+                    foreach (Tuple<ActiveItem, int> value in amap.Get(cons)) {
                         newList.Add(value);
                     }
                 }

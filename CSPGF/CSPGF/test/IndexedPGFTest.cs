@@ -42,7 +42,10 @@ namespace CSPGF.test
         public void testIndexedPhrasebookSelect()
         {
             //String filename = this.getClass().getResource("PhrasebookIndexed.pgf").getFile();
-            PGF pgf = PGFBuilder.FromFile("PhrasebookIndexed.pgf", new String[] { "PhrasebookEng", "PhrasebookFre" });
+            List<String> tmp = new List<String>();
+            tmp.Add("PhrasebookEng");
+            tmp.Add("PhrasebookFre");
+            PGF pgf = PGFBuilder.FromFile("PhrasebookIndexed.pgf", tmp);
             
             Debug.Assert(pgf.HasConcrete("PhrasebookEn"));
             Debug.Assert(pgf.HasConcrete("PhrasebookFre"));
@@ -62,7 +65,10 @@ namespace CSPGF.test
         {
             //String filename = this.getClass().getResource("Phrasebook.pgf").getFile();
             try {
-                PGF pgf = PGFBuilder.FromFile("Phrasebook.pgf", new String[] { "PhrasebookEng", "PhrasebookBORK" });
+                List<String> tmp = new List<String>();
+                tmp.Add("PhrasebookEng");
+                tmp.Add("PhrasebookBORK");
+                PGF pgf = PGFBuilder.FromFile("Phrasebook.pgf", tmp);
                 Debug.Fail("PGFBuilder failed to raise an exception when an unknown language is selected.");
             }
             catch (UnknownLanguageException e) { System.Console.WriteLine(e.ToString()); }
@@ -71,7 +77,9 @@ namespace CSPGF.test
         public void testUninexedFoodsSelect()
         {
             //String filename = this.getClass().getResource("Foods.pgf").getFile();
-            PGF pgf = PGFBuilder.FromFile("Foods.pgf", new String[] { "FoodsIta" });
+            List<String> tmp = new List<String>();
+            tmp.Add("FoodsIta");
+            PGF pgf = PGFBuilder.FromFile("Foods.pgf", tmp);
             Debug.Assert(pgf.HasConcrete("FoodsIta"));
             Debug.Assert(!pgf.HasConcrete("FoodsFre"));
         }

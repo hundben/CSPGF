@@ -49,25 +49,38 @@ namespace CSPGF
             pgf = _pgf;
             dirRules = new Dictionary<String, HashSet<String>>();
             indirRules = new Dictionary<String, HashSet<String>>();
-            AbsCat[] absCats = pgf.GetAbstract().absCats;
-            AbsFun[] absFuns = pgf.GetAbstract().absFuns;
+            List<AbsCat> absCats = pgf.GetAbstract().absCats;
+            List<AbsFun> absFuns = pgf.GetAbstract().absFuns;
             HashSet<String> dirFuns = new HashSet<String>();
             HashSet<String> indirFuns = new HashSet<String>();
-            for (int i = 0 ; i < absCats.Length ; i++) {
+            foreach(AbsCat abc in absCats) {
+            //for (int i = 0 ; i < absCats.Count ; i++) {
                 dirFuns = new HashSet<String>();
                 indirFuns = new HashSet<String>();
-                WeightedIdent[] functions = absCats[i].functions;
-                for (int j = 0 ; j < functions.Length ; j++)
-                    for (int k = 0 ; k < absFuns.Length ; k++)
+                List<WeightedIdent> functions = abc.functions;
+                foreach (WeightedIdent weid in functions) {
+                    foreach (AbsFun ab in absFuns) {
+                        if (weid.ident.Equals(ab.name)) {
+                            if(ab.type.hypos.Count == 0) {
+                                dirFuns.Add(weid.ident);
+                            } else {
+                                indirFuns.Add(weid.ident);
+                            }
+                            break;
+                        }
+                    }
+                }
+                /*for (int j = 0 ; j < functions.Count ; j++)
+                    for (int k = 0 ; k < absFuns.Count ; k++)
                         if (functions[j].ident.Equals(absFuns[k].name)) {
-                            if (absFuns[k].type.hypos.Length == 0)
+                            if (absFuns[k].type.hypos.Count == 0)
                                 dirFuns.Add(functions[j].ident);
                             else
                                 indirFuns.Add(functions[j].ident);
                             break;
-                        }
-                dirRules.Add(absCats[i].name, dirFuns);
-                indirRules.Add(absCats[i].name, indirFuns);
+                        }*/
+                dirRules.Add(abc.name, dirFuns);
+                indirRules.Add(abc.name, indirFuns);
             }
         }
 
@@ -106,16 +119,16 @@ namespace CSPGF
 
             int rand = random.Next(vs.Count());
             String funcName = vs.ElementAt(rand);
-            AbsFun[] absFuns = pgf.GetAbstract().absFuns;
+            List<AbsFun> absFuns = pgf.GetAbstract().absFuns;
             foreach (AbsFun a in absFuns)
             //for (int i = 0 ; i < absFuns.Length ; i++)
             {
                 if (a.name.Equals(funcName)) {
-                    Hypo[] hypos = a.type.hypos;
-                    String[] tempCats = new String[hypos.Length];
-                    Tree[] exps = new Tree[hypos.Length];
+                    List<Hypo> hypos = a.type.hypos;
+                    String[] tempCats = new String[hypos.Count];
+                    Tree[] exps = new Tree[hypos.Count];
                     // TODO: Går detta att göra om?
-                    for (int k = 0 ; k < hypos.Length ; k++) {
+                    for (int k = 0 ; k < hypos.Count ; k++) {
                         tempCats[k] = hypos[k].type.name;
                         exps[k] = Gen(tempCats[k]);
                         if (exps[k] == null) {
@@ -123,9 +136,8 @@ namespace CSPGF
                         }
                     }
                     Tree rez = new Function(funcName);
-                    foreach (Tree t in exps)
+                    foreach (Tree t in exps) {
                     //for (int j = 0 ; j < exps.Length ; j++)
-                    {
                         rez = new Application(rez, t);
                     }
                     return rez;

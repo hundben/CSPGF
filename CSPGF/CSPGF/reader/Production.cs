@@ -45,6 +45,6 @@ namespace CSPGF.reader
         public override abstract String ToString();
 
         // Domain is the domain of the concrete function
-        public abstract int[] Domain();
+        public abstract List<int> Domain();
     }
 }

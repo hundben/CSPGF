@@ -80,7 +80,7 @@ namespace CSPGF
          * @return an array of trees
          **/
         // FIXME: not using the start category ??
-        public CSPGF.trees.Absyn.Tree[] ParseToTrees(String[] tokens)
+        public List<CSPGF.trees.Absyn.Tree> ParseToTrees(String[] tokens)
         {
             return Parse(tokens).GetTrees();
         }
