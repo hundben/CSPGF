@@ -28,6 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace CSPGF
 {
@@ -35,6 +36,11 @@ namespace CSPGF
     {
         static void Main(string[] args)
         {
+            BinaryReader br = new BinaryReader(new FileStream("c:\\Users\\Hundben\\Desktop\\git\\gfcs\\CSPGF\\CSPGF\\test\\files\\Hello.pgf", FileMode.Open));
+            PGFReader pr = new PGFReader(br);
+            PGF tmp = pr.ReadPGF();
+            Parser parser = new Parser(tmp, "HelloEng");
+            parser.Parse();
             System.Console.Out.WriteLine("Hello World!");
             System.Console.In.ReadLine();
         }

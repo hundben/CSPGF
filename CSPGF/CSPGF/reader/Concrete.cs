@@ -69,7 +69,13 @@ namespace CSPGF.reader
 
         public CncCat GetStartCat()
         {
-            CncCat cat = cncCats[startCat];
+            CncCat cat = null;
+            try {
+                cat = cncCats[startCat];
+            }
+            catch (Exception e) {
+                e.ToString();
+            }
             if (cat == null)
                 return new CncCat(startCat, 0, 0, null);
             else

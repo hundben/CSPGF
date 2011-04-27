@@ -99,7 +99,7 @@ namespace CSPGF.parser
                 //scan
                 Stack<ActiveItem> newAgenda;
                 Stack<ActiveItem> luAgenda = trie.Lookup(tokens);
-                if (luAgenda.Count == 0) {
+                if (luAgenda == null || luAgenda.Count == 0) {
                     Stack<ActiveItem> a = new Stack<ActiveItem>();
                     trie.Add(tokens, a);
                     newAgenda = a;

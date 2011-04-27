@@ -53,7 +53,8 @@ namespace CSPGF.parser
                 this.value = value;
             }
             else {
-                if (child[keys.First<String>()] == null || child.Count == 0) {
+                ParseTrie tmp2;
+                if (child.TryGetValue(keys.First<String>(),out tmp2) || child.Count == 0) {
                     ParseTrie newN = new ParseTrie(null);
                     List<String> tmp = new List<String>(keys);
                     tmp.Remove(keys.First<String>());
@@ -85,12 +86,13 @@ namespace CSPGF.parser
         
         public ParseTrie GetSubTrie(List<String> key)
         {
-            if (key.Count == 0 || key == null) {
+            if (key == null || key.Count == 0) {
                 return this;
             }
             else {
                 // TODO: FIXA!
-                if (child[key.First<String>()] != null) {
+                ParseTrie tmp2;
+                if (child.TryGetValue(key.First<String>(), out tmp2)) {
                     //String[] tmp = new String[key.Count];
                     //key.CopyTo(tmp);
                     List<String> tmp = new List<String>(key);

@@ -45,8 +45,10 @@ namespace CSPGF
             this.startcat = pgf.GetAbstract().StartCat();
         }
 
-        public Parser(PGF pgf, String language)
+        public Parser(PGF pgf, String _language)
         {
+            language = pgf.GetConcrete(_language);
+            startcat = pgf.GetAbstract().StartCat();
             // TODO: Kolla hur man gör
             //this(pgf, pgf.concrete(language));
         }

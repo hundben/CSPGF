@@ -36,7 +36,7 @@ namespace CSPGF
     class PGFReader
     {
 
-        private static Boolean DBG = false;
+        private static Boolean DBG = true;
 
         
         private BinaryReader inputstream; // Maybe filestream or streamreader instead?
@@ -65,14 +65,17 @@ namespace CSPGF
         {
             Dictionary<String, int> index = null;
             // Reading the PGF version
-            int[] ii = new int[4];
-            for (int i = 0 ; i < 4 ; i++) {
+            int[] ii = new int[2];
+            for (int i = 0 ; i < 2 ; i++) {
                 //ii[i] = mDataInputStream.read();
                 // TODO: Specification says int16 for version number so maybe 2 bytes added together instead?
-                ii[i] = inputstream.ReadInt16();
+                int tmp = inputstream.ReadByte();
+                tmp = tmp << 8;
+                tmp = tmp | inputstream.ReadByte(); 
+                ii[i] = tmp;
             }
             if (DBG) {
-                System.Console.WriteLine("PGF version : " + ii[0] + "." + ii[1] + "." + ii[2] + "." + ii[3]);
+                System.Console.WriteLine("PGF version : " + ii[0] + "." + ii[1]);
             }
             // Reading the global flags
             Dictionary<String, RLiteral> flags = GetListFlag();
@@ -125,7 +128,7 @@ namespace CSPGF
             }
 
             // builds and returns the pgf object.
-            PGF pgf = new PGF(MakeInt16(ii[0], ii[1]), MakeInt16(ii[2], ii[3]), flags, abs, concretes);
+            PGF pgf = new PGF(ii[0], ii[1], flags, abs, concretes);
             inputstream.Close();
             return pgf;
         }
@@ -577,11 +580,14 @@ namespace CSPGF
         {
             String name = GetIdent();
             List<int> sIndices = GetListInt();
-            int l = sIndices.Count;
+            //int l = sIndices.Count;
             List<Sequence> seqs = new List<Sequence>();
-            for (int i = 0 ; i < l ; i++) {
-                seqs[i] = sequences[sIndices[i]];
+            foreach(int i in sIndices) {
+                seqs.Add(sequences[i]);
             }
+            /*for (int i = 0 ; i < l ; i++) {
+                seqs[i] = sequences[sIndices[i]];
+            }*/
             return new CncFun(name, seqs);
         }
 
@@ -744,6 +750,7 @@ namespace CSPGF
                 firstFID = GetInt();
                 lastFID = GetInt();
                 ss = GetListString();
+                //System.Console.WriteLine(name + " " + firstFID + " " + lastFID + " " + ss);
                 cncCats.Add(name, new CncCat(name, firstFID, lastFID, ss));
             }
             return cncCats;
@@ -836,11 +843,13 @@ namespace CSPGF
         {
             int nbChar = GetInt();
             //byte[] bytes = new byte[nbChar];
-            char[] bytes = new char[nbChar];
+            byte[] bytes = new byte[nbChar];
             //TODO: Check!
             inputstream.Read(bytes, 0, nbChar);
             //TODO: check if we have to change encoding!
-            return bytes.ToString();
+            System.Text.Encoding enc = System.Text.Encoding.ASCII;
+            return enc.GetString(bytes);
+            //return bytes.ToString();
             //return new String(bytes, "ISO-8859-1");
         }
 
@@ -897,15 +906,6 @@ namespace CSPGF
                 tmp.Add(GetInt());
             }
             return tmp;
-        }
-
-        private int MakeInt16(int j1, int j2)
-        {
-            int i = 0;
-            i |= j1 & 0xFF;
-            i <<= 8;
-            i |= j2 & 0xFF;
-            return i;
         }
 
         // Reading doubles
