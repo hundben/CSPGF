@@ -39,7 +39,7 @@ namespace CSPGF.test
 
         }
 
-        public void testIndexedPhrasebookSelect()
+        public void TestIndexedPhrasebookSelect()
         {
             //String filename = this.getClass().getResource("PhrasebookIndexed.pgf").getFile();
             List<String> tmp = new List<String>();
@@ -52,7 +52,7 @@ namespace CSPGF.test
             Debug.Assert(!pgf.HasConcrete("PhrasebookIta"));
         }
 
-        public void testIndexedPhrasebookAll()
+        public void TestIndexedPhrasebookAll()
         {
             //String filename = this.getClass().getResource("PhrasebookIndexed.pgf").getFile();
             PGF pgf = PGFBuilder.FromFile("PhrasebookIndexed.pgf");
@@ -61,7 +61,7 @@ namespace CSPGF.test
             Debug.Assert(pgf.HasConcrete("PhrasebookIta"));
         }
 
-        public void testUnknownLanguage()
+        public void TestUnknownLanguage()
         {
             //String filename = this.getClass().getResource("Phrasebook.pgf").getFile();
             try {
@@ -74,7 +74,7 @@ namespace CSPGF.test
             catch (UnknownLanguageException e) { System.Console.WriteLine(e.ToString()); }
         }
 
-        public void testUninexedFoodsSelect()
+        public void TestUninexedFoodsSelect()
         {
             //String filename = this.getClass().getResource("Foods.pgf").getFile();
             List<String> tmp = new List<String>();
@@ -84,7 +84,7 @@ namespace CSPGF.test
             Debug.Assert(!pgf.HasConcrete("FoodsFre"));
         }
 
-        public void testUninexedFoodsAll()
+        public void TestUninexedFoodsAll()
         {
             //String filename = this.getClass().getResource("Foods.pgf").getFile();
             PGF pgf = PGFBuilder.FromFile("Foods.pgf");

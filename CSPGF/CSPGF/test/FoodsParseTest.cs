@@ -46,50 +46,50 @@ namespace CSPGF.test
 
         public void setUp()
         {
-            pgf = getPGF("Foods.pgf");
+            pgf = GetPGF("Foods.pgf");
         }
 
-        public void testFoodsEng()
+        public void TestFoodsEng()
         {
             Parser parser = new Parser(pgf, "FoodsEng");
 
             String ex1 = "this fresh pizza is Italian";
-            Tree tree1 = parseTree("((Pred (This ((Mod Fresh) Pizza))) Italian)");
+            Tree tree1 = ParseTree("((Pred (This ((Mod Fresh) Pizza))) Italian)");
             List<Tree> trees1 = parser.Parse(ex1).GetTrees();
             Debug.Assert(trees1.Count == 1);
             Debug.Assert(trees1[0].Equals(tree1));
 
             String ex2 = "those boring fish are expensive";
-            Tree tree2 = parseTree("((Pred (Those ((Mod Boring) Fish))) Expensive)");
+            Tree tree2 = ParseTree("((Pred (Those ((Mod Boring) Fish))) Expensive)");
             List<Tree> trees2 = parser.Parse(ex2).GetTrees();
             Debug.Assert(trees2.Count == 1);
             Debug.Assert(trees2[0].Equals(tree2));
         }
 
-        public void testFoodsSwe()
+        public void TestFoodsSwe()
         {
             Parser parser = new Parser(pgf, "FoodsSwe");
 
             String ex1 = "den här läckra pizzan är färsk";
-            Tree tree1 = parseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
+            Tree tree1 = ParseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
             List<Tree> trees1 = parser.Parse(ex1).GetTrees();
             Debug.Assert(trees1.Count == 1);
             Debug.Assert(trees1[0].Equals(tree1));
         }
 
-        public void testFoodsIta()
+        public void TestFoodsIta()
         {
             Parser parser = new Parser(pgf, "FoodsIta");
 
             String ex1 = "questa pizza deliziosa è fresca";
-            Tree tree1 = parseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
+            Tree tree1 = ParseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
             List<Tree> trees1 = parser.Parse(ex1).GetTrees();
             Debug.Assert(trees1.Count == 1);
             Debug.Assert(trees1[0].Equals(tree1));
         }
 
 
-        public void tearDown()
+        public void TearDown()
         {
             pgf = null;
         }

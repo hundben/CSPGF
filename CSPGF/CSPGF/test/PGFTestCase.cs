@@ -42,14 +42,14 @@ namespace CSPGF.test
             name = _name;
         }
 
-        protected PGF getPGF(String filename)
+        protected PGF GetPGF(String filename)
         {
             //String fullname = this.getClass().getResource(filename).getFile();
             PGF pgf = PGFBuilder.FromFile(filename);
             return pgf;
         }
 
-        protected Tree parseTree(String s)
+        protected Tree ParseTree(String s)
         {
             Scanner l = new Scanner(new StreamReader(s).BaseStream);
             CSPGF.trees.Parser p = new CSPGF.trees.Parser(l);
