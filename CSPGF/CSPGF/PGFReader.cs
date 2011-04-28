@@ -786,8 +786,8 @@ namespace CSPGF
             //TODO: Check :D Kan funka, antagligen inte ;D i värsta fall blir det sträng =+
             List<byte> bytes = new List<byte>();
             //BinaryWriter os = new BinaryWriter(new MemoryStream(), Encoding.UTF8);
-            int r;
-            for (int i = 0; i < npoz; i++) {
+            //int r;
+            /*for (int i = 0; i < npoz; i++) {
                 r = inputstream.ReadByte();
                 bytes.Add(((byte)r));
                 if (r <= 0x7f) {
@@ -820,12 +820,14 @@ namespace CSPGF
                 }
                 else
                     throw new Exception("Undefined for now !!! ");
-            }
-            foreach (byte b in bytes) {
-                //System.Console.Write(" " + b);
-            }
+            }*/
+            //for (int i = 0; i < npoz; i++) 
+                foreach (char c in inputstream.ReadChars(npoz)) {
+                    bytes.Add((byte)c);
+                }
+            //}
             //return new String(bytes.ToArray());
-            return Encoding.UTF8.GetString(bytes.ToArray<byte>());
+            return Encoding.UTF8.GetString(bytes.ToArray());
         }
 
         private List<String> GetListString()
