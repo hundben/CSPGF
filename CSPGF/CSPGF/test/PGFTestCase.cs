@@ -45,13 +45,14 @@ namespace CSPGF.test
         protected PGF GetPGF(String filename)
         {
             //String fullname = this.getClass().getResource(filename).getFile();
-            PGF pgf = PGFBuilder.FromFile(filename);
+            PGF pgf = PGFBuilder.FromFile("..\\..\\test\\files\\"+filename);
             return pgf;
         }
 
         protected Tree ParseTree(String s)
         {
-            Scanner l = new Scanner(new StreamReader(s).BaseStream);
+            Scanner l = new Scanner(new MemoryStream(Encoding.ASCII.GetBytes(s)));
+            //Scanner l = new Scanner(new StringReader(s));
             CSPGF.trees.Parser p = new CSPGF.trees.Parser(l);
             try {
                 Tree parse_tree = p.ParseTree();
