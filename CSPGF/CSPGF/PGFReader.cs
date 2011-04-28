@@ -36,7 +36,7 @@ namespace CSPGF
     class PGFReader
     {
 
-        private static Boolean DBG = false;
+        private static Boolean DBG = true;
 
         
         private BinaryReader inputstream; // Maybe filestream or streamreader instead?
@@ -65,14 +65,17 @@ namespace CSPGF
         {
             Dictionary<String, int> index = null;
             // Reading the PGF version
-            int[] ii = new int[4];
-            for (int i = 0 ; i < 4 ; i++) {
+            int[] ii = new int[2];
+            for (int i = 0 ; i < 2 ; i++) {
                 //ii[i] = mDataInputStream.read();
                 // TODO: Specification says int16 for version number so maybe 2 bytes added together instead?
-                ii[i] = inputstream.ReadInt16();
+                int tmp = inputstream.ReadByte();
+                tmp = tmp << 8;
+                tmp = tmp | inputstream.ReadByte(); 
+                ii[i] = tmp;
             }
             if (DBG) {
-                System.Console.WriteLine("PGF version : " + ii[0] + "." + ii[1] + "." + ii[2] + "." + ii[3]);
+                System.Console.WriteLine("PGF version : " + ii[0] + "." + ii[1]);
             }
             // Reading the global flags
             Dictionary<String, RLiteral> flags = GetListFlag();
@@ -125,7 +128,7 @@ namespace CSPGF
             }
 
             // builds and returns the pgf object.
-            PGF pgf = new PGF(MakeInt16(ii[0], ii[1]), MakeInt16(ii[2], ii[3]), flags, abs, concretes);
+            PGF pgf = new PGF(ii[0], ii[1], flags, abs, concretes);
             inputstream.Close();
             return pgf;
         }
@@ -577,11 +580,14 @@ namespace CSPGF
         {
             String name = GetIdent();
             List<int> sIndices = GetListInt();
-            int l = sIndices.Count;
+            //int l = sIndices.Count;
             List<Sequence> seqs = new List<Sequence>();
-            for (int i = 0 ; i < l ; i++) {
-                seqs[i] = sequences[sIndices[i]];
+            foreach(int i in sIndices) {
+                seqs.Add(sequences[i]);
             }
+            /*for (int i = 0 ; i < l ; i++) {
+                seqs[i] = sequences[sIndices[i]];
+            }*/
             return new CncFun(name, seqs);
         }
 
@@ -744,6 +750,7 @@ namespace CSPGF
                 firstFID = GetInt();
                 lastFID = GetInt();
                 ss = GetListString();
+                //System.Console.WriteLine(name + " " + firstFID + " " + lastFID + " " + ss);
                 cncCats.Add(name, new CncCat(name, firstFID, lastFID, ss));
             }
             return cncCats;
@@ -777,39 +784,50 @@ namespace CSPGF
             // ByteArrayOutputStream os = null; //new java.io.ByteArrayOutputStream();
             int npoz = GetInt();
             //TODO: Check :D Kan funka, antagligen inte ;D i värsta fall blir det sträng =+
-            BinaryWriter os = new BinaryWriter(new MemoryStream(), Encoding.UTF8);
-            int r;
-            for (int i = 0 ; i < npoz ; i++) {
+            List<byte> bytes = new List<byte>();
+            //BinaryWriter os = new BinaryWriter(new MemoryStream(), Encoding.UTF8);
+            //int r;
+            /*for (int i = 0; i < npoz; i++) {
                 r = inputstream.ReadByte();
-                os.Write((byte)r);
+                bytes.Add(((byte)r));
                 if (r <= 0x7f) {
                 }                              //lg = 0;
                 else if ((r >= 0xc0) && (r <= 0xdf))
-                    os.Write((byte)inputstream.ReadByte());   //lg = 1;
+                    bytes.Add(((byte)inputstream.ReadByte()));   //lg = 1;
                 else if ((r >= 0xe0) && (r <= 0xef)) {
-                    os.Write((byte)inputstream.ReadByte());   //lg = 2;
-                    os.Write((byte)inputstream.ReadByte());
-                } else if ((r >= 0xf0) && (r <= 0xf4)) {
-                    os.Write((byte)inputstream.ReadByte());   //lg = 3;
-                    os.Write((byte)inputstream.ReadByte());
-                    os.Write((byte)inputstream.ReadByte());
-                } else if ((r >= 0xf8) && (r <= 0xfb)) {
-                    os.Write((byte)inputstream.ReadByte());   //lg = 4;
-                    os.Write((byte)inputstream.ReadByte());
-                    os.Write((byte)inputstream.ReadByte());
-                    os.Write((byte)inputstream.ReadByte());
+                    bytes.Add(((byte)inputstream.ReadByte()));   //lg = 2;
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                }
+                else if ((r >= 0xf0) && (r <= 0xf4)) {
+                    bytes.Add(((byte)inputstream.ReadByte()));   //lg = 3;
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                }
+                else if ((r >= 0xf8) && (r <= 0xfb)) {
+                    bytes.Add(((byte)inputstream.ReadByte()));   //lg = 4;
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                    bytes.Add(((byte)inputstream.ReadByte()));
                     //} else if ((r >= 0xfc) && (r <= 0xfd)) { TODO: Check!
-                } else if ((r == 0xfc) || (r == 0xfd)) {
-                    os.Write((byte)inputstream.ReadByte());   //lg =5;
-                    os.Write((byte)inputstream.ReadByte());
-                    os.Write((byte)inputstream.ReadByte());
-                    os.Write((byte)inputstream.ReadByte());
-                    os.Write((byte)inputstream.ReadByte());
+                }
+                else if ((r == 0xfc) || (r == 0xfd)) {
+                    bytes.Add(((byte)inputstream.ReadByte()));   //lg =5;
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                    bytes.Add(((byte)inputstream.ReadByte()));
                     //IOException -> Exception
-                } else
+                }
+                else
                     throw new Exception("Undefined for now !!! ");
-            }
-            return os.ToString();
+            }*/
+            //for (int i = 0; i < npoz; i++) 
+                foreach (char c in inputstream.ReadChars(npoz)) {
+                    bytes.Add((byte)c);
+                }
+            //}
+            //return new String(bytes.ToArray());
+            return Encoding.UTF8.GetString(bytes.ToArray());
         }
 
         private List<String> GetListString()
@@ -836,11 +854,13 @@ namespace CSPGF
         {
             int nbChar = GetInt();
             //byte[] bytes = new byte[nbChar];
-            char[] bytes = new char[nbChar];
+            byte[] bytes = new byte[nbChar];
             //TODO: Check!
             inputstream.Read(bytes, 0, nbChar);
             //TODO: check if we have to change encoding!
-            return bytes.ToString();
+            System.Text.Encoding enc = System.Text.Encoding.ASCII;
+            return enc.GetString(bytes);
+            //return bytes.ToString();
             //return new String(bytes, "ISO-8859-1");
         }
 
@@ -897,15 +917,6 @@ namespace CSPGF
                 tmp.Add(GetInt());
             }
             return tmp;
-        }
-
-        private int MakeInt16(int j1, int j2)
-        {
-            int i = 0;
-            i |= j1 & 0xFF;
-            i <<= 8;
-            i |= j2 & 0xFF;
-            return i;
         }
 
         // Reading doubles

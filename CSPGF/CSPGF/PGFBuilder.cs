@@ -46,9 +46,9 @@ namespace CSPGF {
         
         // No reason to pass an inputstream to the constructor? Could just as easily just use the filename?
         public static PGF FromFile(String filename) {
-	        if (DBG) System.Console.WriteLine("Reading pgf from file : " + filename);
+            if (DBG) { System.Console.WriteLine("Reading pgf from file : " + filename); }
                 // TODO: Check!
-                BinaryReader stream = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read));
+            BinaryReader stream = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read), Encoding.UTF8);
 	        try {
 	            return new PGFReader(stream).ReadPGF();
 	        } catch (UnknownLanguageException e) {

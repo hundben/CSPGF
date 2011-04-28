@@ -40,12 +40,12 @@ namespace CSPGF.test
 
         PGF pgf;
 
-        public void setUp()
+        public void SetUp()
         {
-            pgf = getPGF("Foods.pgf");
+            pgf = GetPGF("Foods.pgf");
         }
 
-        public void testFoodsEng()
+        public void TestFoodsEng()
         {
             Parser parser = new Parser(pgf, "FoodsEng");
             String[] words = new String[] { "that", "these", "this", "those" };
@@ -56,7 +56,7 @@ namespace CSPGF.test
                 Debug.Assert(words[i].Equals(predictions[i]));
         }
 
-        public void testFoodsSwe()
+        public void TestFoodsSwe()
         {
             Parser parser = new Parser(pgf, "FoodsSwe");
             String[] words = new String[] { "de", "den", "det" };
@@ -67,7 +67,7 @@ namespace CSPGF.test
                 Debug.Assert(words[i].Equals(predictions[i]));
         }
 
-        public void testFoodsIta()
+        public void TestFoodsIta()
         {
             Parser parser = new Parser(pgf, "FoodsIta");
 
@@ -82,7 +82,7 @@ namespace CSPGF.test
         }
 
 
-        public void tearDown()
+        public void TearDown()
         {
             pgf = null;
         }

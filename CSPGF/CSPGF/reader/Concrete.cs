@@ -34,7 +34,7 @@ namespace CSPGF.reader
 {
     public class Concrete
     {
-        //TODO: Kolla igenom så inget failat!
+        //TODO: check for errors
         public String name { get; private set; }
         private Dictionary<String, RLiteral> flags;
         public List<Sequence> seqs { get; private set; }
@@ -59,7 +59,7 @@ namespace CSPGF.reader
 
         public List<CncCat> GetCncCat()
         {
-            //TODO Fixa koden så den blir snyggare?
+            //TODO clean up
             List<CncCat> tmp = new List<CncCat>();
             foreach (KeyValuePair<String, CncCat> c in cncCats) {
                 tmp.Add(c.Value);
@@ -69,11 +69,14 @@ namespace CSPGF.reader
 
         public CncCat GetStartCat()
         {
-            CncCat cat = cncCats[startCat];
-            if (cat == null)
-                return new CncCat(startCat, 0, 0, null);
+            if (cncCats.ContainsKey(startCat))
+            {
+                return cncCats[startCat];
+            }
             else
-                return cat;
+            {
+                return new CncCat(startCat, 0, 0, new List<String>()); //TODO test this
+            }
         }
 
         public List<Production> GetProductions()

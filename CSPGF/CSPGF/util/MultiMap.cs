@@ -49,7 +49,13 @@ namespace CSPGF.util
 
         public Boolean Add(K key, V value)
         {
-            HashSet<V> s = map[key];
+            HashSet<V> s = null;
+            try {
+                s = map[key];
+            }
+            catch (Exception e) {
+                e.ToString();
+            }
             if (s == null)
             {
                 s = new HashSet<V>();

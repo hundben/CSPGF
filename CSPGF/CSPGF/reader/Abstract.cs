@@ -48,7 +48,13 @@ namespace CSPGF.reader
 
         public String StartCat()
         {
-            RLiteral cat = flags["startcat"];
+            RLiteral cat = null;
+            try {
+                cat = flags["startcat"];
+            }
+            catch (Exception e) {
+                e.ToString();
+            }
             if (cat == null)
                 return "Sentence";
             else

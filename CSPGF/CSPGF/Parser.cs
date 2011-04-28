@@ -39,23 +39,21 @@ namespace CSPGF
         private Concrete language;
         private String startcat;
         /* ******************************** API ******************************** */
-        public Parser(PGF pgf, Concrete language)
+        public Parser(PGF pgf, Concrete _language)
         {
-            this.language = language;
-            this.startcat = pgf.GetAbstract().StartCat();
+            language = _language;
+            startcat = pgf.GetAbstract().StartCat();
+        }
+        
+        public Parser(PGF pgf, String _language) 
+            : this(pgf, pgf.GetConcrete(_language))
+        {
         }
 
-        public Parser(PGF pgf, String language)
+        public void SetStartcat(String _startcat)
         {
-            // TODO: Kolla hur man gör
-            //this(pgf, pgf.concrete(language));
+            startcat = _startcat;
         }
-
-        public void SetStartcat(String startcat)
-        {
-            this.startcat = startcat;
-        }
-
 
         /**
          * Parse the given list of tokens

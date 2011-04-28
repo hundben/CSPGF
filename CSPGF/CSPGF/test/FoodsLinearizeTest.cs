@@ -41,48 +41,48 @@ namespace CSPGF.test
 
         PGF pgf;
 
-        public void setUp()
+        public void SetUp()
         {
-            pgf = getPGF("Foods.pgf");
+            pgf = GetPGF("Foods.pgf");
         }
 
-        public void testFoodsEng()
+        public void TestFoodsEng()
         {
             Linearizer linearizer = new Linearizer(pgf, "FoodsEng");
 
             String ex1 = "this fresh pizza is Italian";
-            Tree tree1 = parseTree("((Pred (This ((Mod Fresh) Pizza))) Italian)");
+            Tree tree1 = ParseTree("((Pred (This ((Mod Fresh) Pizza))) Italian)");
             String lin1 = linearizer.LinearizeString(tree1);
             Debug.Assert(ex1.Equals(lin1));
 
             String ex2 = "those boring fish are expensive";
-            Tree tree2 = parseTree("((Pred (Those ((Mod Boring) Fish))) Expensive)");
+            Tree tree2 = ParseTree("((Pred (Those ((Mod Boring) Fish))) Expensive)");
             String lin2 = linearizer.LinearizeString(tree2);
             Debug.Assert(ex2.Equals(lin2));
         }
 
-        public void testFoodsSwe()
+        public void TestFoodsSwe()
         {
             Linearizer linearizer = new Linearizer(pgf, "FoodsSwe");
 
-            Tree tree1 = parseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
+            Tree tree1 = ParseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
             String ex1 = "den här läckra pizzan är färsk";
             String lin1 = linearizer.LinearizeString(tree1);
             Debug.Assert(ex1.Equals(lin1));
         }
 
-        public void testFoodsIta()
+        public void TestFoodsIta()
         {
             Linearizer linearizer = new Linearizer(pgf, "FoodsIta");
 
             String ex1 = "questa pizza deliziosa è fresca";
-            Tree tree1 = parseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
+            Tree tree1 = ParseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
             String lin1 = linearizer.LinearizeString(tree1);
             Debug.Assert(ex1.Equals(lin1));
         }
 
 
-        public void tearDown()
+        public void TearDown()
         {
             pgf = null;
         }
