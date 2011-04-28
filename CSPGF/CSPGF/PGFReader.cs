@@ -784,39 +784,48 @@ namespace CSPGF
             // ByteArrayOutputStream os = null; //new java.io.ByteArrayOutputStream();
             int npoz = GetInt();
             //TODO: Check :D Kan funka, antagligen inte ;D i värsta fall blir det sträng =+
-            BinaryWriter os = new BinaryWriter(new MemoryStream(), Encoding.UTF8);
+            List<byte> bytes = new List<byte>();
+            //BinaryWriter os = new BinaryWriter(new MemoryStream(), Encoding.UTF8);
             int r;
-            for (int i = 0 ; i < npoz ; i++) {
+            for (int i = 0; i < npoz; i++) {
                 r = inputstream.ReadByte();
-                os.Write((byte)r);
+                bytes.Add(((byte)r));
                 if (r <= 0x7f) {
                 }                              //lg = 0;
                 else if ((r >= 0xc0) && (r <= 0xdf))
-                    os.Write((byte)inputstream.ReadByte());   //lg = 1;
+                    bytes.Add(((byte)inputstream.ReadByte()));   //lg = 1;
                 else if ((r >= 0xe0) && (r <= 0xef)) {
-                    os.Write((byte)inputstream.ReadByte());   //lg = 2;
-                    os.Write((byte)inputstream.ReadByte());
-                } else if ((r >= 0xf0) && (r <= 0xf4)) {
-                    os.Write((byte)inputstream.ReadByte());   //lg = 3;
-                    os.Write((byte)inputstream.ReadByte());
-                    os.Write((byte)inputstream.ReadByte());
-                } else if ((r >= 0xf8) && (r <= 0xfb)) {
-                    os.Write((byte)inputstream.ReadByte());   //lg = 4;
-                    os.Write((byte)inputstream.ReadByte());
-                    os.Write((byte)inputstream.ReadByte());
-                    os.Write((byte)inputstream.ReadByte());
+                    bytes.Add(((byte)inputstream.ReadByte()));   //lg = 2;
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                }
+                else if ((r >= 0xf0) && (r <= 0xf4)) {
+                    bytes.Add(((byte)inputstream.ReadByte()));   //lg = 3;
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                }
+                else if ((r >= 0xf8) && (r <= 0xfb)) {
+                    bytes.Add(((byte)inputstream.ReadByte()));   //lg = 4;
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                    bytes.Add(((byte)inputstream.ReadByte()));
                     //} else if ((r >= 0xfc) && (r <= 0xfd)) { TODO: Check!
-                } else if ((r == 0xfc) || (r == 0xfd)) {
-                    os.Write((byte)inputstream.ReadByte());   //lg =5;
-                    os.Write((byte)inputstream.ReadByte());
-                    os.Write((byte)inputstream.ReadByte());
-                    os.Write((byte)inputstream.ReadByte());
-                    os.Write((byte)inputstream.ReadByte());
+                }
+                else if ((r == 0xfc) || (r == 0xfd)) {
+                    bytes.Add(((byte)inputstream.ReadByte()));   //lg =5;
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                    bytes.Add(((byte)inputstream.ReadByte()));
+                    bytes.Add(((byte)inputstream.ReadByte()));
                     //IOException -> Exception
-                } else
+                }
+                else
                     throw new Exception("Undefined for now !!! ");
             }
-            return os.ToString();
+            foreach (byte b in bytes) {
+                //System.Console.Write(" " + b);
+            }
+            //return new String(bytes.ToArray());
+            return Encoding.UTF8.GetString(bytes.ToArray<byte>());
         }
 
         private List<String> GetListString()
