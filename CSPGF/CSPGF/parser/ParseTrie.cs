@@ -48,13 +48,14 @@ namespace CSPGF.parser
 
         public void Add(List<String> keys, Stack<ActiveItem> value)
         {
-            //TODO: HAHA, kolla xDDD
+            //TODO: Might be correct, but check.
             if (keys == null || keys.Count == 0) {
                 this.value = value;
             }
             else {
                 ParseTrie tmp2;
-                if (child.TryGetValue(keys.First<String>(),out tmp2) || child.Count == 0) {
+                // Check: Added !, which should be correct, but not 100% sure. Program doesn't crash anymore though =)
+                if (!child.TryGetValue(keys.First<String>(),out tmp2) || child.Count == 0) {
                     ParseTrie newN = new ParseTrie(null);
                     List<String> tmp = new List<String>(keys);
                     tmp.Remove(keys.First<String>());
@@ -64,6 +65,7 @@ namespace CSPGF.parser
                 else {
                     List<String> tmp = new List<String>(keys);
                     tmp.Remove(keys.First<String>());
+                    
                     child[keys.First<String>()].Add(tmp, value);
                 }
             }

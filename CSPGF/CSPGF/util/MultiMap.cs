@@ -37,14 +37,16 @@ namespace CSPGF.util
             this.map = new Dictionary<K, HashSet<V>>();
         }
 
-        public HashSet<V> Get(K key) {
-                HashSet<V> s = map[key];
-                if (s == null) {
-                    return new HashSet<V>();
-                } else {
-                    return s;
-                }
-                //return s == null ? HashSet.<V>emptySet() : s;
+        public HashSet<V> Get(K key)
+        {
+            HashSet<V> s;
+            if (!map.TryGetValue(key, out s)) {
+                return new HashSet<V>();
+            }
+            else {
+                return s;
+            }
+            //return s == null ? HashSet.<V>emptySet() : s;
         }
 
         public Boolean Add(K key, V value)

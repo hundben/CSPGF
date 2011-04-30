@@ -45,7 +45,7 @@ namespace CSPGF
             ParseState tmp2 = parser.Parse("hello world");*/
             FoodsParseTest fpt = new FoodsParseTest("test");
             fpt.setUp();
-            //fpt.TestFoodsEng();
+            fpt.TestFoodsEng();
             //fpt.TestFoodsIta();
             //fpt.TestFoodsSwe();
             //fpt.TearDown();
