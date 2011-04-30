@@ -48,7 +48,7 @@ namespace CSPGF.parser
 
         public void Add(List<String> keys, Stack<ActiveItem> value)
         {
-            //TODO: HAHA, kolla xDDD
+            //TODO: Might be correct, but check.
             if (keys == null || keys.Count == 0) {
                 this.value = value;
             }
