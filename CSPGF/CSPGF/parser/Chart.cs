@@ -68,7 +68,7 @@ namespace CSPGF.parser
         {
             HashSet<Object> tmp = productionSets.Get(resultCat);
             List<Production> tmp2 = new List<Production>();
-            if (tmp != null) {
+            if (tmp.Count != 0) {
                 foreach (Object p in tmp) {
                     if (p is Production) {
                         foreach (Production prod in Uncoerce(p)) {

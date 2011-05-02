@@ -31,6 +31,7 @@ using System.Text;
 using System.IO;
 using CSPGF.parser;
 using CSPGF.test;
+using CSPGF.trees;
 
 namespace CSPGF
 {
