@@ -48,7 +48,7 @@ namespace CSPGF {
         public static PGF FromFile(String filename) {
             if (DBG) { System.Console.WriteLine("Reading pgf from file : " + filename); }
                 // TODO: Check!
-            BinaryReader stream = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read), Encoding.UTF8);
+            BinaryReader stream = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read));
 	        try {
 	            return new PGFReader(stream).ReadPGF();
 	        } catch (UnknownLanguageException e) {

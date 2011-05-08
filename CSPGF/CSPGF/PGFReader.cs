@@ -38,7 +38,7 @@ namespace CSPGF
 
         private static Boolean DBG = true;
 
-        
+        private StreamWriter dbgwrite;
         private BinaryReader inputstream; // Maybe filestream or streamreader instead?
         //private DataInputStream mDataInputStream;
         // Was Set<String> before, but does not exist in c#
@@ -47,12 +47,18 @@ namespace CSPGF
         // Visual Studio fails to check the rest of the code when the two constructors are uncommented.
         public PGFReader(BinaryReader _inputstream)
         {
+            if (DBG) {
+                dbgwrite = new StreamWriter("./dbg.txt", false);
+            }
             inputstream = _inputstream;
             //this.mDataInputStream = new DataInputStream(is);
         }
 
         public PGFReader(BinaryReader _inputstream, List<String> _languages)
         {
+            if (DBG) {
+                dbgwrite = new StreamWriter("./dbg.txt", false, Encoding.UTF8);
+            }
             inputstream = _inputstream;
             //this.mDataInputStream = new DataInputStream(is);
             //TODO: Convert from String[] to List<String>
@@ -75,7 +81,7 @@ namespace CSPGF
                 ii[i] = tmp;
             }
             if (DBG) {
-                System.Console.WriteLine("PGF version : " + ii[0] + "." + ii[1]);
+                dbgwrite.WriteLine("PGF version : " + ii[0] + "." + ii[1]);
             }
             // Reading the global flags
             Dictionary<String, RLiteral> flags = GetListFlag();
@@ -83,7 +89,7 @@ namespace CSPGF
                 index = ReadIndex(((StringLit)flags["index"]).value);
                 if (DBG) {
                     foreach (KeyValuePair<String, int> kp in index) {
-                        System.Console.WriteLine(kp.Key + ", " + kp.Value);
+                        dbgwrite.WriteLine(kp.Key + ", " + kp.Value);
                     }
                 }
             }
@@ -102,7 +108,7 @@ namespace CSPGF
             for (int i = 0 ; i < nbConcretes ; i++) {
                 String name = GetIdent();
                 if (DBG) {
-                    System.Console.WriteLine("Language " + name);
+                    dbgwrite.WriteLine("Language " + name);
                 }
                 if (languages == null || languages.Remove(name)) {
                     concretes[k] = GetConcrete(name, startCat);
@@ -113,7 +119,7 @@ namespace CSPGF
                         inputstream.BaseStream.Seek(index[name], SeekOrigin.Current);
                         //this.mDataInputStream.skip(index[name]);
                         if (DBG) {
-                            System.Console.WriteLine("Skiping " + name);
+                            dbgwrite.WriteLine("Skiping " + name);
                         }
                     } else {
                         GetConcrete(name, startCat);
@@ -176,7 +182,7 @@ namespace CSPGF
         {
             String name = GetIdent();
             if (DBG) {
-                System.Console.WriteLine("Abstract syntax [" + name + "]");
+                dbgwrite.WriteLine("Abstract syntax [" + name + "]");
             }
             Dictionary<String, RLiteral> flags = GetListFlag();
             List<AbsFun> absFuns = GetListAbsFun();
@@ -206,7 +212,7 @@ namespace CSPGF
         {
             String name = GetIdent();
             if (DBG) {
-                System.Console.WriteLine("AbsFun: '" + name + "'");
+                dbgwrite.WriteLine("AbsFun: '" + name + "'");
             }
             CSPGF.reader.Type t = GetType2();
             int i = GetInt();
@@ -221,7 +227,7 @@ namespace CSPGF
             double weight = GetDouble();
             AbsFun f = new AbsFun(name, t, i, equations, weight);
             if (DBG) {
-                System.Console.WriteLine("/AbsFun: " + f);
+                dbgwrite.WriteLine("/AbsFun: " + f);
             }
             return f;
         }
@@ -274,7 +280,7 @@ namespace CSPGF
             List<Expr> exprs = GetListExpr();
             CSPGF.reader.Type t = new CSPGF.reader.Type(hypos, returnCat, exprs);
             if (DBG) {
-                System.Console.WriteLine("Type: " + t);
+                dbgwrite.WriteLine("Type: " + t);
             }
             return t;
         }
@@ -441,17 +447,17 @@ namespace CSPGF
         private Concrete GetConcrete(String name, String startCat)
         {
             if (DBG) {
-                System.Console.WriteLine("Concrete: " + name);
-                System.Console.WriteLine("Concrete: Reading flags");
+                dbgwrite.WriteLine("Concrete: " + name);
+                dbgwrite.WriteLine("Concrete: Reading flags");
             }
             Dictionary<String, RLiteral> flags = GetListFlag();
             // We don't use the print names, but we need to read them to skip them
             if (DBG) {
-                System.Console.WriteLine("Concrete: Skiping print names");
+                dbgwrite.WriteLine("Concrete: Skiping print names");
             }
             GetListPrintName();
             if (DBG) {
-                System.Console.WriteLine("Concrete: Reading sequences");
+                dbgwrite.WriteLine("Concrete: Reading sequences");
             }
             List<Sequence> seqs = GetListSequence();
             List<CncFun> cncFuns = GetListCncFun(seqs);
@@ -514,7 +520,7 @@ namespace CSPGF
             //TODO: Check!
             int sel = inputstream.ReadByte();
             if (DBG) {
-                System.Console.WriteLine("Symbol: type=" + sel);
+                dbgwrite.WriteLine("Symbol: type=" + sel);
             }
             Symbol symb = null;
             switch (sel) {
@@ -541,7 +547,7 @@ namespace CSPGF
                     throw new Exception("Invalid tag for symbols : " + sel);
             }
             if (DBG) {
-                System.Console.WriteLine("/Symbol: " + symb);
+                dbgwrite.WriteLine("/Symbol: " + symb);
             }
             return symb;
         }
@@ -688,7 +694,7 @@ namespace CSPGF
             //TODO: CHECK!
             int sel = inputstream.ReadByte();
             if (DBG) {
-                System.Console.WriteLine("Production: type=" + sel);
+                dbgwrite.WriteLine("Production: type=" + sel);
             }
             Production prod = null;
             switch (sel) {
@@ -706,7 +712,7 @@ namespace CSPGF
                     throw new Exception("Invalid tag for productions : " + sel);
             }
             if (DBG) {
-                System.Console.WriteLine("/Production: " + prod);
+                dbgwrite.WriteLine("/Production: " + prod);
             }
             return prod;
         }
@@ -779,55 +785,13 @@ namespace CSPGF
         /* ************************************************* */
         private String GetString()
         {
-            // using a byte array for efficiency
-            // TODO : FIX! Skita i att köra en outputgrej och bara leka sträng? Kan ju bli segt så kanske någon typ av buffer?
-            // ByteArrayOutputStream os = null; //new java.io.ByteArrayOutputStream();
             int npoz = GetInt();
-            //TODO: Check :D Kan funka, antagligen inte ;D i värsta fall blir det sträng =+
-            List<byte> bytes = new List<byte>();
-            //BinaryWriter os = new BinaryWriter(new MemoryStream(), Encoding.UTF8);
-            //int r;
-            /*for (int i = 0; i < npoz; i++) {
-                r = inputstream.ReadByte();
-                bytes.Add(((byte)r));
-                if (r <= 0x7f) {
-                }                              //lg = 0;
-                else if ((r >= 0xc0) && (r <= 0xdf))
-                    bytes.Add(((byte)inputstream.ReadByte()));   //lg = 1;
-                else if ((r >= 0xe0) && (r <= 0xef)) {
-                    bytes.Add(((byte)inputstream.ReadByte()));   //lg = 2;
-                    bytes.Add(((byte)inputstream.ReadByte()));
-                }
-                else if ((r >= 0xf0) && (r <= 0xf4)) {
-                    bytes.Add(((byte)inputstream.ReadByte()));   //lg = 3;
-                    bytes.Add(((byte)inputstream.ReadByte()));
-                    bytes.Add(((byte)inputstream.ReadByte()));
-                }
-                else if ((r >= 0xf8) && (r <= 0xfb)) {
-                    bytes.Add(((byte)inputstream.ReadByte()));   //lg = 4;
-                    bytes.Add(((byte)inputstream.ReadByte()));
-                    bytes.Add(((byte)inputstream.ReadByte()));
-                    bytes.Add(((byte)inputstream.ReadByte()));
-                    //} else if ((r >= 0xfc) && (r <= 0xfd)) { TODO: Check!
-                }
-                else if ((r == 0xfc) || (r == 0xfd)) {
-                    bytes.Add(((byte)inputstream.ReadByte()));   //lg =5;
-                    bytes.Add(((byte)inputstream.ReadByte()));
-                    bytes.Add(((byte)inputstream.ReadByte()));
-                    bytes.Add(((byte)inputstream.ReadByte()));
-                    bytes.Add(((byte)inputstream.ReadByte()));
-                    //IOException -> Exception
-                }
-                else
-                    throw new Exception("Undefined for now !!! ");
-            }*/
-            //for (int i = 0; i < npoz; i++) 
-                foreach (char c in inputstream.ReadChars(npoz)) {
-                    bytes.Add((byte)c);
-                }
-            //}
-            //return new String(bytes.ToArray());
-            return Encoding.UTF8.GetString(bytes.ToArray());
+            // Should work now
+            List<char> bytes = new List<char>();
+            foreach (char c in inputstream.ReadChars(npoz)) {
+                bytes.Add(c);
+            }
+            return new String(bytes.ToArray());
         }
 
         private List<String> GetListString()
