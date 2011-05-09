@@ -69,7 +69,7 @@ namespace CSPGF.parser_new
             //lookConcrComplete :: PGF -> CId -> Concr
             reader.Abstract abs = pgf.GetAbstract();   //TODO maybe not necessary...
             List <reader.CncCat> tmp = concrete.GetCncCat();    //is this the same as cnccat cnc?
-
+            //Map.Map CId CncCat = Map(Map CId CncCat whatever... :D
         }
 
         public void ParseWithRecovery(String language, String text)
