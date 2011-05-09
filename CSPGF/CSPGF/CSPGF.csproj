@@ -94,6 +94,7 @@
     <Compile Include="parser\Variable.cs" />
     <Compile Include="parser\Lambda.cs" />
     <Compile Include="parser\Tree.cs" />
+    <Compile Include="parser_new\Parse.cs" />
     <Compile Include="PGF.cs" />
     <Compile Include="PGFBuilder.cs" />
     <Compile Include="PGFReader.cs" />
@@ -146,12 +147,6 @@
     <Compile Include="test\FoodsLinearizeTest.cs" />
     <Compile Include="test\FoodsParseTest.cs" />
     <Compile Include="test\FoodsPredictTest.cs" />
-    <Compile Include="test\DebugWin.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="test\DebugWin.Designer.cs">
-      <DependentUpon>DebugWin.cs</DependentUpon>
-    </Compile>
     <Compile Include="test\IndexedPGFTest.cs" />
     <Compile Include="test\PGFTestCase.cs" />
     <Compile Include="trees\AbstractVisitSkeleton.cs" />
@@ -188,11 +183,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="QUT.ShiftReduceParser.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="test\DebugWin.resx">
-      <DependentUpon>DebugWin.cs</DependentUpon>
-    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
