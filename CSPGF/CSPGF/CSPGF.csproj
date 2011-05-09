@@ -59,6 +59,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -144,6 +146,12 @@
     <Compile Include="test\FoodsLinearizeTest.cs" />
     <Compile Include="test\FoodsParseTest.cs" />
     <Compile Include="test\FoodsPredictTest.cs" />
+    <Compile Include="test\DebugWin.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="test\DebugWin.Designer.cs">
+      <DependentUpon>DebugWin.cs</DependentUpon>
+    </Compile>
     <Compile Include="test\IndexedPGFTest.cs" />
     <Compile Include="test\PGFTestCase.cs" />
     <Compile Include="trees\AbstractVisitSkeleton.cs" />
@@ -180,6 +188,11 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="QUT.ShiftReduceParser.dll" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="test\DebugWin.resx">
+      <DependentUpon>DebugWin.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
