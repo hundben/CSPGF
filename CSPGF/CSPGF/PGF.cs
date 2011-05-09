@@ -59,8 +59,8 @@ namespace CSPGF
          */
         public Concrete GetConcrete(String name)
         {
-            Concrete l = concretes[name];
-            if (l == null)
+            Concrete l;
+            if (!concretes.TryGetValue(name, out l))
                 throw new UnknownLanguageException(name);
             return l;
         }
@@ -84,7 +84,7 @@ namespace CSPGF
             return abstr;
         }
         /**
-        * Return true if the given name crrespond to a concrete grammar
+        * Return true if the given name correspond to a concrete grammar
         * in the pgf, false otherwise.
         */
         public Boolean HasConcrete(String name)
@@ -92,14 +92,13 @@ namespace CSPGF
             return concretes.ContainsKey(name);
         }
 
-        //TODO : cleanups
         public override String ToString()
         {
-            String ss = "PGF : \nmajor version : " + majorVersion + ", minor version : " + minorVersion + "\n" + "flags : (";
+            String ss = "PGF : \nMajor version : " + majorVersion + ", Minor version : " + minorVersion + "\n" + "Flags : (";
             foreach (String flagName in flags.Keys) {
                 ss += flagName + ": " + flags[flagName].ToString() + "\n";
             }
-            ss += (")\nabstract : (" + abstr.ToString() + ")\nconcretes : (");
+            ss += (")\nAbstract : (" + abstr.ToString() + ")\nConcretes : (");
             foreach (String name in concretes.Keys) {
                 ss += name + ", ";
             }

@@ -53,32 +53,23 @@ namespace CSPGF
             List<AbsFun> absFuns = pgf.GetAbstract().absFuns;
             HashSet<String> dirFuns = new HashSet<String>();
             HashSet<String> indirFuns = new HashSet<String>();
-            foreach(AbsCat abc in absCats) {
-            //for (int i = 0 ; i < absCats.Count ; i++) {
+            foreach (AbsCat abc in absCats) {
                 dirFuns = new HashSet<String>();
                 indirFuns = new HashSet<String>();
                 List<WeightedIdent> functions = abc.functions;
                 foreach (WeightedIdent weid in functions) {
                     foreach (AbsFun ab in absFuns) {
                         if (weid.ident.Equals(ab.name)) {
-                            if(ab.type.hypos.Count == 0) {
+                            if (ab.type.hypos.Count == 0) {
                                 dirFuns.Add(weid.ident);
-                            } else {
+                            }
+                            else {
                                 indirFuns.Add(weid.ident);
                             }
                             break;
                         }
                     }
                 }
-                /*for (int j = 0 ; j < functions.Count ; j++)
-                    for (int k = 0 ; k < absFuns.Count ; k++)
-                        if (functions[j].ident.Equals(absFuns[k].name)) {
-                            if (absFuns[k].type.hypos.Count == 0)
-                                dirFuns.Add(functions[j].ident);
-                            else
-                                indirFuns.Add(functions[j].ident);
-                            break;
-                        }*/
                 dirRules.Add(abc.name, dirFuns);
                 indirRules.Add(abc.name, indirFuns);
             }
@@ -94,10 +85,9 @@ namespace CSPGF
          * suitable for simple expressions
          **/
         // FIXME what is 'type' for ???
-        // FIXME couldn't dirFuns be an array ?
         public Tree GetDirect(String type, HashSet<String> dirFuns)
         {
-            int rand = this.random.Next(dirFuns.Count());
+            int rand = this.random.Next(dirFuns.Count);
             return new Function((String)dirFuns.ToArray()[rand]);
         }
 
@@ -106,12 +96,6 @@ namespace CSPGF
          **/
         public Tree GetIndirect(String type, HashSet<String> indirFuns)
         {
-            //Iterator<String> it = indirFuns.iterator();
-            //Vector<String> vs = new Vector<String>();
-            /*while (it.hasNext())
-            {
-                vs.add(it.next());
-            }*/
             List<String> vs = new List<String>();
             foreach (String it in indirFuns) {
                 vs.Add(it);
@@ -120,15 +104,13 @@ namespace CSPGF
             int rand = random.Next(vs.Count());
             String funcName = vs.ElementAt(rand);
             List<AbsFun> absFuns = pgf.GetAbstract().absFuns;
-            foreach (AbsFun a in absFuns)
-            //for (int i = 0 ; i < absFuns.Length ; i++)
-            {
+            foreach (AbsFun a in absFuns) {
                 if (a.name.Equals(funcName)) {
                     List<Hypo> hypos = a.type.hypos;
                     String[] tempCats = new String[hypos.Count];
                     Tree[] exps = new Tree[hypos.Count];
                     // TODO: Går detta att göra om?
-                    for (int k = 0 ; k < hypos.Count ; k++) {
+                    for (int k = 0; k < hypos.Count; k++) {
                         tempCats[k] = hypos[k].type.name;
                         exps[k] = Gen(tempCats[k]);
                         if (exps[k] == null) {
@@ -137,7 +119,6 @@ namespace CSPGF
                     }
                     Tree rez = new Function(funcName);
                     foreach (Tree t in exps) {
-                    //for (int j = 0 ; j < exps.Length ; j++)
                         rez = new Application(rez, t);
                     }
                     return rez;
@@ -155,9 +136,11 @@ namespace CSPGF
         {
             if (type.Equals("Integer")) {
                 return new Literal(new IntLiteral(GenerateInt()));
-            } else if (type.Equals("Float")) {
+            }
+            else if (type.Equals("Float")) {
                 return new Literal(new FloatLiteral(GenerateFloat()));
-            } else if (type.Equals("String")) {
+            }
+            else if (type.Equals("String")) {
                 return new Literal(new StringLiteral(GenerateString()));
             }
             int depth = random.Next(5); //60% constants, 40% functions
