@@ -49,17 +49,12 @@ namespace CSPGF.reader
         public String StartCat()
         {
             RLiteral cat = null;
-            try {
-                cat = flags["startcat"];
-            }
-            catch (Exception e) {
-                e.ToString();
-            }
-            if (cat == null)
-                return "Sentence";
-            else
+            if (flags.TryGetValue("startcat", out cat)) {
                 return ((StringLit)cat).value;
-
+            }
+            else {
+                return "Sentence";
+            }
         }
 
         public override String ToString()
@@ -68,6 +63,11 @@ namespace CSPGF.reader
             // TODO: Är bortkommenterat i javakoden också kanske borde fixa?
             // for(int i=0; i<flags.length;i++)
             // 	ss+=(" "+flags[i].toString());
+            foreach(KeyValuePair<String,RLiteral> kvp in flags) {
+                ss += "String: " + kvp.Key + "RLiteral: " + kvp.Value.ToString();
+            }
+
+
             ss += ") , Abstract Functions : (";
             foreach (AbsFun a in absFuns) {
                 ss += " " + a.ToString();

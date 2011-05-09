@@ -59,7 +59,6 @@ namespace CSPGF.reader
 
         public List<CncCat> GetCncCat()
         {
-            //TODO clean up
             List<CncCat> tmp = new List<CncCat>();
             foreach (KeyValuePair<String, CncCat> c in cncCats) {
                 tmp.Add(c.Value);
@@ -75,7 +74,7 @@ namespace CSPGF.reader
             }
             else
             {
-                return new CncCat(startCat, 0, 0, new List<String>()); //TODO test this
+                return new CncCat(startCat, 0, 0, new List<String>());
             }
         }
 
@@ -92,7 +91,7 @@ namespace CSPGF.reader
 
         public override String ToString()
         {
-            return "concrete" + name;
+            return "Concrete" + name;
         }
 
         public Dictionary<int, HashSet<Production>> GetSetOfProductions()

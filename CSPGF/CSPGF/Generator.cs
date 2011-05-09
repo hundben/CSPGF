@@ -202,8 +202,7 @@ namespace CSPGF
         }
 
 
-        /** generates a random string
-        **/
+        /** generates a random string **/
 
         public String GenerateString()
         {
@@ -211,15 +210,13 @@ namespace CSPGF
             return ss[random.Next(ss.Length)];
         }
 
-        /** generates a random integer
-         **/
+        /** generates a random integer **/
         public int GenerateInt()
         {
             return random.Next(100000);
         }
 
-        /** generates a random float
-         **/
+        /** generates a random float **/
         public double GenerateFloat()
         {
             return random.NextDouble();
