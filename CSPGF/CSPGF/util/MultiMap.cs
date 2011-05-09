@@ -51,15 +51,9 @@ namespace CSPGF.util
 
         public Boolean Add(K key, V value)
         {
+
             HashSet<V> s = null;
-            try {
-                s = map[key];
-            }
-            catch (Exception e) {
-                e.ToString();
-            }
-            if (s == null)
-            {
+            if (!map.TryGetValue(key, out s)) {
                 s = new HashSet<V>();
                 map.Add(key, s);
             }
@@ -68,7 +62,6 @@ namespace CSPGF.util
 
         public List<K> KeySet()
         {
-            // WTH?
             return map.Keys.ToList<K>();
         }
 
@@ -90,12 +83,13 @@ namespace CSPGF.util
          *  Returns the all the values in the map.
          *  FIXME: The result is not backed by the map.
          */
-        public List<V> Values() {
-                List<V> l = new List<V>();
-                foreach (KeyValuePair<K, HashSet<V>> s in map)
-                    foreach (V t in s.Value)
-                                l.Add(t);
-                return l;
+        public List<V> Values()
+        {
+            List<V> l = new List<V>();
+            foreach (KeyValuePair<K, HashSet<V>> s in map)
+                foreach (V t in s.Value)
+                    l.Add(t);
+            return l;
         }
 
     }
