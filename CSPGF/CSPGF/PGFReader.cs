@@ -39,45 +39,34 @@ namespace CSPGF
         private static Boolean DBG = true;
 
         private StreamWriter dbgwrite;
-        private BinaryReader inputstream; // Maybe filestream or streamreader instead?
-        //private DataInputStream mDataInputStream;
-        // Was Set<String> before, but does not exist in c#
-        private List<String> languages;
+        private BinaryReader inputstream;
+        private List<String> languages = null;
 
-        // Visual Studio fails to check the rest of the code when the two constructors are uncommented.
         public PGFReader(BinaryReader _inputstream)
         {
             if (DBG) {
                 dbgwrite = new StreamWriter("./dbg.txt", false);
             }
             inputstream = _inputstream;
-            //this.mDataInputStream = new DataInputStream(is);
         }
 
         public PGFReader(BinaryReader _inputstream, List<String> _languages)
         {
             if (DBG) {
-                dbgwrite = new StreamWriter("./dbg.txt", false, Encoding.UTF8);
+                dbgwrite = new StreamWriter("./dbg.txt", false);
             }
             inputstream = _inputstream;
-            //this.mDataInputStream = new DataInputStream(is);
-            //TODO: Convert from String[] to List<String>
-            //languages = _languages;
             languages = _languages;
-            
         }
 
         public PGF ReadPGF()
         {
             Dictionary<String, int> index = null;
-            // Reading the PGF version
             int[] ii = new int[2];
-            for (int i = 0 ; i < 2 ; i++) {
-                //ii[i] = mDataInputStream.read();
-                // TODO: Specification says int16 for version number so maybe 2 bytes added together instead?
+            for (int i = 0; i < 2; i++) {
                 int tmp = inputstream.ReadByte();
                 tmp = tmp << 8;
-                tmp = tmp | inputstream.ReadByte(); 
+                tmp = tmp | inputstream.ReadByte();
                 ii[i] = tmp;
             }
             if (DBG) {
@@ -101,11 +90,12 @@ namespace CSPGF
             Concrete[] concretes;
             if (languages != null) {
                 concretes = new Concrete[languages.Count()];
-            } else {
+            }
+            else {
                 concretes = new Concrete[nbConcretes];
             }
             int k = 0;
-            for (int i = 0 ; i < nbConcretes ; i++) {
+            for (int i = 0; i < nbConcretes; i++) {
                 String name = GetIdent();
                 if (DBG) {
                     dbgwrite.WriteLine("Language " + name);
@@ -113,15 +103,16 @@ namespace CSPGF
                 if (languages == null || languages.Remove(name)) {
                     concretes[k] = GetConcrete(name, startCat);
                     k++;
-                } else {
+                }
+                else {
                     if (index != null) {
                         // TODO: CHECK! Maybe this will work?
                         inputstream.BaseStream.Seek(index[name], SeekOrigin.Current);
-                        //this.mDataInputStream.skip(index[name]);
                         if (DBG) {
-                            dbgwrite.WriteLine("Skiping " + name);
+                            dbgwrite.WriteLine("Skipping " + name);
                         }
-                    } else {
+                    }
+                    else {
                         GetConcrete(name, startCat);
                     }
                 }
@@ -146,10 +137,11 @@ namespace CSPGF
          */
         private String GetStartCat(Dictionary<String, RLiteral> flags)
         {
-            RLiteral cat = flags["startcat"];
-            if (cat == null) {
+            RLiteral cat;
+            if (!flags.TryGetValue("startcat", out cat)) {
                 return "Sentence";
-            } else {
+            }
+            else {
                 return ((StringLit)cat).value;
             }
         }
@@ -157,9 +149,8 @@ namespace CSPGF
         private Dictionary<String, int> ReadIndex(String str)
         {
             //TODO: check if new implementation works
-            // Note: WTH did i think when i wrote this? :D
-            // Split on '+' and trim? Chech what the input really is.
-            //String[] items = s.Split(" +");
+            //Split on '+' and trim? Check what the input really is.
+            //Original javacode: String[] items = s.Split(" +");
             String[] items = str.Split('+');
             Dictionary<String, int> index = new Dictionary<String, int>();
             foreach (String item in items) {
@@ -172,12 +163,6 @@ namespace CSPGF
         /* ************************************************* */
         /* Reading abstract grammar                          */
         /* ************************************************* */
-        /**
-         * This function reads the part of the pgf binary corresponding to
-         * the abstract grammar.
-         * @param is the stream to read from.
-         */
-
         private Abstract GetAbstract()
         {
             String name = GetIdent();
@@ -194,8 +179,7 @@ namespace CSPGF
         {
             int npoz = GetInt();
             List<Pattern> tmp = new List<Pattern>();
-            //Pattern[] patts = new Pattern[npoz];
-            for (int i = 0 ; i < npoz ; i++) {
+            for (int i = 0; i < npoz; i++) {
                 tmp.Add(GetPattern());
             }
             return tmp;
@@ -216,12 +200,12 @@ namespace CSPGF
             }
             CSPGF.reader.Type t = GetType2();
             int i = GetInt();
-            //TODO: Check!
             int has_equations = inputstream.ReadByte();
             List<Eq> equations;
             if (has_equations == 0) {
                 equations = new List<Eq>();
-            } else {
+            }
+            else {
                 equations = GetListEq();
             }
             double weight = GetDouble();
@@ -245,13 +229,12 @@ namespace CSPGF
         {
             int npoz = GetInt();
             List<AbsFun> tmp = new List<AbsFun>();
-            //AbsFun[] absFuns = new AbsFun[npoz];
             if (npoz == 0) {
                 return tmp;
-            } else {
-                for (int i = 0 ; i < npoz ; i++) {
+            }
+            else {
+                for (int i = 0; i < npoz; i++) {
                     tmp.Add(GetAbsFun());
-                    //absFuns[i] = GetAbsFun();
                 }
             }
             return tmp;
@@ -261,13 +244,12 @@ namespace CSPGF
         {
             int npoz = GetInt();
             List<AbsCat> tmp = new List<AbsCat>();
-            //AbsCat[] absCats = new AbsCat[npoz];
             if (npoz == 0) {
                 return tmp;
-            } else {
-                for (int i = 0 ; i < npoz ; i++) {
+            }
+            else {
+                for (int i = 0; i < npoz; i++) {
                     tmp.Add(GetAbsCat());
-                    //absCats[i] = GetAbsCat();
                 }
             }
             return tmp;
@@ -287,7 +269,6 @@ namespace CSPGF
 
         private Hypo GetHypo()
         {
-            //TODO: Check!
             int btype = inputstream.ReadByte();
             Boolean b = btype == 0 ? false : true;
             String varName = GetIdent();
@@ -300,7 +281,7 @@ namespace CSPGF
         {
             int npoz = GetInt();
             List<Hypo> tmp = new List<Hypo>();
-            for (int i = 0 ; i < npoz ; i++) {
+            for (int i = 0; i < npoz; i++) {
                 tmp.Add(GetHypo());
             }
             return tmp;
@@ -310,7 +291,7 @@ namespace CSPGF
         {
             int npoz = GetInt();
             List<Expr> tmp = new List<Expr>();
-            for (int i = 0 ; i < npoz ; i++) {
+            for (int i = 0; i < npoz; i++) {
                 tmp.Add(GetExpr());
             }
             return tmp;
@@ -318,12 +299,10 @@ namespace CSPGF
 
         private Expr GetExpr()
         {
-            //TODO: Check!
             int sel = inputstream.ReadByte();
             Expr expr = null;
             switch (sel) {
                 case 0: //lambda abstraction
-                    //TODO: Check!
                     int bt = inputstream.ReadByte();
                     Boolean btype = bt == 0 ? false : true;
                     String varName = GetIdent();
@@ -370,7 +349,7 @@ namespace CSPGF
         {
             int npoz = GetInt();
             List<Eq> tmp = new List<Eq>();
-            for (int i = 0 ; i < npoz ; i++) {
+            for (int i = 0; i < npoz; i++) {
                 tmp.Add(GetEq());
             }
             return tmp;
@@ -378,7 +357,6 @@ namespace CSPGF
 
         private Pattern GetPattern()
         {
-            //TODO: Check!
             int sel = inputstream.ReadByte();
             Pattern patt = null;
             switch (sel) {
@@ -419,7 +397,6 @@ namespace CSPGF
 
         private RLiteral GetLiteral()
         {
-            //TODO: CHECK!
             int sel = inputstream.ReadByte();
             RLiteral ss = null;
             switch (sel) {
@@ -479,7 +456,6 @@ namespace CSPGF
             String absName = GetIdent();
             String printName = GetString();
             return new PrintName(absName, printName);
-
         }
 
         private List<PrintName> GetListPrintName()
@@ -488,8 +464,9 @@ namespace CSPGF
             List<PrintName> tmp = new List<PrintName>();
             if (npoz == 0) {
                 return tmp;
-            } else {
-                for (int i = 0 ; i < npoz ; i++) {
+            }
+            else {
+                for (int i = 0; i < npoz; i++) {
                     tmp.Add(GetPrintName());
                 }
             }
@@ -509,7 +486,7 @@ namespace CSPGF
         {
             int npoz = GetInt();
             List<Sequence> tmp = new List<Sequence>();
-            for (int i = 0 ; i < npoz ; i++) {
+            for (int i = 0; i < npoz; i++) {
                 tmp.Add(GetSequence());
             }
             return tmp;
@@ -517,7 +494,6 @@ namespace CSPGF
 
         private Symbol GetSymbol()
         {
-            //TODO: Check!
             int sel = inputstream.ReadByte();
             if (DBG) {
                 dbgwrite.WriteLine("Symbol: type=" + sel);
@@ -525,6 +501,7 @@ namespace CSPGF
             Symbol symb = null;
             switch (sel) {
                 case 0: // category (non terminal symbol)
+
                 case 1: // Lit (Not implemented properly)
                     int i1 = GetInt();
                     int i2 = GetInt();
@@ -556,7 +533,7 @@ namespace CSPGF
         {
             int npoz = GetInt();
             List<Alternative> tmp = new List<Alternative>();
-            for (int i = 0 ; i < npoz ; i++) {
+            for (int i = 0; i < npoz; i++) {
                 tmp.Add(GetAlternative());
             }
             return tmp;
@@ -573,7 +550,7 @@ namespace CSPGF
         {
             int npoz = GetInt();
             List<Symbol> tmp = new List<Symbol>();
-            for (int i = 0 ; i < npoz ; i++) {
+            for (int i = 0; i < npoz; i++) {
                 tmp.Add(GetSymbol());
             }
             return tmp;
@@ -586,14 +563,10 @@ namespace CSPGF
         {
             String name = GetIdent();
             List<int> sIndices = GetListInt();
-            //int l = sIndices.Count;
             List<Sequence> seqs = new List<Sequence>();
-            foreach(int i in sIndices) {
+            foreach (int i in sIndices) {
                 seqs.Add(sequences[i]);
             }
-            /*for (int i = 0 ; i < l ; i++) {
-                seqs[i] = sequences[sIndices[i]];
-            }*/
             return new CncFun(name, seqs);
         }
 
@@ -601,7 +574,7 @@ namespace CSPGF
         {
             int npoz = GetInt();
             List<CncFun> tmp = new List<CncFun>();
-            for (int i = 0 ; i < npoz ; i++) {
+            for (int i = 0; i < npoz; i++) {
                 tmp.Add(GetCncFun(sequences));
             }
             return tmp;
@@ -616,8 +589,9 @@ namespace CSPGF
         {
             int size = GetInt();
             List<LinDef> tmp = new List<LinDef>();
-            for (int i = 0 ; i < size ; i++)
+            for (int i = 0; i < size; i++) {
                 tmp.Add(GetLinDef());
+            }
             return tmp;
         }
 
@@ -626,7 +600,7 @@ namespace CSPGF
             int key = GetInt();
             int listSize = GetInt();
             List<int> funIds = new List<int>();
-            for (int i = 0 ; i < listSize ; i++) {
+            for (int i = 0; i < listSize; i++) {
                 funIds.Add(GetInt());
             }
             return new LinDef(key, funIds);
@@ -657,7 +631,7 @@ namespace CSPGF
         {
             int npoz = GetInt();
             List<ProductionSet> tmp = new List<ProductionSet>();
-            for (int i = 0 ; i < npoz ; i++) {
+            for (int i = 0; i < npoz; i++) {
                 tmp.Add(GetProductionSet(cncFuns));
             }
             return tmp;
@@ -674,7 +648,7 @@ namespace CSPGF
         {
             int npoz = GetInt();
             List<Production> tmp = new List<Production>();
-            for (int i = 0 ; i < npoz ; i++) {
+            for (int i = 0; i < npoz; i++) {
                 tmp.Add(GetProduction(leftCat, cncFuns));
             }
             return tmp;
@@ -691,7 +665,6 @@ namespace CSPGF
          */
         private Production GetProduction(int leftCat, List<CncFun> cncFuns)
         {
-            //TODO: CHECK!
             int sel = inputstream.ReadByte();
             if (DBG) {
                 dbgwrite.WriteLine("Production: type=" + sel);
@@ -724,7 +697,7 @@ namespace CSPGF
         {
             int size = GetInt();
             List<int> tmp = new List<int>();
-            for (int i = 0 ; i < size ; i++) {
+            for (int i = 0; i < size; i++) {
                 // Skiping the list of integers
                 GetListInt();
                 tmp.Add(GetInt());
@@ -732,9 +705,6 @@ namespace CSPGF
             return tmp;
         }
 
-        /* ************************************************* */
-        /* Reading concrete categories                       */
-        /* ************************************************* */
         private CncCat GetCncCat()
         {
             String sname = GetIdent();
@@ -751,20 +721,16 @@ namespace CSPGF
             String name;
             int firstFID, lastFID;
             List<String> ss;
-            for (int i = 0 ; i < npoz ; i++) {
+            for (int i = 0; i < npoz; i++) {
                 name = GetIdent();
                 firstFID = GetInt();
                 lastFID = GetInt();
                 ss = GetListString();
-                //System.Console.WriteLine(name + " " + firstFID + " " + lastFID + " " + ss);
                 cncCats.Add(name, new CncCat(name, firstFID, lastFID, ss));
             }
             return cncCats;
         }
 
-        /* ************************************************* */
-        /* Reading flags                                     */
-        /* ************************************************* */
         private Dictionary<String, RLiteral> GetListFlag()
         {
             int npoz = GetInt();
@@ -772,7 +738,7 @@ namespace CSPGF
             if (npoz == 0) {
                 return flags;
             }
-            for (int i = 0 ; i < npoz ; i++) {
+            for (int i = 0; i < npoz; i++) {
                 String ss = GetIdent();
                 RLiteral lit = GetLiteral();
                 flags.Add(ss, lit);
@@ -780,13 +746,9 @@ namespace CSPGF
             return flags;
         }
 
-        /* ************************************************* */
-        /* Reading strings                                   */
-        /* ************************************************* */
         private String GetString()
         {
             int npoz = GetInt();
-            // Should work now
             List<char> bytes = new List<char>();
             foreach (char c in inputstream.ReadChars(npoz)) {
                 bytes.Add(c);
@@ -798,11 +760,11 @@ namespace CSPGF
         {
             int npoz = GetInt();
             List<String> tmp = new List<String>();
-            //String[] strs = new String[npoz];
             if (npoz == 0) {
                 return tmp;
-            } else {
-                for (int i = 0 ; i < npoz ; i++) {
+            }
+            else {
+                for (int i = 0; i < npoz; i++) {
                     tmp.Add(GetString());
                 }
             }
@@ -817,22 +779,18 @@ namespace CSPGF
         private String GetIdent()
         {
             int nbChar = GetInt();
-            //byte[] bytes = new byte[nbChar];
             byte[] bytes = new byte[nbChar];
-            //TODO: Check!
             inputstream.Read(bytes, 0, nbChar);
-            //TODO: check if we have to change encoding!
+            //TODO: check if we have to change encoding or let String fix it instead!
             System.Text.Encoding enc = System.Text.Encoding.ASCII;
             return enc.GetString(bytes);
-            //return bytes.ToString();
-            //return new String(bytes, "ISO-8859-1");
         }
 
         private List<String> GetListIdent()
         {
             int nb = GetInt();
             List<String> tmp = new List<String>();
-            for (int i = 0 ; i < nb ; i++) {
+            for (int i = 0; i < nb; i++) {
                 tmp.Add(GetIdent());
             }
             return tmp;
@@ -845,7 +803,7 @@ namespace CSPGF
         {
             int nb = GetInt();
             List<WeightedIdent> tmp = new List<WeightedIdent>();
-            for (int i = 0 ; i < nb ; i++) {
+            for (int i = 0; i < nb; i++) {
                 double w = GetDouble();
                 String s = GetIdent();
                 tmp.Add(new WeightedIdent(s, w));
@@ -866,7 +824,8 @@ namespace CSPGF
             int rez = inputstream.ReadByte();
             if (rez <= 0x7f) {
                 return rez;
-            } else {
+            }
+            else {
                 int ii = GetInt();
                 rez = (ii << 7) | (rez & 0x7f);
                 return (int)rez;
@@ -877,13 +836,12 @@ namespace CSPGF
         {
             int npoz = GetInt();
             List<int> tmp = new List<int>();
-            for (int i = 0 ; i < npoz ; i++) {
+            for (int i = 0; i < npoz; i++) {
                 tmp.Add(GetInt());
             }
             return tmp;
         }
 
-        // Reading doubles
         private double GetDouble()
         {
             return inputstream.ReadDouble();
