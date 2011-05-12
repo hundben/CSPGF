@@ -32,6 +32,9 @@ using System.IO;
 using CSPGF.parser;
 using CSPGF.test;
 using CSPGF.trees;
+using System.Speech;
+using System.Speech.Recognition;
+using System.Speech.Synthesis;
 
 namespace CSPGF
 {
@@ -42,11 +45,15 @@ namespace CSPGF
             BinaryReader br = new BinaryReader(new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open));
             PGFReader pr = new PGFReader(br);
             PGF tmp = pr.ReadPGF();
-            parser_new.Parse ps = new parser_new.Parse(tmp);
+            parser_new.Parser ps = new parser_new.Parser(tmp);
             ps.ParseText("FoodsEng","hello world");
             //Parser parser = new Parser(tmp, "FoodsEng");
             //ParseState tmp2 = parser.Parse("hello world");
             //List<CSPGF.trees.Absyn.Tree> tmp3 = tmp2.GetTrees();
+
+            SpeechSynthesizer ss = new SpeechSynthesizer();
+            ss.SetOutputToDefaultAudioDevice();
+            ss.Speak("wheeeeee!");
             //FoodsParseTest fpt = new FoodsParseTest("test");
             //fpt.setUp();
             //fpt.TestFoodsEng();
