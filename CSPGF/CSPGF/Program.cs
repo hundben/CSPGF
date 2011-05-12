@@ -54,13 +54,6 @@ namespace CSPGF
             SpeechSynthesizer ss = new SpeechSynthesizer();
             ss.SetOutputToDefaultAudioDevice();
             ss.Speak("wheeeeee!");
-            //FoodsParseTest fpt = new FoodsParseTest("test");
-            //fpt.setUp();
-            //fpt.TestFoodsEng();
-            //fpt.TestFoodsIta();
-            //fpt.TestFoodsSwe();
-            //fpt.TearDown();
-            //System.Console.Out.WriteLine("Hello World!");
             System.Console.In.ReadLine();
         }
     }
