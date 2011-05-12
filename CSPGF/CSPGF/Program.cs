@@ -32,6 +32,9 @@ using System.IO;
 using CSPGF.parser;
 using CSPGF.test;
 using CSPGF.trees;
+using System.Speech;
+using System.Speech.Recognition;
+using System.Speech.Synthesis;
 
 namespace CSPGF
 {
@@ -45,6 +48,9 @@ namespace CSPGF
             Parser parser = new Parser(tmp, "FoodsEng");
             ParseState tmp2 = parser.Parse("hello world");
             List<CSPGF.trees.Absyn.Tree> tmp3 = tmp2.GetTrees();
+            SpeechSynthesizer ss = new SpeechSynthesizer();
+            ss.SetOutputToDefaultAudioDevice();
+            ss.Speak("wheeeeee!");
             //FoodsParseTest fpt = new FoodsParseTest("test");
             //fpt.setUp();
             //fpt.TestFoodsEng();

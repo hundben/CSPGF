@@ -5,11 +5,11 @@ using System.Text;
 
 namespace CSPGF.parser_new
 {
-    class Parse
+    class Parser
     {
         //Notice, the language might be bad here? better to use it when we want to parse a text?
         private PGF pgf;    
-        public Parse(PGF _pgf)
+        public Parser(PGF _pgf)
         {
             pgf = _pgf;
         }
