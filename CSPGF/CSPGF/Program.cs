@@ -39,12 +39,14 @@ namespace CSPGF
     {
         static void Main(string[] args)
         {
-            BinaryReader br = new BinaryReader(new FileStream("c:\\Users\\Hundben\\Desktop\\git\\gfcs\\CSPGF\\CSPGF\\test\\files\\Foods.pgf", FileMode.Open));
+            BinaryReader br = new BinaryReader(new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open));
             PGFReader pr = new PGFReader(br);
             PGF tmp = pr.ReadPGF();
-            Parser parser = new Parser(tmp, "FoodsEng");
-            ParseState tmp2 = parser.Parse("hello world");
-            List<CSPGF.trees.Absyn.Tree> tmp3 = tmp2.GetTrees();
+            parser_new.Parse ps = new parser_new.Parse(tmp);
+            ps.ParseText("FoodsEng","hello world");
+            //Parser parser = new Parser(tmp, "FoodsEng");
+            //ParseState tmp2 = parser.Parse("hello world");
+            //List<CSPGF.trees.Absyn.Tree> tmp3 = tmp2.GetTrees();
             //FoodsParseTest fpt = new FoodsParseTest("test");
             //fpt.setUp();
             //fpt.TestFoodsEng();

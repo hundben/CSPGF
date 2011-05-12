@@ -21,7 +21,7 @@ namespace CSPGF.parser_new
  
          */
         //TODO should return tree
-        public void Parse(String language, String text)
+        public void ParseText(String language, String text)
         {
             //Check if the language exists
             reader.Concrete concrete = pgf.GetConcrete(language);
@@ -69,6 +69,22 @@ namespace CSPGF.parser_new
             //lookConcrComplete :: PGF -> CId -> Concr
             reader.Abstract abs = pgf.GetAbstract();   //TODO maybe not necessary...
             List <reader.CncCat> tmp = concrete.GetCncCat();    //is this the same as cnccat cnc?
+            String startCatName = abs.StartCat();
+            //This code might be unnecessary, but then we have the startcategory saved at least ;P
+            reader.CncCat startCat = null;
+            foreach (reader.CncCat cat in tmp)
+            {
+                if (cat.name == startCatName)
+                {
+                    startCat = cat;
+                    break;
+                }
+            }
+            if (startCat == null)
+            {
+                throw new Exception("Start category "+startCatName+" not found!");
+            }
+            
             //Map.Map CId CncCat = Map(Map CId CncCat whatever... :D
         }
 
