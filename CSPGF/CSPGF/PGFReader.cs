@@ -141,8 +141,6 @@ namespace CSPGF
 
         private Dictionary<String, int> ReadIndex(String str)
         {
-            //TODO: check if new implementation works
-            //Split on '+' and trim? Check what the input really is.
             //Original javacode: String[] items = s.Split(" +");
             String[] items = str.Split('+');
             Dictionary<String, int> index = new Dictionary<String, int>();
