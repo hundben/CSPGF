@@ -43,6 +43,7 @@ namespace CSPGF.reader
         public Dictionary<String, CncCat> cncCats { get; private set; }
         public int fId { get; private set; }
         private String startCat;
+        // We are missing: printnames, lindefs, lexicon, pproductions, lproductions ? Are any of these needed?
 
         public Concrete(String _name, Dictionary<String, RLiteral> _flags, List<Sequence> _seqs, List<CncFun> _cncFuns,
             List<ProductionSet> _prods, Dictionary<String, CncCat> _cncCats, int _fId, String _defaultStartCat)
@@ -57,9 +58,8 @@ namespace CSPGF.reader
             startCat = _defaultStartCat;
         }
 
-        public List<CncCat> GetCncCat()
+        public List<CncCat> GetCncCats()
         {
-            //TODO clean up
             List<CncCat> tmp = new List<CncCat>();
             foreach (KeyValuePair<String, CncCat> c in cncCats) {
                 tmp.Add(c.Value);
@@ -75,7 +75,7 @@ namespace CSPGF.reader
             }
             else
             {
-                return new CncCat(startCat, 0, 0, new List<String>()); //TODO test this
+                return new CncCat(startCat, 0, 0, new List<String>());
             }
         }
 
@@ -92,7 +92,7 @@ namespace CSPGF.reader
 
         public override String ToString()
         {
-            return "concrete" + name;
+            return "Concrete" + name;
         }
 
         public Dictionary<int, HashSet<Production>> GetSetOfProductions()

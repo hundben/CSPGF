@@ -31,7 +31,7 @@ using System.Text;
 
 namespace CSPGF.reader
 {
-    public class LambdaExp : Expr
+    public class LambdaExp : Expr //EAbs
     {
         public Boolean bType { get; private set; }
         public String vName { get; private set; }

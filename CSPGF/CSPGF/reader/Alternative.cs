@@ -34,7 +34,7 @@ namespace CSPGF.reader
     public class Alternative
     {
         // tokens = alt1, prefix = alt2
-        public List<String> alt1 { get; private set; }
+        public List<String> alt1 { get; private set; }  // Check: Rename to tokens instead?
         public List<String> alt2 { get; private set; }
 
         public Alternative(List<String> _alt1, List<String> _alt2)

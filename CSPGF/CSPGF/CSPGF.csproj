@@ -59,6 +59,9 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Speech" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -92,6 +95,9 @@
     <Compile Include="parser\Variable.cs" />
     <Compile Include="parser\Lambda.cs" />
     <Compile Include="parser\Tree.cs" />
+    <Compile Include="parser_new\Datatypes.cs" />
+    <Compile Include="parser_new\Parse.cs" />
+    <Compile Include="parser_new\ParseState.cs" />
     <Compile Include="PGF.cs" />
     <Compile Include="PGFBuilder.cs" />
     <Compile Include="PGFReader.cs" />

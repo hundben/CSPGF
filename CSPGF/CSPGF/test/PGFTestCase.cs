@@ -51,7 +51,7 @@ namespace CSPGF.test
 
         protected Tree ParseTree(String s)
         {
-            Scanner l = new Scanner(new MemoryStream(Encoding.ASCII.GetBytes(s)));
+            Scanner l = new Scanner(new MemoryStream(Encoding.UTF8.GetBytes(s)));
             //Scanner l = new Scanner(new StringReader(s));
             CSPGF.trees.Parser p = new CSPGF.trees.Parser(l);
             try {

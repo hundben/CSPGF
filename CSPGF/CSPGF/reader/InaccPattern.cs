@@ -28,7 +28,7 @@ using System;
 
 namespace CSPGF.reader
 {
-    public class InaccPattern : Pattern
+    public class InaccPattern : Pattern // PTilde
     {
         Expr exp;
 

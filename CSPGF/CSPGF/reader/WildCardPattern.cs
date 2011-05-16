@@ -31,7 +31,7 @@ using System.Text;
 
 namespace CSPGF.reader
 {
-    public class WildCardPattern : Pattern
+    public class WildCardPattern : Pattern //PWild
     {
 
         public WildCardPattern()

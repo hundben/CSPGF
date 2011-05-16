@@ -53,8 +53,8 @@ namespace CSPGF.parser
         //Notice that Option and Same is used together in scala, so ignore :D
         public Symbol NextSymbol()
         {
-            if (position < function.GetSequence(constituent).symbs.Count) {
-                Symbol sym = function.GetSequence(constituent).GetSymbol(position);
+            if (position < function.sequences[constituent].symbs.Count) {
+                Symbol sym = function.sequences[constituent].GetSymbol(position);
                 return sym;
             }
             return null;    //this might be dangerous

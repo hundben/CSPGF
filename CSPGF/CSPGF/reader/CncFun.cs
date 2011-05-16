@@ -33,23 +33,13 @@ namespace CSPGF.reader
 {
     public class CncFun
     {
-        public String name { get; private set; }
+        public String name { get; private set; } //TODO: This might not be needed. Isn't used in the haskell-version?
         public List<Sequence> sequences { get; private set; }
 
         public CncFun(String _name, List<Sequence> _sequences)
         {
             name = _name;
             sequences = _sequences;
-        }
-
-        public Sequence GetSequence(int index)
-        {
-            return sequences[index];
-        }
-
-        public Symbol GetSymbol(int seqIndex, int symbIndex)
-        {
-            return sequences[seqIndex].symbs[symbIndex];
         }
 
         public override String ToString()

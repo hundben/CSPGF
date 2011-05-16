@@ -170,7 +170,6 @@ namespace CSPGF.parser
                 tmp.Add(tc.Intermediate2Abstract(t));
             }
             return tmp;
-
         }
 
         public Boolean Scan(String token)
