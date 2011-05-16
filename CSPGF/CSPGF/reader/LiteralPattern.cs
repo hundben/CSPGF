@@ -31,7 +31,7 @@ using System.Text;
 
 namespace CSPGF.reader
 {
-    public class LiteralPattern : Pattern
+    public class LiteralPattern : Pattern //PLit
     {
         public RLiteral value { get; private set; }
 

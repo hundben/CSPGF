@@ -31,7 +31,7 @@ using System.Text;
 
 namespace CSPGF.reader
 {
-    public class LiteralExp : Expr
+    public class LiteralExp : Expr //ELit
     {
         public RLiteral literal { get; private set; }
 

@@ -31,7 +31,7 @@ using System.Text;
 
 namespace CSPGF.reader
 {
-    public class ToksSymbol : Symbol
+    public class ToksSymbol : Symbol //SymKS
     {
         public List<String> tokens { get; private set; }
 

@@ -31,7 +31,7 @@ using System.Text;
 
 namespace CSPGF.reader
 {
-    public class AppExp : Expr
+    public class AppExp : Expr //EApp
     {
         public Expr lExp { get; private set; }
         public Expr rExp { get; private set; }

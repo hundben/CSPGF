@@ -31,11 +31,11 @@ using System.Text;
 
 namespace CSPGF.reader
 {
-    public class AppPattern : Pattern
+    public class AppPattern : Pattern // PApp
     {
-        // Should be able to get?
-        String name;
-        List<Pattern> patts;
+        // TODO: Check if we need to be able to access these.
+        public String name { get; private set; }
+        public List<Pattern> patts { get; private set; }
 
         public AppPattern(String _name, List<Pattern> _patts)
         {
