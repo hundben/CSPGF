@@ -34,8 +34,8 @@ namespace CSPGF.reader
     public class AppPattern : Pattern // PApp
     {
         // TODO: Check if we need to be able to access these.
-        String name { get; private set; }
-        List<Pattern> patts { get; private set; }
+        public String name { get; private set; }
+        public List<Pattern> patts { get; private set; }
 
         public AppPattern(String _name, List<Pattern> _patts)
         {

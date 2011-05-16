@@ -34,8 +34,8 @@ namespace CSPGF.reader
     public class Eq
     {
         // TODO: Check if we need to be able to access these.
-        List<Pattern> patts { get; private set; }
-        Expr expr { get; private set; }
+        public List<Pattern> patts { get; private set; }
+        public Expr expr { get; private set; }
 
         public Eq(List<Pattern> _patts, Expr _expr)
         {

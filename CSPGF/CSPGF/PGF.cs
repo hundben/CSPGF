@@ -59,10 +59,10 @@ namespace CSPGF
          */
         public Concrete GetConcrete(String name)
         {
-            Concrete l;
-            if (!concretes.TryGetValue(name, out l))
+            Concrete conc;
+            if (!concretes.TryGetValue(name, out conc))
                 throw new UnknownLanguageException(name);
-            return l;
+            return conc;
         }
 
         /* ************************************************* */

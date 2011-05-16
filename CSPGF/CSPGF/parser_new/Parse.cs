@@ -68,7 +68,7 @@ namespace CSPGF.parser_new
              */
             //lookConcrComplete :: PGF -> CId -> Concr
             reader.Abstract abs = pgf.GetAbstract();   //TODO maybe not necessary...
-            List<reader.CncCat> tmp = concrete.GetCncCat();    //is this the same as cnccat cnc?
+            List<reader.CncCat> tmp = concrete.GetCncCats();    //is this the same as cnccat cnc?
             String startCatName = abs.StartCat();
             //This code might be unnecessary, but then we have the startcategory saved at least ;P
             reader.CncCat startCat = null;
