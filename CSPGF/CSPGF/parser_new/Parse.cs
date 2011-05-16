@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
+
 namespace CSPGF.parser_new
 {
     class Parser
@@ -42,9 +43,9 @@ namespace CSPGF.parser_new
              initState :: PGF -> Language -> Type -> ParseState
                 initState pgf lang (DTyp _ start _) =
                 let (acc,items) = case Map.lookup start (cnccats cnc) of
-                      Just (CncCat s e labels) ->
-                              let keys = do fid <- range (s,e)
-                                            lbl <- indices labels
+                      Just (CncCat s e labels) ->   //vi är här, s=start? fid? och e=end? lastid? labels = labels :D
+                              let keys = do fid <- range (s,e)  //range mellan s och e 
+                                            lbl <- indices labels //tar ut alla indices ur labels
                                             return (AK fid lbl)
                               in foldl' (\(acc,items) key -> predict flit ftok cnc
                                                                      (pproductions cnc)
@@ -53,13 +54,13 @@ namespace CSPGF.parser_new
                                         (Map.empty,[])
                                         keys
                       Nothing -> (Map.empty,[])
-            in PState abs
-                cnc
-                (Chart emptyAC [] emptyPC (pproductions cnc) (totalCats cnc) 0)
-                (TrieMap.compose (Just (Set.fromList items)) acc)
+                in PState abs
+                    cnc
+                    (Chart emptyAC [] emptyPC (pproductions cnc) (totalCats cnc) 0) //emptyPC = Map.empty emptytAC = IntMap.empty (key = int)
+                    (TrieMap.compose (Just (Set.fromList items)) acc)
             where
                 abs = abstract pgf
-                cnc = lookConcrComplete pgf lang    //my concrete?
+                cnc = lookConcrComplete pgf lang    //my concrete? yup
 
                 flit _ = Nothing
 
@@ -81,6 +82,13 @@ namespace CSPGF.parser_new
             if (startCat == null) {
                 throw new Exception("Start category " + startCatName + " not found!");
             }
+            //
+            for (int i = startCat.firstFID; i <= startCat.lastFID; i++)
+            {
+                //TODO
+                System.Console.WriteLine("hej");
+            }
+            
 
             //Map.Map CId CncCat = Map(Map CId CncCat whatever... :D
         }
