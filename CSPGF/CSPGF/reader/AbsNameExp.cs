@@ -31,7 +31,7 @@ using System.Text;
 
 namespace CSPGF.reader
 {
-    public class AbsNameExp : Expr
+    public class AbsNameExp : Expr // EFun?????
     {
         public String name { get; private set; }
 

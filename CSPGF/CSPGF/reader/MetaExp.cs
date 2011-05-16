@@ -31,7 +31,7 @@ using System.Text;
 
 namespace CSPGF.reader
 {
-    public class MetaExp : Expr
+    public class MetaExp : Expr //EMeta
     {
         public int meta { get; private set; }
 

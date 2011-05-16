@@ -31,7 +31,7 @@ using System.Text;
 
 namespace CSPGF.reader
 {
-    public class VarExp : Expr
+    public class VarExp : Expr //EVar
     {
         public int ind { get; private set; }
 

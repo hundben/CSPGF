@@ -31,7 +31,7 @@ using System.Text;
 
 namespace CSPGF.reader
 {
-    public class VarPattern : Pattern
+    public class VarPattern : Pattern //PVar
     {
         String name;
 

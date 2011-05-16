@@ -31,18 +31,18 @@ using System.Text;
 
 namespace CSPGF.reader
 {
-    public class ImpArgPattern : Pattern
+    public class ImpArgPattern : Pattern //PImplArg
     {
-        Pattern name;
+        Pattern patt;
 
-        public ImpArgPattern(Pattern _name)
+        public ImpArgPattern(Pattern _patt)
         {
-            name = _name;
+            patt = _patt;
         }
 
         public override String ToString()
         {
-            return "Implicit Argument Pattern : " + name.ToString();
+            return "Implicit Argument Pattern : " + patt.ToString();
         }
 
     }
