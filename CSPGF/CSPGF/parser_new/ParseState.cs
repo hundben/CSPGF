@@ -16,6 +16,9 @@ namespace CSPGF.parser_new
          *          AC = active chart
          *          PC = passive chart?
          *          AK = active key
+         *          abs = abstract
+         *          cnc = concrete
+         *          
          */
     }
 }
