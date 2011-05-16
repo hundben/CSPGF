@@ -14,11 +14,12 @@ namespace CSPGF.parser_new
                     (Chart emptyAC [] emptyPC (pproductions cnc) (totalCats cnc) 0) //emptyPC = Map.empty emptytAC = IntMap.empty (key = int)
                     (TrieMap.compose (Just (Set.fromList items)) acc)
          *          AC = active chart
-         *          PC = passive chart?
+         *          PC = passive chart
          *          AK = active key
          *          abs = abstract
          *          cnc = concrete
          *          
          */
     }
+    
 }
