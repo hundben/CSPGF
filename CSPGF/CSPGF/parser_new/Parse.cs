@@ -82,14 +82,15 @@ namespace CSPGF.parser_new
             if (startCat == null) {
                 throw new Exception("Start category " + startCatName + " not found!");
             }
-            //
+            //Below is just a test
             for (int i = startCat.firstFID; i <= startCat.lastFID; i++)
             {
                 //TODO
                 System.Console.WriteLine("hej");
             }
-            
+            List<reader.Production> crap = concrete.GetProductions();
 
+            System.Console.WriteLine("whaaa");
             //Map.Map CId CncCat = Map(Map CId CncCat whatever... :D
         }
 
@@ -100,3 +101,31 @@ namespace CSPGF.parser_new
 
     }
 }
+
+
+/*
+predict flit ftok cnc forest key0 key@(AK fid lbl) k acc items =
+  let (acc1,items1) = case IntMap.lookup fid forest of
+                        Nothing  -> (acc,items)
+                        Just set -> Set.fold foldProd (acc,items) set
+
+      (acc2,items2) = case IntMap.lookup fid (lexicon cnc) >>= IntMap.lookup lbl of
+                        Just tmap -> let (mb_v,toks) = TrieMap.decompose (TrieMap.map (toItems key0 k) tmap)
+                                         acc1'   = ftok toks acc1
+                                         items1' = maybe [] Set.toList mb_v ++ items1
+                                     in (acc1',items1')
+                        Nothing   -> (acc1,items1)
+  in (acc2,items2)
+  where
+    foldProd (PCoerce fid)         (acc,items) = predict flit ftok cnc forest key0 (AK fid lbl) k acc items
+    foldProd (PApply funid args)   (acc,items) = (acc,Active k 0 funid (rhs funid lbl) args key0 : items)
+    foldProd (PConst _ const toks) (acc,items) = (acc,items)
+
+    rhs funid lbl = unsafeAt lins lbl
+      where
+        CncFun _ lins = unsafeAt (cncfuns cnc) funid
+
+    toItems key@(AK fid lbl) k funids =
+      Set.fromList [Active k 1 funid (rhs funid lbl) [] key | funid <- IntSet.toList funids]
+
+*/

@@ -15,6 +15,7 @@ namespace CSPGF.parser_new
                     (TrieMap.compose (Just (Set.fromList items)) acc)
          *          AC = active chart
          *          PC = passive chart?
+         *          AK = active key
          */
     }
 }
