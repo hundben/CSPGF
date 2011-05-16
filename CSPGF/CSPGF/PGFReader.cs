@@ -87,22 +87,15 @@ namespace CSPGF
             String startCat = abs.StartCat();
             // Reading the concrete grammars
             int nbConcretes = GetInt();
-            Concrete[] concretes;
-            if (languages != null) {
-                concretes = new Concrete[languages.Count()];
-            }
-            else {
-                concretes = new Concrete[nbConcretes];
-            }
-            int k = 0;
+            Dictionary<String, Concrete> concretes = new Dictionary<string, Concrete>();
             for (int i = 0; i < nbConcretes; i++) {
                 String name = GetIdent();
                 if (DBG) {
                     dbgwrite.WriteLine("Language " + name);
                 }
                 if (languages == null || languages.Remove(name)) {
-                    concretes[k] = GetConcrete(name, startCat);
-                    k++;
+                    Concrete tmp = GetConcrete(name, startCat);
+                    concretes.Add(tmp.name, tmp);
                 }
                 else {
                     if (index != null) {
@@ -155,7 +148,7 @@ namespace CSPGF
             Dictionary<String, int> index = new Dictionary<String, int>();
             foreach (String item in items) {
                 String[] i = item.Split(':');
-                index.Add(i[0], Int32.Parse(i[1]));
+                index.Add(i[0].Trim(), Int32.Parse(i[1]));
             }
             return index;
         }
@@ -221,8 +214,7 @@ namespace CSPGF
             String name = GetIdent();
             List<Hypo> hypos = GetListHypo();
             List<WeightedIdent> functions = GetListWeightedIdent();
-            AbsCat abcC = new AbsCat(name, hypos, functions);
-            return abcC;
+            return new AbsCat(name, hypos, functions);
         }
 
         private List<AbsFun> GetListAbsFun()
@@ -273,8 +265,7 @@ namespace CSPGF
             Boolean b = btype == 0 ? false : true;
             String varName = GetIdent();
             CSPGF.reader.Type t = GetType2();
-            Hypo hh = new Hypo(b, varName, t);
-            return hh;
+            return new Hypo(b, varName, t);
         }
 
         private List<Hypo> GetListHypo()
@@ -618,8 +609,7 @@ namespace CSPGF
         {
             int id = GetInt();
             List<Production> prods = GetListProduction(id, cncFuns);
-            ProductionSet ps = new ProductionSet(id, prods);
-            return ps;
+            return new ProductionSet(id, prods);
         }
 
         /**

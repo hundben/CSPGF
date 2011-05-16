@@ -39,15 +39,13 @@ namespace CSPGF
         private Dictionary<String, RLiteral> flags;
         private Abstract abstr;
         private Dictionary<String, Concrete> concretes;
-        public PGF(int _majorVersion, int _minorVersion, Dictionary<String, RLiteral> _flags, Abstract _abstr, Concrete[] _concretes)
+        public PGF(int _majorVersion, int _minorVersion, Dictionary<String, RLiteral> _flags, Abstract _abstr, Dictionary<String, Concrete> _concretes)
         {
             majorVersion = _majorVersion;
             minorVersion = _minorVersion;
             flags = _flags;
             abstr = _abstr;
-            concretes = new Dictionary<String, Concrete>();
-            foreach (Concrete cnc in _concretes)
-                concretes.Add(cnc.name, cnc);
+            concretes = _concretes;
         }
 
         /* ******************************** API ******************************** */
