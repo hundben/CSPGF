@@ -98,6 +98,7 @@
     <Compile Include="parser_new\Datatypes.cs" />
     <Compile Include="parser_new\Parse.cs" />
     <Compile Include="parser_new\ParseState.cs" />
+    <Compile Include="parser_new\ParseTrie.cs" />
     <Compile Include="PGF.cs" />
     <Compile Include="PGFBuilder.cs" />
     <Compile Include="PGFReader.cs" />
