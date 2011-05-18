@@ -9,7 +9,12 @@ namespace CSPGF.parser_new
     class Parser
     {
         //Notice, the language might be bad here? better to use it when we want to parse a text?
-        private PGF pgf;    
+        private PGF pgf;
+        private List<reader.Production> prods;  //<- THIS SHOULD BE PRIVATE ;P
+        private reader.Abstract abs;
+        private List<reader.CncCat> cncCat;
+        private List<reader.CncFun> cncFun;
+        private reader.Concrete concrete;
         public Parser(PGF _pgf)
         {
             pgf = _pgf;
@@ -25,7 +30,7 @@ namespace CSPGF.parser_new
         public void ParseText(String language, String text)
         {
             //Check if the language exists
-            reader.Concrete concrete = pgf.GetConcrete(language);
+            concrete = pgf.GetConcrete(language);
             String[] tokens = text.Split(' ');  //tokenize
             //Parse.parse dp = depth? 4 is used in haskell, but nothing works also?
             /*
@@ -68,12 +73,13 @@ namespace CSPGF.parser_new
 
              */
             //lookConcrComplete :: PGF -> CId -> Concr
-            reader.Abstract abs = pgf.GetAbstract();   //TODO maybe not necessary...
-            List<reader.CncCat> tmp = concrete.GetCncCats();    //is this the same as cnccat cnc?
+            abs = pgf.GetAbstract();        //TODO maybe not necessary...
+            cncCat = concrete.GetCncCats();
+            cncFun = concrete.cncFuns;
             String startCatName = abs.StartCat();
             //This code might be unnecessary, but then we have the startcategory saved at least ;P
             reader.CncCat startCat = null;
-            foreach (reader.CncCat cat in tmp) {
+            foreach (reader.CncCat cat in cncCat) {
                 if (cat.name == startCatName) {
                     startCat = cat;
                     break;
@@ -82,14 +88,9 @@ namespace CSPGF.parser_new
             if (startCat == null) {
                 throw new Exception("Start category " + startCatName + " not found!");
             }
-            //Below is just a test
-            for (int i = startCat.firstFID; i <= startCat.lastFID; i++)
-            {
-                //TODO
-                System.Console.WriteLine("hej");
-            }
-            List<reader.Production> crap = concrete.GetProductions();
+            prods = concrete.GetProductions();  //load productions
 
+            Predict(startCat.firstFID);
             System.Console.WriteLine("whaaa");
             //Map.Map CId CncCat = Map(Map CId CncCat whatever... :D
         }
@@ -97,6 +98,33 @@ namespace CSPGF.parser_new
         public void ParseWithRecovery(String language, String text)
         {
 
+        }
+        private void Predict(int cat)
+        {
+            //TODO use the category to create the parsestate
+            //TRY to predict the legal nextstates
+            foreach(reader.Production p in prods)
+            {
+                if (p.fId == cat && p is reader.ApplProduction)
+                {
+                    reader.ApplProduction p2 = (reader.ApplProduction)p;
+                    foreach (int dom in p2.Domain())
+                    {
+                        foreach (reader.Production p3 in prods)
+                        {
+                            if (p3.fId == dom && p3 is reader.ApplProduction)
+                            {
+                                reader.ApplProduction p4 = (reader.ApplProduction)p3;
+                                
+                                foreach(reader.Sequence tmpseq in p4.function.sequences)
+                                {
+                                    Console.WriteLine(cat+" -> "+tmpseq.symbs[0]);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
 
     }
