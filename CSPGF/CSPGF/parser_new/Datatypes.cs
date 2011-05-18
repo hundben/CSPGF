@@ -103,12 +103,27 @@ namespace CSPGF.parser_new
         public Dictionary<int, HashSet<reader.Production>> forest { get; private set; }
         public int nextId { get; private set; }
         public int offset { get; private set; }
-        public Chart()
+        public Chart(ActiveChart _active, List<ActiveChart> _actives, PassiveChart _passive, Dictionary<int, HashSet<reader.Production>> _forest, int _nextId, int _offset)
         {
-            active = new ActiveChart(null);
-            actives = new List<ActiveChart>();
-            passive = new PassiveChart(null);
-            forest = new Dictionary<int, HashSet<reader.Production>>();
+            active = _active;
+            actives = _actives;
+            passive = _passive;
+            forest = _forest;
+            nextId = _nextId;
+            offset = _offset;
+        }
+    }
+
+    public class ErrorState
+    {
+        public reader.Abstract abs { get; private set; }
+        public reader.Concrete con { get; private set; }
+        public Chart ch { get; private set; }
+        public ErrorState(reader.Abstract _abs, reader.Concrete _con, Chart _ch)
+        {
+            abs = _abs;
+            con = _con;
+            ch = _ch;
         }
     }
 }
