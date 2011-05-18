@@ -13,6 +13,7 @@ namespace CSPGF.parser_new
         public int seqid { get; private set; }
         public List<PArg> parg { get; private set; }
         public AK activekey { get; private set; }
+
         public Active(int __int, int _dotpos, int _funid, int _seqid, List<PArg> _parg, AK _activekey)
         {
             _int = __int;
@@ -27,6 +28,7 @@ namespace CSPGF.parser_new
     {
         public int Fid { get; private set; }
         public int LIndex { get; private set; }
+
         AK(int _Fid, int _LIndex)
         {
             Fid = _Fid;
@@ -36,6 +38,7 @@ namespace CSPGF.parser_new
     public class ActiveSet
     {
         public HashSet<Active> active { get; private set; }
+
         public ActiveSet(HashSet<Active> _active)
         {
             active = _active;
@@ -55,6 +58,7 @@ namespace CSPGF.parser_new
     {
         public List<Tuple<int, int>> list { get; private set; }
         public int fid { get; private set; }
+
         public PArg(List<Tuple<int, int>> _list, int _fid)
         {
             list = _list;
@@ -67,6 +71,7 @@ namespace CSPGF.parser_new
         public int fid { get; private set; }
         public int lindex { get; private set; }
         public int _int { get; private set; }
+
         public PK(int _fid, int _lindex, int __int)
         {
             fid = _fid;
@@ -77,38 +82,44 @@ namespace CSPGF.parser_new
     public class PassiveChart
     {
         public Dictionary<PK, int> pc { get; private set; }
+
         public PassiveChart(Dictionary<PK, int> _pc)
         {
             pc = _pc;
         }
     }
 
-    /*
-     * data Chart
-  = Chart
-      { active  :: ActiveChart
-      , actives :: [ActiveChart]
-      , passive :: PassiveChart
-      , forest  :: IntMap.IntMap (Set.Set Production)
-      , nextId  :: {-# UNPACK #-} !FId
-      , offset  :: {-# UNPACK #-} !Int
-      }
-     * */
-
     public class Chart
     {
         public ActiveChart active { get; private set; }
         public List<ActiveChart> actives { get; private set; }
         public PassiveChart passive { get; private set; }
-        public Dictionary<int, HashSet<reader.Production>> forest { get; private set; }
+        public List<reader.ProductionSet> forest { get; private set; }
         public int nextId { get; private set; }
         public int offset { get; private set; }
-        public Chart()
+
+        public Chart(ActiveChart _active, List<ActiveChart> _actives, PassiveChart _passive, List<reader.ProductionSet> _forest, int _nextId, int _offset)
         {
-            active = new ActiveChart(null);
-            actives = new List<ActiveChart>();
-            passive = new PassiveChart(null);
-            forest = new Dictionary<int, HashSet<reader.Production>>();
+            active = _active;
+            actives = _actives;
+            passive = _passive;
+            forest = _forest;
+            nextId = _nextId;
+            offset = _offset;
+        }
+    }
+
+    public class ErrorState
+    {
+        public reader.Abstract abs { get; private set; }
+        public reader.Concrete con { get; private set; }
+        public Chart ch { get; private set; }
+
+        public ErrorState(reader.Abstract _abs, reader.Concrete _con, Chart _ch)
+        {
+            abs = _abs;
+            con = _con;
+            ch = _ch;
         }
     }
 }
