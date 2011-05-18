@@ -7,6 +7,16 @@ namespace CSPGF.parser_new
 {
     class ParseState
     {
+        private Chart chart;
+        private reader.Concrete cnc;
+        private reader.Abstract abs;
+        private Dictionary<int, int> trie;  //TODO check datatypes for this one...
+
+        public ParseState(reader.Concrete _cnc, reader.Abstract _abs)
+        {
+            cnc = _cnc;
+            abs = _abs;
+        }
         /*
          * The things below should be here :)
          in PState abs
