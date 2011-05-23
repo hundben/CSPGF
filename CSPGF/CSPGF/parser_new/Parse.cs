@@ -118,18 +118,20 @@ namespace CSPGF.parser_new
                 }
             }
         }
+        //Returns all application productions in category cat 
         private List<reader.ApplProduction> GetProductions(int cat, List<reader.Production> prods)
         {
             List<reader.ApplProduction> appList = new List<reader.ApplProduction>();
-            foreach (reader.Production p in prods)
+            foreach (reader.ApplProduction p in prods)
             {
-                if (p.fId == cat && p is reader.ApplProduction)
+                if (p.fId == cat)
                 {
-                    appList.Add((reader.ApplProduction)p);
+                    appList.Add(p);
                 }
             }
             return appList;
         }
+        //Returns a string with the token symbols, only used for debug
         private String GetSymbols(List<reader.Symbol> seq)
         {
             String all= " ";
@@ -139,7 +141,17 @@ namespace CSPGF.parser_new
             }
             return all;
         }
+        //Returns the categories for the next step
+        private List<int> GetCat(int cat)
+        {
+            List<int> cats = new List<int>();
 
+
+
+            return cats;
+        }
+
+    
     }
 }
 
