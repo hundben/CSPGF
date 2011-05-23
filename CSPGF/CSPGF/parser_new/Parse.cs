@@ -103,28 +103,41 @@ namespace CSPGF.parser_new
         {
             //TODO use the category to create the parsestate
             //TRY to predict the legal nextstates
-            foreach(reader.Production p in prods)
+            foreach (reader.ApplProduction p in GetProductions(cat, prods))
             {
-                if (p.fId == cat && p is reader.ApplProduction)
+                foreach (int dom in p.Domain()) //Loop over all productions that we want
                 {
-                    reader.ApplProduction p2 = (reader.ApplProduction)p;
-                    foreach (int dom in p2.Domain())
+                    foreach (reader.ApplProduction p2 in GetProductions(dom, prods))
                     {
-                        foreach (reader.Production p3 in prods)
+                        foreach (reader.Sequence s in p2.function.sequences)
                         {
-                            if (p3.fId == dom && p3 is reader.ApplProduction)
-                            {
-                                reader.ApplProduction p4 = (reader.ApplProduction)p3;
-                                
-                                foreach(reader.Sequence tmpseq in p4.function.sequences)
-                                {
-                                    Console.WriteLine(cat+" -> "+tmpseq.symbs[0]);
-                                }
-                            }
+                            Console.WriteLine(GetSymbols(s.symbs));
+                            
                         }
                     }
                 }
             }
+        }
+        private List<reader.ApplProduction> GetProductions(int cat, List<reader.Production> prods)
+        {
+            List<reader.ApplProduction> appList = new List<reader.ApplProduction>();
+            foreach (reader.Production p in prods)
+            {
+                if (p.fId == cat && p is reader.ApplProduction)
+                {
+                    appList.Add((reader.ApplProduction)p);
+                }
+            }
+            return appList;
+        }
+        private String GetSymbols(List<reader.Symbol> seq)
+        {
+            String all= " ";
+            foreach (reader.Symbol s in seq)
+            {
+                all += s + ", ";
+            }
+            return all;
         }
 
     }
