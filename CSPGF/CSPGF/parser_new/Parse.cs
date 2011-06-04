@@ -75,13 +75,46 @@ namespace CSPGF.parser_new
         private List<reader.ApplProduction> GetProductions(int cat, List<reader.Production> prods)
         {
             List<reader.ApplProduction> appList = new List<reader.ApplProduction>();
-            foreach (reader.ApplProduction p in prods)
+            foreach (reader.Production p in prods) 
             {
                 if (p.fId == cat)
                 {
-                    appList.Add(p);
+                    if (p is reader.ApplProduction)
+                    {
+                        appList.Add((reader.ApplProduction)p);
+                    }
+                    else if (p is reader.CoerceProduction)
+                    {
+                        appList.AddRange(UnCoerse(cat,prods));
+                    }
+            }
+            return appList;
+        }
+        //Tries to remove coersions... should work :)
+        private List<reader.ApplProduction> UnCoerse(int cat, List<reader.Production> prods)
+        {
+            List<reader.ApplProduction> appList = new List<reader.ApplProduction>();
+
+            foreach (reader.Production p in prods)
+            {
+                if (p.fId == cat)
+                {
+                    if (p is reader.CoerceProduction)
+                    {
+                        reader.CoerceProduction cop = (reader.CoerceProduction)p;
+                        //Can be optimized since there is only one domain in coerce
+                        foreach (int domCat in cop.GetDomain())
+                        {
+                            appList.AddRange(UnCoerse(domCat, prods));
+                        }
+                    }
+                    else if (p is reader.ApplProduction)
+                    {
+                        appList.Add((reader.ApplProduction)p);
+                    }
                 }
             }
+            //Remove doubles?, could distinct be used here?
             return appList;
         }
         //Returns a string with the token symbols, only used for debug
@@ -103,8 +136,6 @@ namespace CSPGF.parser_new
 
             return cats;
         }
-
-    
     }
 }
 
