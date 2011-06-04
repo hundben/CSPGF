@@ -85,8 +85,9 @@ namespace CSPGF.parser_new
                     }
                     else if (p is reader.CoerceProduction)
                     {
-                        appList.AddRange(UnCoerse(cat,prods));
+                        appList.AddRange(UnCoerse(cat, prods));
                     }
+                }
             }
             return appList;
         }
