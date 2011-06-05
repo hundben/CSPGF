@@ -10,7 +10,7 @@ namespace CSPGF.parser_new
     {
         //Notice, the language might be bad here? better to use it when we want to parse a text?
         private PGF pgf;
-        private List<reader.Production> prods;  //<- THIS SHOULD BE PRIVATE ;P
+        private List<reader.Production> prods;
         private reader.Abstract abs;
         private List<reader.CncCat> cncCat;
         private List<reader.CncFun> cncFun;
@@ -54,7 +54,7 @@ namespace CSPGF.parser_new
         }
         private void Predict(int cat)
         {
-            //TODO use the category to create the parsestate
+            //TODO use the categoreader.Prate
             //TRY to predict the legal nextstates
             foreach (reader.ApplProduction p in GetProductions(cat, prods))
             {
@@ -65,17 +65,16 @@ namespace CSPGF.parser_new
                         foreach (reader.Sequence s in p2.function.sequences)
                         {
                             Console.WriteLine(GetSymbols(s.symbs));
-                            
                         }
                     }
                 }
             }
         }
         //Returns all application productions in category cat 
-        private List<reader.ApplProduction> GetProductions(int cat, List<reader.Production> prods)
+        private List<reader.ApplProduction> GetProductions(int cat, List<reader.Production> _prods)
         {
             List<reader.ApplProduction> appList = new List<reader.ApplProduction>();
-            foreach (reader.Production p in prods) 
+            foreach (reader.Production p in _prods) 
             {
                 if (p.fId == cat)
                 {
@@ -85,18 +84,18 @@ namespace CSPGF.parser_new
                     }
                     else if (p is reader.CoerceProduction)
                     {
-                        appList.AddRange(UnCoerse(cat, prods));
+                        appList.AddRange(UnCoerse(cat, _prods));
                     }
                 }
             }
-            return appList;
+            return RemoveDoubles(appList);
         }
         //Tries to remove coersions... should work :)
-        private List<reader.ApplProduction> UnCoerse(int cat, List<reader.Production> prods)
+        private List<reader.ApplProduction> UnCoerse(int cat, List<reader.Production> _prods)
         {
             List<reader.ApplProduction> appList = new List<reader.ApplProduction>();
 
-            foreach (reader.Production p in prods)
+            foreach (reader.Production p in _prods)
             {
                 if (p.fId == cat)
                 {
@@ -106,7 +105,7 @@ namespace CSPGF.parser_new
                         //Can be optimized since there is only one domain in coerce
                         foreach (int domCat in cop.GetDomain())
                         {
-                            appList.AddRange(UnCoerse(domCat, prods));
+                            appList.AddRange(UnCoerse(domCat, _prods));
                         }
                     }
                     else if (p is reader.ApplProduction)
@@ -136,6 +135,17 @@ namespace CSPGF.parser_new
 
 
             return cats;
+        }
+
+        private List<reader.ApplProduction> RemoveDoubles(List<reader.ApplProduction> _prods)
+        {
+            List<reader.ApplProduction> appList = new List<reader.ApplProduction>();
+            foreach(reader.ApplProduction p in _prods)
+            {
+                if (!appList.Contains(p))
+                    appList.Add(p);
+            }
+            return appList;
         }
     }
 }
