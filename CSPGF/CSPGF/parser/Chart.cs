@@ -57,7 +57,7 @@ namespace CSPGF.parser
             }
         }
 
-        // Borde vara rätt...
+        // Borde vara rätt... (kolla coersion? eriks anm. ;)
         public Boolean AddProduction(int cat, CncFun fun, List<int> domain)
         {
             return AddProduction(new ApplProduction(cat, fun, domain));
