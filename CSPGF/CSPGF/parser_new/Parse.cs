@@ -139,12 +139,12 @@ namespace CSPGF.parser_new
 
         private List<reader.ApplProduction> RemoveDoubles(List<reader.ApplProduction> _prods)
         {
-            Dictionary<reader.ApplProduction, Object> appList = new Dictionary<reader.ApplProduction, Object>();
+            HashSet<reader.ApplProduction> appList = new HashSet<reader.ApplProduction>();
             foreach(reader.ApplProduction p in _prods)
             {
-                appList[p] = null;
+                appList.Add(p);
             }
-            return new List<reader.ApplProduction>(appList.Keys);
+            return appList.ToList<reader.ApplProduction>();
         }
     }
 }
