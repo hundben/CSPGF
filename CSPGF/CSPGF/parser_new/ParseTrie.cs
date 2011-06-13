@@ -33,7 +33,8 @@ namespace CSPGF.parser_new
 {
     class ParseTrie
     {
-        public Dictionary<String, ParseTrie> child;
+        // Maybe it should be <Token, ParseTrie> instead?
+        public Dictionary<String, ParseTrie> child { get; set; }
         public ParseTrie()
         {
             //TODO
