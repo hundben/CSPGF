@@ -102,11 +102,7 @@ namespace CSPGF.parser_new
                     if (p is reader.CoerceProduction)
                     {
                         reader.CoerceProduction cop = (reader.CoerceProduction)p;
-                        //Can be optimized since there is only one domain in coerce
-                        foreach (int domCat in cop.GetDomain())
-                        {
-                            appList.AddRange(UnCoerse(domCat, _prods));
-                        }
+                        appList.AddRange(UnCoerse(cop.initId, _prods));
                     }
                     else if (p is reader.ApplProduction)
                     {
