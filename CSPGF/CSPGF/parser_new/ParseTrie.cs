@@ -33,7 +33,8 @@ namespace CSPGF.parser_new
 {
     class ParseTrie
     {
-        public Dictionary<String, ParseTrie> child;
+        public List<ParseTrie> child;
+        public reader.Symbol word;
         public ParseTrie()
         {
             //TODO

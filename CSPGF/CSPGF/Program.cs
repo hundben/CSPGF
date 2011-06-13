@@ -46,7 +46,7 @@ namespace CSPGF
             PGFReader pr = new PGFReader(br);
             PGF tmp = pr.ReadPGF();
             parser_new.Parser ps = new parser_new.Parser(tmp);
-            ps.ParseText("FoodsIta","hello world");
+            ps.ParseText("FoodsEng","hello world");
             //Parser parser = new Parser(tmp, "FoodsEng");
             //ParseState tmp2 = parser.Parse("hello world");
             //List<CSPGF.trees.Absyn.Tree> tmp3 = tmp2.GetTrees();
