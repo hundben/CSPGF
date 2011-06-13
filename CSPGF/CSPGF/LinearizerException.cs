@@ -33,7 +33,7 @@ namespace CSPGF
 {
     public class LinearizerException : Exception
     {
-        LinearizerException(String _str) : base(_str)
+        public LinearizerException(String _str) : base(_str)
         {
         }
     
