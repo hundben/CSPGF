@@ -148,14 +148,4 @@ namespace CSPGF.parser_new
             ch = _ch;
         }
     }
-
-    public class Tree
-    {
-        public List<reader.Symbol> symbs { get; set; }
-        public List<Tree> leaves { get; set; }
-
-        public Tree()
-        {
-        }
-    }
 }
