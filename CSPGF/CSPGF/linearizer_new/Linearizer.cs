@@ -10,15 +10,15 @@ namespace CSPGF.linearizer_new
     class Linearizer
     {
         String sentence = "";
-        List<parser_new.ParseTrie> curLvl;
+        List<LinTrie> curLvl;
         public Linearizer()
         {
 
         }
 
-        public String Linearize(ParseTrie tree)
+        public String Linearize(LinTrie tree)
         {
-            curLvl = new List<parser_new.ParseTrie>();
+            curLvl = new List<LinTrie>();
             curLvl.Add(tree);
             while (curLvl.Count != 0) {
                 sentence += Linearizer2(curLvl);
@@ -29,50 +29,44 @@ namespace CSPGF.linearizer_new
 
         private void NextLevel()
         {
-            List<ParseTrie> newlvl = new List<ParseTrie>();
-            foreach (ParseTrie pt in curLvl) {
-                foreach (ParseTrie pt2 in pt.child) {
-                    if (pt2 != null) {
-                        newlvl.Add(pt2);
+            List<LinTrie> newlvl = new List<LinTrie>();
+            foreach (LinTrie lt in curLvl) {
+                foreach (LinTrie lt2 in lt.child) {
+                    if (lt2 != null) {
+                        newlvl.Add(lt2);
                     }
                 }
             }
             curLvl = newlvl;
         }
 
-        private String Linearizer2(List<ParseTrie> trees)
+        private String Linearizer2(List<LinTrie> trees)
         {
             String tmp = "";
-            for (int i = 0; i < trees.Count; i++) {
+            for (int i = 0 ; i < trees.Count ; i++) {
                 if (trees[i].symbol is AlternToksSymbol) {
-                    if (trees[i + 1].symbol is ToksSymbol) {
+                    if (i < (trees.Count - 1) && trees[i + 1].symbol is ToksSymbol) {
                         tmp += ATSym2St((AlternToksSymbol)trees[i].symbol, (ToksSymbol)trees[i + 1].symbol);
+                        i++;
+                    } else {
+                        throw new LinearizerException("fail med altsymbol, i = "+i+ " nextSym = "+trees[i+1].symbol.GetType());
                     }
-                    else {
-                        throw new LinearizerException("fail med altsymbol");
+                } else if (trees[i].symbol is ToksSymbol) {
+                    foreach (String str in ((ToksSymbol)trees[i].symbol).tokens) {
+                        tmp += str + " ";
                     }
-                }
-                else if (trees[i].symbol is ToksSymbol) {
-                    tmp += ((ToksSymbol)trees[i].symbol).tokens[0];
+                    tmp = tmp.TrimEnd();
+                } else {
+                    throw new LinearizerException("ohanterad typ av symbol: "+trees[i].symbol.GetType());
                 }
             }
             return tmp;
-            /*foreach (ParseTrie pt in trees) {
-                if (pt.symbol is AlternToksSymbol) {
-                    // We need to find the next symbol to be able to determine the alternatives.
-                    tmp += ATSym2St((AlternToksSymbol)pt.symbol,null);
-                }
-                else if (pt.symbol is ToksSymbol) {
-                    tmp += ((ToksSymbol)pt.symbol).tokens[0];
-                }
-            }*/
-
         }
 
         private String ATSym2St(AlternToksSymbol s, ToksSymbol nextToken)
         {
             // Should be possible to optimise this...
-            String tmp="";
+            String tmp = "";
             foreach (Alternative alt in s.alts) {
                 foreach (String str in nextToken.tokens) {
                     foreach (String str2 in alt.alt2) {
@@ -89,6 +83,21 @@ namespace CSPGF.linearizer_new
                 tmp += str4 + " ";
             }
             return tmp.TrimEnd();
+        }
+
+        public LinTrie Parse2Lin(ParseTrie pt)
+        {
+            return null;
+        }
+    }
+
+    class LinTrie
+    {
+        public List<LinTrie> child { get; set; }
+        public reader.Symbol symbol { get; set; }
+        public LinTrie()
+        {
+            
         }
     }
 }
