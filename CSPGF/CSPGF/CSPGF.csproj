@@ -81,6 +81,7 @@
     <Compile Include="linearizer\LinTriple.cs" />
     <Compile Include="linearizer\RezDesc.cs" />
     <Compile Include="linearizer\Tokn.cs" />
+    <Compile Include="linearizer_new\Linearizer.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="parser\ActiveItem.cs" />
     <Compile Include="parser\ActiveSet.cs" />

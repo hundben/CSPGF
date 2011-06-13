@@ -11,14 +11,9 @@ namespace CSPGF.linearizer_new
         {
         }
 
-        public String Linearize(PGF _pgf, String _lang, parser_new.Tree _tree)
+        public String Linearize(parser_new.Tree _tree)
         {
             return "";
         }
-        public String LinearizeAll(PGF _pgf, parser_new.Tree _tree)
-        {
-            return "";
-        }
-
     }
 }
