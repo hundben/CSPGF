@@ -1,4 +1,31 @@
-﻿using System;
+﻿/*
+Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), Erik Bergström (erktheorc@gmail.com)
+All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are met:
+    * Redistributions of source code must retain the above copyright
+      notice, this list of conditions and the following disclaimer.
+    * Redistributions in binary form must reproduce the above copyright
+      notice, this list of conditions and the following disclaimer in the
+      documentation and/or other materials provided with the distribution.
+    * Neither the name of the <organization> nor the
+      names of its contributors may be used to endorse or promote products
+      derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -43,24 +70,33 @@ namespace CSPGF.parser_new
             }
             prods = concrete.GetProductions();  //load productions
 
-            Predict(startCat.firstFID);
+            Predict2(startCat.firstFID);
             System.Console.WriteLine("whaaa");
             //Map.Map CId CncCat = Map(Map CId CncCat whatever... :D
         }
 
+        //TODO merge this with parse later... just to keep it clean
+        private void ParseText2(String text, ParseTrie tree)
+        {
+            foreach (String word in text.Split(' '))
+            {
+
+            }
+        }
+        
         public void ParseWithRecovery(String language, String text)
         {
 
         }
-        private void Predict(int cat)
+
+        private void Predict2(int cat)
         {
-            //TODO use the categoreader.Prate
             //TRY to predict the legal nextstates
-            foreach (reader.ApplProduction p in GetProductions(cat, prods))
+            foreach (reader.ApplProduction p in Predict(cat, prods))
             {
                 foreach (int dom in p.Domain()) //Loop over all productions that we want
                 {
-                    foreach (reader.ApplProduction p2 in GetProductions(dom, prods))
+                    foreach (reader.ApplProduction p2 in Predict(dom, prods))
                     {
                         foreach (reader.Sequence s in p2.function.sequences)
                         {
@@ -71,7 +107,7 @@ namespace CSPGF.parser_new
             }
         }
         //Returns all application productions in category cat 
-        private List<reader.ApplProduction> GetProductions(int cat, List<reader.Production> _prods)
+        private List<reader.ApplProduction> Predict(int cat, List<reader.Production> _prods)
         {
             List<reader.ApplProduction> appList = new List<reader.ApplProduction>();
             foreach (reader.Production p in _prods) 
@@ -102,11 +138,7 @@ namespace CSPGF.parser_new
                     if (p is reader.CoerceProduction)
                     {
                         reader.CoerceProduction cop = (reader.CoerceProduction)p;
-                        //Can be optimized since there is only one domain in coerce
-                        foreach (int domCat in cop.GetDomain())
-                        {
-                            appList.AddRange(UnCoerse(domCat, _prods));
-                        }
+                        appList.AddRange(UnCoerse(cop.initId, _prods));
                     }
                     else if (p is reader.ApplProduction)
                     {
@@ -139,13 +171,12 @@ namespace CSPGF.parser_new
 
         private List<reader.ApplProduction> RemoveDoubles(List<reader.ApplProduction> _prods)
         {
-            List<reader.ApplProduction> appList = new List<reader.ApplProduction>();
+            HashSet<reader.ApplProduction> appList = new HashSet<reader.ApplProduction>();
             foreach(reader.ApplProduction p in _prods)
             {
-                if (!appList.Contains(p))
-                    appList.Add(p);
+                appList.Add(p);
             }
-            return appList;
+            return appList.ToList<reader.ApplProduction>();
         }
     }
 }
