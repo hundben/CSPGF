@@ -28,14 +28,14 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSPGF.util;
 using CSPGF.reader;
 
 namespace CSPGF.parser
 {
     class Chart
     {
-        private MultiMap<int, Object> productionSets = new MultiMap<int, Object>();
+        //private MultiMap<int, Object> productionSets = new MultiMap<int, Object>();
+        private Dictionary<int, HashSet<Production>> productionSets = new Dictionary<int,HashSet<Production>>();
         private Dictionary<Tuple<int, int, int, int>, int> categoryBookKeeper = new Dictionary<Tuple<int, int, int, int>, int>();
         int nextCat;
 
@@ -44,29 +44,27 @@ namespace CSPGF.parser
             nextCat = _nextCat;
         }
 
-        public Boolean AddProduction(Object p)
+        public void AddProduction(Production p)
         {
-            Production tmp = (Production)p;
-            if (productionSets.ContainsKey(tmp.fId) && productionSets.Get(tmp.fId).Contains(p)) {
-                return false;
+            HashSet<Production> temp;
+
+            if (productionSets.TryGetValue(p.fId, out temp))
+            {
+                temp.Add(p);
             }
-            else {
-                productionSets.Add(tmp.fId, p);
-                nextCat = Math.Max(nextCat, tmp.fId + 1);
-                return true;
-            }
+                nextCat = Math.Max(nextCat, p.fId + 1); //TODO this is very wrong...
         }
 
         // Borde vara rätt... (kolla coersion? eriks anm. ;)
-        public Boolean AddProduction(int cat, CncFun fun, List<int> domain)
+        public void AddProduction(int cat, CncFun fun, List<int> domain)
         {
-            return AddProduction(new ApplProduction(cat, fun, domain));
+            AddProduction(new ApplProduction(cat, fun, domain));
         }
 
         //TODO: Kolla denna oxå xD
         public List<Production> GetProductions(int resultCat)
         {
-            HashSet<Object> tmp = productionSets.Get(resultCat);
+            HashSet<Production> tmp = productionSets[resultCat];
             List<Production> tmp2 = new List<Production>();
             if (tmp.Count != 0) {
                 foreach (Object p in tmp) {
@@ -86,7 +84,7 @@ namespace CSPGF.parser
             }
         }
 
-        //TODO: Denna kan vara helt åt helvete :D
+        //TODO: Denna kan vara helt åt helvete :D 
         private List<Production> Uncoerce(Object p)
         {
             List<Production> tmp = new List<Production>();
@@ -141,8 +139,8 @@ namespace CSPGF.parser
         public override String ToString()
         {
             String s = "=== Productions: ===\n";
-            foreach (int i in productionSets.KeySet()) {
-                s += productionSets.Get(i).ToString() + '\n';
+            foreach (int i in productionSets.Keys) {
+                s += productionSets[i].ToString() + '\n';
             }
             s += "=== passive items: ===\n";
             foreach (KeyValuePair<Tuple<int, int, int, int>, int> ints in categoryBookKeeper) {
