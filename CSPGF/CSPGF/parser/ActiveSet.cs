@@ -28,7 +28,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSPGF.util;
 //Check this class, it seems retarded...
 
 namespace CSPGF.parser
@@ -36,16 +35,16 @@ namespace CSPGF.parser
     class ActiveSet
     {
         //Dictionary<int,Dictionary<int,List<Tuple<ActiveItem,int>>>> store;
-        Dictionary<int, MultiMap<int, Tuple<ActiveItem, int>>> store;
+        //Dictionary<int, MultiMap<int, Tuple<ActiveItem, int>>> store;
         public ActiveSet()
         {
-            store = new Dictionary<int, MultiMap<int, Tuple<ActiveItem, int>>>();
+            //store = new Dictionary<int, MultiMap<int, Tuple<ActiveItem, int>>>();
         }
         //använd logg :P
         public bool Add(int cat, int cons, ActiveItem item, int cons2)
         {
             //Hämta värde ur hashmap
-            if (store.ContainsKey(cat)) {
+            /*if (store.ContainsKey(cat)) {
                 MultiMap<int, Tuple<ActiveItem, int>> map = store[cat];
                 if (map.ContainsKey(cons)) {
                     foreach (Tuple<ActiveItem, int> value in map.Get(cons))
@@ -61,11 +60,12 @@ namespace CSPGF.parser
                 newMap.Add(cons, set);
                 store[cat] = newMap;    //TODO check if this is correct, might need to check if the key exists
                 return true;
-            }
+            }*/
+            return true;
         }
         public List<Tuple<ActiveItem, int, int>> Get(int cat)
         {
-            if (store.ContainsKey(cat)) {
+            /*if (store.ContainsKey(cat)) {
                 MultiMap<int, Tuple<ActiveItem, int>> amap = store[cat];
                 List<Tuple<ActiveItem, int, int>> tp = new List<Tuple<ActiveItem, int, int>>();
                 foreach (int key in amap.KeySet()) {
@@ -78,19 +78,21 @@ namespace CSPGF.parser
             else {
                 return new List<Tuple<ActiveItem, int, int>>();
             }
+        }*/
+            return null;
         }
         //What is this? :D
         public List<Tuple<ActiveItem, int>> Get(int cat, int cons)
         {
             List<Tuple<ActiveItem, int>> newList = new List<Tuple<ActiveItem, int>>();
-            if (store.ContainsKey(cat)) {
+            /*if (store.ContainsKey(cat)) {
                 MultiMap<int, Tuple<ActiveItem, int>> amap = store[cat];
                 if (amap.ContainsKey(cons)) {
                     foreach (Tuple<ActiveItem, int> value in amap.Get(cons)) {
                         newList.Add(value);
                     }
                 }
-            }
+            }*/
             return newList;
         }
     }
