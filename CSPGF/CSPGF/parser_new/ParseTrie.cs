@@ -34,7 +34,7 @@ namespace CSPGF.parser_new
     class ParseTrie
     {
         public List<ParseTrie> child;
-        public reader.Symbol symbol;
+        public reader.ApplProduction symbol;
         public ParseTrie()
         {
             //TODO
