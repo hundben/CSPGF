@@ -11,33 +11,48 @@ namespace CSPGF.linearizer_new
     {
         String sentence = "";
         List<LinTrie> curLvl;
+        List<ParseTrie> curParse;
         public Linearizer()
         {
-
+            curLvl = new List<LinTrie>();
+            curParse = new List<ParseTrie>();
         }
 
         public String Linearize(LinTrie tree)
         {
-            curLvl = new List<LinTrie>();
+            curLvl.Clear();
             curLvl.Add(tree);
             while (curLvl.Count != 0) {
                 sentence += Linearizer2(curLvl);
-                NextLevel();
+                NextLevel(curLvl);
             }
             return sentence;
         }
 
-        private void NextLevel()
+        private void NextLevel(Object trie)
         {
-            List<LinTrie> newlvl = new List<LinTrie>();
-            foreach (LinTrie lt in curLvl) {
-                foreach (LinTrie lt2 in lt.child) {
-                    if (lt2 != null) {
-                        newlvl.Add(lt2);
+            if (trie is LinTrie) {
+                List<LinTrie> newlvl = new List<LinTrie>();
+                foreach (LinTrie lt in curLvl) {
+                    foreach (LinTrie lt2 in lt.child) {
+                        if (lt2 != null) {
+                            newlvl.Add(lt2);
+                        }
                     }
                 }
+                curLvl = newlvl;
             }
-            curLvl = newlvl;
+            else if (trie is ParseTrie) {
+                List<ParseTrie> newlvl = new List<ParseTrie>();
+                foreach (ParseTrie lt in curParse) {
+                    foreach (ParseTrie lt2 in lt.child) {
+                        if (lt2 != null) {
+                            newlvl.Add(lt2);
+                        }
+                    }
+                }
+                curParse = newlvl;
+            }
         }
 
         private String Linearizer2(List<LinTrie> trees)
@@ -87,6 +102,17 @@ namespace CSPGF.linearizer_new
 
         public LinTrie Parse2Lin(ParseTrie pt)
         {
+            LinTrie lt = new LinTrie();
+            curParse.Clear();
+            curParse.Add(pt);
+            foreach (ParseTrie ptt in pt.child) {
+                lt.child.Add(P2L(ptt));
+            }
+            return null;
+        }
+
+        public LinTrie P2L(ParseTrie pt) {
+            
             return null;
         }
     }
@@ -97,7 +123,7 @@ namespace CSPGF.linearizer_new
         public reader.Symbol symbol { get; set; }
         public LinTrie()
         {
-            
+            child = new List<LinTrie>();
         }
     }
 }
