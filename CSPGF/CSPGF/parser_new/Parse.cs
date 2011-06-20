@@ -70,26 +70,37 @@ namespace CSPGF.parser_new
             }
             prods = concrete.GetProductions();  //load productions
 
-            Predict2(startCat.firstFID);
+            PredictTEMP(startCat.firstFID);
+
+            String text2 = GetToken(Predict(0, prods)[0]);
+
             System.Console.WriteLine("whaaa");
             //Map.Map CId CncCat = Map(Map CId CncCat whatever... :D
         }
 
         //TODO merge this with parse later... just to keep it clean
-        private void ParseText2(String text, ParseTrie tree)
+        private void ParseText2(String text, ParseTrie tree, int cat)
         {
             foreach (String word in text.Split(' '))
             {
+                foreach (reader.ApplProduction ap in Predict(cat, prods))
+                {
 
+                }
             }
         }
-        
+
+        private void FindWord(String word, int cat)
+        {
+
+        }
+
         public void ParseWithRecovery(String language, String text)
         {
 
         }
 
-        private void Predict2(int cat)
+        private void PredictTEMP(int cat)
         {
             //TRY to predict the legal nextstates
             foreach (reader.ApplProduction p in Predict(cat, prods))
@@ -177,6 +188,34 @@ namespace CSPGF.parser_new
                 appList.Add(p);
             }
             return appList.ToList<reader.ApplProduction>();
+        }
+
+        private String GetToken(reader.ApplProduction ap)
+        {
+            String token ="";
+            foreach (reader.Sequence seq in ap.function.sequences)
+            {
+                foreach (reader.Symbol symb in seq.symbs)
+                {
+                    if (symb is reader.ToksSymbol)
+                    {
+                        reader.ToksSymbol t = (reader.ToksSymbol)symb;
+                        //TODO
+                        foreach (String tok in t.tokens)
+                        {
+                            token += tok + " ";
+                        }
+                        
+                    }
+                    else if (symb is reader.AlternToksSymbol)
+                    {
+                        reader.AlternToksSymbol t = (reader.AlternToksSymbol)symb;
+                        //TODO there is a list of strings (alt1?)
+                        //pre...
+                    }
+                }
+            }
+            return token.TrimEnd();
         }
     }
 }
