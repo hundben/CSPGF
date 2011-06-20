@@ -24,35 +24,22 @@ namespace CSPGF.linearizer_new
             curLvl.Add(tree);
             while (curLvl.Count != 0) {
                 sentence += Linearizer2(curLvl);
-                NextLevel(curLvl);
+                NextLevel();
             }
             return sentence;
         }
 
-        private void NextLevel(Object trie)
+        private void NextLevel()
         {
-            if (trie is LinTrie) {
-                List<LinTrie> newlvl = new List<LinTrie>();
-                foreach (LinTrie lt in curLvl) {
-                    foreach (LinTrie lt2 in lt.child) {
-                        if (lt2 != null) {
-                            newlvl.Add(lt2);
-                        }
+            List<LinTrie> newlvl = new List<LinTrie>();
+            foreach (LinTrie lt in curLvl) {
+                foreach (LinTrie lt2 in lt.child) {
+                    if (lt2 != null) {
+                        newlvl.Add(lt2);
                     }
                 }
-                curLvl = newlvl;
             }
-            else if (trie is ParseTrie) {
-                List<ParseTrie> newlvl = new List<ParseTrie>();
-                foreach (ParseTrie lt in curParse) {
-                    foreach (ParseTrie lt2 in lt.child) {
-                        if (lt2 != null) {
-                            newlvl.Add(lt2);
-                        }
-                    }
-                }
-                curParse = newlvl;
-            }
+            curLvl = newlvl;
         }
 
         private String Linearizer2(List<LinTrie> trees)
@@ -103,24 +90,54 @@ namespace CSPGF.linearizer_new
         public LinTrie Parse2Lin(ParseTrie pt)
         {
             LinTrie lt = new LinTrie();
-            curParse.Clear();
-            curParse.Add(pt);
-            foreach (ParseTrie ptt in pt.child) {
-                lt.child.Add(P2L(ptt));
-            }
+            List<String> tok = new List<String>();
+            tok.Add(Seq2Str(pt.symbol.function.sequences));
+            lt.symbol = new ToksSymbol(tok);
+            lt.child.Add(P2L(pt));
             return null;
         }
 
+        public String Seq2Str(List<Sequence> seqs)
+        {
+            String str = "";
+            foreach (Sequence seq in seqs) {
+                for (int i = 0; i < seq.symbs.Count; i++) {
+                    if (seq.symbs[i] is ToksSymbol) {
+                        foreach (String str2 in ((ToksSymbol)seq.symbs[i]).tokens) {
+                            str += str2 + " ";
+                        }
+                    }
+                    else if (i < (seq.symbs.Count - 1) && seq.symbs[i] is AlternToksSymbol) {
+                        str += ATSym2St((AlternToksSymbol)seq.symbs[i], (ToksSymbol)seq.symbs[i+1]);
+                        i++;
+                    }
+                    else {
+                        throw new LinearizerException("Failsymbol: " + seq.symbs[i].GetType());
+                    }
+                }
+
+            }
+            return str;
+        }
+
         public LinTrie P2L(ParseTrie pt) {
-            
-            return null;
+            LinTrie lt = new LinTrie();
+            if (pt.child.Count == 0) {
+                return lt;
+            }
+            else {
+                foreach (ParseTrie ptt in pt.child) {
+                    lt.child.Add(P2L(ptt));
+                }
+            }
+            return lt;
         }
     }
 
     class LinTrie
     {
         public List<LinTrie> child { get; set; }
-        public reader.Symbol symbol { get; set; }
+        public Symbol symbol { get; set; }
         public LinTrie()
         {
             child = new List<LinTrie>();
