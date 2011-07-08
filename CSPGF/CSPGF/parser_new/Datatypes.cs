@@ -115,37 +115,37 @@ namespace CSPGF.parser_new
         }
     }
 
-    public class Chart
-    {
-        public ActiveChart active { get; private set; }
-        public List<ActiveChart> actives { get; private set; }
-        public PassiveChart passive { get; private set; }
-        public List<reader.ProductionSet> forest { get; private set; }
-        public int nextId { get; private set; }
-        public int offset { get; private set; }
+    //public class Chart
+    //{
+    //    public ActiveChart active { get; private set; }
+    //    public List<ActiveChart> actives { get; private set; }
+    //    public PassiveChart passive { get; private set; }
+    //    public List<reader.ProductionSet> forest { get; private set; }
+    //    public int nextId { get; private set; }
+    //    public int offset { get; private set; }
 
-        public Chart(ActiveChart _active, List<ActiveChart> _actives, PassiveChart _passive, List<reader.ProductionSet> _forest, int _nextId, int _offset)
-        {
-            active = _active;
-            actives = _actives;
-            passive = _passive;
-            forest = _forest;
-            nextId = _nextId;
-            offset = _offset;
-        }
-    }
+    //    public Chart(ActiveChart _active, List<ActiveChart> _actives, PassiveChart _passive, List<reader.ProductionSet> _forest, int _nextId, int _offset)
+    //    {
+    //        active = _active;
+    //        actives = _actives;
+    //        passive = _passive;
+    //        forest = _forest;
+    //        nextId = _nextId;
+    //        offset = _offset;
+    //    }
+    //}
 
-    public class ErrorState
-    {
-        public reader.Abstract abs { get; private set; }
-        public reader.Concrete con { get; private set; }
-        public Chart ch { get; private set; }
+    //public class ErrorState
+    //{
+    //    public reader.Abstract abs { get; private set; }
+    //    public reader.Concrete con { get; private set; }
+    //    public Chart ch { get; private set; }
 
-        public ErrorState(reader.Abstract _abs, reader.Concrete _con, Chart _ch)
-        {
-            abs = _abs;
-            con = _con;
-            ch = _ch;
-        }
-    }
+    //    public ErrorState(reader.Abstract _abs, reader.Concrete _con, Chart _ch)
+    //    {
+    //        abs = _abs;
+    //        con = _con;
+    //        ch = _ch;
+    //    }
+    //}
 }

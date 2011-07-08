@@ -96,6 +96,7 @@
     <Compile Include="parser\Variable.cs" />
     <Compile Include="parser\Lambda.cs" />
     <Compile Include="parser\Tree.cs" />
+    <Compile Include="parser_new\Chart.cs" />
     <Compile Include="parser_new\Datatypes.cs" />
     <Compile Include="parser_new\Parse.cs" />
     <Compile Include="parser_new\ParseState.cs" />
