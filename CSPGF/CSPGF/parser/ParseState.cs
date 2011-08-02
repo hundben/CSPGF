@@ -44,7 +44,7 @@ namespace CSPGF.parser
         {
             startCat = grammar.GetStartCat();
             trie = new ParseTrie(null);
-            chart = new Chart(100); //TODO 100 is a bad value... (even in c#)
+            chart = new Chart(100); //TODO calculate this instead, should be easy enough
             agenda = new Stack<ActiveItem>();
             position = 0;
             active = new Dictionary<int, ActiveSet>();
@@ -137,7 +137,7 @@ namespace CSPGF.parser
             else {
                 int cat = chart.GetCategory(A, l, j, this.position);
                 if (cat == -1) { //TODO check this -1 == null in this case???
-                    int N = chart.GenerateFreshCategory(A, l, j, position);
+                    int N = chart.GenerateFreshCategory(new Category(A, l, j, position));
                     foreach (Tuple<ActiveItem, int> tmp in active[j].Get(A, l)) {
                         ActiveItem ip = tmp.Item1;
                         int d = tmp.Item2;
