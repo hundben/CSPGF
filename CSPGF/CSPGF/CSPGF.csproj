@@ -86,6 +86,7 @@
     <Compile Include="parser\ActiveItem.cs" />
     <Compile Include="parser\ActiveSet.cs" />
     <Compile Include="parser\Application.cs" />
+    <Compile Include="parser\Category.cs" />
     <Compile Include="parser\Chart.cs" />
     <Compile Include="parser\Literal.cs" />
     <Compile Include="parser\MetaVariable.cs" />

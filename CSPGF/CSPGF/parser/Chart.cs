@@ -63,14 +63,14 @@ namespace CSPGF.parser
         }
 
         //TODO: Kolla denna oxå xD (lite skum, borde gå att ta bort massor? (eriks anm.)
-        public List<Production> GetProductions(int resultCat)
+        public List<ApplProduction> GetProductions(int resultCat)
         {
             HashSet<Production> tmp = productionSets[resultCat];
-            List<Production> tmp2 = new List<Production>();
+            List<ApplProduction> tmp2 = new List<ApplProduction>();
             if (tmp.Count != 0) {
                 foreach (Object p in tmp) {
                     if (p is Production) {
-                        foreach (Production prod in Uncoerce(p)) {
+                        foreach (ApplProduction prod in Uncoerce(p)) {
                             tmp2.Add(prod);
                         }
                     }
@@ -81,21 +81,21 @@ namespace CSPGF.parser
                 return tmp2;
             }
             else {
-                return new List<Production>();
+                return new List<ApplProduction>();
             }
         }
 
         //Should now work
-        private List<Production> Uncoerce(Object p)
+        private List<ApplProduction> Uncoerce(Object p)
         {
-            List<Production> prodList = new List<Production>();
+            List<ApplProduction> prodList = new List<ApplProduction>();
             if (p is ApplProduction) {
                 prodList.Add((ApplProduction)p);
             }
             else if (p is CoerceProduction) {
                 CoerceProduction cp = (CoerceProduction)p;
                 foreach (Production prod in GetProductions(cp.initId)) {
-                    foreach (Production prod2 in Uncoerce(prod)) {
+                    foreach (ApplProduction prod2 in Uncoerce(prod)) {
                         prodList.Add(prod2);
                     }
                 }
@@ -134,7 +134,7 @@ namespace CSPGF.parser
         {
             int cat = nextCat;
             nextCat++;
-            //Category c = new Category(oldCat, l, j, k);
+            // Category c = new Category(oldCat, l, j, k);
             categoryBookKeeper[c] = cat;    //TODO maybe add check here
             return cat;
         }
