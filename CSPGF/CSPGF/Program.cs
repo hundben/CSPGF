@@ -50,6 +50,8 @@ namespace CSPGF
             //Parser parser = new Parser(tmp, "FoodsEng");
 
             ParseState st = new ParseState(pgf.GetConcrete("FoodsEng"));
+            List<String> temp = st.Predict();
+            foreach (String s in temp) System.Console.Out.WriteLine(s);
             //ParseState tmp2 = parser.Parse("hello world");
             //List<CSPGF.trees.Absyn.Tree> tmp3 = tmp2.GetTrees();
 
