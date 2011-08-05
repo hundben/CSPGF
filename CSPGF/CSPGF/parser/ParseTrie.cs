@@ -88,7 +88,8 @@ namespace CSPGF.parser
         
         public ParseTrie GetSubTrie(List<String> key)
         {
-            if (key.Count > 0)
+            //TODO check if null is necessary 
+            if (key != null || key.Count > 0)
             {
                 List<String> key2 = new List<String>(key);
                 String k = key2.First<String>();
@@ -97,26 +98,6 @@ namespace CSPGF.parser
                 if (child.TryGetValue(k, out trie)) return trie.GetSubTrie(key2);
             }
             return this;
-
-            /*
-            if (key == null || key.Count == 0) {
-                return this;
-            }
-            else {
-                // TODO: FIXA!
-                ParseTrie tmp2;
-                if (child.TryGetValue(key.First<String>(), out tmp2)) {
-                    //String[] tmp = new String[key.Count];
-                    //key.CopyTo(tmp);
-                    List<String> tmp = new List<String>(key);
-                    //List<String> tmp2 = tmp.ToList<String>();
-                    tmp.Remove(key.First<String>());
-                    return child[key.First<String>()].GetSubTrie(tmp);
-                }
-                //return null;
-            }
-            return this;
-            */
         }
 
         public ParseTrie GetSubTrie(String key)

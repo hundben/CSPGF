@@ -41,7 +41,7 @@ namespace CSPGF.parser
             for (int catID = startCat.firstFID; catID < startCat.lastFID + 1; catID++) {
                 int cat = chart.GetCategory(catID, 0, 0, length);
                 if (cat != -1) {
-                    temp.AddRange(MkTreesForCat(cat, chart)); //unsure about this???
+                    temp.AddRange(MkTreesForCat(cat, chart));
                 }
             }
             return temp;
@@ -49,51 +49,64 @@ namespace CSPGF.parser
         public List<Tree> MkTreesForCat(int cat, Chart chart)
         {
             List<Tree> temp = new List<Tree>();
-            foreach (Production p in chart.GetProductions(cat)) {
+            foreach (ApplProduction p in chart.GetProductions(cat)) {
                 foreach (Tree t in MkTreesForProduction(p, chart)) {
                     temp.Add(t);
                 }
             }
             return temp;
         }
-        public List<Tree> MkTreesForProduction(CSPGF.reader.Production p, Chart chart)
+        public List<Tree> MkTreesForProduction(CSPGF.reader.ApplProduction p, Chart chart)
         {
             List<Tree> temp = new List<Tree>();
-            if (p is ApplProduction) {
-                ApplProduction prod = (ApplProduction)p;
-
-                if (p.Domain().Count == 0) {
-                    temp.Add(new Application(prod.function.name, new List<Tree>()));
-                }
-                else {
-                    //retard code >P
-                    foreach (int i in p.Domain()) {
-                        List<Tree> t2 = MkTreesForCat(i, chart);
-                        temp.Add(new Application(prod.function.name, t2));
-                        //Use listmixer above? or what does listmixer actually do?
-
-                        // for (args <- listMixer( p.domain.toList.map(mkTreesForCat(_,chart)) ) )
-                        //         yield new Application(p.function.name, args)
-                    }
-                }
+            if (p.Domain().Count == 0)
+            {
+                temp.Add(new Application(p.function.name, new List<Tree>()));
+                return temp;
             }
-            return temp;
+            else
+            {
+                List<List<Tree>> lsMx = new List<List<Tree>>();
+                foreach (int pp in p.Domain())
+                {
+                    lsMx.Add(MkTreesForCat(pp, chart));
+                }
+                List<List<Tree>> lsMx2 = ListMixer(lsMx);
+                foreach(List<Tree> tree in lsMx2) 
+                {
+                    temp.Add(new Application(p.function.name, tree));
+                }
+                return temp;
+            }
         }
         public List<List<Tree>> ListMixer(List<List<Tree>> l)
         {
-            return l;   //TODO check what this thing actually does
-            //foreach (List<Tree> lt in l)
-            //{
-            //  def listMixer(l:List[List[Tree]]):List[List[Tree]] = l match {
-            //    case Nil => Nil
-            //    case List(subL) => subL.map(List(_))
-            //    case head::tail => {
-            //      for {first <- head;
-            //           then <- listMixer(tail)}
-            //      yield first::then
-            //}
-            //TODO
-            //return new List<List<Tree>>();
+            List<List<Tree>> newList = new List<List<Tree>>();
+            if (l.Count == 0) return newList;
+            else if (l.Count == 1)
+            {
+                foreach (Tree lT in l.First<List<Tree>>())
+                {
+                    List<Tree> nT = new List<Tree>();
+                    nT.Add(lT);
+                    newList.Add(nT);
+                }
+                return newList;
+            }
+            else
+            {
+                List<Tree> head = l.First<List<Tree>>();
+                l.Remove(head);
+                foreach (Tree first in head)
+                {
+                    foreach (List<Tree> then in ListMixer(l))
+                    {
+                        then.Insert(0,first);
+                        newList.Add(then);
+                    }
+                }
+                return newList; 
+            }
         }
     }
 }

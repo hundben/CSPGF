@@ -50,7 +50,8 @@ namespace CSPGF.parser
             constituent = _constituent;
             position = _position;
         }
-        //Notice that Option and Same is used together in scala, so ignore :D
+
+        //TODO check if this is correct
         public Symbol NextSymbol()
         {
             if (position < function.sequences[constituent].symbs.Count) {
