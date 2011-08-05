@@ -41,7 +41,7 @@ namespace CSPGF.parser
         {
             store = new Dictionary<int, Dictionary <int, HashSet<ActiveItemInt>>>();
         }
-        //använd logg :P
+        //check this one, might be wrong...
         public bool Add(int cat, int cons, ActiveItem item, int cons2)
         {
             Dictionary<int, HashSet<ActiveItemInt>> map;

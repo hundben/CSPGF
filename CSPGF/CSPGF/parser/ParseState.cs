@@ -112,11 +112,14 @@ namespace CSPGF.parser
                 int d = arg.arg;
                 int r = arg.cons;
                 int Bd = item.domain[d];
-                if (active.ContainsKey(position)) {   
-                    active[position].Add(Bd, r, item, d);   //a bit strange, check if we should create an active set first...
-                    foreach (ApplProduction prod in chart.GetProductions(Bd)) {
-                        ActiveItem it = new ActiveItem(position, Bd, prod.function, prod.Domain(), r, 0);
-                        agenda.Push(it);
+                if (active.ContainsKey(position)) {
+                    if (active[position].Add(Bd, r, item, d))   //a bit strange, check if we should create an active set first...
+                    {
+                        foreach (ApplProduction prod in chart.GetProductions(Bd))
+                        {
+                            ActiveItem it = new ActiveItem(position, Bd, prod.function, prod.Domain(), r, 0);
+                            agenda.Push(it);
+                        }
                     }
                     int cat = chart.GetCategory(Bd, r, position, position);
                     //null here is wierd? :D
@@ -143,7 +146,7 @@ namespace CSPGF.parser
                     chart.AddProduction(N, f, B);
                 }
                 else {
-                    //TODO fix Null pointer here, should no happen?
+                    //TODO fix Null pointer here, should not happen?
                     HashSet<ActiveItemInt> items = active[position].Get(cat);
                     foreach (ActiveItemInt aii in items) {
                         //ActiveItem xprime = aii.item;

@@ -92,7 +92,7 @@ namespace CSPGF.parser
             if (key != null && key.Count > 0)
             {
                 List<String> key2 = new List<String>(key);
-                String k = key2.First<String>();    //TODO change this is wrong..
+                String k = key2.First<String>();
                 key2.Remove(k);
                 ParseTrie trie;
                 if (child.TryGetValue(k, out trie)) return trie.GetSubTrie(key2);
