@@ -88,6 +88,17 @@ namespace CSPGF.parser
         
         public ParseTrie GetSubTrie(List<String> key)
         {
+            if (key.Count > 0)
+            {
+                List<String> key2 = new List<String>(key);
+                String k = key2.First<String>();
+                key2.Remove(k);
+                ParseTrie trie;
+                if (child.TryGetValue(k, out trie)) return trie.GetSubTrie(key2);
+            }
+            return this;
+
+            /*
             if (key == null || key.Count == 0) {
                 return this;
             }
@@ -102,8 +113,10 @@ namespace CSPGF.parser
                     tmp.Remove(key.First<String>());
                     return child[key.First<String>()].GetSubTrie(tmp);
                 }
-                return null;
+                //return null;
             }
+            return this;
+            */
         }
 
         public ParseTrie GetSubTrie(String key)

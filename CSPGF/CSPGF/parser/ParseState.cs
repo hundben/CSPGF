@@ -146,8 +146,8 @@ namespace CSPGF.parser
                     //TODO fix Null pointer here, should no happen?
                     HashSet<ActiveItemInt> items = active[position].Get(cat);
                     foreach (ActiveItemInt aii in items) {
-                        ActiveItem xprime = aii.item;
-                        int dprime = aii.cons;
+                        //ActiveItem xprime = aii.item;
+                        //int dprime = aii.cons;
                         int r = aii.cons2 ;
                         ActiveItem i = new ActiveItem(position, cat, f, B, r, 0);
                         agenda.Push(i);
