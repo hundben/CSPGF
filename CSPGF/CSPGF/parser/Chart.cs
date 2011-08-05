@@ -47,11 +47,19 @@ namespace CSPGF.parser
 
         public void AddProduction(Production p)
         {
-            HashSet<Production> temp;
-
-            if (productionSets.TryGetValue(p.fId, out temp))
+            //TODO New version, check if it works
+            HashSet<Production> prodSet;
+            if (productionSets.TryGetValue(p.fId, out prodSet))
             {
-                temp.Add(p);
+                if (prodSet.Contains(p)) return;
+                prodSet.Add(p);
+            }
+            else
+            {
+                prodSet = new HashSet<Production>();
+                prodSet.Add(p);
+                productionSets.Add(p.fId, prodSet);
+
             }
             nextCat = Math.Max(nextCat, p.fId + 1);
         }
@@ -63,29 +71,31 @@ namespace CSPGF.parser
         }
 
         //TODO: Kolla denna oxå xD (lite skum, borde gå att ta bort massor? (eriks anm.)
+        //Fel på den här... oväntat nog ;P Skrev om hoppas skiten blev rätt (eriks anm.)
         public List<ApplProduction> GetProductions(int resultCat)
         {
-            HashSet<Production> tmp = productionSets[resultCat];
-            List<ApplProduction> tmp2 = new List<ApplProduction>();
-            if (tmp.Count != 0) {
-                foreach (Object p in tmp) {
-                    if (p is Production) {
-                        foreach (ApplProduction prod in Uncoerce(p)) {
-                            tmp2.Add(prod);
-                        }
-                    }
-                    else {
-                        throw new Exception(p.ToString() + " is not a Production, and should be one");
+            HashSet<Production> prod;
+            //Check if category exists, if not return empty productionset
+            if (productionSets.TryGetValue(resultCat, out prod))
+            {
+                List<ApplProduction> applProd = new List<ApplProduction>();
+                foreach (Production p in prod)
+                {
+                    foreach(ApplProduction ap in Uncoerce(p)) 
+                    {
+                        applProd.Add(ap);
                     }
                 }
-                return tmp2;
+                return applProd;
             }
-            else {
+            else
+            {
                 return new List<ApplProduction>();
             }
         }
 
         //Should now work
+        //Changes all Coerceproductions to ApplProductions
         private List<ApplProduction> Uncoerce(Object p)
         {
             List<ApplProduction> prodList = new List<ApplProduction>();
