@@ -140,14 +140,16 @@ namespace CSPGF.parser
                         ActiveItem ip = tmp.Item1;
                         int d = tmp.Item2;
                         List<int> domain = new List<int>(ip.domain);
-                        //int[] domain = (int[])ip.domain.Clone();
                         domain[d] = N;
                         ActiveItem i = new ActiveItem(ip.begin, ip.category, ip.function, domain, ip.constituent, ip.position + 1);
                         agenda.Push(i);
                     }
+                    chart.AddProduction(N, f, B);
                 }
                 else {
-                    foreach (Tuple<ActiveItem, int, int> aset in active[position].Get(cat)) {
+                    //TODO fix Null pointer here, should no happen?
+                    List<Tuple<ActiveItem, int, int>> items = active[position].Get(cat);
+                    foreach (Tuple<ActiveItem, int, int> aset in items) {
                         ActiveItem xprime = aset.Item1;
                         int dprime = aset.Item2;
                         int r = aset.Item3;
@@ -245,7 +247,7 @@ namespace CSPGF.parser
 //         val l = item.constituent
 //         val p = item.position
 //         //System.out.println("Processing active item " + item + " from the agenda")
-//         item.nextSymbol match {
+//*         item.nextSymbol match {
 //             // ------------------------- before s∈T -------------------------
 //             case Some(tok:ToksSymbol) => {
 //                 //log.fine("Case before s∈T")
