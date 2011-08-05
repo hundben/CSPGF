@@ -146,7 +146,6 @@ namespace CSPGF.parser
                     chart.AddProduction(N, f, B);
                 }
                 else {
-                    //TODO fix Null pointer here, should not happen?
                     HashSet<ActiveItemInt> items = active[position].Get(cat);
                     foreach (ActiveItemInt aii in items) {
                         //ActiveItem xprime = aii.item;
@@ -173,14 +172,14 @@ namespace CSPGF.parser
 
         public Boolean Scan(String token)
         {
-            ParseTrie tmp = trie.GetSubTrie(token);
-            if (tmp != null) {
+            ParseTrie newTrie = trie.GetSubTrie(token);
+            if (newTrie != null) {
                 String[] empt = new String[0];
-                Stack<ActiveItem> tmp2 = tmp.Lookup(empt);
-                if (tmp2 != null) {
-                    trie = tmp;
+                Stack<ActiveItem> newAgenda = newTrie.Lookup(empt);
+                if (newAgenda != null) {
+                    trie = newTrie;
                     position++;
-                    agenda = tmp2;
+                    agenda = newAgenda ;
                     Compute();
                     return true;
                 }

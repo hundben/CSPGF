@@ -34,9 +34,7 @@ namespace CSPGF.parser
 {
     class ActiveSet
     {
-        //Dictionary<int,Dictionary<int,List<Tuple<ActiveItem,int>>>> store;
         Dictionary<int, Dictionary<int, HashSet<ActiveItemInt>>> store;
-        //Dictionary<int, MultiMap<int, Tuple<ActiveItem, int>>> store;
         public ActiveSet()
         {
             store = new Dictionary<int, Dictionary <int, HashSet<ActiveItemInt>>>();
