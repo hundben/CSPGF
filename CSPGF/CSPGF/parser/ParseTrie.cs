@@ -89,10 +89,10 @@ namespace CSPGF.parser
         public ParseTrie GetSubTrie(List<String> key)
         {
             //TODO check if null is necessary 
-            if (key != null || key.Count > 0)
+            if (key != null && key.Count > 0)
             {
                 List<String> key2 = new List<String>(key);
-                String k = key2.First<String>();
+                String k = key2.First<String>();    //TODO change this is wrong..
                 key2.Remove(k);
                 ParseTrie trie;
                 if (child.TryGetValue(k, out trie)) return trie.GetSubTrie(key2);

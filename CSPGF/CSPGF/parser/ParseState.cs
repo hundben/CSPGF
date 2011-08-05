@@ -112,7 +112,7 @@ namespace CSPGF.parser
                 int d = arg.arg;
                 int r = arg.cons;
                 int Bd = item.domain[d];
-                if (!active.ContainsKey(position)) {    //changed here check if correct (added !)
+                if (active.ContainsKey(position)) {   
                     active[position].Add(Bd, r, item, d);   //a bit strange, check if we should create an active set first...
                     foreach (ApplProduction prod in chart.GetProductions(Bd)) {
                         ActiveItem it = new ActiveItem(position, Bd, prod.function, prod.Domain(), r, 0);
