@@ -111,21 +111,17 @@ namespace CSPGF.parser
                 ArgConstSymbol arg = (ArgConstSymbol)sym;
                 int d = arg.arg;
                 int r = arg.cons;
-                int bd = item.domain[d];
-                if (active.ContainsKey(position)) {
-                    active[position].Add(bd, r, item, d);
-                    foreach (Production prod in chart.GetProductions(bd)) {
-                        if (prod is ApplProduction) {
-                            ApplProduction prodAp = (ApplProduction)prod;
-                            ActiveItem it = new ActiveItem(position, bd, prodAp.function, prod.Domain(), r, 0);
-                            agenda.Push(it);
-                        }
+                int Bd = item.domain[d];
+                if (!active.ContainsKey(position)) {    //changed here check if correct (added !)
+                    active[position].Add(Bd, r, item, d);   //a bit strange, check if we should create an active set first...
+                    foreach (ApplProduction prod in chart.GetProductions(Bd)) {
+                        ActiveItem it = new ActiveItem(position, Bd, prod.function, prod.Domain(), r, 0);
+                        agenda.Push(it);
                     }
-                    int cat = chart.GetCategory(bd, r, position, position);
+                    int cat = chart.GetCategory(Bd, r, position, position);
                     //null here is wierd? :D
                     if (cat != -1) {
                         List<int> newDomain = new List<int>(B);
-                        //List<int> newDomain = (int[])B.Clone();  // WHAT TEH HELL??? clone returns an object :'(
                         newDomain[d] = cat;
                         ActiveItem it = new ActiveItem(j, A, f, newDomain, l, p + 1);
                         agenda.Push(it);
@@ -136,9 +132,9 @@ namespace CSPGF.parser
                 int cat = chart.GetCategory(A, l, j, this.position);
                 if (cat == -1) { //
                     int N = chart.GenerateFreshCategory(new Category(A, l, j, position));
-                    foreach (Tuple<ActiveItem, int> tmp in active[j].Get(A, l)) {
-                        ActiveItem ip = tmp.Item1;
-                        int d = tmp.Item2;
+                    foreach (ActiveItemInt aii in active[j].Get(A, l)) {
+                        ActiveItem ip = aii.item;
+                        int d = aii.cons;
                         List<int> domain = new List<int>(ip.domain);
                         domain[d] = N;
                         ActiveItem i = new ActiveItem(ip.begin, ip.category, ip.function, domain, ip.constituent, ip.position + 1);
@@ -148,11 +144,11 @@ namespace CSPGF.parser
                 }
                 else {
                     //TODO fix Null pointer here, should no happen?
-                    List<Tuple<ActiveItem, int, int>> items = active[position].Get(cat);
-                    foreach (Tuple<ActiveItem, int, int> aset in items) {
-                        ActiveItem xprime = aset.Item1;
-                        int dprime = aset.Item2;
-                        int r = aset.Item3;
+                    HashSet<ActiveItemInt> items = active[position].Get(cat);
+                    foreach (ActiveItemInt aii in items) {
+                        ActiveItem xprime = aii.item;
+                        int dprime = aii.cons;
+                        int r = aii.cons2 ;
                         ActiveItem i = new ActiveItem(position, cat, f, B, r, 0);
                         agenda.Push(i);
                     }
@@ -247,7 +243,7 @@ namespace CSPGF.parser
 //         val l = item.constituent
 //         val p = item.position
 //         //System.out.println("Processing active item " + item + " from the agenda")
-//*         item.nextSymbol match {
+//         item.nextSymbol match {
 //             // ------------------------- before s∈T -------------------------
 //             case Some(tok:ToksSymbol) => {
 //                 //log.fine("Case before s∈T")
@@ -280,7 +276,7 @@ namespace CSPGF.parser
 //                                       prod.domain, r, 0)
 //               agenda.push(it)
 //             }
-//           }
+//           }****
 //           chart.getCategory(Bd,r, this.position, this.position) match {
 //             case None => {}
 //             case Some(catN) => {

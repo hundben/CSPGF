@@ -19,7 +19,8 @@ namespace CSPGF.parser
             if (c.oldCat == oldCat && c.l == l && c.j == j && c.k == k) return true;
             return false;
         }
-        public String ToString() {
+        public override String ToString()
+        {
             return "[o:"+oldCat+"  l:"+l+" j:"+j+" k:"+k+"]";
         }
     }

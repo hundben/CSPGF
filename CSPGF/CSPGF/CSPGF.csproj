@@ -84,6 +84,7 @@
     <Compile Include="linearizer_new\Linearizer.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="parser\ActiveItem.cs" />
+    <Compile Include="parser\ActiveItemInt.cs" />
     <Compile Include="parser\ActiveSet.cs" />
     <Compile Include="parser\Application.cs" />
     <Compile Include="parser\Category.cs" />
