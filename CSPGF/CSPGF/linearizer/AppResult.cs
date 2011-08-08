@@ -25,25 +25,25 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CSPGF.reader;
-
 namespace CSPGF.linearizer
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using CSPGF.reader;
+
     class AppResult
     {
-        public CncFun cncFun {get; private set;}
+        public CncFun cncFun {get; private set; }
         public CncType cncType { get; private set; }
         public List<CncType> cncTypes { get; private set; }
 
         public AppResult(CncFun _cncFun, CncType _cncType, List<CncType> _cncTypes)
         {
-            cncFun = _cncFun;
-            cncType = _cncType;
-            cncTypes = _cncTypes;
+            this.cncFun = _cncFun;
+            this.cncType = _cncType;
+            this.cncTypes = _cncTypes;
         }
     }
 }

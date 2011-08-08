@@ -42,6 +42,7 @@ namespace CSPGF.parser_new
         private List<reader.CncCat> cncCat;
         private List<reader.CncFun> cncFun;
         private reader.Concrete concrete;
+        private Chart chart;
         public Parser(PGF _pgf)
         {
             pgf = _pgf;
@@ -55,6 +56,15 @@ namespace CSPGF.parser_new
             //lookConcrComplete :: PGF -> CId -> Concr
             abs = pgf.GetAbstract();        //TODO maybe not necessary...
             cncCat = concrete.GetCncCats();
+            //calculate next free category
+            int nextCat = 0;
+            foreach (reader.CncCat c in cncCat)
+            {
+                nextCat = Math.Max(c.lastFID, nextCat);
+            }
+            nextCat++;
+            chart = new Chart(nextCat);
+
             cncFun = concrete.cncFuns;
             String startCatName = abs.StartCat();
             //This code might be unnecessary, but then we have the startcategory saved at least ;P
@@ -88,11 +98,6 @@ namespace CSPGF.parser_new
 
                 }
             }
-        }
-
-        private void FindWord(String word, int cat)
-        {
-
         }
 
         public void ParseWithRecovery(String language, String text)

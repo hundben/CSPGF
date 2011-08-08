@@ -30,70 +30,81 @@ using System.Linq;
 using System.Text;
 //Check this class, it seems retarded...
 
-namespace CSPGF.parser
+namespace CSPGF.Parser
 {
     class ActiveSet
     {
-        //Dictionary<int,Dictionary<int,List<Tuple<ActiveItem,int>>>> store;
-        //Dictionary<int, MultiMap<int, Tuple<ActiveItem, int>>> store;
+        Dictionary<int, Dictionary<int, HashSet<ActiveItemInt>>> store;
         public ActiveSet()
         {
-            //store = new Dictionary<int, MultiMap<int, Tuple<ActiveItem, int>>>();
+            store = new Dictionary<int, Dictionary <int, HashSet<ActiveItemInt>>>();
         }
-        //använd logg :P
+        //check this one, might be wrong...
         public bool Add(int cat, int cons, ActiveItem item, int cons2)
         {
-            //Hämta värde ur hashmap
-            /*if (store.ContainsKey(cat)) {
-                MultiMap<int, Tuple<ActiveItem, int>> map = store[cat];
-                if (map.ContainsKey(cons)) {
-                    foreach (Tuple<ActiveItem, int> value in map.Get(cons))
-                        if (value.Item1 == item && value.Item2 == cons2)
-                            return false;
+            Dictionary<int, HashSet<ActiveItemInt>> map;
+            if (store.TryGetValue(cat, out map))
+            {
+                HashSet<ActiveItemInt> aItems;
+                if (map.TryGetValue(cons, out aItems))
+                {
+                    foreach (ActiveItemInt aii in aItems)
+                    {
+                        if (aii.Equals(item, cons2)) return false;
+                    }
+                    aItems.Add(new ActiveItemInt(item, cons2));
+                    return true;
                 }
-                map.Add(cons, new Tuple<ActiveItem, int>(item, cons2));
-                return true;
+                else
+                {
+                    //TODO this might be wrong (but I don't think so :)
+                    aItems = new HashSet<ActiveItemInt>();
+                    aItems.Add(new ActiveItemInt(item, cons2));
+                    map.Add(cons, aItems);
+                }
             }
-            else {
-                Tuple<ActiveItem, int> set = new Tuple<ActiveItem, int>(item, cons2);
-                MultiMap<int, Tuple<ActiveItem, int>> newMap = new MultiMap<int, Tuple<ActiveItem, int>>();
-                newMap.Add(cons, set);
-                store[cat] = newMap;    //TODO check if this is correct, might need to check if the key exists
-                return true;
-            }*/
+            else
+            {
+                map = new Dictionary<int, HashSet<ActiveItemInt>>();
+                HashSet<ActiveItemInt> aItems = new HashSet<ActiveItemInt>();
+                aItems.Add(new ActiveItemInt(item, cons2));
+                map.Add(cons, aItems);
+                store.Add(cat, map);
+            }
             return true;
         }
-        public List<Tuple<ActiveItem, int, int>> Get(int cat)
+
+        //TODO check if this is correct, new version
+        public HashSet<ActiveItemInt> Get(int cat)
         {
-            /*if (store.ContainsKey(cat)) {
-                MultiMap<int, Tuple<ActiveItem, int>> amap = store[cat];
-                List<Tuple<ActiveItem, int, int>> tp = new List<Tuple<ActiveItem, int, int>>();
-                foreach (int key in amap.KeySet()) {
-                    foreach (Tuple<ActiveItem, int> k in amap.Get(key)) {
-                        tp.Add(new Tuple<ActiveItem, int, int>(k.Item1, k.Item2, key));
+            HashSet<ActiveItemInt> aai = new HashSet<ActiveItemInt>();
+            Dictionary<int, HashSet<ActiveItemInt>> map;
+            if (store.TryGetValue(cat, out map))
+            {
+                foreach (int key in map.Keys)
+                {
+                    foreach (ActiveItemInt i in map[key])
+                    {
+                        i.Cons2 = key;
+                        aai.Add(i);
                     }
                 }
-                return tp;
             }
-            else {
-                return new List<Tuple<ActiveItem, int, int>>();
-            }
-        }*/
-            return null;
+            return aai;
         }
-        //What is this? :D
-        public List<Tuple<ActiveItem, int>> Get(int cat, int cons)
+        //Also fixed this one I hope /Erik
+        public HashSet<ActiveItemInt> Get(int cat, int cons)
         {
-            List<Tuple<ActiveItem, int>> newList = new List<Tuple<ActiveItem, int>>();
-            /*if (store.ContainsKey(cat)) {
-                MultiMap<int, Tuple<ActiveItem, int>> amap = store[cat];
-                if (amap.ContainsKey(cons)) {
-                    foreach (Tuple<ActiveItem, int> value in amap.Get(cons)) {
-                        newList.Add(value);
-                    }
+            HashSet<ActiveItemInt> aai = new HashSet<ActiveItemInt>();
+            Dictionary<int, HashSet<ActiveItemInt>> map;
+            if (store.TryGetValue(cat, out map))
+            {
+                if (map.TryGetValue(cons, out aai))
+                {
+                    return aai;
                 }
-            }*/
-            return newList;
+            }
+            return aai;
         }
     }
 }

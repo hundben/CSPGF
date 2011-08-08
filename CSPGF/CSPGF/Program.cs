@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using CSPGF.parser;
+using CSPGF.Parser;
 using CSPGF.test;
 using CSPGF.trees;
 using System.Speech;
@@ -44,16 +44,32 @@ namespace CSPGF
         {
             BinaryReader br = new BinaryReader(new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open));
             PGFReader pr = new PGFReader(br);
-            PGF tmp = pr.ReadPGF();
-            parser_new.Parser ps = new parser_new.Parser(tmp);
-            ps.ParseText("FoodsEng","hello world");
+            PGF pgf = pr.ReadPGF();
+            parser_new.Parser ps = new parser_new.Parser(pgf);
+            //ps.ParseText("FoodsEng","hello world");
             //Parser parser = new Parser(tmp, "FoodsEng");
+
+            ParseState st = new ParseState(pgf.GetConcrete("FoodsEng"));
+            List<String> temp = st.Predict();
+            foreach (String s in temp) System.Console.Out.WriteLine(s);
+
+            System.Console.Out.WriteLine("scan this...");
+            st.Scan("this");    //TODO check why it locks here (endless loop :D
+            
+            //st.Scan("is");
+            //st.Scan("expensive");
+            //List<CSPGF.trees.Absyn.Tree> trees = st.GetTrees();
+
+            
+            temp = st.Predict();
+            foreach (String s in temp) System.Console.Out.WriteLine(s);
             //ParseState tmp2 = parser.Parse("hello world");
             //List<CSPGF.trees.Absyn.Tree> tmp3 = tmp2.GetTrees();
 
             //SpeechSynthesizer ss = new SpeechSynthesizer();
             //ss.SetOutputToDefaultAudioDevice();
             //ss.Speak("wheeeeee!");
+            System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();
         }
     }

@@ -31,7 +31,7 @@ using System.Text;
 
 namespace CSPGF.linearizer
 {
-    abstract class BracketedTokn
+    public abstract class BracketedTokn
     {
     }
 }

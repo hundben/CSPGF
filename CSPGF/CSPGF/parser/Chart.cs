@@ -30,13 +30,14 @@ using System.Linq;
 using System.Text;
 using CSPGF.reader;
 
-namespace CSPGF.parser
+namespace CSPGF.Parser
 {
     class Chart
     {
         //private MultiMap<int, Object> productionSets = new MultiMap<int, Object>();
         private Dictionary<int, HashSet<Production>> productionSets = new Dictionary<int,HashSet<Production>>();
-        private Dictionary<Tuple<int, int, int, int>, int> categoryBookKeeper = new Dictionary<Tuple<int, int, int, int>, int>();
+        //private Dictionary<Tuple<int, int, int, int>, int> categoryBookKeeper = new Dictionary<Tuple<int, int, int, int>, int>();
+        private Dictionary<Category, int> categoryBookKeeper = new Dictionary<Category, int>();
         int nextCat;
 
         public Chart(int _nextCat)
@@ -46,13 +47,21 @@ namespace CSPGF.parser
 
         public void AddProduction(Production p)
         {
-            HashSet<Production> temp;
-
-            if (productionSets.TryGetValue(p.fId, out temp))
+            //TODO New version, check if it works
+            HashSet<Production> prodSet;
+            if (productionSets.TryGetValue(p.fId, out prodSet))
             {
-                temp.Add(p);
+                if (prodSet.Contains(p)) return;
+                prodSet.Add(p);
             }
-                nextCat = Math.Max(nextCat, p.fId + 1); //TODO this is very wrong...
+            else
+            {
+                prodSet = new HashSet<Production>();
+                prodSet.Add(p);
+                productionSets.Add(p.fId, prodSet);
+
+            }
+            nextCat = Math.Max(nextCat, p.fId + 1);
         }
 
         // Borde vara rätt... (kolla coersion? eriks anm. ;)
@@ -61,78 +70,82 @@ namespace CSPGF.parser
             AddProduction(new ApplProduction(cat, fun, domain));
         }
 
-        //TODO: Kolla denna oxå xD
-        public List<Production> GetProductions(int resultCat)
+        //TODO: Kolla denna oxå xD (lite skum, borde gå att ta bort massor? (eriks anm.)
+        //Fel på den här... oväntat nog ;P Skrev om hoppas skiten blev rätt (eriks anm.)
+        public List<ApplProduction> GetProductions(int resultCat)
         {
-            HashSet<Production> tmp = productionSets[resultCat];
-            List<Production> tmp2 = new List<Production>();
-            if (tmp.Count != 0) {
-                foreach (Object p in tmp) {
-                    if (p is Production) {
-                        foreach (Production prod in Uncoerce(p)) {
-                            tmp2.Add(prod);
-                        }
-                    }
-                    else {
-                        throw new Exception(p.ToString() + " is not a Production, and should be one");
+            HashSet<Production> prod;
+            //Check if category exists, if not return empty productionset
+            if (productionSets.TryGetValue(resultCat, out prod))
+            {
+                List<ApplProduction> applProd = new List<ApplProduction>();
+                foreach (Production p in prod)
+                {
+                    foreach(ApplProduction ap in Uncoerce(p)) 
+                    {
+                        applProd.Add(ap);
                     }
                 }
-                return tmp2;
+                return applProd;
             }
-            else {
-                return new List<Production>();
+            else
+            {
+                return new List<ApplProduction>();
             }
         }
 
-        //TODO: Denna kan vara helt åt helvete :D 
-        private List<Production> Uncoerce(Object p)
+        //Should now work
+        //Changes all Coerceproductions to ApplProductions
+        private List<ApplProduction> Uncoerce(Object p)
         {
-            List<Production> tmp = new List<Production>();
-            if (p is Production) {
-                tmp.Add((Production)p);
+            List<ApplProduction> prodList = new List<ApplProduction>();
+            if (p is ApplProduction) {
+                prodList.Add((ApplProduction)p);
             }
             else if (p is CoerceProduction) {
-                CoerceProduction tmp2 = (CoerceProduction)p;
-                foreach (Production prod in GetProductions(tmp2.initId)) {
-                    foreach (Production prod2 in Uncoerce(prod)) {
-                        tmp.Add(prod2);
+                CoerceProduction cp = (CoerceProduction)p;
+                foreach (Production prod in GetProductions(cp.initId)) {
+                    foreach (ApplProduction prod2 in Uncoerce(prod)) {
+                        prodList.Add(prod2);
                     }
                 }
             }
-            return tmp;
+            return prodList;
         }
 
         public int getFreshCategory(int oldCat, int l, int j, int k)
         {
-            //Does this line actually work? since it's the reference we need to check...
-            //TODO rewrite this... or maybe just wait and rewrite the whole parser...
-            int i = categoryBookKeeper[new Tuple<int, int, int, int>(oldCat, l, j, k)];
-            if (i != -1) {
-                return i;
+            //TODO Optimize this, use something else instead of looping through everything
+            Category cf = new Category(oldCat, l, j, k);
+            foreach (Category c in categoryBookKeeper.Keys)
+            {
+                if (cf.Equals(c))
+                {
+                    int i = categoryBookKeeper[c];
+                    if (i != -1) return i;
+                }
             }
-            else {
-                return GenerateFreshCategory(oldCat, l, j, k);
-            }
+            return GenerateFreshCategory(cf);
         }
 
         public int GetCategory(int oldCat, int cons, int begin, int end)
         {
-            Tuple<int, int, int, int> temp = new Tuple<int, int, int, int>(oldCat, cons, begin, end);
-            //TODO: Check if it returns null if none is found
-            foreach (KeyValuePair<Tuple<int, int, int, int>, int> tmp in categoryBookKeeper) {
-                if (tmp.Key.Item1 == oldCat && tmp.Key.Item2 == cons && tmp.Key.Item3 == begin && tmp.Key.Item4 == end) {
-                    return tmp.Value;
-                }
+            Category cf = new Category(oldCat, cons, begin, end);
+            foreach(Category c in categoryBookKeeper.Keys)
+            {
+                if (c.Equals(cf)) return categoryBookKeeper[c];
             }
-            // Change everywhere so that this is correct.
+
+            //TODO check consistency of this
             return -1;
         }
 
-        public int GenerateFreshCategory(int oldCat, int l, int j, int k)
+        public int GenerateFreshCategory(Category c)
         {
             int cat = nextCat;
             nextCat++;
-            categoryBookKeeper[new Tuple<int, int, int, int>(oldCat, l, j, k)] = cat;
+            // Category c = new Category(oldCat, l, j, k);
+            categoryBookKeeper[c] = cat;    //TODO maybe add check here
             return cat;
         }
 
@@ -143,7 +156,8 @@ namespace CSPGF.parser
                 s += productionSets[i].ToString() + '\n';
             }
             s += "=== passive items: ===\n";
-            foreach (KeyValuePair<Tuple<int, int, int, int>, int> ints in categoryBookKeeper) {
+            foreach (KeyValuePair<Category, int> ints in categoryBookKeeper) {
+                //TODO add ToString on Category I guess? :D
                 s += ints.Key.ToString() + " -> " + ints.Value + '\n';
             }
             return s;

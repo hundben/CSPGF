@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using CSPGF.reader;
 
-namespace CSPGF.parser
+namespace CSPGF.Parser
 {
     class ParseState
     {
@@ -44,29 +44,27 @@ namespace CSPGF.parser
         {
             startCat = grammar.GetStartCat();
             trie = new ParseTrie(null);
-            chart = new Chart(100); //TODO 100 is a bad value... (even in c#)
+            //TODO check if we should use all languages or just the "active" one
+            int lastCat = 0;
+            foreach (CncCat cncTemp in grammar.GetCncCats())
+            {
+                //TODO check if first or last id
+                lastCat = Math.Max(cncTemp.lastFID, lastCat);
+            }
+            chart = new Chart(lastCat++); //was 100
             agenda = new Stack<ActiveItem>();
             position = 0;
             active = new Dictionary<int, ActiveSet>();
 
             //initiate
             foreach (Production k in grammar.GetProductions()) {
-                //TODO remove comment below
                 chart.AddProduction(k);
             }
             for (int id = startCat.firstFID; id <= startCat.lastFID + 1; id++) {
-                //TODO remove comment below
-                // Får gå igenom och kolla om objektet är en ApplProduction, antar att foreach inte kör en is på alla objekt.
-                foreach (Object obj in chart.GetProductions(id)) {
-                    if (obj is ApplProduction) {
-                        ApplProduction tmp = (ApplProduction)obj;
-                        ActiveItem it = new ActiveItem(0, id, tmp.function, tmp.domain, 0, 0);
-                        agenda.Push(it);
-                    }
+                foreach (ApplProduction prod in chart.GetProductions(id)) {
+                    ActiveItem it = new ActiveItem(0, id, prod.function, prod.domain, 0, 0);
+                    agenda.Push(it);
                 }
-                //Production[] prod = chart.GetProductions(id);
-                //ActiveItem it = new ActiveItem(0, id, prod.function, prod.domain, 0, 0);
-                //agenda.Push(it);
             }
             Compute();
         }
@@ -113,21 +111,20 @@ namespace CSPGF.parser
                 ArgConstSymbol arg = (ArgConstSymbol)sym;
                 int d = arg.arg;
                 int r = arg.cons;
-                int bd = item.domain[d];
+                int Bd = item.domain[d];
                 if (active.ContainsKey(position)) {
-                    active[position].Add(bd, r, item, d);
-                    foreach (Production prod in chart.GetProductions(bd)) {
-                        if (prod is ApplProduction) {
-                            ApplProduction prodAp = (ApplProduction)prod;
-                            ActiveItem it = new ActiveItem(position, bd, prodAp.function, prod.Domain(), r, 0);
+                    if (active[position].Add(Bd, r, item, d))   //a bit strange, check if we should create an active set first...
+                    {
+                        foreach (ApplProduction prod in chart.GetProductions(Bd))
+                        {
+                            ActiveItem it = new ActiveItem(position, Bd, prod.function, prod.Domain(), r, 0);
                             agenda.Push(it);
                         }
                     }
-                    int cat = chart.GetCategory(bd, r, position, position);
+                    int cat = chart.GetCategory(Bd, r, position, position);
                     //null here is wierd? :D
                     if (cat != -1) {
                         List<int> newDomain = new List<int>(B);
-                        //List<int> newDomain = (int[])B.Clone();  // WHAT TEH HELL??? clone returns an object :'(
                         newDomain[d] = cat;
                         ActiveItem it = new ActiveItem(j, A, f, newDomain, l, p + 1);
                         agenda.Push(it);
@@ -136,23 +133,24 @@ namespace CSPGF.parser
             }
             else {
                 int cat = chart.GetCategory(A, l, j, this.position);
-                if (cat == -1) { //TODO check this -1 == null in this case???
-                    int N = chart.GenerateFreshCategory(A, l, j, position);
-                    foreach (Tuple<ActiveItem, int> tmp in active[j].Get(A, l)) {
-                        ActiveItem ip = tmp.Item1;
-                        int d = tmp.Item2;
+                if (cat == -1) { //
+                    int N = chart.GenerateFreshCategory(new Category(A, l, j, position));
+                    foreach (ActiveItemInt aii in active[j].Get(A, l)) {
+                        ActiveItem ip = aii.item;
+                        int d = aii.cons;
                         List<int> domain = new List<int>(ip.domain);
-                        //int[] domain = (int[])ip.domain.Clone();
                         domain[d] = N;
                         ActiveItem i = new ActiveItem(ip.begin, ip.category, ip.function, domain, ip.constituent, ip.position + 1);
                         agenda.Push(i);
                     }
+                    chart.AddProduction(N, f, B);
                 }
                 else {
-                    foreach (Tuple<ActiveItem, int, int> aset in active[position].Get(cat)) {
-                        ActiveItem xprime = aset.Item1;
-                        int dprime = aset.Item2;
-                        int r = aset.Item3;
+                    HashSet<ActiveItemInt> items = active[position].Get(cat);
+                    foreach (ActiveItemInt aii in items) {
+                        //ActiveItem xprime = aii.item;
+                        //int dprime = aii.cons;
+                        int r = aii.cons2 ;
                         ActiveItem i = new ActiveItem(position, cat, f, B, r, 0);
                         agenda.Push(i);
                     }
@@ -174,14 +172,14 @@ namespace CSPGF.parser
 
         public Boolean Scan(String token)
         {
-            ParseTrie tmp = trie.GetSubTrie(token);
-            if (tmp != null) {
+            ParseTrie newTrie = trie.GetSubTrie(token);
+            if (newTrie != null) {
                 String[] empt = new String[0];
-                Stack<ActiveItem> tmp2 = tmp.Lookup(empt);
-                if (tmp2 != null) {
-                    trie = tmp;
+                Stack<ActiveItem> newAgenda = newTrie.Lookup(empt);
+                if (newAgenda != null) {
+                    trie = newTrie;
                     position++;
-                    agenda = tmp2;
+                    agenda = newAgenda ;
                     Compute();
                     return true;
                 }
@@ -280,7 +278,7 @@ namespace CSPGF.parser
 //                                       prod.domain, r, 0)
 //               agenda.push(it)
 //             }
-//           }
+//           }****
 //           chart.getCategory(Bd,r, this.position, this.position) match {
 //             case None => {}
 //             case Some(catN) => {

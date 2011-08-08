@@ -63,7 +63,8 @@ namespace CSPGF
                             if (ab.type.hypos.Count == 0) {
                                 dirFuns.Add(weid.ident);
                             }
-                            else {
+                            else 
+                            {
                                 indirFuns.Add(weid.ident);
                             }
                             break;
@@ -78,47 +79,53 @@ namespace CSPGF
 
         public Tree Gen()
         {
-            return Gen(pgf.GetAbstract().StartCat());
+            return Gen(this.pgf.GetAbstract().StartCat());
         }
 
         /** generates a category with a random direct rule
          * suitable for simple expressions
          **/
         // FIXME what is 'type' for ???
-        public Tree GetDirect(String type, HashSet<String> dirFuns)
+        public Tree GetDirect(String type, HashSet<string> dirFuns)
         {
             int rand = this.random.Next(dirFuns.Count);
-            return new Function((String)dirFuns.ToArray()[rand]);
+            return new Function((string)dirFuns.ToArray()[rand]);
         }
 
         /** generates a category with a random indirect rule
          * creates more complex expressions
          **/
-        public Tree GetIndirect(String type, HashSet<String> indirFuns)
+        public Tree GetIndirect(string type, HashSet<string> indirFuns)
         {
-            List<String> vs = new List<String>();
-            foreach (String it in indirFuns) {
+            List<string> vs = new List<string>();
+            foreach (string it in indirFuns) 
+            {
                 vs.Add(it);
             }
 
             int rand = random.Next(vs.Count());
-            String funcName = vs.ElementAt(rand);
+            string funcName = vs.ElementAt(rand);
             List<AbsFun> absFuns = pgf.GetAbstract().absFuns;
-            foreach (AbsFun a in absFuns) {
-                if (a.name.Equals(funcName)) {
+            foreach (AbsFun a in absFuns) 
+            {
+                if (a.name.Equals(funcName)) 
+                {
                     List<Hypo> hypos = a.type.hypos;
-                    String[] tempCats = new String[hypos.Count];
+                    string[] tempCats = new string[hypos.Count];
                     Tree[] exps = new Tree[hypos.Count];
                     // TODO: Går detta att göra om?
-                    for (int k = 0; k < hypos.Count; k++) {
+                    for (int k = 0; k < hypos.Count; k++) 
+                    {
                         tempCats[k] = hypos[k].type.name;
                         exps[k] = Gen(tempCats[k]);
-                        if (exps[k] == null) {
+                        if (exps[k] == null) 
+                        {
                             return null;
                         }
                     }
                     Tree rez = new Function(funcName);
-                    foreach (Tree t in exps) {
+                    foreach (Tree t in exps) 
+                    {
                         rez = new Application(rez, t);
                     }
                     return rez;
@@ -127,38 +134,50 @@ namespace CSPGF
             return null;
         }
 
-
-        /** generates a random expression of a given category
-         * the empirical probability of using direct rules is 60%
-         * this decreases the probability of having infinite trees for infinite grammars
-         **/
-        public Tree Gen(String type)
+        /// <summary>
+        /// generates a random expression of a given category
+        /// the empirical probability of using direct rules is 60%
+        /// this decreases the probability of having infinite trees for infinite grammars
+        /// Joins a first name and a last name together into a single string.
+        /// </summary>
+        /// <param name="type">Insert comment here.</param>
+        /// <returns>Insert comment here.</returns>
+        public Tree Gen(string type)
         {
-            if (type.Equals("Integer")) {
+            if (type.Equals("Integer")) 
+            {
                 return new Literal(new IntLiteral(GenerateInt()));
             }
-            else if (type.Equals("Float")) {
+            else if (type.Equals("Float")) 
+            {
                 return new Literal(new FloatLiteral(GenerateFloat()));
             }
-            else if (type.Equals("String")) {
+            else if (type.Equals("String")) 
+            {
                 return new Literal(new StringLiteral(GenerateString()));
             }
+
             int depth = random.Next(5); //60% constants, 40% functions
             HashSet<String> dirFuns = dirRules[type];
             HashSet<String> indirFuns = indirRules[type];
+
             // TODO: Check if it should be inverted?
             Boolean isEmptyDir = dirFuns.Any();
             Boolean isEmptyIndir = indirFuns.Any();
-            if (isEmptyDir && isEmptyIndir) {
+            if (isEmptyDir && isEmptyIndir) 
+            {
                 throw new Exception("Cannot generate any expression of type " + type);
             }
-            if (isEmptyDir) {
+            if (isEmptyDir) 
+            {
                 return GetIndirect(type, indirFuns);
             }
-            if (isEmptyIndir) {
+            if (isEmptyIndir) 
+            {
                 return GetDirect(type, dirFuns);
             }
-            if (depth <= 2) {
+            if (depth <= 2) 
+            {
                 return GetDirect(type, dirFuns);
             }
             return GetIndirect(type, indirFuns);
@@ -173,27 +192,34 @@ namespace CSPGF
         {
             int contor = 0;
             List<Tree> rez = new List<Tree>();
-            if (contor >= count) {
+            if (contor >= count) 
+            {
                 return rez;
             }
             HashSet<String> dirFuns = dirRules[type];
             HashSet<String> indirFuns = indirRules[type];
-            foreach (String it in dirFuns) {
+            foreach (String it in dirFuns) 
+            {
                 Tree interm = GetDirect(type, dirFuns);
-                if (interm != null) {
+                if (interm != null) 
+                {
                     contor++;
                     rez.Add(interm);
-                    if (contor == count) {
+                    if (contor == count) 
+                    {
                         return rez;
                     }
                 }
             }
-            foreach (String it in indirFuns) {
+            foreach (String it in indirFuns) 
+            {
                 Tree interm = GetIndirect(type, indirFuns);
-                if (interm != null) {
+                if (interm != null) 
+                {
                     contor++;
                     rez.Add(interm);
-                    if (contor == count) {
+                    if (contor == count) 
+                    {
                         return rez;
                     }
                 }

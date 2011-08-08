@@ -24,32 +24,37 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.linearizer
 {
-    class Bracket : BracketedTokn
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    public class Bracket : BracketedTokn
     {
-        public String cId { get; private set; }
+        public string cId { get; private set; }
         public int lIndex { get; private set; }
         public int fId { get; private set; }
+        /// <summary>
+        /// Get/set for bracketed tokens
+        /// </summary>
         public List<BracketedTokn> bracketedtoks { get; private set; }
 
-        public Bracket(String _cId, int _lIndex, int _fId, List<BracketedTokn> _bss)
+        public Bracket(string _cId, int _lIndex, int _fId, List<BracketedTokn> _bss)
         {
-            cId = _cId;
-            lIndex = _lIndex;
-            fId = _fId;
-            bracketedtoks = _bss;
+            this.cId = _cId;
+            this.lIndex = _lIndex;
+            this.fId = _fId;
+            this.bracketedtoks = _bss;
         }
 
-        public override String ToString()
+        public override string ToString()
         {
-            String rez = "name : " + cId + ", linIndex : " + lIndex + ", fId : " + fId + ", bracketed tokens : " + bracketedtoks.ToString();
-            //for(int i=0;i<bss.length;i++)
+            string rez = "name : " + cId + ", linIndex : " + lIndex + ", fId : " + fId + ", bracketed tokens : " + bracketedtoks.ToString();
+
+            // for(int i=0;i<bss.length;i++)
             //	 rez+=(" "+bss[i].toString());
             return rez;
         }

@@ -9,7 +9,7 @@ namespace CSPGF.linearizer_new
 {
     class Linearizer
     {
-        String sentence = "";
+        string sentence = "";
         List<LinTrie> curLvl;
         List<ParseTrie> curParse;
         public Linearizer()
@@ -18,7 +18,7 @@ namespace CSPGF.linearizer_new
             curParse = new List<ParseTrie>();
         }
 
-        public String Linearize(LinTrie tree)
+        public string Linearize(LinTrie tree)
         {
             curLvl.Clear();
             curLvl.Add(tree);
@@ -42,9 +42,9 @@ namespace CSPGF.linearizer_new
             curLvl = newlvl;
         }
 
-        private String Linearizer2(List<LinTrie> trees)
+        private string Linearizer2(List<LinTrie> trees)
         {
-            String tmp = "";
+            string tmp = "";
             for (int i = 0 ; i < trees.Count ; i++) {
                 if (trees[i].symbol is AlternToksSymbol) {
                     if (i < (trees.Count - 1) && trees[i + 1].symbol is ToksSymbol) {
@@ -54,7 +54,7 @@ namespace CSPGF.linearizer_new
                         throw new LinearizerException("fail med altsymbol, i = "+i+ " nextSym = "+trees[i+1].symbol.GetType());
                     }
                 } else if (trees[i].symbol is ToksSymbol) {
-                    foreach (String str in ((ToksSymbol)trees[i].symbol).tokens) {
+                    foreach (string str in ((ToksSymbol)trees[i].symbol).tokens) {
                         tmp += str + " ";
                     }
                     tmp = tmp.TrimEnd();
@@ -65,15 +65,15 @@ namespace CSPGF.linearizer_new
             return tmp;
         }
 
-        private String ATSym2St(AlternToksSymbol s, ToksSymbol nextToken)
+        private string ATSym2St(AlternToksSymbol s, ToksSymbol nextToken)
         {
             // Should be possible to optimise this...
-            String tmp = "";
+            string tmp = "";
             foreach (Alternative alt in s.alts) {
-                foreach (String str in nextToken.tokens) {
-                    foreach (String str2 in alt.alt2) {
+                foreach (string str in nextToken.tokens) {
+                    foreach (string str2 in alt.alt2) {
                         if (str.StartsWith(str2)) {
-                            foreach (String str3 in alt.alt1) {
+                            foreach (string str3 in alt.alt1) {
                                 tmp += str3 + " ";
                             }
                             return tmp.TrimEnd();
@@ -81,7 +81,7 @@ namespace CSPGF.linearizer_new
                     }
                 }
             }
-            foreach (String str4 in s.tokens) {
+            foreach (string str4 in s.tokens) {
                 tmp += str4 + " ";
             }
             return tmp.TrimEnd();
@@ -90,20 +90,20 @@ namespace CSPGF.linearizer_new
         public LinTrie Parse2Lin(ParseTrie pt)
         {
             LinTrie lt = new LinTrie();
-            List<String> tok = new List<String>();
+            List<string> tok = new List<string>();
             tok.Add(Seq2Str(pt.symbol.function.sequences));
             lt.symbol = new ToksSymbol(tok);
             lt.child.Add(P2L(pt));
             return null;
         }
 
-        public String Seq2Str(List<Sequence> seqs)
+        public string Seq2Str(List<Sequence> seqs)
         {
-            String str = "";
+            string str = "";
             foreach (Sequence seq in seqs) {
                 for (int i = 0; i < seq.symbs.Count; i++) {
                     if (seq.symbs[i] is ToksSymbol) {
-                        foreach (String str2 in ((ToksSymbol)seq.symbs[i]).tokens) {
+                        foreach (string str2 in ((ToksSymbol)seq.symbs[i]).tokens) {
                             str += str2 + " ";
                         }
                     }

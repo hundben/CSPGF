@@ -24,18 +24,19 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-namespace CSPGF.parser
+namespace CSPGF.Parser
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class Application : Tree
     {
-        public String fun;
+        public string fun;
         public List<Tree> args;
-        public Application(String _fun, List<Tree> _args)
+        public Application(string _fun, List<Tree> _args)
         {
             fun = _fun;
             args = _args;

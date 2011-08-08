@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CSPGF.parser
+namespace CSPGF.Parser
 {
     public class Lambda : Tree
     {
