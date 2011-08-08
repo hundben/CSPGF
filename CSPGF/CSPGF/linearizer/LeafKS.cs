@@ -24,26 +24,28 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.linearizer
 {
-    class LeafKS : BracketedTokn
-    {
-        public List<String> tokens { get; private set; }
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
 
-        public LeafKS(List<String> _tokens)
+    public class LeafKS : BracketedTokn
+    {
+        public List<string> tokens { get; private set; }
+
+        public LeafKS(List<string> _tokens)
         {
             tokens = _tokens;
         }
-        public override String ToString()
+        public override string ToString()
         {
-            String rez = "string names : [";
-            foreach(String s in tokens) {
-                rez += (" " + s);
+            string rez = "string names : [";
+            foreach(string s in tokens) 
+            {
+                rez += " " + s;
             }
             rez += "]";
             return rez;

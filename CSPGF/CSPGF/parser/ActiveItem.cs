@@ -1,99 +1,166 @@
-﻿/*
-Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), Erik Bergström (erktheorc@gmail.com)
-All rights reserved.
+﻿//-----------------------------------------------------------------------
+// <copyright file="ActiveItem.cs" company="None">
+//  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
+//   Erik Bergström (erktheorc@gmail.com) 
+//  All rights reserved.
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//   * Redistributions of source code must retain the above copyright
+//     notice, this list of conditions and the following disclaimer.
+//   * Redistributions in binary form must reproduce the above copyright
+//     notice, this list of conditions and the following disclaimer in the
+//     documentation and/or other materials provided with the distribution.
+//   * Neither the name of the &lt;organization&gt; nor the
+//     names of its contributors may be used to endorse or promote products
+//     derived from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND
+//  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+//  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+//  DISCLAIMED. IN NO EVENT SHALL &lt;COPYRIGHT HOLDER&gt; BE LIABLE FOR ANY
+//  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+//  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+//  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+//  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+//  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// </copyright>
+//-----------------------------------------------------------------------
 
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the <organization> nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CncFun = CSPGF.reader.CncFun;
-using Symbol = CSPGF.reader.Symbol;
-
-namespace CSPGF.parser
+namespace CSPGF.Parser
 {
-    class ActiveItem
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using CncFun = CSPGF.reader.CncFun;
+    using Symbol = CSPGF.reader.Symbol;
+
+    /// <summary>
+    /// One active item.
+    /// </summary>
+    public class ActiveItem
     {
-        public int begin;
-        public int category;
-        public CncFun function;
-        public List<int> domain;
-        public int constituent;
-        public int position;
-        public ActiveItem(int _begin, int _category, CncFun _function, List<int> _domain, int _constituent, int _position)
+        /// <summary>
+        /// Initializes a new instance of the ActiveItem class.
+        /// </summary>
+        /// <param name="begin">Insert a description for begin.</param>
+        /// <param name="category">The category.</param>
+        /// <param name="function">The function.</param>
+        /// <param name="domain">A list of the domains.</param>
+        /// <param name="constituent">Insert a description for constituent.</param>
+        /// <param name="position">Insert a description for position.</param>
+        public ActiveItem(int begin, int category, CncFun function, List<int> domain, int constituent, int position)
         {
-            begin = _begin;
-            category = _category;
-            function = _function;
-            domain = _domain;
-            constituent = _constituent;
-            position = _position;
+            this.Begin = begin;
+            this.Category = category;
+            this.Function = function;
+            this.Domain = domain;
+            this.Constituent = constituent;
+            this.Position = position;
         }
 
-        //TODO check if this is correct
+        /// <summary>
+        /// Gets the value of begin.
+        /// </summary>
+        public int Begin { get; private set; }
+
+        /// <summary>
+        /// Gets the value of category.
+        /// </summary>
+        public int Category { get; private set; }
+
+        /// <summary>
+        /// Gets the value of function.
+        /// </summary>
+        public CncFun Function { get; private set; }
+
+        /// <summary>
+        /// Gets the value of domain.
+        /// </summary>
+        public List<int> Domain { get; private set; }
+
+        /// <summary>
+        /// Gets the value of constituent.
+        /// </summary>
+        public int Constituent { get; private set; }
+
+        /// <summary>
+        /// Gets the value of position.
+        /// </summary>
+        public int Position { get; private set; }
+
+        /// <summary>
+        /// Gets the next symbol.
+        /// </summary>
+        /// <returns>The next symbol.</returns>
         public Symbol NextSymbol()
         {
-            if (position < function.sequences[constituent].symbs.Count) {
-                Symbol sym = function.sequences[constituent].GetSymbol(position);
+            if (this.Position < this.Function.sequences[this.Constituent].symbs.Count) 
+            {
+                Symbol sym = this.Function.sequences[this.Constituent].GetSymbol(this.Position);
                 return sym;
             }
-            return null;    //this might be dangerous
+
+            return null;    // this might be dangerous
         }
-        //equals method
+
+        /// <summary>
+        /// Equals method.
+        /// </summary>
+        /// <param name="ai">An instance of ActiveItem.</param>
+        /// <returns>True if content is equal.</returns>
         public /*override*/ bool Equals(ActiveItem ai)
         {
-            if (begin == ai.begin &&
-                category == ai.category &&
-                function == ai.function &&
-                constituent == ai.constituent &&
-                position == ai.position) {
-                //Since there is no deep method in c# that we know of, use a crappy forloop
-                if (domain.Count == ai.domain.Count) {
-                    for (int i = 0; i < domain.Count; i++) {
-                        if (domain[i] != ai.domain[i]) return false;
+            if (this.Begin == ai.Begin &&
+                this.Category == ai.Category &&
+                this.Function == ai.Function &&
+                this.Constituent == ai.Constituent &&
+                this.Position == ai.Position) 
+            {
+                // Since there is no deep method in c# that we know of, use a crappy forloop
+                if (this.Domain.Count == ai.Domain.Count) 
+                {
+                    for (int i = 0; i < this.Domain.Count; i++) 
+                    {
+                        if (this.Domain[i] != ai.Domain[i])
+                        {
+                            return false;
+                        }
                     }
+
                     return true;
                 }
             }
 
             return false;
         }
-        //To string
+
+        /// <summary>
+        /// To string.
+        /// </summary>
+        /// <returns>A string.</returns>
         public override string ToString()
         {
-            String str = "[" + begin.ToString() + ";" + category.ToString() +
-                "->" + this.function.name + "[" + DomainToString() + "];" +
-                constituent.ToString() + ";" + position.ToString() + "]";
+            string str = "[" + this.Begin.ToString() + ";" + this.Category.ToString() +
+                "->" + this.Function.name + "[" + this.DomainToString() + "];" +
+                this.Constituent.ToString() + ";" + this.Position.ToString() + "]";
             return str;
         }
-        //Helper method
-        public String DomainToString()
+
+        /// <summary>
+        /// Converts the list of domains to a string.
+        /// </summary>
+        /// <returns>The string with the domains.</returns>
+        public string DomainToString()
         {
-            String tot = "";
-            foreach (int d in domain) {
+            string tot = string.Empty;
+            foreach (int d in this.Domain) 
+            {
                 tot += d.ToString();
             }
+
             return tot;
         }
     }

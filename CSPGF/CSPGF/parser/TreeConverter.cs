@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using CSPGF.trees.Absyn;
 
-namespace CSPGF.parser
+namespace CSPGF.Parser
 {
     class TreeConverter
     {

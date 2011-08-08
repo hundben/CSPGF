@@ -24,13 +24,14 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.linearizer
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     class LinTriple
     {
         public int fId { get; private set; }
@@ -39,13 +40,13 @@ namespace CSPGF.linearizer
 
         public LinTriple(int _fId, CncType _cncType, List<List<BracketedTokn>> _linTable)
         {
-            fId = _fId;
-            cncType = _cncType;
-            linTable = _linTable;
+            this.fId = _fId;
+            this.cncType = _cncType;
+            this.linTable = _linTable;
         }
-        public override String ToString()
+        public override string ToString()
         {
-            String rez = "id : " + fId + " cncType : (" + cncType.ToString() + ") bracketedToken :[" + linTable.ToString() + "]";
+            string rez = "id : " + fId + " cncType : (" + cncType.ToString() + ") bracketedToken :[" + linTable.ToString() + "]";
             return rez;
         }
     }

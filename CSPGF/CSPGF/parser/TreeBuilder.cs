@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using CSPGF.reader;
 
-namespace CSPGF.parser
+namespace CSPGF.Parser
 {
     class TreeBuilder
     {

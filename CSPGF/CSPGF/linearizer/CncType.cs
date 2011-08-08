@@ -24,24 +24,25 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.linearizer
 {
-    class CncType
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    public class CncType
     {
-        public String cId { get; private set; }
+        public string cId { get; private set; }
         public int fId { get; private set; }
 
-        public CncType(String _cId, int _fId)
+        public CncType(string _cId, int _fId)
         {
-            cId = _cId;
-            fId = _fId;
+            this.cId = _cId;
+            this.fId = _fId;
         }
-        public override String ToString()
+        public override string ToString()
         {
             return "name : " + cId + " , fId : " + fId;
         }

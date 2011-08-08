@@ -31,17 +31,17 @@ using System.Text;
 
 namespace CSPGF.linearizer
 {
-    class RezDesc
+    public class RezDesc
     {
         public int fid { get; private set; }
-        public List<CncType> cncTypes { get; private set; }
+        public List<CncType> cncTypes { get; set; }
         public List<List<List<BracketedTokn>>> bracketedtokn { get; private set; }
 
         public RezDesc(int _fid, List<CncType> _cncTypes, List<List<List<BracketedTokn>>> _bss)
         {
-            fid = _fid;
-            cncTypes = _cncTypes;
-            bracketedtokn = _bss;
+            this.fid = _fid;
+            this.cncTypes = _cncTypes;
+            this.bracketedtokn = _bss;
         }
     }
 }

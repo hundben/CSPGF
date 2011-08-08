@@ -24,15 +24,15 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
-using CSPGF.reader;
 
 namespace CSPGF.linearizer
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using CSPGF.reader;
     /**
      * This class represent a 'pre' object.
      * that is either an alternative between multiple lists of tokens
@@ -44,12 +44,12 @@ namespace CSPGF.linearizer
      *   alternatives = [ (["parce", "qu'"], ["il"])
      *                  , (["parce", "qu'"], ["on"]) ]
      **/
-    class LeafKP : BracketedTokn
+    public class LeafKP : BracketedTokn
     {
-        public List<String> defaultTokens { get; private set; }
+        public List<string> defaultTokens { get; private set; }
         public List<Alternative> alternatives { get; private set; }
 
-        public LeafKP(List<String> _strs, List<Alternative> _alts)
+        public LeafKP(List<string> _strs, List<Alternative> _alts)
         {
             this.defaultTokens = _strs;
             this.alternatives = _alts;
@@ -57,12 +57,14 @@ namespace CSPGF.linearizer
 
         public override String ToString()
         {
-            String rez = "string names : [";
-            foreach(String str in defaultTokens) {
+            string rez = "string names : [";
+            foreach(string str in defaultTokens) 
+            {
                 rez += " " + str;
             }
             rez += "] , Alternatives : [";
-            foreach(Alternative a in alternatives) {
+            foreach(Alternative a in alternatives) 
+            {
                 rez += " " + a.ToString();
             }
             rez += "]";

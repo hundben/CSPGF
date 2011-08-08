@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 //Check this class, it seems retarded...
 
-namespace CSPGF.parser
+namespace CSPGF.Parser
 {
     class ActiveSet
     {
