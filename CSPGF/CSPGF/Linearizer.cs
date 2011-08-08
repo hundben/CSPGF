@@ -33,7 +33,7 @@ namespace CSPGF
     using System.Text;
     using CSPGF.Reader;
     // using CSPGF.trees;
-    using CSPGF.Linearizer;
+    using CSPGF.Linearize;
     using CSPGF.Trees.Absyn;
 
     class Linearizer
@@ -580,7 +580,7 @@ namespace CSPGF
                         List<List<BracketedTokn>> linTab = new List<List<BracketedTokn>>();
                         for (int ind = 0; ind < lins.Count; ind++) 
                         {
-                            linTab.Add(this.ComputeSeq(lins[ind], intRez.cncTypes, intRez.bracketedtokn));
+                            linTab.Add(this.ComputeSeq(lins[ind], intRez.CncTypes, intRez.Bracketedtokn));
                         }
                         rez.Add(new LinTriple(n_fid + 1, new CncType(cat, n_fid), linTab));
                     }
@@ -840,9 +840,9 @@ namespace CSPGF
                     for (int j = 0; j < rezDesc.Count; j++)
                     {
                         CncType c = rezLin.ElementAt(i).cncType;
-                        List<CncType> vcnc = rezDesc.ElementAt(j).cncTypes;
+                        List<CncType> vcnc = rezDesc.ElementAt(j).CncTypes;
                         vcnc.Add(c);
-                        List<List<List<BracketedTokn>>> vbt = rezDesc.ElementAt(j).bracketedtokn;
+                        List<List<List<BracketedTokn>>> vbt = rezDesc.ElementAt(j).Bracketedtokn;
                         List<List<BracketedTokn>> bt = rezLin.ElementAt(i).linTable;
                         vbt.Add(bt);
                         rez.Add(new RezDesc(n_fid, vcnc, vbt));

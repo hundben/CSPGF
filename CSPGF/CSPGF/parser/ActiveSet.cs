@@ -27,7 +27,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 // Check this class, it seems retarded...
 
-namespace CSPGF.Parser
+namespace CSPGF.Parse
 {
     using System;
     using System.Collections.Generic;

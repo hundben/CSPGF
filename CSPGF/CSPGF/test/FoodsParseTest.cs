@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using CSPGF.Trees.Absyn;
 using System.Diagnostics;
-using CSPGF.Parser;
+using CSPGF.Parse;
 
 namespace CSPGF.Test
 {

@@ -28,7 +28,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Parser
+namespace CSPGF.Parse
 {
     using System;
     using System.Collections.Generic;

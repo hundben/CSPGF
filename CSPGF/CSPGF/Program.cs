@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.IO;
-using CSPGF.Parser;
+using CSPGF.Parse;
 using CSPGF.Test;
 using CSPGF.Trees;
 using System.Speech;

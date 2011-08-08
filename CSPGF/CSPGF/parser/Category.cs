@@ -1,12 +1,12 @@
 ﻿
-namespace CSPGF.Parser
+namespace CSPGF.Parse
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
     
-    class Category
+    public class Category
     {
         public int oldCat, l, j, k;
         public Category(int _oldCat, int _l, int _j, int _k) 

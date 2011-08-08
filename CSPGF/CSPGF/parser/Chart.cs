@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 
-namespace CSPGF.Parser
+namespace CSPGF.Parse
 {
     using System;
     using System.Collections.Generic;
@@ -34,7 +34,7 @@ namespace CSPGF.Parser
     using System.Text;
     using CSPGF.Reader;
 
-    class Chart
+    public class Chart
     {
         // private MultiMap<int, Object> productionSets = new MultiMap<int, Object>();
         private Dictionary<int, HashSet<Production>> productionSets = new Dictionary<int, HashSet<Production>>();

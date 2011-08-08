@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 
-namespace CSPGF.Parser
+namespace CSPGF.Parse
 {
     using System;
     using System.Collections.Generic;

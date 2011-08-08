@@ -28,7 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSPGF.Parser;
+using CSPGF.Parse;
 using CSPGF.Reader;
 //using CSPGF.trees.Absyn;
 
