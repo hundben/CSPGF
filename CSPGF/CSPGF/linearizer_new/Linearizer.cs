@@ -108,7 +108,7 @@ namespace CSPGF.linearizer_new
                         }
                     }
                     else if (i < (seq.symbs.Count - 1) && seq.symbs[i] is AlternToksSymbol) {
-                        str += ATSym2St((AlternToksSymbol)seq.symbs[i], (ToksSymbol)seq.symbs[i+1]);
+                        str += ATSym2St((AlternToksSymbol)seq.symbs[i], (ToksSymbol)seq.symbs[i + 1]);
                         i++;
                     }
                     else {

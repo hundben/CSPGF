@@ -36,7 +36,7 @@ namespace CSPGF
     class PGFReader
     {
 
-        private static Boolean DBG = true;
+        private static Boolean DBG = false;
 
         private StreamWriter dbgwrite;
         private BinaryReader inputstream;
