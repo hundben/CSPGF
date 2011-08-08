@@ -38,8 +38,8 @@ namespace CSPGF.Parser
         public List<Tree> args;
         public Application(string _fun, List<Tree> _args)
         {
-            fun = _fun;
-            args = _args;
+            this.fun = _fun;
+            this.args = _args;
         }
     }
 }

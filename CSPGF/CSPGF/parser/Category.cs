@@ -1,28 +1,29 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
+﻿
 namespace CSPGF.Parser
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    
     class Category
     {
         public int oldCat, l, j, k;
         public Category(int _oldCat, int _l, int _j, int _k) 
         {
-            oldCat = _oldCat;
-            l = _l;
-            j = _j;
-            k = _k;
+            this.oldCat = _oldCat;
+            this.l = _l;
+            this.j = _j;
+            this.k = _k;
         }
         public /*override*/ bool Equals(Category c)
         {
-            if (c.oldCat == oldCat && c.l == l && c.j == j && c.k == k) return true;
+            if (c.oldCat == this.oldCat && c.l == this.l && c.j == this.j && c.k == this.k) return true;
             return false;
         }
         public override string ToString()
         {
-            return "[o:"+oldCat+"  l:"+l+" j:"+j+" k:"+k+"]";
+            return "[o:" + this.oldCat + "  l:" + this.l + " j:" + this.j + " k:" + this.k + "]";
         }
     }
 }

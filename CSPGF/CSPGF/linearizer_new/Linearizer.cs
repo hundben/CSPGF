@@ -1,65 +1,71 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CSPGF.reader;
-using CSPGF.parser_new;
-
+﻿
 namespace CSPGF.linearizer_new
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using CSPGF.reader;
+    using CSPGF.parser_new;
+
     class Linearizer
     {
-        string sentence = "";
+        string sentence = string.Empty;
         List<LinTrie> curLvl;
         List<ParseTrie> curParse;
         public Linearizer()
         {
-            curLvl = new List<LinTrie>();
-            curParse = new List<ParseTrie>();
+            this.curLvl = new List<LinTrie>();
+            this.curParse = new List<ParseTrie>();
         }
 
         public string Linearize(LinTrie tree)
         {
-            curLvl.Clear();
-            curLvl.Add(tree);
-            while (curLvl.Count != 0) {
-                sentence += Linearizer2(curLvl);
-                NextLevel();
+            this.curLvl.Clear();
+            this.curLvl.Add(tree);
+            while (this.curLvl.Count != 0) {
+                this.sentence += this.Linearizer2(this.curLvl);
+                this.NextLevel();
             }
-            return sentence;
+            return this.sentence;
         }
 
         private void NextLevel()
         {
             List<LinTrie> newlvl = new List<LinTrie>();
-            foreach (LinTrie lt in curLvl) {
+            foreach (LinTrie lt in this.curLvl) {
                 foreach (LinTrie lt2 in lt.child) {
                     if (lt2 != null) {
                         newlvl.Add(lt2);
                     }
                 }
             }
-            curLvl = newlvl;
+            this.curLvl = newlvl;
         }
 
         private string Linearizer2(List<LinTrie> trees)
         {
-            string tmp = "";
-            for (int i = 0 ; i < trees.Count ; i++) {
+            string tmp = string.Empty;
+            for (int i = 0; i < trees.Count; i++) {
                 if (trees[i].symbol is AlternToksSymbol) {
                     if (i < (trees.Count - 1) && trees[i + 1].symbol is ToksSymbol) {
-                        tmp += ATSym2St((AlternToksSymbol)trees[i].symbol, (ToksSymbol)trees[i + 1].symbol);
+                        tmp += this.ATSym2St((AlternToksSymbol)trees[i].symbol, (ToksSymbol)trees[i + 1].symbol);
                         i++;
-                    } else {
-                        throw new LinearizerException("fail med altsymbol, i = "+i+ " nextSym = "+trees[i+1].symbol.GetType());
+                    } 
+                    else 
+                    {
+                        throw new LinearizerException("fail med altsymbol, i = " + i + " nextSym = " + trees[i + 1].symbol.GetType());
                     }
-                } else if (trees[i].symbol is ToksSymbol) {
+                } 
+                else if (trees[i].symbol is ToksSymbol) {
                     foreach (string str in ((ToksSymbol)trees[i].symbol).tokens) {
                         tmp += str + " ";
                     }
                     tmp = tmp.TrimEnd();
-                } else {
-                    throw new LinearizerException("ohanterad typ av symbol: "+trees[i].symbol.GetType());
+                } 
+                else 
+                {
+                    throw new LinearizerException("ohanterad typ av symbol: " + trees[i].symbol.GetType());
                 }
             }
             return tmp;
@@ -68,7 +74,7 @@ namespace CSPGF.linearizer_new
         private string ATSym2St(AlternToksSymbol s, ToksSymbol nextToken)
         {
             // Should be possible to optimise this...
-            string tmp = "";
+            string tmp = string.Empty;
             foreach (Alternative alt in s.alts) {
                 foreach (string str in nextToken.tokens) {
                     foreach (string str2 in alt.alt2) {
@@ -91,15 +97,15 @@ namespace CSPGF.linearizer_new
         {
             LinTrie lt = new LinTrie();
             List<string> tok = new List<string>();
-            tok.Add(Seq2Str(pt.symbol.function.sequences));
+            tok.Add(this.Seq2Str(pt.symbol.function.sequences));
             lt.symbol = new ToksSymbol(tok);
-            lt.child.Add(P2L(pt));
+            lt.child.Add(this.P2L(pt));
             return null;
         }
 
         public string Seq2Str(List<Sequence> seqs)
         {
-            string str = "";
+            string str = string.Empty;
             foreach (Sequence seq in seqs) {
                 for (int i = 0; i < seq.symbs.Count; i++) {
                     if (seq.symbs[i] is ToksSymbol) {
@@ -108,7 +114,7 @@ namespace CSPGF.linearizer_new
                         }
                     }
                     else if (i < (seq.symbs.Count - 1) && seq.symbs[i] is AlternToksSymbol) {
-                        str += ATSym2St((AlternToksSymbol)seq.symbs[i], (ToksSymbol)seq.symbs[i + 1]);
+                        str += this.ATSym2St((AlternToksSymbol)seq.symbs[i], (ToksSymbol)seq.symbs[i + 1]);
                         i++;
                     }
                     else {
@@ -127,7 +133,7 @@ namespace CSPGF.linearizer_new
             }
             else {
                 foreach (ParseTrie ptt in pt.child) {
-                    lt.child.Add(P2L(ptt));
+                    lt.child.Add(this.P2L(ptt));
                 }
             }
             return lt;
@@ -140,7 +146,7 @@ namespace CSPGF.linearizer_new
         public Symbol symbol { get; set; }
         public LinTrie()
         {
-            child = new List<LinTrie>();
+            this.child = new List<LinTrie>();
         }
     }
 }

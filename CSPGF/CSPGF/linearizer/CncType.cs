@@ -44,7 +44,7 @@ namespace CSPGF.linearizer
         }
         public override string ToString()
         {
-            return "name : " + cId + " , fId : " + fId;
+            return "name : " + this.cId + " , fId : " + this.fId;
         }
 
     }

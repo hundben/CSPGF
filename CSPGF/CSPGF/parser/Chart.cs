@@ -24,32 +24,34 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CSPGF.reader;
+
 
 namespace CSPGF.Parser
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using CSPGF.reader;
+
     class Chart
     {
-        //private MultiMap<int, Object> productionSets = new MultiMap<int, Object>();
-        private Dictionary<int, HashSet<Production>> productionSets = new Dictionary<int,HashSet<Production>>();
-        //private Dictionary<Tuple<int, int, int, int>, int> categoryBookKeeper = new Dictionary<Tuple<int, int, int, int>, int>();
+        // private MultiMap<int, Object> productionSets = new MultiMap<int, Object>();
+        private Dictionary<int, HashSet<Production>> productionSets = new Dictionary<int, HashSet<Production>>();
+        // private Dictionary<Tuple<int, int, int, int>, int> categoryBookKeeper = new Dictionary<Tuple<int, int, int, int>, int>();
         private Dictionary<Category, int> categoryBookKeeper = new Dictionary<Category, int>();
         int nextCat;
 
         public Chart(int _nextCat)
         {
-            nextCat = _nextCat;
+            this.nextCat = _nextCat;
         }
 
         public void AddProduction(Production p)
         {
-            //TODO New version, check if it works
+            // TODO New version, check if it works
             HashSet<Production> prodSet;
-            if (productionSets.TryGetValue(p.fId, out prodSet))
+            if (this.productionSets.TryGetValue(p.fId, out prodSet))
             {
                 if (prodSet.Contains(p)) return;
                 prodSet.Add(p);
@@ -58,30 +60,30 @@ namespace CSPGF.Parser
             {
                 prodSet = new HashSet<Production>();
                 prodSet.Add(p);
-                productionSets.Add(p.fId, prodSet);
+                this.productionSets.Add(p.fId, prodSet);
 
             }
-            nextCat = Math.Max(nextCat, p.fId + 1);
+            this.nextCat = Math.Max(this.nextCat, p.fId + 1);
         }
 
         // Borde vara rätt... (kolla coersion? eriks anm. ;)
         public void AddProduction(int cat, CncFun fun, List<int> domain)
         {
-            AddProduction(new ApplProduction(cat, fun, domain));
+            this.AddProduction(new ApplProduction(cat, fun, domain));
         }
 
-        //TODO: Kolla denna oxå xD (lite skum, borde gå att ta bort massor? (eriks anm.)
-        //Fel på den här... oväntat nog ;P Skrev om hoppas skiten blev rätt (eriks anm.)
+        // TODO: Kolla denna oxå xD (lite skum, borde gå att ta bort massor? (eriks anm.)
+        // Fel på den här... oväntat nog ;P Skrev om hoppas skiten blev rätt (eriks anm.)
         public List<ApplProduction> GetProductions(int resultCat)
         {
             HashSet<Production> prod;
-            //Check if category exists, if not return empty productionset
-            if (productionSets.TryGetValue(resultCat, out prod))
+            // Check if category exists, if not return empty productionset
+            if (this.productionSets.TryGetValue(resultCat, out prod))
             {
                 List<ApplProduction> applProd = new List<ApplProduction>();
                 foreach (Production p in prod)
                 {
-                    foreach(ApplProduction ap in Uncoerce(p)) 
+                    foreach (ApplProduction ap in this.Uncoerce(p)) 
                     {
                         applProd.Add(ap);
                     }
@@ -94,9 +96,9 @@ namespace CSPGF.Parser
             }
         }
 
-        //Should now work
-        //Changes all Coerceproductions to ApplProductions
-        private List<ApplProduction> Uncoerce(Object p)
+        // Should now work
+        // Changes all Coerceproductions to ApplProductions
+        private List<ApplProduction> Uncoerce(object p)
         {
             List<ApplProduction> prodList = new List<ApplProduction>();
             if (p is ApplProduction) {
@@ -104,8 +106,8 @@ namespace CSPGF.Parser
             }
             else if (p is CoerceProduction) {
                 CoerceProduction cp = (CoerceProduction)p;
-                foreach (Production prod in GetProductions(cp.initId)) {
-                    foreach (ApplProduction prod2 in Uncoerce(prod)) {
+                foreach (Production prod in this.GetProductions(cp.initId)) {
+                    foreach (ApplProduction prod2 in this.Uncoerce(prod)) {
                         prodList.Add(prod2);
                     }
                 }
@@ -115,49 +117,49 @@ namespace CSPGF.Parser
 
         public int getFreshCategory(int oldCat, int l, int j, int k)
         {
-            //TODO Optimize this, use something else instead of looping through everything
+            // TODO Optimize this, use something else instead of looping through everything
             Category cf = new Category(oldCat, l, j, k);
-            foreach (Category c in categoryBookKeeper.Keys)
+            foreach (Category c in this.categoryBookKeeper.Keys)
             {
                 if (cf.Equals(c))
                 {
-                    int i = categoryBookKeeper[c];
+                    int i = this.categoryBookKeeper[c];
                     if (i != -1) return i;
                 }
             }
-            return GenerateFreshCategory(cf);
+            return this.GenerateFreshCategory(cf);
         }
 
         public int GetCategory(int oldCat, int cons, int begin, int end)
         {
             Category cf = new Category(oldCat, cons, begin, end);
-            foreach(Category c in categoryBookKeeper.Keys)
+            foreach (Category c in this.categoryBookKeeper.Keys)
             {
-                if (c.Equals(cf)) return categoryBookKeeper[c];
+                if (c.Equals(cf)) return this.categoryBookKeeper[c];
             }
 
-            //TODO check consistency of this
+            // TODO check consistency of this
             return -1;
         }
 
         public int GenerateFreshCategory(Category c)
         {
-            int cat = nextCat;
-            nextCat++;
+            int cat = this.nextCat;
+            this.nextCat++;
             // Category c = new Category(oldCat, l, j, k);
-            categoryBookKeeper[c] = cat;    //TODO maybe add check here
+            this.categoryBookKeeper[c] = cat;    //TODO maybe add check here
             return cat;
         }
 
-        public override String ToString()
+        public override string ToString()
         {
-            String s = "=== Productions: ===\n";
-            foreach (int i in productionSets.Keys) {
-                s += productionSets[i].ToString() + '\n';
+            string s = "=== Productions: ===\n";
+            foreach (int i in this.productionSets.Keys) {
+                s += this.productionSets[i].ToString() + '\n';
             }
             s += "=== passive items: ===\n";
-            foreach (KeyValuePair<Category, int> ints in categoryBookKeeper) {
-                //TODO add ToString on Category I guess? :D
+            foreach (KeyValuePair<Category, int> ints in this.categoryBookKeeper) {
+                // TODO add ToString on Category I guess? :D
                 s += ints.Key.ToString() + " -> " + ints.Value + '\n';
             }
             return s;

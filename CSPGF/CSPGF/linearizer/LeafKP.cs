@@ -55,15 +55,15 @@ namespace CSPGF.linearizer
             this.alternatives = _alts;
         }
 
-        public override String ToString()
+        public override string ToString()
         {
             string rez = "string names : [";
-            foreach(string str in defaultTokens) 
+            foreach (string str in this.defaultTokens) 
             {
                 rez += " " + str;
             }
             rez += "] , Alternatives : [";
-            foreach(Alternative a in alternatives) 
+            foreach (Alternative a in this.alternatives) 
             {
                 rez += " " + a.ToString();
             }

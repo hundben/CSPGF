@@ -24,28 +24,30 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CSPGF.reader;
+
 
 namespace CSPGF
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using CSPGF.reader;
+
     class PGF
     {
         private int majorVersion;
         private int minorVersion;
-        private Dictionary<String, RLiteral> flags;
+        private Dictionary<string, RLiteral> flags;
         private Abstract abstr;
-        private Dictionary<String, Concrete> concretes;
-        public PGF(int _majorVersion, int _minorVersion, Dictionary<String, RLiteral> _flags, Abstract _abstr, Dictionary<String, Concrete> _concretes)
+        private Dictionary<string, Concrete> concretes;
+        public PGF(int _majorVersion, int _minorVersion, Dictionary<string, RLiteral> _flags, Abstract _abstr, Dictionary<string, Concrete> _concretes)
         {
-            majorVersion = _majorVersion;
-            minorVersion = _minorVersion;
-            flags = _flags;
-            abstr = _abstr;
-            concretes = _concretes;
+            this.majorVersion = _majorVersion;
+            this.minorVersion = _minorVersion;
+            this.flags = _flags;
+            this.abstr = _abstr;
+            this.concretes = _concretes;
         }
 
         /* ******************************** API ******************************** */
@@ -69,35 +71,35 @@ namespace CSPGF
 
         public int GetMajorVersion()
         {
-            return majorVersion;
+            return this.majorVersion;
         }
 
         public int GetMinorVersion()
         {
-            return minorVersion;
+            return this.minorVersion;
         }
 
         public Abstract GetAbstract()
         {
-            return abstr;
+            return this.abstr;
         }
         /**
         * Return true if the given name correspond to a concrete grammar
         * in the pgf, false otherwise.
         */
-        public Boolean HasConcrete(String name)
+        public bool HasConcrete(string name)
         {
-            return concretes.ContainsKey(name);
+            return this.concretes.ContainsKey(name);
         }
 
-        public override String ToString()
+        public override string ToString()
         {
-            String ss = "PGF : \nMajor version : " + majorVersion + ", Minor version : " + minorVersion + "\n" + "Flags : (";
-            foreach (String flagName in flags.Keys) {
+            string ss = "PGF : \nMajor version : " + majorVersion + ", Minor version : " + minorVersion + "\n" + "Flags : (";
+            foreach (string flagName in flags.Keys) {
                 ss += flagName + ": " + flags[flagName].ToString() + "\n";
             }
-            ss += (")\nAbstract : (" + abstr.ToString() + ")\nConcretes : (");
-            foreach (String name in concretes.Keys) {
+            ss += ")\nAbstract : (" + abstr.ToString() + ")\nConcretes : (";
+            foreach (string name in concretes.Keys) {
                 ss += name + ", ";
             }
             ss += ")";

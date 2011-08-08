@@ -38,12 +38,12 @@ namespace CSPGF.linearizer
 
         public LeafKS(List<string> _tokens)
         {
-            tokens = _tokens;
+            this.tokens = _tokens;
         }
         public override string ToString()
         {
             string rez = "string names : [";
-            foreach(string s in tokens) 
+            foreach (string s in this.tokens) 
             {
                 rez += " " + s;
             }

@@ -24,6 +24,8 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+
+namespace CSPGF {
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -31,31 +33,29 @@ using System.Text;
 using CSPGF.reader;
 using CSPGF.trees.Absyn;
 
-namespace CSPGF
-{
     class Generator
     {
         private Random random;
         private PGF pgf;
-        private Dictionary<String, HashSet<String>> dirRules;
-        private Dictionary<String, HashSet<String>> indirRules;
+        private Dictionary<string, HashSet<String>> dirRules;
+        private Dictionary<string, HashSet<String>> indirRules;
 
         /** generates a random expression of a given category
          * does not handle dependent categories or categories with implicit arguments
          **/
         public Generator(PGF _pgf)
         {
-            random = new Random();
-            pgf = _pgf;
-            dirRules = new Dictionary<String, HashSet<String>>();
-            indirRules = new Dictionary<String, HashSet<String>>();
-            List<AbsCat> absCats = pgf.GetAbstract().absCats;
-            List<AbsFun> absFuns = pgf.GetAbstract().absFuns;
-            HashSet<String> dirFuns = new HashSet<String>();
-            HashSet<String> indirFuns = new HashSet<String>();
+            this.random = new Random();
+            this.pgf = _pgf;
+            this.dirRules = new Dictionary<string, HashSet<string>>();
+            this.indirRules = new Dictionary<string, HashSet<string>>();
+            List<AbsCat> absCats = this.pgf.GetAbstract().absCats;
+            List<AbsFun> absFuns = this.pgf.GetAbstract().absFuns;
+            HashSet<string> dirFuns = new HashSet<string>();
+            HashSet<string> indirFuns = new HashSet<string>();
             foreach (AbsCat abc in absCats) {
-                dirFuns = new HashSet<String>();
-                indirFuns = new HashSet<String>();
+                dirFuns = new HashSet<string>();
+                indirFuns = new HashSet<string>();
                 List<WeightedIdent> functions = abc.functions;
                 foreach (WeightedIdent weid in functions) {
                     foreach (AbsFun ab in absFuns) {
@@ -71,8 +71,8 @@ namespace CSPGF
                         }
                     }
                 }
-                dirRules.Add(abc.name, dirFuns);
-                indirRules.Add(abc.name, indirFuns);
+                this.dirRules.Add(abc.name, dirFuns);
+                this.indirRules.Add(abc.name, indirFuns);
             }
         }
 
@@ -86,7 +86,7 @@ namespace CSPGF
          * suitable for simple expressions
          **/
         // FIXME what is 'type' for ???
-        public Tree GetDirect(String type, HashSet<string> dirFuns)
+        public Tree GetDirect(string type, HashSet<string> dirFuns)
         {
             int rand = this.random.Next(dirFuns.Count);
             return new Function((string)dirFuns.ToArray()[rand]);
@@ -103,9 +103,9 @@ namespace CSPGF
                 vs.Add(it);
             }
 
-            int rand = random.Next(vs.Count());
+            int rand = this.random.Next(vs.Count());
             string funcName = vs.ElementAt(rand);
-            List<AbsFun> absFuns = pgf.GetAbstract().absFuns;
+            List<AbsFun> absFuns = this.pgf.GetAbstract().absFuns;
             foreach (AbsFun a in absFuns) 
             {
                 if (a.name.Equals(funcName)) 
@@ -146,41 +146,41 @@ namespace CSPGF
         {
             if (type.Equals("Integer")) 
             {
-                return new Literal(new IntLiteral(GenerateInt()));
+                return new Literal(new IntLiteral(this.GenerateInt()));
             }
             else if (type.Equals("Float")) 
             {
-                return new Literal(new FloatLiteral(GenerateFloat()));
+                return new Literal(new FloatLiteral(this.GenerateFloat()));
             }
             else if (type.Equals("String")) 
             {
-                return new Literal(new StringLiteral(GenerateString()));
+                return new Literal(new StringLiteral(this.GenerateString()));
             }
 
-            int depth = random.Next(5); //60% constants, 40% functions
-            HashSet<String> dirFuns = dirRules[type];
-            HashSet<String> indirFuns = indirRules[type];
+            int depth = this.random.Next(5); // 60% constants, 40% functions
+            HashSet<string> dirFuns = this.dirRules[type];
+            HashSet<string> indirFuns = this.indirRules[type];
 
             // TODO: Check if it should be inverted?
-            Boolean isEmptyDir = dirFuns.Any();
-            Boolean isEmptyIndir = indirFuns.Any();
+            bool isEmptyDir = dirFuns.Any();
+            bool isEmptyIndir = indirFuns.Any();
             if (isEmptyDir && isEmptyIndir) 
             {
                 throw new Exception("Cannot generate any expression of type " + type);
             }
             if (isEmptyDir) 
             {
-                return GetIndirect(type, indirFuns);
+                return this.GetIndirect(type, indirFuns);
             }
             if (isEmptyIndir) 
             {
-                return GetDirect(type, dirFuns);
+                return this.GetDirect(type, dirFuns);
             }
             if (depth <= 2) 
             {
-                return GetDirect(type, dirFuns);
+                return this.GetDirect(type, dirFuns);
             }
-            return GetIndirect(type, indirFuns);
+            return this.GetIndirect(type, indirFuns);
         }
 
 
@@ -188,7 +188,7 @@ namespace CSPGF
         * the expressions are independent
         * the probability of having simple expressions is higher
         **/
-        public List<Tree> GenerateMany(String type, int count)
+        public List<Tree> GenerateMany(string type, int count)
         {
             int contor = 0;
             List<Tree> rez = new List<Tree>();
@@ -196,11 +196,11 @@ namespace CSPGF
             {
                 return rez;
             }
-            HashSet<String> dirFuns = dirRules[type];
-            HashSet<String> indirFuns = indirRules[type];
-            foreach (String it in dirFuns) 
+            HashSet<string> dirFuns = this.dirRules[type];
+            HashSet<string> indirFuns = this.indirRules[type];
+            foreach (string it in dirFuns) 
             {
-                Tree interm = GetDirect(type, dirFuns);
+                Tree interm = this.GetDirect(type, dirFuns);
                 if (interm != null) 
                 {
                     contor++;
@@ -211,9 +211,9 @@ namespace CSPGF
                     }
                 }
             }
-            foreach (String it in indirFuns) 
+            foreach (string it in indirFuns) 
             {
-                Tree interm = GetIndirect(type, indirFuns);
+                Tree interm = this.GetIndirect(type, indirFuns);
                 if (interm != null) 
                 {
                     contor++;
@@ -230,22 +230,22 @@ namespace CSPGF
 
         /** generates a random string **/
 
-        public String GenerateString()
+        public string GenerateString()
         {
-            String[] ss = { "x", "y", "foo", "bar" };
-            return ss[random.Next(ss.Length)];
+            string[] ss = { "x", "y", "foo", "bar" };
+            return ss[this.random.Next(ss.Length)];
         }
 
         /** generates a random integer **/
         public int GenerateInt()
         {
-            return random.Next(100000);
+            return this.random.Next(100000);
         }
 
         /** generates a random float **/
         public double GenerateFloat()
         {
-            return random.NextDouble();
+            return this.random.NextDouble();
         }
     }
 }

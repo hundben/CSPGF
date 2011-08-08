@@ -47,11 +47,12 @@ namespace CSPGF {
         public static PGF FromFile(String filename) {
             if (DBG) { System.Console.WriteLine("Reading pgf from file : " + filename); }
             BinaryReader stream = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read));
-	        try {
-	            return new PGFReader(stream).ReadPGF();
-	        } catch (UnknownLanguageException e) {
-	            throw new Exception(e.ToString());
-	        }
+            try 
+            {
+                return new PGFReader(stream).ReadPGF();
+            } catch (UnknownLanguageException e) {
+                throw new Exception(e.ToString());
+            }
         }
 
         /**
@@ -75,11 +76,11 @@ namespace CSPGF {
          * @param inStream and InputStream to read the pgf binary from.
          */
         public static PGF FromInputStream(BinaryReader stream) {
-	        try {
-	            return new PGFReader(stream).ReadPGF();
-	        } catch (UnknownLanguageException e) {
+            try {
+                return new PGFReader(stream).ReadPGF();
+            } catch (UnknownLanguageException e) {
                 throw new Exception(e.ToString());
-	        }
+            }
         }
 
         /**

@@ -24,26 +24,28 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-//Check this class, it seems retarded...
+
+// Check this class, it seems retarded...
 
 namespace CSPGF.Parser
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     class ActiveSet
     {
         Dictionary<int, Dictionary<int, HashSet<ActiveItemInt>>> store;
         public ActiveSet()
         {
-            store = new Dictionary<int, Dictionary <int, HashSet<ActiveItemInt>>>();
+            this.store = new Dictionary<int, Dictionary<int, HashSet<ActiveItemInt>>>();
         }
-        //check this one, might be wrong...
+        // check this one, might be wrong...
         public bool Add(int cat, int cons, ActiveItem item, int cons2)
         {
             Dictionary<int, HashSet<ActiveItemInt>> map;
-            if (store.TryGetValue(cat, out map))
+            if (this.store.TryGetValue(cat, out map))
             {
                 HashSet<ActiveItemInt> aItems;
                 if (map.TryGetValue(cons, out aItems))
@@ -57,7 +59,7 @@ namespace CSPGF.Parser
                 }
                 else
                 {
-                    //TODO this might be wrong (but I don't think so :)
+                    // TODO this might be wrong (but I don't think so :)
                     aItems = new HashSet<ActiveItemInt>();
                     aItems.Add(new ActiveItemInt(item, cons2));
                     map.Add(cons, aItems);
@@ -69,17 +71,17 @@ namespace CSPGF.Parser
                 HashSet<ActiveItemInt> aItems = new HashSet<ActiveItemInt>();
                 aItems.Add(new ActiveItemInt(item, cons2));
                 map.Add(cons, aItems);
-                store.Add(cat, map);
+                this.store.Add(cat, map);
             }
             return true;
         }
 
-        //TODO check if this is correct, new version
+        // TODO check if this is correct, new version
         public HashSet<ActiveItemInt> Get(int cat)
         {
             HashSet<ActiveItemInt> aai = new HashSet<ActiveItemInt>();
             Dictionary<int, HashSet<ActiveItemInt>> map;
-            if (store.TryGetValue(cat, out map))
+            if (this.store.TryGetValue(cat, out map))
             {
                 foreach (int key in map.Keys)
                 {
@@ -92,12 +94,12 @@ namespace CSPGF.Parser
             }
             return aai;
         }
-        //Also fixed this one I hope /Erik
+        // Also fixed this one I hope /Erik
         public HashSet<ActiveItemInt> Get(int cat, int cons)
         {
             HashSet<ActiveItemInt> aai = new HashSet<ActiveItemInt>();
             Dictionary<int, HashSet<ActiveItemInt>> map;
-            if (store.TryGetValue(cat, out map))
+            if (this.store.TryGetValue(cat, out map))
             {
                 if (map.TryGetValue(cons, out aai))
                 {
@@ -109,10 +111,10 @@ namespace CSPGF.Parser
     }
 }
 
-//**
+/*
 // * this is used to keed track of sets of active items (the S_k)
 // * */
-//private class ActiveSet {
+// private class ActiveSet {
 
 //  //val log = Logger.getLogger("org.grammaticalframework.parser")
 
@@ -154,4 +156,4 @@ namespace CSPGF.Parser
 //        case Some(s) => return s.toSeq
 //      }
 //    }
-//}
+// }

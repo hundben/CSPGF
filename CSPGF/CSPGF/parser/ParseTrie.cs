@@ -24,29 +24,30 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Parser
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     class ParseTrie
     {
         Stack<ActiveItem> value;
-        Dictionary<String, ParseTrie> child = new Dictionary<String, ParseTrie>();
+        Dictionary<string, ParseTrie> child = new Dictionary<string, ParseTrie>();
 
         public ParseTrie(Stack<ActiveItem> _value)
         {
-            value = _value;
+            this.value = _value;
         }
 
-        public void Add(String[] key, Stack<ActiveItem> value)
+        public void Add(string[] key, Stack<ActiveItem> value)
         {
-            Add(key.ToList<String>(), value);
+            this.Add(key.ToList<string>(), value);
         }
 
-        public void Add(List<String> keys, Stack<ActiveItem> value)
+        public void Add(List<string> keys, Stack<ActiveItem> value)
         {
             //TODO: Might be correct, but check.
             if (keys == null || keys.Count == 0) {
@@ -55,72 +56,72 @@ namespace CSPGF.Parser
             else {
                 ParseTrie tmp2;
                 // Check: Added !, which should be correct, but not 100% sure. Program doesn't crash anymore though =)
-                if (!child.TryGetValue(keys.First<String>(),out tmp2) || child.Count == 0) {
+                if (!this.child.TryGetValue(keys.First<string>(), out tmp2) || this.child.Count == 0) {
                     ParseTrie newN = new ParseTrie(null);
-                    List<String> tmp = new List<String>(keys);
-                    tmp.Remove(keys.First<String>());
+                    List<string> tmp = new List<string>(keys);
+                    tmp.Remove(keys.First<string>());
                     newN.Add(tmp, value);
-                    child[keys.First<String>()] = newN;
+                    this.child[keys.First<string>()] = newN;
                 }
                 else {
-                    List<String> tmp = new List<String>(keys);
-                    tmp.Remove(keys.First<String>());
+                    List<string> tmp = new List<string>(keys);
+                    tmp.Remove(keys.First<string>());
                     
-                    child[keys.First<String>()].Add(tmp, value);
+                    this.child[keys.First<string>()].Add(tmp, value);
                 }
             }
         }
 
-        public Stack<ActiveItem> Lookup(String[] key)
+        public Stack<ActiveItem> Lookup(string[] key)
         {
-            return Lookup(key.ToList<String>());
+            return this.Lookup(key.ToList<string>());
         }
 
-        public Stack<ActiveItem> Lookup(List<String> key)
+        public Stack<ActiveItem> Lookup(List<string> key)
         {
-            if (GetSubTrie(key) != null) {
-                return GetSubTrie(key).value;
+            if (this.GetSubTrie(key) != null) {
+                return this.GetSubTrie(key).value;
             }
             else {
                 return null;
             }
         }
         
-        public ParseTrie GetSubTrie(List<String> key)
+        public ParseTrie GetSubTrie(List<string> key)
         {
-            //TODO check if null is necessary 
+            // TODO check if null is necessary 
             if (key != null && key.Count > 0)
             {
-                List<String> key2 = new List<String>(key);
-                String k = key2.First<String>();
+                List<string> key2 = new List<string>(key);
+                string k = key2.First<string>();
                 key2.Remove(k);
                 ParseTrie trie;
-                if (child.TryGetValue(k, out trie)) return trie.GetSubTrie(key2);
+                if (this.child.TryGetValue(k, out trie)) return trie.GetSubTrie(key2);
             }
             return this;
         }
 
-        public ParseTrie GetSubTrie(String key)
+        public ParseTrie GetSubTrie(string key)
         {
-            List<String> tmp = new List<string>();
+            List<string> tmp = new List<string>();
             tmp.Add(key);
-            return GetSubTrie(tmp);
+            return this.GetSubTrie(tmp);
         }
         
-        public List<String> Predict()
+        public List<string> Predict()
         {
-            return child.Keys.ToList<String>();
+            return this.child.Keys.ToList<string>();
         }
         
-        public override String ToString()
+        public override string ToString()
         {
-            return ToStringWithPrefix("");
+            return this.ToStringWithPrefix(string.Empty);
         }
         
-        public String ToStringWithPrefix(String prefix)
+        public string ToStringWithPrefix(string prefix)
         {
-            //RETARDKOD! TODO: Gör klart!
-            String tmp = prefix + "<" + value.ToString() + ">";
+            // RETARDKOD! TODO: Gör klart!
+            string tmp = prefix + "<" + this.value.ToString() + ">";
             return tmp;
         }
         //  def toStringWithPrefix(prefix:String):String = {
@@ -133,8 +134,8 @@ namespace CSPGF.Parser
     }
 }
 
-///* ************************************************************************* */
-///**
+// /* ************************************************************************* */
+// /**
 // * The ParseTries are used to keep track of the possible next symbols.
 // * It is a trie where the symbol (edge labels) are string (words) and the values (node) are agendas
 // * (stacks of ActiveItems)

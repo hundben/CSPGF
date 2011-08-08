@@ -52,10 +52,10 @@ namespace CSPGF.linearizer
 
         public override string ToString()
         {
-            string rez = "name : " + cId + ", linIndex : " + lIndex + ", fId : " + fId + ", bracketed tokens : " + bracketedtoks.ToString();
+            string rez = "name : " + this.cId + ", linIndex : " + this.lIndex + ", fId : " + this.fId + ", bracketed tokens : " + this.bracketedtoks.ToString();
 
             // for(int i=0;i<bss.length;i++)
-            //	 rez+=(" "+bss[i].toString());
+            //   rez+=(" "+bss[i].toString());
             return rez;
         }
     }

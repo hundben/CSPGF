@@ -25,26 +25,27 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.parser_new
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     class ParseState
     {
         private Chart chart;
         private reader.Concrete cnc;
         private reader.Abstract abs;
-        private Dictionary<String, Object> trie;  //TODO check datatypes for this one...
+        private Dictionary<string, object> trie;  //TODO check datatypes for this one...
         private List<int> activeState;
 
         public ParseState(reader.Concrete _cnc, reader.Abstract _abs)
         {
-            cnc = _cnc;
-            abs = _abs;
-            activeState = new List<int>();  //what to do? :'(
+            this.cnc = _cnc;
+            this.abs = _abs;
+            this.activeState = new List<int>();  //what to do? :'(
         }
         /*
          * The things below should be here :)

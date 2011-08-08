@@ -24,20 +24,22 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+
 
 namespace CSPGF
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class LinearizerException : Exception
     {
-        public LinearizerException(String _str) : base(_str)
+        public LinearizerException(string _str) : base(_str)
         {
         }
     
-        public override String ToString()
+        public override string ToString()
         {
             return "LinearizerException: " + base.ToString();
         }

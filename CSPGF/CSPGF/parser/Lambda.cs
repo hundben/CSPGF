@@ -24,20 +24,21 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Parser
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class Lambda : Tree
     {
-        public List<Tuple<Boolean, String>> vars;   //går detta att göra smidigare kanske?
+        public List<Tuple<bool, string>> vars;   //går detta att göra smidigare kanske?
         public Tree body;
-        public Lambda(List<Tuple<Boolean, String>> _vars, Tree _body) {
-            vars = _vars;
-            body = _body;
+        public Lambda(List<Tuple<bool, string>> _vars, Tree _body) {
+            this.vars = _vars;
+            this.body = _body;
         }
     }
 }

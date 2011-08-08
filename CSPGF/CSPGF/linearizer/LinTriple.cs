@@ -46,7 +46,7 @@ namespace CSPGF.linearizer
         }
         public override string ToString()
         {
-            string rez = "id : " + fId + " cncType : (" + cncType.ToString() + ") bracketedToken :[" + linTable.ToString() + "]";
+            string rez = "id : " + this.fId + " cncType : (" + this.cncType.ToString() + ") bracketedToken :[" + this.linTable.ToString() + "]";
             return rez;
         }
     }

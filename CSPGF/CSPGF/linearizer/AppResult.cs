@@ -35,7 +35,7 @@ namespace CSPGF.linearizer
 
     class AppResult
     {
-        public CncFun cncFun {get; private set; }
+        public CncFun cncFun { get; private set; }
         public CncType cncType { get; private set; }
         public List<CncType> cncTypes { get; private set; }
 
