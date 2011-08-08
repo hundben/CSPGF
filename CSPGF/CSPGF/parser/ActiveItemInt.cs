@@ -65,7 +65,7 @@ namespace CSPGF.Parser
         /// <summary>
         /// Gets the value of Cons2.
         /// </summary>
-        public int Cons2 { get; private set; }
+        public int Cons2 { get; set; }
 
         /// <summary>
         /// Compares to ActiveItemInts.

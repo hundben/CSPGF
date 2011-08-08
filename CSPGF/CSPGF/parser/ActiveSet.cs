@@ -85,7 +85,7 @@ namespace CSPGF.Parser
                 {
                     foreach (ActiveItemInt i in map[key])
                     {
-                        i.cons2 = key;
+                        i.Cons2 = key;
                         aai.Add(i);
                     }
                 }

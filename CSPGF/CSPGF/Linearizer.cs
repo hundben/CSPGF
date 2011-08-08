@@ -30,7 +30,6 @@ using System.Linq;
 using System.Text;
 using CSPGF.reader;
 //using CSPGF.trees;
-using CSPGF.Parser;
 using CSPGF.linearizer;
 using CSPGF.trees.Absyn;
 
