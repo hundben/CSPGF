@@ -28,7 +28,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSPGF.reader;
+using CSPGF.Reader;
 using System.IO;
 
 namespace CSPGF
@@ -189,7 +189,7 @@ namespace CSPGF
             if (DBG) {
                 dbgwrite.WriteLine("AbsFun: '" + name + "'");
             }
-            CSPGF.reader.Type t = GetType2();
+            CSPGF.Reader.Type t = GetType2();
             int i = GetInt();
             int has_equations = inputstream.ReadByte();
             List<Eq> equations;
@@ -245,12 +245,12 @@ namespace CSPGF
             return tmp;
         }
 
-        private CSPGF.reader.Type GetType2()
+        private CSPGF.Reader.Type GetType2()
         {
             List<Hypo> hypos = GetListHypo();
             String returnCat = GetIdent();
             List<Expr> exprs = GetListExpr();
-            CSPGF.reader.Type t = new CSPGF.reader.Type(hypos, returnCat, exprs);
+            CSPGF.Reader.Type t = new CSPGF.Reader.Type(hypos, returnCat, exprs);
             if (DBG) {
                 dbgwrite.WriteLine("Type: " + t);
             }
@@ -262,7 +262,7 @@ namespace CSPGF
             int btype = inputstream.ReadByte();
             Boolean b = btype == 0 ? false : true;
             String varName = GetIdent();
-            CSPGF.reader.Type t = GetType2();
+            CSPGF.Reader.Type t = GetType2();
             return new Hypo(b, varName, t);
         }
 
@@ -321,7 +321,7 @@ namespace CSPGF
                     break;
                 case 6: //type annotated expression
                     Expr e = GetExpr();
-                    CSPGF.reader.Type t = GetType2();
+                    CSPGF.Reader.Type t = GetType2();
                     expr = new TypedExp(e, t);
                     break;
                 case 7: //implicit argument

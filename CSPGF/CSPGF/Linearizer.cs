@@ -31,10 +31,10 @@ namespace CSPGF
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using CSPGF.reader;
+    using CSPGF.Reader;
     // using CSPGF.trees;
-    using CSPGF.linearizer;
-    using CSPGF.trees.Absyn;
+    using CSPGF.Linearizer;
+    using CSPGF.Trees.Absyn;
 
     class Linearizer
     {
@@ -73,7 +73,7 @@ namespace CSPGF
         /**
          * Linearize a tree to a vector of tokens.
          **/
-        public List<string> LinearizeTokens(CSPGF.trees.Absyn.Tree absyn)
+        public List<string> LinearizeTokens(CSPGF.Trees.Absyn.Tree absyn)
         {
             return this.RenderLin(this.Linearize(absyn).ElementAt(0));
         }
@@ -81,7 +81,7 @@ namespace CSPGF
         /**
          * Linearize a tree to a string.
          **/
-        public string LinearizeString(CSPGF.trees.Absyn.Tree absyn)
+        public string LinearizeString(CSPGF.Trees.Absyn.Tree absyn)
         {
             List<string> words = this.RenderLin(this.Linearize(absyn).ElementAt(0));
             string sb = string.Empty;
@@ -350,7 +350,7 @@ namespace CSPGF
 
 
         /**gets the types from the hypotheses of a type **/
-        private List<string> HypoArgsOfType(CSPGF.reader.Type t)
+        private List<string> HypoArgsOfType(CSPGF.Reader.Type t)
         {
             List<Hypo> hypos = t.hypos;
             List<string> tmp = new List<string>();
@@ -461,7 +461,7 @@ namespace CSPGF
             return rez;
         }
 
-        private List<LinTriple> Linearize(CSPGF.trees.Absyn.Tree e)
+        private List<LinTriple> Linearize(CSPGF.Trees.Absyn.Tree e)
         {
             return this.Lin0(new List<string>(), new List<string>(), null, 0, e);
         }
@@ -475,24 +475,24 @@ namespace CSPGF
      * @param e is the tree to linearize
      * @return all the possible linearized tuples for this tree.
      **/
-        private List<LinTriple> Lin0(List<string> xs, List<string> ys, CncType mb_cty, int mb_fid, CSPGF.trees.Absyn.Tree tree)
+        private List<LinTriple> Lin0(List<string> xs, List<string> ys, CncType mb_cty, int mb_fid, CSPGF.Trees.Absyn.Tree tree)
         {
             // if tree is a lambda, we add the variable to the list of bound
             // variables and we linearize the subtree.
-            if (tree is CSPGF.trees.Absyn.Lambda) 
+            if (tree is CSPGF.Trees.Absyn.Lambda) 
             {
-                xs.Add(((CSPGF.trees.Absyn.Lambda)tree).Ident_);
-                return this.Lin0(xs, ys, mb_cty, mb_fid, ((CSPGF.trees.Absyn.Lambda)tree).Tree_);
+                xs.Add(((CSPGF.Trees.Absyn.Lambda)tree).Ident_);
+                return this.Lin0(xs, ys, mb_cty, mb_fid, ((CSPGF.Trees.Absyn.Lambda)tree).Tree_);
             } 
             else if (xs.Count == 0) 
             {
-                List<CSPGF.trees.Absyn.Tree> es = new List<CSPGF.trees.Absyn.Tree>();
-                if (tree is CSPGF.trees.Absyn.Application) 
+                List<CSPGF.Trees.Absyn.Tree> es = new List<CSPGF.Trees.Absyn.Tree>();
+                if (tree is CSPGF.Trees.Absyn.Application) 
                 {
                     do {
-                        es.Add(((CSPGF.trees.Absyn.Application)tree).Tree_2);
-                        tree = ((CSPGF.trees.Absyn.Application)tree).Tree_1;
-                    } while (tree is CSPGF.trees.Absyn.Application);
+                        es.Add(((CSPGF.Trees.Absyn.Application)tree).Tree_2);
+                        tree = ((CSPGF.Trees.Absyn.Application)tree).Tree_1;
+                    } while (tree is CSPGF.Trees.Absyn.Application);
                 }
                 if (tree is Function) 
                 {
@@ -511,11 +511,11 @@ namespace CSPGF
                     //xs.addAll(ys);
                     xs.Add(yss);
                 }
-                List<CSPGF.trees.Absyn.Tree> exprs = new List<CSPGF.trees.Absyn.Tree>();
+                List<CSPGF.Trees.Absyn.Tree> exprs = new List<CSPGF.Trees.Absyn.Tree>();
                 exprs.Add(tree);
                 for (int i = 0; i < xs.Count; i++) 
                 {
-                    exprs.Add(new CSPGF.trees.Absyn.Literal(new CSPGF.trees.Absyn.StringLiteral(xs.ElementAt(i))));
+                    exprs.Add(new CSPGF.Trees.Absyn.Literal(new CSPGF.Trees.Absyn.StringLiteral(xs.ElementAt(i))));
                 } 
                 return this.Apply(xs, mb_cty, mb_fid, "_B", exprs);
             }
@@ -539,13 +539,13 @@ namespace CSPGF
      * @param es the argument of the function to linearize
      * @return All the possible linearization for the application of f to es
      **/
-        private List<LinTriple> Apply(List<string> xs, CncType mb_cty, int n_fid, string f, List<CSPGF.trees.Absyn.Tree> es)
+        private List<LinTriple> Apply(List<string> xs, CncType mb_cty, int n_fid, string f, List<CSPGF.Trees.Absyn.Tree> es)
         {
             Dictionary<int, HashSet<Production>> prods = this.lProd[f];
             if (prods == null) 
             {
-                List<CSPGF.trees.Absyn.Tree> newes = new List<CSPGF.trees.Absyn.Tree>();
-                newes.Add(new CSPGF.trees.Absyn.Literal(new CSPGF.trees.Absyn.StringLiteral(f)));
+                List<CSPGF.Trees.Absyn.Tree> newes = new List<CSPGF.Trees.Absyn.Tree>();
+                newes.Add(new CSPGF.Trees.Absyn.Literal(new CSPGF.Trees.Absyn.StringLiteral(f)));
                 System.Console.WriteLine("Function " + f + " does not have a linearization !");
                 return this.Apply(xs, mb_cty, n_fid, "_V", newes);
             } 
@@ -568,7 +568,7 @@ namespace CSPGF
                     }
                     List<Sequence> lins = vApp.ElementAt(i).cncFun.sequences;
                     string cat = vApp.ElementAt(i).cncType.cId;
-                    List<CSPGF.trees.Absyn.Tree> copy_expr = new List<CSPGF.trees.Absyn.Tree>();
+                    List<CSPGF.Trees.Absyn.Tree> copy_expr = new List<CSPGF.Trees.Absyn.Tree>();
                     for (int ind = 0; ind < es.Count; ind++) 
                     {
                         copy_expr.Add(es.ElementAt(ind));
@@ -679,7 +679,7 @@ namespace CSPGF
                 else 
                 {
                     List<AbsFun> absFuns = this.pgf.GetAbstract().absFuns;
-                    CSPGF.reader.Type t = null;
+                    CSPGF.Reader.Type t = null;
                     for (int i = 0; i < absFuns.Count; i++) 
                     {
                         if (f.Equals(absFuns[i].name))
@@ -719,7 +719,7 @@ namespace CSPGF
 
 
         /** computes the types of the arguments of a function type **/
-        private List<string> CatSkeleton(CSPGF.reader.Type t)
+        private List<string> CatSkeleton(CSPGF.Reader.Type t)
         {
             List<string> rez = new List<string>();
             rez.Add(t.name);
@@ -819,7 +819,7 @@ namespace CSPGF
         /** shuffles the results of of the intermediate linearization,
      * for generating all the possible combinations
      **/
-        private List<RezDesc> Descend(int n_fid, List<CncType> cncTypes, List<CSPGF.trees.Absyn.Tree> exps, List<string> xs)
+        private List<RezDesc> Descend(int n_fid, List<CncType> cncTypes, List<CSPGF.Trees.Absyn.Tree> exps, List<string> xs)
         {
             List<RezDesc> rez = new List<RezDesc>();
             if (exps.Count == 0) 
@@ -831,7 +831,7 @@ namespace CSPGF
             {
                 CncType cncType = cncTypes.First();
                 cncTypes.RemoveAt(0);
-                CSPGF.trees.Absyn.Tree exp = exps.First();
+                CSPGF.Trees.Absyn.Tree exp = exps.First();
                 exps.RemoveAt(0);
                 List<LinTriple> rezLin = this.Lin0(new List<string>(), xs, cncType, n_fid, exp);
                 List<RezDesc> rezDesc = this.Descend(n_fid, cncTypes, exps, xs);

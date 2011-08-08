@@ -30,8 +30,8 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using CSPGF.Parser;
-using CSPGF.test;
-using CSPGF.trees;
+using CSPGF.Test;
+using CSPGF.Trees;
 using System.Speech;
 using System.Speech.Recognition;
 using System.Speech.Synthesis;
@@ -45,7 +45,7 @@ namespace CSPGF
             BinaryReader br = new BinaryReader(new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open));
             PGFReader pr = new PGFReader(br);
             PGF pgf = pr.ReadPGF();
-            parser_new.Parser ps = new parser_new.Parser(pgf);
+            Parser_new.Parser ps = new Parser_new.Parser(pgf);
             //ps.ParseText("FoodsEng","hello world");
             //Parser parser = new Parser(tmp, "FoodsEng");
 

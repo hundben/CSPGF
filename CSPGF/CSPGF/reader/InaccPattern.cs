@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 using System;
 
-namespace CSPGF.reader
+namespace CSPGF.Reader
 {
     public class InaccPattern : Pattern // PTilde
     {

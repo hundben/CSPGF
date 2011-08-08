@@ -28,11 +28,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSPGF.trees;
-using CSPGF.trees.Absyn;
+using CSPGF.Trees;
+using CSPGF.Trees.Absyn;
 using System.IO;
 
-namespace CSPGF.test
+namespace CSPGF.Test
 {
     class PGFTestCase
     {
@@ -53,7 +53,7 @@ namespace CSPGF.test
         {
             Scanner l = new Scanner(new MemoryStream(Encoding.UTF8.GetBytes(s)));
             //Scanner l = new Scanner(new StringReader(s));
-            CSPGF.trees.Parser p = new CSPGF.trees.Parser(l);
+            CSPGF.Trees.Parser p = new CSPGF.Trees.Parser(l);
             try {
                 Tree parse_tree = p.ParseTree();
                 return parse_tree;

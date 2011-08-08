@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 
-namespace CSPGF.parser_new
+namespace CSPGF.Parser_new
 {
     using System;
     using System.Collections.Generic;
@@ -36,12 +36,12 @@ namespace CSPGF.parser_new
     class ParseState
     {
         private Chart chart;
-        private reader.Concrete cnc;
-        private reader.Abstract abs;
+        private Reader.Concrete cnc;
+        private Reader.Abstract abs;
         private Dictionary<string, object> trie;  //TODO check datatypes for this one...
         private List<int> activeState;
 
-        public ParseState(reader.Concrete _cnc, reader.Abstract _abs)
+        public ParseState(Reader.Concrete _cnc, Reader.Abstract _abs)
         {
             this.cnc = _cnc;
             this.abs = _abs;

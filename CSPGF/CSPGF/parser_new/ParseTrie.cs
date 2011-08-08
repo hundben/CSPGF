@@ -26,7 +26,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 
-namespace CSPGF.parser_new
+namespace CSPGF.Parser_new
 {
     using System;
     using System.Collections.Generic;
@@ -36,7 +36,7 @@ namespace CSPGF.parser_new
     class ParseTrie
     {
         public List<ParseTrie> child;
-        public reader.ApplProduction symbol;
+        public Reader.ApplProduction symbol;
         public ParseTrie()
         {
             //TODO

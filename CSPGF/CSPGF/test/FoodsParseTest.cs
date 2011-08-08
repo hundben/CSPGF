@@ -28,11 +28,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using CSPGF.trees.Absyn;
+using CSPGF.Trees.Absyn;
 using System.Diagnostics;
 using CSPGF.Parser;
 
-namespace CSPGF.test
+namespace CSPGF.Test
 {
     class FoodsParseTest : PGFTestCase
     {
@@ -58,13 +58,13 @@ namespace CSPGF.test
             //Tree tree1 = ParseTree("((Pred (This ((Mod Fresh) Pizza))) Italian)");
             //List<Tree> trees1 = parser.Parse(ex1).GetTrees()
             ParseState ps = parser.Parse(ex1);
-            List<CSPGF.trees.Absyn.Tree> trees1 = ps.GetTrees();
+            List<CSPGF.Trees.Absyn.Tree> trees1 = ps.GetTrees();
             Debug.Assert(trees1.Count == 1);
             //Debug.Assert(trees1[0].Equals(tree1));
 
             String ex2 = "those boring fish are expensive";
             //Tree tree2 = ParseTree("((Pred (Those ((Mod Boring) Fish))) Expensive)");
-            List<CSPGF.trees.Absyn.Tree> trees2 = parser.Parse(ex2).GetTrees();
+            List<CSPGF.Trees.Absyn.Tree> trees2 = parser.Parse(ex2).GetTrees();
             Debug.Assert(trees2.Count == 1);
             //Debug.Assert(trees2[0].Equals(tree2));
         }
@@ -74,8 +74,8 @@ namespace CSPGF.test
             Parser parser = new Parser(pgf, "FoodsSwe");
 
             String ex1 = "den här läckra pizzan är färsk";
-            CSPGF.trees.Absyn.Tree tree1 = ParseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
-            List<CSPGF.trees.Absyn.Tree> trees1 = parser.Parse(ex1).GetTrees();
+            CSPGF.Trees.Absyn.Tree tree1 = ParseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
+            List<CSPGF.Trees.Absyn.Tree> trees1 = parser.Parse(ex1).GetTrees();
             Debug.Assert(trees1.Count == 1);
             Debug.Assert(trees1[0].Equals(tree1));
         }
@@ -85,8 +85,8 @@ namespace CSPGF.test
             Parser parser = new Parser(pgf, "FoodsIta");
 
             String ex1 = "questa pizza deliziosa è fresca";
-            CSPGF.trees.Absyn.Tree tree1 = ParseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
-            List<CSPGF.trees.Absyn.Tree> trees1 = parser.Parse(ex1).GetTrees();
+            CSPGF.Trees.Absyn.Tree tree1 = ParseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
+            List<CSPGF.Trees.Absyn.Tree> trees1 = parser.Parse(ex1).GetTrees();
             Debug.Assert(trees1.Count == 1);
             Debug.Assert(trees1[0].Equals(tree1));
         }

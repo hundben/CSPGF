@@ -29,7 +29,7 @@ using System.Runtime.Serialization;
 using System.Diagnostics.CodeAnalysis;
 
 
-namespace CSPGF.trees
+namespace CSPGF.Trees
 {
     /// <summary>
     /// Summary Canonical example of GPLEX automaton

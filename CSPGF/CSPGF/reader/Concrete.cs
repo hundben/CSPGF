@@ -30,7 +30,7 @@ using System.Linq;
 using System.Text;
 using System.Collections;
 
-namespace CSPGF.reader
+namespace CSPGF.Reader
 {
     public class Concrete
     {

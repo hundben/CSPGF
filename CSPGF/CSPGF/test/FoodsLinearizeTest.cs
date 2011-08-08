@@ -29,9 +29,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Diagnostics;
-using CSPGF.trees.Absyn;
+using CSPGF.Trees.Absyn;
 
-namespace CSPGF.test
+namespace CSPGF.Test
 {
     class FoodsLinearizeTest : PGFTestCase
     {

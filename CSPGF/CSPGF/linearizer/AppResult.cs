@@ -25,13 +25,13 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-namespace CSPGF.linearizer
+namespace CSPGF.Linearize
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using CSPGF.reader;
+    using CSPGF.Reader;
 
     class AppResult
     {

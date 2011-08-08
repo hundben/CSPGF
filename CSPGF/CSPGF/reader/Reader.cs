@@ -31,7 +31,7 @@ using System.Text;
 
 // Failklass som används för test?
 
-namespace CSPGF.reader
+namespace CSPGF.Reader
 {
     public class Reader
     {

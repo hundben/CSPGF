@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using CSPGF.Parser;
-using CSPGF.reader;
+using CSPGF.Reader;
 //using CSPGF.trees.Absyn;
 
 namespace CSPGF
@@ -78,7 +78,7 @@ namespace CSPGF
          * @return an array of trees
          **/
         // FIXME: not using the start category ??
-        public List<CSPGF.trees.Absyn.Tree> ParseToTrees(String[] tokens)
+        public List<CSPGF.Trees.Absyn.Tree> ParseToTrees(String[] tokens)
         {
             return Parse(tokens).GetTrees();
         }

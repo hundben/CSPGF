@@ -31,17 +31,17 @@ using System.Linq;
 using System.Text;
 
 
-namespace CSPGF.parser_new
+namespace CSPGF.Parser_new
 {
     class Parser
     {
         //Notice, the language might be bad here? better to use it when we want to parse a text?
         private PGF pgf;
-        private List<reader.Production> prods;
-        private reader.Abstract abs;
-        private List<reader.CncCat> cncCat;
-        private List<reader.CncFun> cncFun;
-        private reader.Concrete concrete;
+        private List<Reader.Production> prods;
+        private Reader.Abstract abs;
+        private List<Reader.CncCat> cncCat;
+        private List<Reader.CncFun> cncFun;
+        private Reader.Concrete concrete;
         private Chart chart;
         public Parser(PGF _pgf)
         {
@@ -58,7 +58,7 @@ namespace CSPGF.parser_new
             cncCat = concrete.GetCncCats();
             //calculate next free category
             int nextCat = 0;
-            foreach (reader.CncCat c in cncCat)
+            foreach (Reader.CncCat c in cncCat)
             {
                 nextCat = Math.Max(c.lastFID, nextCat);
             }
@@ -68,8 +68,8 @@ namespace CSPGF.parser_new
             cncFun = concrete.cncFuns;
             String startCatName = abs.StartCat();
             //This code might be unnecessary, but then we have the startcategory saved at least ;P
-            reader.CncCat startCat = null;
-            foreach (reader.CncCat cat in cncCat) {
+            Reader.CncCat startCat = null;
+            foreach (Reader.CncCat cat in cncCat) {
                 if (cat.name == startCatName) {
                     startCat = cat;
                     break;
@@ -93,7 +93,7 @@ namespace CSPGF.parser_new
         {
             foreach (String word in text.Split(' '))
             {
-                foreach (reader.ApplProduction ap in Predict(cat, prods))
+                foreach (Reader.ApplProduction ap in Predict(cat, prods))
                 {
 
                 }
@@ -108,13 +108,13 @@ namespace CSPGF.parser_new
         private void PredictTEMP(int cat)
         {
             //TRY to predict the legal nextstates
-            foreach (reader.ApplProduction p in Predict(cat, prods))
+            foreach (Reader.ApplProduction p in Predict(cat, prods))
             {
                 foreach (int dom in p.Domain()) //Loop over all productions that we want
                 {
-                    foreach (reader.ApplProduction p2 in Predict(dom, prods))
+                    foreach (Reader.ApplProduction p2 in Predict(dom, prods))
                     {
-                        foreach (reader.Sequence s in p2.function.sequences)
+                        foreach (Reader.Sequence s in p2.function.sequences)
                         {
                             Console.WriteLine(GetSymbols(s.symbs));
                         }
@@ -123,18 +123,18 @@ namespace CSPGF.parser_new
             }
         }
         //Returns all application productions in category cat 
-        private List<reader.ApplProduction> Predict(int cat, List<reader.Production> _prods)
+        private List<Reader.ApplProduction> Predict(int cat, List<Reader.Production> _prods)
         {
-            List<reader.ApplProduction> appList = new List<reader.ApplProduction>();
-            foreach (reader.Production p in _prods) 
+            List<Reader.ApplProduction> appList = new List<Reader.ApplProduction>();
+            foreach (Reader.Production p in _prods) 
             {
                 if (p.fId == cat)
                 {
-                    if (p is reader.ApplProduction)
+                    if (p is Reader.ApplProduction)
                     {
-                        appList.Add((reader.ApplProduction)p);
+                        appList.Add((Reader.ApplProduction)p);
                     }
-                    else if (p is reader.CoerceProduction)
+                    else if (p is Reader.CoerceProduction)
                     {
                         appList.AddRange(UnCoerse(cat, _prods));
                     }
@@ -143,22 +143,22 @@ namespace CSPGF.parser_new
             return RemoveDoubles(appList);
         }
         //Tries to remove coersions... should work :)
-        private List<reader.ApplProduction> UnCoerse(int cat, List<reader.Production> _prods)
+        private List<Reader.ApplProduction> UnCoerse(int cat, List<Reader.Production> _prods)
         {
-            List<reader.ApplProduction> appList = new List<reader.ApplProduction>();
+            List<Reader.ApplProduction> appList = new List<Reader.ApplProduction>();
 
-            foreach (reader.Production p in _prods)
+            foreach (Reader.Production p in _prods)
             {
                 if (p.fId == cat)
                 {
-                    if (p is reader.CoerceProduction)
+                    if (p is Reader.CoerceProduction)
                     {
-                        reader.CoerceProduction cop = (reader.CoerceProduction)p;
+                        Reader.CoerceProduction cop = (Reader.CoerceProduction)p;
                         appList.AddRange(UnCoerse(cop.initId, _prods));
                     }
-                    else if (p is reader.ApplProduction)
+                    else if (p is Reader.ApplProduction)
                     {
-                        appList.Add((reader.ApplProduction)p);
+                        appList.Add((Reader.ApplProduction)p);
                     }
                 }
             }
@@ -166,10 +166,10 @@ namespace CSPGF.parser_new
             return appList;
         }
         //Returns a string with the token symbols, only used for debug
-        private String GetSymbols(List<reader.Symbol> seq)
+        private String GetSymbols(List<Reader.Symbol> seq)
         {
             String all= " ";
-            foreach (reader.Symbol s in seq)
+            foreach (Reader.Symbol s in seq)
             {
                 all += s + ", ";
             }
@@ -185,26 +185,26 @@ namespace CSPGF.parser_new
             return cats;
         }
 
-        private List<reader.ApplProduction> RemoveDoubles(List<reader.ApplProduction> _prods)
+        private List<Reader.ApplProduction> RemoveDoubles(List<Reader.ApplProduction> _prods)
         {
-            HashSet<reader.ApplProduction> appList = new HashSet<reader.ApplProduction>();
-            foreach(reader.ApplProduction p in _prods)
+            HashSet<Reader.ApplProduction> appList = new HashSet<Reader.ApplProduction>();
+            foreach(Reader.ApplProduction p in _prods)
             {
                 appList.Add(p);
             }
-            return appList.ToList<reader.ApplProduction>();
+            return appList.ToList<Reader.ApplProduction>();
         }
 
-        private String GetToken(reader.ApplProduction ap)
+        private String GetToken(Reader.ApplProduction ap)
         {
             String token ="";
-            foreach (reader.Sequence seq in ap.function.sequences)
+            foreach (Reader.Sequence seq in ap.function.sequences)
             {
-                foreach (reader.Symbol symb in seq.symbs)
+                foreach (Reader.Symbol symb in seq.symbs)
                 {
-                    if (symb is reader.ToksSymbol)
+                    if (symb is Reader.ToksSymbol)
                     {
-                        reader.ToksSymbol t = (reader.ToksSymbol)symb;
+                        Reader.ToksSymbol t = (Reader.ToksSymbol)symb;
                         //TODO
                         foreach (String tok in t.tokens)
                         {
@@ -212,9 +212,9 @@ namespace CSPGF.parser_new
                         }
                         
                     }
-                    else if (symb is reader.AlternToksSymbol)
+                    else if (symb is Reader.AlternToksSymbol)
                     {
-                        reader.AlternToksSymbol t = (reader.AlternToksSymbol)symb;
+                        Reader.AlternToksSymbol t = (Reader.AlternToksSymbol)symb;
                         //TODO there is a list of strings (alt1?)
                         //pre...
                     }

@@ -32,7 +32,7 @@ namespace CSPGF.Parser
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using CSPGF.reader;
+    using CSPGF.Reader;
 
     class Chart
     {

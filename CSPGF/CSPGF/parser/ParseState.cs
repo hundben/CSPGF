@@ -32,7 +32,7 @@ namespace CSPGF.Parser
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using CSPGF.reader;
+    using CSPGF.Reader;
 
     class ParseState
     {
@@ -161,11 +161,11 @@ namespace CSPGF.Parser
             }
         }
 
-        public List<CSPGF.trees.Absyn.Tree> GetTrees()
+        public List<CSPGF.Trees.Absyn.Tree> GetTrees()
         {
             TreeBuilder tb = new TreeBuilder();
             TreeConverter tc = new TreeConverter();
-            List<CSPGF.trees.Absyn.Tree> tmp = new List<CSPGF.trees.Absyn.Tree>();
+            List<CSPGF.Trees.Absyn.Tree> tmp = new List<CSPGF.Trees.Absyn.Tree>();
             foreach (Tree t in tb.BuildTrees(this.chart, this.startCat, this.position)) {
                 tmp.Add(tc.Intermediate2Abstract(t));
             }

@@ -1,12 +1,12 @@
 ﻿
-namespace CSPGF.linearizer_new
+namespace CSPGF.Linearizer_new
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using CSPGF.reader;
-    using CSPGF.parser_new;
+    using CSPGF.Reader;
+    using CSPGF.Parser_new;
 
     class Linearizer
     {

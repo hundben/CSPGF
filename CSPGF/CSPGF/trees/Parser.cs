@@ -16,7 +16,7 @@ using System.Globalization;
 using System.Text;
 using QUT.Gppg;
 
-namespace CSPGF.trees
+namespace CSPGF.Trees
 {
     public enum Tokens
     {
@@ -36,9 +36,9 @@ namespace CSPGF.trees
 #line 39 "CSPGF.trees.y"
         public string string_;
 #line 40 "CSPGF.trees.y"
-        public CSPGF.trees.Absyn.Tree tree_;
+        public CSPGF.Trees.Absyn.Tree tree_;
 #line 41 "CSPGF.trees.y"
-        public CSPGF.trees.Absyn.Lit lit_;
+        public CSPGF.Trees.Absyn.Lit lit_;
 #line 42 "CSPGF.trees.y"
     }
     // Abstract base class for GPLEX scanners
@@ -60,9 +60,9 @@ namespace CSPGF.trees
 #line 5 "CSPGF.trees.y"
 
 #line 6 "CSPGF.trees.y"
-        CSPGF.trees.Absyn.Tree YY_RESULT_Tree_ = null;
+        CSPGF.Trees.Absyn.Tree YY_RESULT_Tree_ = null;
 #line 7 "CSPGF.trees.y"
-        public CSPGF.trees.Absyn.Tree ParseTree()
+        public CSPGF.Trees.Absyn.Tree ParseTree()
 #line 8 "CSPGF.trees.y"
         {
 #line 9 "CSPGF.trees.y"
@@ -86,9 +86,9 @@ namespace CSPGF.trees
 #line 18 "CSPGF.trees.y"
 
 #line 19 "CSPGF.trees.y"
-        CSPGF.trees.Absyn.Lit YY_RESULT_Lit_ = null;
+        CSPGF.Trees.Absyn.Lit YY_RESULT_Lit_ = null;
 #line 20 "CSPGF.trees.y"
-        public CSPGF.trees.Absyn.Lit ParseLit()
+        public CSPGF.Trees.Absyn.Lit ParseLit()
 #line 21 "CSPGF.trees.y"
         {
 #line 22 "CSPGF.trees.y"
@@ -171,39 +171,39 @@ namespace CSPGF.trees
             switch (action) {
                 case 2: // Tree -> SYMB_0, IDENT_, SYMB_1, Tree
 #line 60 "CSPGF.trees.y"
- { CurrentSemanticValue.tree_ = new CSPGF.trees.Absyn.Lambda(ValueStack[ValueStack.Depth - 3].string_, ValueStack[ValueStack.Depth - 1].tree_); YY_RESULT_Tree_ = CurrentSemanticValue.tree_; }
+ { CurrentSemanticValue.tree_ = new CSPGF.Trees.Absyn.Lambda(ValueStack[ValueStack.Depth - 3].string_, ValueStack[ValueStack.Depth - 1].tree_); YY_RESULT_Tree_ = CurrentSemanticValue.tree_; }
  break;
                 case 3: // Tree -> SYMB_2, INTEGER_
 #line 61 "CSPGF.trees.y"
- { CurrentSemanticValue.tree_ = new CSPGF.trees.Absyn.Variable(ValueStack[ValueStack.Depth - 1].int_); YY_RESULT_Tree_ = CurrentSemanticValue.tree_; }
+ { CurrentSemanticValue.tree_ = new CSPGF.Trees.Absyn.Variable(ValueStack[ValueStack.Depth - 1].int_); YY_RESULT_Tree_ = CurrentSemanticValue.tree_; }
  break;
                 case 4: // Tree -> SYMB_3, Tree, Tree, SYMB_4
 #line 62 "CSPGF.trees.y"
- { CurrentSemanticValue.tree_ = new CSPGF.trees.Absyn.Application(ValueStack[ValueStack.Depth - 3].tree_, ValueStack[ValueStack.Depth - 2].tree_); YY_RESULT_Tree_ = CurrentSemanticValue.tree_; }
+ { CurrentSemanticValue.tree_ = new CSPGF.Trees.Absyn.Application(ValueStack[ValueStack.Depth - 3].tree_, ValueStack[ValueStack.Depth - 2].tree_); YY_RESULT_Tree_ = CurrentSemanticValue.tree_; }
  break;
                 case 5: // Tree -> Lit
 #line 63 "CSPGF.trees.y"
- { CurrentSemanticValue.tree_ = new CSPGF.trees.Absyn.Literal(ValueStack[ValueStack.Depth - 1].lit_); YY_RESULT_Tree_ = CurrentSemanticValue.tree_; }
+ { CurrentSemanticValue.tree_ = new CSPGF.Trees.Absyn.Literal(ValueStack[ValueStack.Depth - 1].lit_); YY_RESULT_Tree_ = CurrentSemanticValue.tree_; }
  break;
                 case 6: // Tree -> SYMB_5, INTEGER_
 #line 64 "CSPGF.trees.y"
- { CurrentSemanticValue.tree_ = new CSPGF.trees.Absyn.MetaVariable(ValueStack[ValueStack.Depth - 1].int_); YY_RESULT_Tree_ = CurrentSemanticValue.tree_; }
+ { CurrentSemanticValue.tree_ = new CSPGF.Trees.Absyn.MetaVariable(ValueStack[ValueStack.Depth - 1].int_); YY_RESULT_Tree_ = CurrentSemanticValue.tree_; }
  break;
                 case 7: // Tree -> IDENT_
 #line 65 "CSPGF.trees.y"
- { CurrentSemanticValue.tree_ = new CSPGF.trees.Absyn.Function(ValueStack[ValueStack.Depth - 1].string_); YY_RESULT_Tree_ = CurrentSemanticValue.tree_; }
+ { CurrentSemanticValue.tree_ = new CSPGF.Trees.Absyn.Function(ValueStack[ValueStack.Depth - 1].string_); YY_RESULT_Tree_ = CurrentSemanticValue.tree_; }
  break;
                 case 8: // Lit -> INTEGER_
 #line 67 "CSPGF.trees.y"
- { CurrentSemanticValue.lit_ = new CSPGF.trees.Absyn.IntLiteral(ValueStack[ValueStack.Depth - 1].int_); YY_RESULT_Lit_ = CurrentSemanticValue.lit_; }
+ { CurrentSemanticValue.lit_ = new CSPGF.Trees.Absyn.IntLiteral(ValueStack[ValueStack.Depth - 1].int_); YY_RESULT_Lit_ = CurrentSemanticValue.lit_; }
  break;
                 case 9: // Lit -> DOUBLE_
 #line 68 "CSPGF.trees.y"
- { CurrentSemanticValue.lit_ = new CSPGF.trees.Absyn.FloatLiteral(ValueStack[ValueStack.Depth - 1].double_); YY_RESULT_Lit_ = CurrentSemanticValue.lit_; }
+ { CurrentSemanticValue.lit_ = new CSPGF.Trees.Absyn.FloatLiteral(ValueStack[ValueStack.Depth - 1].double_); YY_RESULT_Lit_ = CurrentSemanticValue.lit_; }
  break;
                 case 10: // Lit -> STRING_
 #line 69 "CSPGF.trees.y"
- { CurrentSemanticValue.lit_ = new CSPGF.trees.Absyn.StringLiteral(ValueStack[ValueStack.Depth - 1].string_); YY_RESULT_Lit_ = CurrentSemanticValue.lit_; }
+ { CurrentSemanticValue.lit_ = new CSPGF.Trees.Absyn.StringLiteral(ValueStack[ValueStack.Depth - 1].string_); YY_RESULT_Lit_ = CurrentSemanticValue.lit_; }
  break;
             }
         }

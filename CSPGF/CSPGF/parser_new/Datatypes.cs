@@ -29,7 +29,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace CSPGF.parser_new
+namespace CSPGF.Parser_new
 {
     public class Active
     {
@@ -72,9 +72,9 @@ namespace CSPGF.parser_new
     }
     public class ActiveChart
     {
-        public Dictionary<int, Tuple<ActiveSet, Dictionary<int, HashSet<reader.Production>>>> ac { get; private set; }
+        public Dictionary<int, Tuple<ActiveSet, Dictionary<int, HashSet<Reader.Production>>>> ac { get; private set; }
         //IntMap.IntMap (IntMap.IntMap (ActiveSet, IntMap.IntMap (Set.Set Production)))
-        public ActiveChart(Dictionary<int, Tuple<ActiveSet, Dictionary<int, HashSet<reader.Production>>>> _ac)
+        public ActiveChart(Dictionary<int, Tuple<ActiveSet, Dictionary<int, HashSet<Reader.Production>>>> _ac)
         {
             ac = _ac;
         }

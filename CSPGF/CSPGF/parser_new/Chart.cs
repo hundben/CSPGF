@@ -1,6 +1,6 @@
 ﻿
 
-namespace CSPGF.parser_new
+namespace CSPGF.Parser_new
 {
     using System;
     using System.Collections.Generic;

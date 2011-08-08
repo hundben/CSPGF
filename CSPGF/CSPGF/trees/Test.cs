@@ -6,9 +6,9 @@
 /****************************************************************************/
 using System;
 using System.IO;
-using CSPGF.trees.Absyn;
+using CSPGF.Trees.Absyn;
 
-namespace CSPGF.trees
+namespace CSPGF.Trees
 {
     public class Test
     {
