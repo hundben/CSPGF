@@ -25,7 +25,6 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-
 namespace CSPGF.Linearize
 {
     using System;
@@ -62,11 +61,13 @@ namespace CSPGF.Linearize
             {
                 rez += " " + str;
             }
+
             rez += "] , Alternatives : [";
             foreach (Alternative a in this.alternatives) 
             {
                 rez += " " + a.ToString();
             }
+
             rez += "]";
             return rez;
         }

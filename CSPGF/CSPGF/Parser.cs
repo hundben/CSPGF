@@ -104,6 +104,5 @@ namespace CSPGF
         {
             return Parse(new String[0]);
         }
-
     }
 }

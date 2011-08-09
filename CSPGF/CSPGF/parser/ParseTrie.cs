@@ -98,6 +98,7 @@ namespace CSPGF.Parse
                 ParseTrie trie;
                 if (this.child.TryGetValue(k, out trie)) return trie.GetSubTrie(key2);
             }
+
             return this;
         }
 

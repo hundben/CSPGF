@@ -133,7 +133,6 @@ namespace CSPGF
                                     vtemp.Remove(newl);
                                     vtemp.Add(newl, obj);
                                 }
-
                             } 
                             else 
                             {
@@ -145,8 +144,6 @@ namespace CSPGF
             }
             return vtemp;
         }
-
-
 
         /** This function computes the list of abstract function corresponding to
          * a given production. This is easy for standard productions but less for
@@ -314,8 +311,7 @@ namespace CSPGF
                         for (int ind = cncs.firstFID; ind <= cncs.lastFID; ind++) 
                         {
                             rezTemp.Add(ind);
-                        }
-                        
+                        }  
                     }
                 }
             }
@@ -428,7 +424,7 @@ namespace CSPGF
         {
             List<string> rez = new List<string>();
             List<string> rezF = new List<string>();
-            List<List<BracketedTokn>> vtemp = v.linTable;
+            List<List<BracketedTokn>> vtemp = v.LinTable;
             string after = string.Empty;
             for (int k = vtemp.ElementAt(0).Count - 1; k >= 0; k--) 
             {
@@ -439,7 +435,6 @@ namespace CSPGF
                 }
                 after = rez.Last();
                 //rez.addAll(untokn(vtemp.elementAt(0).elementAt(k), after));
-
             }
             foreach (string str in rez) 
             {
@@ -447,9 +442,6 @@ namespace CSPGF
             }
             return rezF;
         }
-
-
-        //---------------------------------------------------------
 
         private List<List<string>> RenderAllLins(List<LinTriple> v)
         {
@@ -647,10 +639,6 @@ namespace CSPGF
             }
         }
 
-
-
-
-
         private List<AppResult> ToApp(CncType cty, Production p, string f, Dictionary<int, HashSet<Production>> prods)
         {
             List<AppResult> rez = new List<AppResult>();
@@ -839,11 +827,11 @@ namespace CSPGF
                 {
                     for (int j = 0; j < rezDesc.Count; j++)
                     {
-                        CncType c = rezLin.ElementAt(i).cncType;
+                        CncType c = rezLin.ElementAt(i).CncType;
                         List<CncType> vcnc = rezDesc.ElementAt(j).CncTypes;
                         vcnc.Add(c);
                         List<List<List<BracketedTokn>>> vbt = rezDesc.ElementAt(j).Bracketedtokn;
-                        List<List<BracketedTokn>> bt = rezLin.ElementAt(i).linTable;
+                        List<List<BracketedTokn>> bt = rezLin.ElementAt(i).LinTable;
                         vbt.Add(bt);
                         rez.Add(new RezDesc(n_fid, vcnc, vbt));
                     }

@@ -54,6 +54,7 @@ namespace CSPGF.Parse
                     {
                         if (aii.Equals(item, cons2)) return false;
                     }
+
                     aItems.Add(new ActiveItemInt(item, cons2));
                     return true;
                 }
@@ -72,7 +73,9 @@ namespace CSPGF.Parse
                 aItems.Add(new ActiveItemInt(item, cons2));
                 map.Add(cons, aItems);
                 this.store.Add(cat, map);
+
             }
+
             return true;
         }
 
@@ -89,7 +92,9 @@ namespace CSPGF.Parse
                     {
                         i.Cons2 = key;
                         aai.Add(i);
+
                     }
+
                 }
             }
             return aai;
@@ -105,6 +110,7 @@ namespace CSPGF.Parse
                 {
                     return aai;
                 }
+
             }
             return aai;
         }

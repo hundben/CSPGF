@@ -37,8 +37,9 @@ namespace CSPGF.Linearize
         public string cId { get; private set; }
         public int lIndex { get; private set; }
         public int fId { get; private set; }
+
         /// <summary>
-        /// Get/set for bracketed tokens
+        /// Gets set of bracketed tokens
         /// </summary>
         public List<BracketedTokn> bracketedtoks { get; private set; }
 

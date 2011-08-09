@@ -40,6 +40,7 @@ namespace CSPGF.Linearize
         {
             this.tokens = _tokens;
         }
+
         public override string ToString()
         {
             string rez = "string names : [";
@@ -47,6 +48,7 @@ namespace CSPGF.Linearize
             {
                 rez += " " + s;
             }
+
             rez += "]";
             return rez;
         }

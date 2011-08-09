@@ -32,21 +32,24 @@ namespace CSPGF.Linearize
     using System.Linq;
     using System.Text;
 
-    class LinTriple
+    public class LinTriple
     {
-        public int fId { get; private set; }
-        public CncType cncType { get; private set; }
-        public List<List<BracketedTokn>> linTable { get; private set; }
-
-        public LinTriple(int _fId, CncType _cncType, List<List<BracketedTokn>> _linTable)
+        public LinTriple(int fId, CncType cncType, List<List<BracketedTokn>> linTable)
         {
-            this.fId = _fId;
-            this.cncType = _cncType;
-            this.linTable = _linTable;
+            this.FId = fId;
+            this.CncType = cncType;
+            this.LinTable = linTable;
         }
+
+        public int FId { get; private set; }
+
+        public CncType CncType { get; private set; }
+
+        public List<List<BracketedTokn>> LinTable { get; private set; }
+
         public override string ToString()
         {
-            string rez = "id : " + this.fId + " cncType : (" + this.cncType.ToString() + ") bracketedToken :[" + this.linTable.ToString() + "]";
+            string rez = "id : " + this.FId + " cncType : (" + this.CncType.ToString() + ") bracketedToken :[" + this.LinTable.ToString() + "]";
             return rez;
         }
     }

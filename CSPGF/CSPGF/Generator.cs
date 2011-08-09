@@ -67,15 +67,16 @@ using CSPGF.Trees.Absyn;
                             {
                                 indirFuns.Add(weid.ident);
                             }
+
                             break;
                         }
                     }
                 }
+
                 this.dirRules.Add(abc.name, dirFuns);
                 this.indirRules.Add(abc.name, indirFuns);
             }
         }
-
 
         public Tree Gen()
         {
@@ -122,15 +123,19 @@ using CSPGF.Trees.Absyn;
                         {
                             return null;
                         }
+
                     }
+
                     Tree rez = new Function(funcName);
                     foreach (Tree t in exps) 
                     {
                         rez = new Application(rez, t);
                     }
+
                     return rez;
                 }
             }
+
             return null;
         }
 
@@ -168,21 +173,24 @@ using CSPGF.Trees.Absyn;
             {
                 throw new Exception("Cannot generate any expression of type " + type);
             }
+
             if (isEmptyDir) 
             {
                 return this.GetIndirect(type, indirFuns);
             }
+
             if (isEmptyIndir) 
             {
                 return this.GetDirect(type, dirFuns);
             }
+
             if (depth <= 2) 
             {
                 return this.GetDirect(type, dirFuns);
             }
+
             return this.GetIndirect(type, indirFuns);
         }
-
 
         /** generates a number of expressions of a given category
         * the expressions are independent
@@ -196,6 +204,7 @@ using CSPGF.Trees.Absyn;
             {
                 return rez;
             }
+
             HashSet<string> dirFuns = this.dirRules[type];
             HashSet<string> indirFuns = this.indirRules[type];
             foreach (string it in dirFuns) 
@@ -209,6 +218,7 @@ using CSPGF.Trees.Absyn;
                     {
                         return rez;
                     }
+
                 }
             }
             foreach (string it in indirFuns) 
@@ -222,13 +232,11 @@ using CSPGF.Trees.Absyn;
                     {
                         return rez;
                     }
+
                 }
             }
             return rez;
         }
-
-
-        /** generates a random string **/
 
         public string GenerateString()
         {

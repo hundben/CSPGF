@@ -1,5 +1,4 @@
-﻿
-namespace CSPGF.Linearizer_new
+﻿namespace CSPGF.Linearizer_new
 {
     using System;
     using System.Collections.Generic;
@@ -121,7 +120,6 @@ namespace CSPGF.Linearizer_new
                         throw new LinearizerException("Failsymbol: " + seq.symbs[i].GetType());
                     }
                 }
-
             }
             return str;
         }

@@ -30,7 +30,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-
 namespace CSPGF.Parser_new
 {
     class Parser
@@ -95,14 +94,12 @@ namespace CSPGF.Parser_new
             {
                 foreach (Reader.ApplProduction ap in Predict(cat, prods))
                 {
-
                 }
             }
         }
 
         public void ParseWithRecovery(String language, String text)
         {
-
         }
 
         private void PredictTEMP(int cat)
@@ -209,8 +206,7 @@ namespace CSPGF.Parser_new
                         foreach (String tok in t.tokens)
                         {
                             token += tok + " ";
-                        }
-                        
+                        } 
                     }
                     else if (symb is Reader.AlternToksSymbol)
                     {
@@ -224,6 +220,3 @@ namespace CSPGF.Parser_new
         }
     }
 }
-
-
-

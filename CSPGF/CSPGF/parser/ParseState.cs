@@ -25,7 +25,6 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-
 namespace CSPGF.Parse
 {
     using System;
@@ -53,6 +52,7 @@ namespace CSPGF.Parse
                 //TODO check if first or last id
                 lastCat = Math.Max(cncTemp.lastFID, lastCat);
             }
+
             this.chart = new Chart(lastCat++); //was 100
             this.agenda = new Stack<ActiveItem>();
             this.position = 0;
@@ -62,12 +62,14 @@ namespace CSPGF.Parse
             foreach (Production k in grammar.GetProductions()) {
                 this.chart.AddProduction(k);
             }
+
             for (int id = this.startCat.firstFID; id <= this.startCat.lastFID + 1; id++) {
                 foreach (ApplProduction prod in this.chart.GetProductions(id)) {
                     ActiveItem it = new ActiveItem(0, id, prod.function, prod.domain, 0, 0);
                     this.agenda.Push(it);
                 }
             }
+
             this.Compute();
         }
 
@@ -104,9 +106,11 @@ namespace CSPGF.Parse
                     this.trie.Add(tokens, a);
                     newAgenda = a;
                 }
-                else {
+                else 
+                {
                     newAgenda = luAgenda;
                 }
+
                 newAgenda.Push(i);
             }
             else if (sym is ArgConstSymbol) {
@@ -123,6 +127,7 @@ namespace CSPGF.Parse
                             this.agenda.Push(it);
                         }
                     }
+
                     int cat = this.chart.GetCategory(Bd, r, this.position, this.position);
                     //null here is wierd? :D
                     if (cat != -1) {
@@ -131,13 +136,17 @@ namespace CSPGF.Parse
                         ActiveItem it = new ActiveItem(j, A, f, newDomain, l, p + 1);
                         this.agenda.Push(it);
                     }
+
                 }
             }
-            else {
+            else 
+            {
                 int cat = this.chart.GetCategory(A, l, j, this.position);
-                if (cat == -1) {
+                if (cat == -1) 
+                {
                     int N = this.chart.GenerateFreshCategory(new Category(A, l, j, this.position));
-                    foreach (ActiveItemInt aii in this.active[j].Get(A, l)) {
+                    foreach (ActiveItemInt aii in this.active[j].Get(A, l)) 
+                    {
                         ActiveItem ip = aii.Item;
                         int d = aii.Cons;
                         List<int> domain = new List<int>(ip.Domain);
@@ -145,11 +154,14 @@ namespace CSPGF.Parse
                         ActiveItem i = new ActiveItem(ip.Begin, ip.Category, ip.Function, domain, ip.Constituent, ip.Position + 1);
                         this.agenda.Push(i);
                     }
+
                     this.chart.AddProduction(N, f, B);
                 }
-                else {
+                else 
+                {
                     HashSet<ActiveItemInt> items = this.active[this.position].Get(cat);
-                    foreach (ActiveItemInt aii in items) {
+                    foreach (ActiveItemInt aii in items) 
+                    {
                         //ActiveItem xprime = aii.item;
                         //int dprime = aii.cons;
                         int r = aii.Cons2;
@@ -166,16 +178,19 @@ namespace CSPGF.Parse
             TreeBuilder tb = new TreeBuilder();
             TreeConverter tc = new TreeConverter();
             List<CSPGF.Trees.Absyn.Tree> tmp = new List<CSPGF.Trees.Absyn.Tree>();
-            foreach (Tree t in tb.BuildTrees(this.chart, this.startCat, this.position)) {
+            foreach (Tree t in tb.BuildTrees(this.chart, this.startCat, this.position)) 
+            {
                 tmp.Add(tc.Intermediate2Abstract(t));
             }
+
             return tmp;
         }
 
         public bool Scan(string token)
         {
             ParseTrie newTrie = this.trie.GetSubTrie(token);
-            if (newTrie != null) {
+            if (newTrie != null) 
+            {
                 string[] empt = new string[0];
                 Stack<ActiveItem> newAgenda = newTrie.Lookup(empt);
                 if (newAgenda != null) {
@@ -186,6 +201,7 @@ namespace CSPGF.Parse
                     return true;
                 }
             }
+
             return false;
         }
 
@@ -224,7 +240,6 @@ namespace CSPGF.Parse
 //    compute()
 //    /*                        END OF INITIALIZATION                          *
 //     * ********************************************************************* */
-
 
 //     /* ********************************************************************* *
 //      *                        PROCESSING AGENDA                              */
@@ -325,10 +340,6 @@ namespace CSPGF.Parse
 //     /*                                                                       *
 //      * ********************************************************************* */
 
-
-
-
-
 //  /**
 //   * returns the set of possible next words
 //   * */
@@ -358,9 +369,6 @@ namespace CSPGF.Parse
 //    //log.finer(this.trie.toString)
 //    return true
 //  }
-
-
-
 
 //  /* Overrides */
   

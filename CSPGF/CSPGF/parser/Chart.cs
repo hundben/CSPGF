@@ -25,7 +25,6 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-
 namespace CSPGF.Parse
 {
     using System;
@@ -61,7 +60,6 @@ namespace CSPGF.Parse
                 prodSet = new HashSet<Production>();
                 prodSet.Add(p);
                 this.productionSets.Add(p.fId, prodSet);
-
             }
             this.nextCat = Math.Max(this.nextCat, p.fId + 1);
         }
@@ -189,7 +187,6 @@ namespace CSPGF.Parse
 //  def addProduction(cat:Int, fun: CncFun, domain:Array[Int]):Boolean =
 //    this.addProduction(new Production(cat, fun, domain))
 
-
 //  def getProductions(resultCat : Int):Array[Production] =
 //    productionSets.get(resultCat) match {
 //      case Some(ps) =>
@@ -205,7 +202,6 @@ namespace CSPGF.Parse
 //                              a <- this.uncoerce(prod) )
 //                          yield a
 //  }
-
 
 //  /** **********************************************************************
 //   *  Handling fresh categories

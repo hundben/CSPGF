@@ -1,6 +1,4 @@
-﻿
-
-namespace CSPGF.Parser_new
+﻿namespace CSPGF.Parser_new
 {
     using System;
     using System.Collections.Generic;
@@ -12,14 +10,11 @@ namespace CSPGF.Parser_new
         private int nextCat;
         public Chart(int nextCat)
         {
-
         }
 
         public void AddProduction()
         {
-
         }
-
         
         //We need a way to handle all the categories we create (COMPLETE rule), also this will check so we don't create duplicates
         //N = category, l = constituent, j = start, k = end

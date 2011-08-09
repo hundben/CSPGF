@@ -42,10 +42,10 @@ namespace CSPGF.Linearize
             this.cId = _cId;
             this.fId = _fId;
         }
+
         public override string ToString()
         {
             return "name : " + this.cId + " , fId : " + this.fId;
         }
-
     }
 }
