@@ -95,7 +95,7 @@ namespace CSPGF.Parse
         }
 
         
-        public int getFreshCategory(int oldCat, int l, int j, int k)
+        public int GetFreshCategory(int oldCat, int l, int j, int k)
         {
             // TODO Optimize this, use something else instead of looping through everything
             Category cf = new Category(oldCat, l, j, k);

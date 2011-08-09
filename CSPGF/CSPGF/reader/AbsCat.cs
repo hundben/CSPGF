@@ -36,25 +36,29 @@ namespace CSPGF.Reader
     {
         public AbsCat(string name, List<Hypo> hypos, List<WeightedIdent> functions)
         {
-            Name = name;
-            Hypos = hypos;
-            functions = functions;
+            this.Name = name;
+            this.Hypos = hypos;
+            this.Functions = functions;
         }
 
         public string Name { get; private set; }
         public List<Hypo> Hypos { get; private set; }
-        public List<WeightedIdent> functions { get; private set; }
+        public List<WeightedIdent> Functions { get; private set; }
 
-        public override String ToString()
+        public override string ToString()
         {
-            String ss = "Name : " + Name + " , Hypotheses : (";
-            foreach (Hypo h in Hypos) {
+            string ss = "Name : " + Name + " , Hypotheses : (";
+            foreach (Hypo h in Hypos) 
+            {
                 ss += " " + h.ToString();
             }
+
             ss += ") , String Names : (";
-            foreach (WeightedIdent w in functions) {
+            foreach (WeightedIdent w in this.functions) 
+            {
                 ss += " " + w.ToString();
             }
+
             ss += ")";
             return ss;
         }

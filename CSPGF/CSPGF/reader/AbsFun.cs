@@ -24,37 +24,40 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class AbsFun
     {
-        public String name { get; private set; }
-        public Type type { get; private set; }
-        public int arit { get; private set; }
-        public List<Eq> eqs { get; private set; }
-        private double weight;
-
-        public AbsFun(String _str, Type _type, int _arit, List<Eq> _eqs, double _weight)
+        public AbsFun(string str, Type type, int arit, List<Eq> eqs, double weight)
         {
-            name = _str;
-            type = _type;
-            arit = _arit;
-            eqs = _eqs;
-            weight = _weight;
+            this.Name = str;
+            this.Type = type;
+            this.Arit = arit;
+            this.Eqs = eqs;
+            this.Weight = weight;
         }
 
-        public override String ToString()
+        public string Name { get; private set; }
+        public Type Type { get; private set; }
+        public int Arit { get; private set; }
+        public List<Eq> Eqs { get; private set; }
+        private double Weight;
+
+        public override string ToString()
         {
-            String sb = "<function name = " + name + " type = " + type + " arity = " + arit + " equations = [";
-            foreach (Eq e in eqs) {
-                sb += eqs + ", ";
+            string sb = "<function name = " + this.Name + " type = " + this.Type + " arity = " + this.Arit + " equations = [";
+            foreach (Eq e in this.Eqs) 
+            {
+                sb += e + ", ";
             }
-            sb += "] weight = " + weight + " > ";
+
+            sb += "] weight = " + this.Weight + " > ";
             return sb;
         }
     }

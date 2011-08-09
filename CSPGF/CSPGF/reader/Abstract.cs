@@ -24,58 +24,66 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class Abstract
     {
-        public String name { get; private set; } 
-        private Dictionary<String, RLiteral> flags;
-        public List<AbsFun> absFuns { get; private set; }
-        public List<AbsCat> absCats { get; private set; }
+        public string Name { get; private set; } 
+        private Dictionary<string, RLiteral> Flags;
+        public List<AbsFun> AbsFuns { get; private set; }
+        public List<AbsCat> AbsCats { get; private set; }
 
-        public Abstract(String _name, Dictionary<String, RLiteral> _flags, List<AbsFun> _absFuns, List<AbsCat> _absCats)
+        public Abstract(string name, Dictionary<string, RLiteral> flags, List<AbsFun> absFuns, List<AbsCat> absCats)
         {
-            name = _name;
-            flags = _flags;
-            absFuns = _absFuns;
-            absCats = _absCats;
+            this.Name = name;
+            this.Flags = flags;
+            this.AbsFuns = absFuns;
+            this.AbsCats = absCats;
         }
 
-        public String StartCat()
+        public string StartCat()
         {
             RLiteral cat = null;
-            if (flags.TryGetValue("startcat", out cat)) {
+            if (Flags.TryGetValue("startcat", out cat)) 
+            {
                 return ((StringLit)cat).value;
             }
-            else {
+            else 
+            {
                 return "Sentence";
             }
         }
 
-        public override String ToString()
+        public override string ToString()
         {
-            String ss = "Name : " + name + " , Flags : (";
+            string ss = "Name : " + Name + " , Flags : (";
             // TODO: Är bortkommenterat i javakoden också kanske borde fixa?
             // for(int i=0; i<flags.length;i++)
             // 	ss+=(" "+flags[i].toString());
-            foreach(KeyValuePair<String,RLiteral> kvp in flags) {
+            foreach(KeyValuePair<string,RLiteral> kvp in Flags) 
+            {
                 ss += "String: " + kvp.Key + "RLiteral: " + kvp.Value.ToString();
             }
 
 
             ss += ") , Abstract Functions : (";
-            foreach (AbsFun a in absFuns) {
+            foreach (AbsFun a in AbsFuns) 
+            {
                 ss += " " + a.ToString();
             }
+
             ss += ") , Abstract Categories : (";
-            foreach (AbsCat a in absCats) {
+            foreach (AbsCat a in AbsCats) 
+            {
                 ss += " " + a.ToString();
             }
+
             ss += ")";
             return ss;
         }

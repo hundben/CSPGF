@@ -24,25 +24,26 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class AbsNameExp : Expr // EFun?????
     {
-        public String name { get; private set; }
-
-        public AbsNameExp(String _name)
+        public AbsNameExp(string name)
         {
-            name = _name;
+            Name = name;
         }
 
-        public override String ToString()
+        public string Name { get; private set; }
+
+        public override string ToString()
         {
-            return "Abstract Name Expression : [Name : " + name + "]";
+            return "Abstract Name Expression : [Name : " + this.Name + "]";
         }
     }
 }

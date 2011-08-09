@@ -49,8 +49,8 @@ using CSPGF.Trees.Absyn;
             this.pgf = _pgf;
             this.dirRules = new Dictionary<string, HashSet<string>>();
             this.indirRules = new Dictionary<string, HashSet<string>>();
-            List<AbsCat> absCats = this.pgf.GetAbstract().absCats;
-            List<AbsFun> absFuns = this.pgf.GetAbstract().absFuns;
+            List<AbsCat> absCats = this.pgf.GetAbstract().AbsCats;
+            List<AbsFun> absFuns = this.pgf.GetAbstract().AbsFuns;
             HashSet<string> dirFuns = new HashSet<string>();
             HashSet<string> indirFuns = new HashSet<string>();
             foreach (AbsCat abc in absCats) {
@@ -59,8 +59,8 @@ using CSPGF.Trees.Absyn;
                 List<WeightedIdent> functions = abc.functions;
                 foreach (WeightedIdent weid in functions) {
                     foreach (AbsFun ab in absFuns) {
-                        if (weid.ident.Equals(ab.name)) {
-                            if (ab.type.hypos.Count == 0) {
+                        if (weid.ident.Equals(ab.Name)) {
+                            if (ab.Type.hypos.Count == 0) {
                                 dirFuns.Add(weid.ident);
                             }
                             else 
@@ -106,12 +106,12 @@ using CSPGF.Trees.Absyn;
 
             int rand = this.random.Next(vs.Count());
             string funcName = vs.ElementAt(rand);
-            List<AbsFun> absFuns = this.pgf.GetAbstract().absFuns;
+            List<AbsFun> absFuns = this.pgf.GetAbstract().AbsFuns;
             foreach (AbsFun a in absFuns) 
             {
-                if (a.name.Equals(funcName)) 
+                if (a.Name.Equals(funcName)) 
                 {
-                    List<Hypo> hypos = a.type.hypos;
+                    List<Hypo> hypos = a.Type.hypos;
                     string[] tempCats = new string[hypos.Count];
                     Tree[] exps = new Tree[hypos.Count];
                     // TODO: Går detta att göra om?

@@ -45,8 +45,7 @@ namespace CSPGF
             this.startcat = pgf.GetAbstract().StartCat();
         }
         
-        public Parser(PGF pgf, string language) 
-            : this(pgf, pgf.GetConcrete(language))
+        public Parser(PGF pgf, string language) : this(pgf, pgf.GetConcrete(language))
         {
         }
 
@@ -63,9 +62,11 @@ namespace CSPGF
         // FIXME: not using the start category ??
         public ParseState Parse(string[] tokens)
         {
-            ParseState ps = new ParseState(language);
-            foreach (string w in tokens) {
-                if (!ps.Scan(w)) {
+            ParseState ps = new ParseState(this.language);
+            foreach (string w in tokens) 
+            {
+                if (!ps.Scan(w)) 
+                {
                     break;
                 }
             }

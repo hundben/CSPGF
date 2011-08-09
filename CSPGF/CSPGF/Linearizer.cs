@@ -186,14 +186,14 @@ namespace CSPGF
         /** checks if i is the index of a literal or a valid set of productions **/
         private bool ConditionProd(int i, Dictionary<int, HashSet<Production>> prods)
         {
-            if (this.isLiteral(i))
+            if (this.IsLiteral(i))
                 return true;
             return prods.ContainsKey(i);
         }
 
         /** filters a set of productions according to filterRule
         **/
-        private HashSet<Production> filterProdSet1(Dictionary<int, HashSet<Production>> prods0, HashSet<Production> set)
+        private HashSet<Production> FilterProdSet1(Dictionary<int, HashSet<Production>> prods0, HashSet<Production> set)
         {
             HashSet<Production> set1 = new HashSet<Production>();
             foreach (Production prod in set) {
@@ -215,7 +215,7 @@ namespace CSPGF
             foreach (int index in prods.Keys) 
             {
                 HashSet<Production> setProd = prods[index];
-                HashSet<Production> intermRez = this.filterProdSet1(prods0, setProd);
+                HashSet<Production> intermRez = this.FilterProdSet1(prods0, setProd);
                 if (!(intermRez.Count == 0)) 
                 {
                     tempRez.Add(index, intermRez);
@@ -323,11 +323,11 @@ namespace CSPGF
         {
             List<string> rezTemp = new List<string>();
             Abstract abstr = this.pgf.GetAbstract();
-            List<AbsFun> absFuns = abstr.absFuns;
+            List<AbsFun> absFuns = abstr.AbsFuns;
             foreach (AbsFun af in absFuns) 
             {
             // for (int i = 0 ; i < absFuns.length ; i++) {
-                List<Hypo> hypos = af.type.hypos;
+                List<Hypo> hypos = af.Type.hypos;
                 // Hypo[] hypos = absFuns[i].getType().getHypos();
                 foreach (Hypo hypo in hypos) 
                 {
@@ -665,12 +665,12 @@ namespace CSPGF
                 } 
                 else 
                 {
-                    List<AbsFun> absFuns = this.pgf.GetAbstract().absFuns;
+                    List<AbsFun> absFuns = this.pgf.GetAbstract().AbsFuns;
                     CSPGF.Reader.Type t = null;
                     for (int i = 0; i < absFuns.Count; i++) 
                     {
-                        if (f.Equals(absFuns[i].name))
-                            t = absFuns[i].type;
+                        if (f.Equals(absFuns[i].Name))
+                            t = absFuns[i].Type;
                     }
                     if (t == null) 
                     {
@@ -720,7 +720,7 @@ namespace CSPGF
 
 
         /** creates a simple vector of vectors of bracketed tokens containing a string value **/
-        private List<List<BracketedTokn>> ss(string s)
+        private List<List<BracketedTokn>> SS(string s)
         {
             List<List<BracketedTokn>> bt = new List<List<BracketedTokn>>();
             List<BracketedTokn> v = new List<BracketedTokn>();
@@ -850,33 +850,33 @@ namespace CSPGF
 
 
         /** checks if an integer is the index of an integer literal **/
-        private bool isLiteralInt(int i)
+        private bool IsLiteralInt(int i)
         {
             return i == -2;
         }
 
         /** checks if an integer is the index of a string literal **/
-        private bool isLiteralString(int i)
+        private bool IsLiteralString(int i)
         {
             return i == -1;
         }
 
         /** checks if an integer is the index of a float literal **/
-        private bool isLiteralFloat(int i)
+        private bool IsLiteralFloat(int i)
         {
             return i == -3;
         }
 
         /** checks if an integer is the index of a variable literal **/
-        private bool isLiteralVar(int i)
+        private bool IsLiteralVar(int i)
         {
             return i == -4;
         }
 
         /** checks if an integer is the index of a literal **/
-        private bool isLiteral(int i)
+        private bool IsLiteral(int i)
         {
-            if (this.isLiteralString(i) || this.isLiteralInt(i) || this.isLiteralFloat(i) || this.isLiteralVar(i)) 
+            if (this.IsLiteralString(i) || this.IsLiteralInt(i) || this.IsLiteralFloat(i) || this.IsLiteralVar(i)) 
             {
                 return true;
             }
