@@ -24,27 +24,29 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class AppExp : Expr //EApp
     {
-        public Expr lExp { get; private set; }
-        public Expr rExp { get; private set; }
 
-        public AppExp(Expr _lExp, Expr _rExp)
+        public AppExp(Expr lExp, Expr rExp)
         {
-            lExp = _lExp;
-            rExp = _rExp;
+            this.LExp = lExp;
+            this.RExp = rExp;
         }
 
-        public override String ToString()
+        public Expr LExp { get; private set; }
+        public Expr RExp { get; private set; }
+
+        public override string ToString()
         {
-            return "Expression application [Left-hand side : ( " + lExp.ToString() + "), Right-hand side : (" + rExp.ToString() + ")]";
+            return "Expression application [Left-hand side : ( " + this.LExp.ToString() + "), Right-hand side : (" + this.RExp.ToString() + ")]";
         }
     }
 }

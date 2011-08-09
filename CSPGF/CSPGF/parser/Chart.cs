@@ -39,11 +39,11 @@ namespace CSPGF.Parse
         private Dictionary<int, HashSet<Production>> productionSets = new Dictionary<int, HashSet<Production>>();
         // private Dictionary<Tuple<int, int, int, int>, int> categoryBookKeeper = new Dictionary<Tuple<int, int, int, int>, int>();
         private Dictionary<Category, int> categoryBookKeeper = new Dictionary<Category, int>();
-        int nextCat;
+        private int nextCat;
 
-        public Chart(int _nextCat)
+        public Chart(int nextCat)
         {
-            this.nextCat = _nextCat;
+            this.nextCat = nextCat;
         }
 
         public void AddProduction(Production p)
@@ -52,7 +52,10 @@ namespace CSPGF.Parse
             HashSet<Production> prodSet;
             if (this.productionSets.TryGetValue(p.fId, out prodSet))
             {
-                if (prodSet.Contains(p)) return;
+                if (prodSet.Contains(p)) 
+                { 
+                    return; 
+                }
                 prodSet.Add(p);
             }
             else
@@ -93,7 +96,6 @@ namespace CSPGF.Parse
                 return new List<ApplProduction>();
             }
         }
-
         
         public int GetFreshCategory(int oldCat, int l, int j, int k)
         {
@@ -115,7 +117,10 @@ namespace CSPGF.Parse
             Category cf = new Category(oldCat, cons, begin, end);
             foreach (Category c in this.categoryBookKeeper.Keys)
             {
-                if (c.Equals(cf)) return this.categoryBookKeeper[c];
+                if (c.Equals(cf))
+                {
+                    return this.categoryBookKeeper[c];
+                }
             }
 
             // TODO check consistency of this
@@ -134,11 +139,13 @@ namespace CSPGF.Parse
         public override string ToString()
         {
             string s = "=== Productions: ===\n";
-            foreach (int i in this.productionSets.Keys) {
+            foreach (int i in this.productionSets.Keys) 
+            {
                 s += this.productionSets[i].ToString() + '\n';
             }
             s += "=== passive items: ===\n";
-            foreach (KeyValuePair<Category, int> ints in this.categoryBookKeeper) {
+            foreach (KeyValuePair<Category, int> ints in this.categoryBookKeeper) 
+            {
                 // TODO add ToString on Category I guess? :D
                 s += ints.Key.ToString() + " -> " + ints.Value + '\n';
             }
@@ -150,20 +157,23 @@ namespace CSPGF.Parse
         private List<ApplProduction> Uncoerce(object p)
         {
             List<ApplProduction> prodList = new List<ApplProduction>();
-            if (p is ApplProduction) {
+            if (p is ApplProduction) 
+            {
                 prodList.Add((ApplProduction)p);
             }
-            else if (p is CoerceProduction) {
+            else if (p is CoerceProduction) 
+            {
                 CoerceProduction cp = (CoerceProduction)p;
-                foreach (Production prod in this.GetProductions(cp.initId)) {
-                    foreach (ApplProduction prod2 in this.Uncoerce(prod)) {
+                foreach (Production prod in this.GetProductions(cp.initId)) 
+                {
+                    foreach (ApplProduction prod2 in this.Uncoerce(prod)) 
+                    {
                         prodList.Add(prod2);
                     }
                 }
             }
             return prodList;
         }
-
     }
 }
 

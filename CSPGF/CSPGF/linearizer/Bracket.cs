@@ -34,13 +34,12 @@ namespace CSPGF.Linearize
 
     public class Bracket : BracketedTokn
     {
-        
         public Bracket(string cId, int lIndex, int fId, List<BracketedTokn> bss)
         {
-            this.CId = _cId;
-            this.LIndex = _lIndex;
-            this.FId = _fId;
-            this.Bracketedtoks = _bss;
+            this.CId = cId;
+            this.LIndex = lIndex;
+            this.FId = fId;
+            this.Bracketedtoks = bss;
         }
 
         public string CId { get; private set; }
@@ -51,7 +50,6 @@ namespace CSPGF.Linearize
         /// Gets set of bracketed tokens
         /// </summary>
         public List<BracketedTokn> Bracketedtoks { get; private set; }
-
 
         public override string ToString()
         {

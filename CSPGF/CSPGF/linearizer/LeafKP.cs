@@ -54,7 +54,6 @@ namespace CSPGF.Linearize
         public List<string> DefaultTokens { get; private set; }
         public List<Alternative> Alternatives { get; private set; }
 
-
         public override string ToString()
         {
             string rez = "string names : [";

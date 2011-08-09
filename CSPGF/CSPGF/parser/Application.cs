@@ -34,12 +34,22 @@ namespace CSPGF.Parse
 
     public class Application : Tree
     {
-        public string fun;
-        public List<Tree> args;
-        public Application(string _fun, List<Tree> _args)
+        
+        public Application(string fun, List<Tree> args)
         {
-            this.fun = _fun;
-            this.args = _args;
+            this.Fun = fun;
+            this.Args = args;
+        }
+
+        string Fun
+        {
+            get;
+            private set;
+        }
+        List<Tree> Args
+        {
+            get;
+            private set;
         }
     }
 }

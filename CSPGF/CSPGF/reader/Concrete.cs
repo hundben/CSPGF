@@ -34,34 +34,35 @@ namespace CSPGF.Reader
 {
     public class Concrete
     {
-        //TODO: check for errors
-        public String name { get; private set; }
-        private Dictionary<String, RLiteral> flags;
-        public List<Sequence> seqs { get; private set; }
-        public List<CncFun> cncFuns { get; private set; }
-        public List<ProductionSet> prods { get; private set; }
-        public Dictionary<String, CncCat> cncCats { get; private set; }
-        public int fId { get; private set; }
-        private String startCat;
+        // TODO: check for errors
+        public string Name { get; private set; }
+        private Dictionary<string, RLiteral> Flags;
+        public List<Sequence> Seqs { get; private set; }
+        public List<CncFun> CncFuns { get; private set; }
+        public List<ProductionSet> Prods { get; private set; }
+        public Dictionary<string, CncCat> CncCats { get; private set; }
+        public int FId { get; private set; }
+        private string StartCat;
         // We are missing: printnames, lindefs, lexicon, pproductions, lproductions ? Are any of these needed?
 
-        public Concrete(String _name, Dictionary<String, RLiteral> _flags, List<Sequence> _seqs, List<CncFun> _cncFuns,
-            List<ProductionSet> _prods, Dictionary<String, CncCat> _cncCats, int _fId, String _defaultStartCat)
+        public Concrete(string name, Dictionary<string, RLiteral> flags, List<Sequence> seqs, List<CncFun> cncFuns,
+            List<ProductionSet> prods, Dictionary<string, CncCat> cncCats, int fId, string defaultStartCat)
         {
-            name = _name;
-            flags = _flags;
-            seqs = _seqs;
-            cncFuns = _cncFuns;
-            prods = _prods;
-            cncCats = _cncCats;
-            fId = _fId;
-            startCat = _defaultStartCat;
+        
+            this.Name = name;
+            this.Flags = flags;
+            this.Seqs = seqs;
+            this.CncFuns = cncFuns;
+            this.Prods = prods;
+            this.CncCats = cncCats;
+            this.FId = fId;
+            this.StartCat = defaultStartCat;
         }
 
         public List<CncCat> GetCncCats()
         {
             List<CncCat> tmp = new List<CncCat>();
-            foreach (KeyValuePair<String, CncCat> c in cncCats) {
+            foreach (KeyValuePair<string, CncCat> c in CncCats) {
                 tmp.Add(c.Value);
             }
             return tmp;
@@ -69,20 +70,20 @@ namespace CSPGF.Reader
 
         public CncCat GetStartCat()
         {
-            if (cncCats.ContainsKey(startCat))
+            if (this.CncCats.ContainsKey(StartCat))
             {
-                return cncCats[startCat];
+                return this.CncCats[StartCat];
             }
             else
             {
-                return new CncCat(startCat, 0, 0, new List<String>());
+                return new CncCat(StartCat, 0, 0, new List<string>());
             }
         }
 
         public List<Production> GetProductions()
         {
             List<Production> tmp = new List<Production>();
-            foreach (ProductionSet ps in prods) {
+            foreach (ProductionSet ps in this.Prods) {
                 foreach (Production p in ps.prods) {
                     tmp.Add(p);
                 }
@@ -90,15 +91,15 @@ namespace CSPGF.Reader
             return tmp;
         }
 
-        public override String ToString()
+        public override string ToString()
         {
-            return "Concrete" + name;
+            return "Concrete" + this.Name;
         }
 
         public Dictionary<int, HashSet<Production>> GetSetOfProductions()
         {
             Dictionary<int, HashSet<Production>> dict = new Dictionary<int, HashSet<Production>>();
-            foreach (ProductionSet p in prods) {
+            foreach (ProductionSet p in this.Prods) {
                 dict.Add(p.id, p.GetSetOfProductions());
             }
             return dict;

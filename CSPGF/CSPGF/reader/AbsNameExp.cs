@@ -36,7 +36,7 @@ namespace CSPGF.Reader
     {
         public AbsNameExp(string name)
         {
-            Name = name;
+            this.Name = name;
         }
 
         public string Name { get; private set; }

@@ -33,7 +33,7 @@ namespace CSPGF.Parse
     using System.Text;
     using CSPGF.Reader;
 
-    class ParseState
+    public class ParseState
     {
         private CncCat startCat;
         private ParseTrie trie;
@@ -50,29 +50,30 @@ namespace CSPGF.Parse
             foreach (CncCat cncTemp in grammar.GetCncCats())
             {
                 //TODO check if first or last id
-                lastCat = Math.Max(cncTemp.lastFID, lastCat);
+                lastCat = Math.Max(cncTemp.LastFID, lastCat);
             }
 
-            this.chart = new Chart(lastCat++); //was 100
+            this.chart = new Chart(lastCat++); // was 100
             this.agenda = new Stack<ActiveItem>();
             this.position = 0;
             this.active = new Dictionary<int, ActiveSet>();
 
             //initiate
-            foreach (Production k in grammar.GetProductions()) {
+            foreach (Production k in grammar.GetProductions()) 
+            {
                 this.chart.AddProduction(k);
             }
 
-            for (int id = this.startCat.firstFID; id <= this.startCat.lastFID + 1; id++) {
-                foreach (ApplProduction prod in this.chart.GetProductions(id)) {
-                    ActiveItem it = new ActiveItem(0, id, prod.function, prod.domain, 0, 0);
+            for (int id = this.startCat.FirstFID; id <= this.startCat.LastFID + 1; id++) 
+            {
+                foreach (ApplProduction prod in this.chart.GetProductions(id)) 
+                {
+                    ActiveItem it = new ActiveItem(0, id, prod.Function, prod.Domain, 0, 0);
                     this.agenda.Push(it);
                 }
             }
-
             this.Compute();
         }
-
         
         public List<CSPGF.Trees.Absyn.Tree> GetTrees()
         {
@@ -115,7 +116,8 @@ namespace CSPGF.Parse
         {
             this.active[this.position] = new ActiveSet();
             //redo this with iterator or something like that?
-            while (this.agenda.Count != 0) {
+            while (this.agenda.Count != 0) 
+            {
                 ActiveItem e = this.agenda.Pop();
                 this.ProcessActiveItem(e);
             }
@@ -124,82 +126,95 @@ namespace CSPGF.Parse
         private void ProcessActiveItem(ActiveItem item)
         {
             int j = item.Begin;
-            int A = item.Category;
+            int a = item.Category;
             CncFun f = item.Function;
-            List<int> B = item.Domain;
+            List<int> b = item.Domain;
             int l = item.Constituent;
             int p = item.Position;
 
             Symbol sym = item.NextSymbol(); //is this correct?
 
-            if (sym is ToksSymbol) {
+            if (sym is ToksSymbol) 
+            {
                 ToksSymbol tok = (ToksSymbol)sym;
                 List<string> tokens = tok.tokens;
-                ActiveItem i = new ActiveItem(j, A, f, B, l, p + 1);
+                ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
                 //scan
                 Stack<ActiveItem> newAgenda;
                 Stack<ActiveItem> luAgenda = this.trie.Lookup(tokens);
-                if (luAgenda == null || luAgenda.Count == 0) {
-                    Stack<ActiveItem> a = new Stack<ActiveItem>();
-                    this.trie.Add(tokens, a);
-                    newAgenda = a;
+                if (luAgenda == null || luAgenda.Count == 0) 
+                {
+                    Stack<ActiveItem> sai = new Stack<ActiveItem>();
+                    this.trie.Add(tokens, sai);
+                    newAgenda = sai;
                 }
-                else {
+                else 
+                {
                     newAgenda = luAgenda;
                 }
 
                 newAgenda.Push(i);
             }
-            else if (sym is ArgConstSymbol) {
+            else if (sym is ArgConstSymbol) 
+            {
                 ArgConstSymbol arg = (ArgConstSymbol)sym;
-                int d = arg.arg;
-                int r = arg.cons;
-                int Bd = item.Domain[d];
-                if (this.active.ContainsKey(this.position)) {
+                int d = arg.Arg;
+                int r = arg.Cons;
+                int bd = item.Domain[d];
+                if (this.active.ContainsKey(this.position)) 
+                {
                     // a bit strange, check if we should create an active set first...
-                    if (this.active[this.position].Add(Bd, r, item, d)) {
-                        foreach (ApplProduction prod in this.chart.GetProductions(Bd)) {
-                            ActiveItem it = new ActiveItem(this.position, Bd, prod.function, prod.Domain(), r, 0);
+                    if (this.active[this.position].Add(bd, r, item, d)) 
+                    {
+                        foreach (ApplProduction prod in this.chart.GetProductions(bd)) 
+                        {
+                            ActiveItem it = new ActiveItem(this.position, bd, prod.Function, prod.Domain(), r, 0);
                             this.agenda.Push(it);
                         }
                     }
 
-                    int cat = this.chart.GetCategory(Bd, r, this.position, this.position);
-                    //null here is wierd? :D
-                    if (cat != -1) {
-                        List<int> newDomain = new List<int>(B);
+                    int cat = this.chart.GetCategory(bd, r, this.position, this.position);
+                    // null here is wierd? :D
+                    if (cat != -1) 
+                    {
+                        List<int> newDomain = new List<int>(a);
                         newDomain[d] = cat;
-                        ActiveItem it = new ActiveItem(j, A, f, newDomain, l, p + 1);
+                        ActiveItem it = new ActiveItem(j, a, f, newDomain, l, p + 1);
                         this.agenda.Push(it);
                     }
 
                 }
             }
-            else {
-                int cat = this.chart.GetCategory(A, l, j, this.position);
-                if (cat == -1) {
-                    int N = this.chart.GenerateFreshCategory(new Category(A, l, j, this.position));
-                    foreach (ActiveItemInt aii in this.active[j].Get(A, l)) {
+            else 
+            {
+                int cat = this.chart.GetCategory(a, l, j, this.position);
+                if (cat == -1) 
+                {
+                    int n = this.chart.GenerateFreshCategory(new Category(a, l, j, this.position));
+                    foreach (ActiveItemInt aii in this.active[j].Get(a, l)) 
+                    {
                         ActiveItem ip = aii.Item;
                         int d = aii.Cons;
                         List<int> domain = new List<int>(ip.Domain);
-                        domain[d] = N;
+                        domain[d] = n;
                         ActiveItem i = new ActiveItem(ip.Begin, ip.Category, ip.Function, domain, ip.Constituent, ip.Position + 1);
                         this.agenda.Push(i);
                     }
 
-                    this.chart.AddProduction(N, f, B);
+                    this.chart.AddProduction(n, f, b);
                 }
-                else {
+                else 
+                {
                     HashSet<ActiveItemInt> items = this.active[this.position].Get(cat);
-                    foreach (ActiveItemInt aii in items) {
+                    foreach (ActiveItemInt aii in items) 
+                    {
                         //ActiveItem xprime = aii.item;
                         //int dprime = aii.cons;
                         int r = aii.Cons2;
-                        ActiveItem i = new ActiveItem(this.position, cat, f, B, r, 0);
+                        ActiveItem i = new ActiveItem(this.position, cat, f, b, r, 0);
                         this.agenda.Push(i);
                     }
-                    this.chart.AddProduction(cat, f, B);
+                    this.chart.AddProduction(cat, f, b);
                 }
             }
         }

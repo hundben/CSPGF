@@ -33,20 +33,20 @@ namespace CSPGF
     using System.Text;
     using CSPGF.Reader;
 
-    class PGF
+    public class PGF
     {
         private int majorVersion;
         private int minorVersion;
         private Dictionary<string, RLiteral> flags;
         private Abstract abstr;
         private Dictionary<string, Concrete> concretes;
-        public PGF(int _majorVersion, int _minorVersion, Dictionary<string, RLiteral> _flags, Abstract _abstr, Dictionary<string, Concrete> _concretes)
+        public PGF(int majorVersion, int minorVersion, Dictionary<string, RLiteral> flags, Abstract abstr, Dictionary<string, Concrete> concretes)
         {
-            this.majorVersion = _majorVersion;
-            this.minorVersion = _minorVersion;
-            this.flags = _flags;
-            this.abstr = _abstr;
-            this.concretes = _concretes;
+            this.majorVersion = majorVersion;
+            this.minorVersion = minorVersion;
+            this.flags = flags;
+            this.abstr = abstr;
+            this.concretes = concretes;
         }
 
         /* ******************************** API ******************************** */
@@ -59,8 +59,11 @@ namespace CSPGF
         public Concrete GetConcrete(string name)
         {
             Concrete conc;
-            if (!this.concretes.TryGetValue(name, out conc))
+            if (!this.concretes.TryGetValue(name, out conc)) 
+            {
                 throw new UnknownLanguageException(name);
+            }
+
             return conc;
         }
 

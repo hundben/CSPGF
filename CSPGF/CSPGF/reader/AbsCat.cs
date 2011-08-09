@@ -47,8 +47,8 @@ namespace CSPGF.Reader
 
         public override string ToString()
         {
-            string ss = "Name : " + Name + " , Hypotheses : (";
-            foreach (Hypo h in Hypos) 
+            string ss = "Name : " + this.Name + " , Hypotheses : (";
+            foreach (Hypo h in this.Hypos) 
             {
                 ss += " " + h.ToString();
             }

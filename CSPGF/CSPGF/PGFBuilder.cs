@@ -34,9 +34,9 @@ namespace CSPGF
     using System.Text;
     using CSPGF.Reader;
 
-    class PGFBuilder 
+    public class PGFBuilder 
     {
-        private static bool DBG = false;
+        private static bool debug = false;
 
         /* ************************************************* */
         /* Public reading functions                          */
@@ -49,7 +49,7 @@ namespace CSPGF
         
         public static PGF FromFile(string filename) 
         {
-            if (DBG) 
+            if (debug) 
             { 
                 System.Console.WriteLine("Reading pgf from file : " + filename); 
             }
@@ -75,7 +75,7 @@ namespace CSPGF
          */
         public static PGF FromFile(string filename, List<string> languages) 
         {
-            if (DBG) 
+            if (debug) 
             { 
                 System.Console.WriteLine("Reading pgf from file : " + filename); 
             }
@@ -91,7 +91,8 @@ namespace CSPGF
          */
         public static PGF FromInputStream(BinaryReader stream) 
         {
-            try {
+            try 
+            {
                 return new PGFReader(stream).ReadPGF();
             } 
             catch (UnknownLanguageException e) 
@@ -111,7 +112,5 @@ namespace CSPGF
         {
             return new PGFReader(stream, languages).ReadPGF();
         }
-
-
     }
 }

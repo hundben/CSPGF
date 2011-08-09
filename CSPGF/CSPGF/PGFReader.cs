@@ -24,102 +24,119 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CSPGF.Reader;
-using System.IO;
 
 namespace CSPGF
 {
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using CSPGF.Reader;
+
     class PGFReader
     {
+        private static bool debug = false;
 
-        private static Boolean DBG = false;
+        private StreamWriter Dbgwrite;
+        private BinaryReader Inputstream;
+        private List<string> Languages = null;
 
-        private StreamWriter dbgwrite;
-        private BinaryReader inputstream;
-        private List<String> languages = null;
-
-        public PGFReader(BinaryReader _inputstream)
+        public PGFReader(BinaryReader inputstream)
         {
-            if (DBG) {
-                dbgwrite = new StreamWriter("./dbg.txt", false);
+            if (debug) 
+            {
+                this.Dbgwrite = new StreamWriter("./dbg.txt", false);
             }
-            inputstream = _inputstream;
+
+            this.Inputstream = inputstream;
         }
 
-        public PGFReader(BinaryReader _inputstream, List<String> _languages)
+        public PGFReader(BinaryReader inputstream, List<string> languages)
         {
-            if (DBG) {
-                dbgwrite = new StreamWriter("./dbg.txt", false);
+            if (debug) 
+            {
+                this.Dbgwrite = new StreamWriter("./dbg.txt", false);
             }
-            inputstream = _inputstream;
-            languages = _languages;
+
+            this.Inputstream = inputstream;
+            this.Languages = languages;
         }
 
         public PGF ReadPGF()
         {
-            Dictionary<String, int> index = null;
+            Dictionary<string, int> index = null;
             int[] ii = new int[2];
-            for (int i = 0; i < 2; i++) {
-                int tmp = inputstream.ReadByte();
+            for (int i = 0; i < 2; i++) 
+            {
+                int tmp = this.Inputstream.ReadByte();
                 tmp = tmp << 8;
-                tmp = tmp | inputstream.ReadByte();
+                tmp = tmp | this.Inputstream.ReadByte();
                 ii[i] = tmp;
             }
-            if (DBG) {
-                dbgwrite.WriteLine("PGF version : " + ii[0] + "." + ii[1]);
+            if (debug) 
+            {
+                this.Dbgwrite.WriteLine("PGF version : " + ii[0] + "." + ii[1]);
             }
             // Reading the global flags
-            Dictionary<String, RLiteral> flags = GetListFlag();
-            if (flags.ContainsKey("index")) {
-                index = ReadIndex(((StringLit)flags["index"]).value);
-                if (DBG) {
-                    foreach (KeyValuePair<String, int> kp in index) {
-                        dbgwrite.WriteLine(kp.Key + ", " + kp.Value);
+            Dictionary<string, RLiteral> flags = this.GetListFlag();
+            if (flags.ContainsKey("index")) 
+            {
+                index = this.ReadIndex(((StringLit)flags["index"]).value);
+                if (debug) 
+                {
+                    foreach (KeyValuePair<string, int> kp in index) 
+                    {
+                        this.Dbgwrite.WriteLine(kp.Key + ", " + kp.Value);
                     }
                 }
             }
             // Reading the abstract
-            Abstract abs = GetAbstract();
-            String startCat = abs.StartCat();
+            Abstract abs = this.GetAbstract();
+            string startCat = abs.StartCat();
             // Reading the concrete grammars
-            int nbConcretes = GetInt();
-            Dictionary<String, Concrete> concretes = new Dictionary<string, Concrete>();
-            for (int i = 0; i < nbConcretes; i++) {
-                String name = GetIdent();
-                if (DBG) {
-                    dbgwrite.WriteLine("Language " + name);
+            int nbConcretes = this.GetInt();
+            Dictionary<string, Concrete> concretes = new Dictionary<string, Concrete>();
+            for (int i = 0; i < nbConcretes; i++) 
+            {
+                string name = GetIdent();
+                if (debug) {
+                    this.Dbgwrite.WriteLine("Language " + name);
                 }
-                if (languages == null || languages.Remove(name)) {
-                    Concrete tmp = GetConcrete(name, startCat);
-                    concretes.Add(tmp.name, tmp);
+                if (this.Languages == null || this.Languages.Remove(name)) 
+                {
+                    Concrete tmp = this.GetConcrete(name, startCat);
+                    concretes.Add(tmp.Name, tmp);
                 }
-                else {
-                    if (index != null) {
+                else 
+                {
+                    if (index != null) 
+                    {
                         // TODO: CHECK! Maybe this will work?
-                        inputstream.BaseStream.Seek(index[name], SeekOrigin.Current);
-                        if (DBG) {
-                            dbgwrite.WriteLine("Skipping " + name);
+                        this.Inputstream.BaseStream.Seek(index[name], SeekOrigin.Current);
+                        if (debug) 
+                        {
+                            this.Dbgwrite.WriteLine("Skipping " + name);
                         }
                     }
-                    else {
-                        GetConcrete(name, startCat);
+                    else 
+                    {
+                        this.GetConcrete(name, startCat);
                     }
                 }
             }
             // test that we actually found all the selected languages
-            if (languages != null && languages.Count() > 0) {
-                foreach (String l in languages) {
+            if (this.Languages != null && this.Languages.Count() > 0) 
+            {
+                foreach (string l in this.Languages) 
+                {
                     throw new UnknownLanguageException(l);
                 }
             }
 
             // builds and returns the pgf object.
             PGF pgf = new PGF(ii[0], ii[1], flags, abs, concretes);
-            inputstream.Close();
+            this.Inputstream.Close();
             return pgf;
         }
 
@@ -128,25 +145,28 @@ namespace CSPGF
          * PGF flags: if the startcat flag is set then it is taken as default cat.
          * otherwise "Sentence" is taken as default category.
          */
-        private String GetStartCat(Dictionary<String, RLiteral> flags)
+        private string GetStartCat(Dictionary<string, RLiteral> flags)
         {
             RLiteral cat;
-            if (!flags.TryGetValue("startcat", out cat)) {
+            if (!flags.TryGetValue("startcat", out cat)) 
+            {
                 return "Sentence";
             }
-            else {
+            else
+            {
                 return ((StringLit)cat).value;
             }
         }
 
-        private Dictionary<String, int> ReadIndex(String str)
+        private Dictionary<string, int> ReadIndex(string str)
         {
             //Original javacode: String[] items = s.Split(" +");
-            String[] items = str.Split('+');
-            Dictionary<String, int> index = new Dictionary<String, int>();
-            foreach (String item in items) {
-                String[] i = item.Split(':');
-                index.Add(i[0].Trim(), Int32.Parse(i[1]));
+            string[] items = str.Split('+');
+            Dictionary<string, int> index = new Dictionary<string, int>();
+            foreach (string item in items) 
+            {
+                string[] i = item.Split(':');
+                index.Add(i[0].Trim(), int.Parse(i[1]));
             }
             return index;
         }
@@ -156,75 +176,83 @@ namespace CSPGF
         /* ************************************************* */
         private Abstract GetAbstract()
         {
-            String name = GetIdent();
-            if (DBG) {
-                dbgwrite.WriteLine("Abstract syntax [" + name + "]");
+            string name = this.GetIdent();
+            if (debug) 
+            {
+                this.Dbgwrite.WriteLine("Abstract syntax [" + name + "]");
             }
-            Dictionary<String, RLiteral> flags = GetListFlag();
-            List<AbsFun> absFuns = GetListAbsFun();
-            List<AbsCat> absCats = GetListAbsCat();
+            Dictionary<string, RLiteral> flags = this.GetListFlag();
+            List<AbsFun> absFuns = this.GetListAbsFun();
+            List<AbsCat> absCats = this.GetListAbsCat();
             return new Abstract(name, flags, absFuns, absCats);
         }
 
         private List<Pattern> GetListPattern()
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<Pattern> tmp = new List<Pattern>();
-            for (int i = 0; i < npoz; i++) {
-                tmp.Add(GetPattern());
+            for (int i = 0; i < npoz; i++) 
+            {
+                tmp.Add(this.GetPattern());
             }
             return tmp;
         }
 
         private Eq GetEq()
         {
-            List<Pattern> patts = GetListPattern();
-            Expr exp = GetExpr();
+            List<Pattern> patts = this.GetListPattern();
+            Expr exp = this.GetExpr();
             return new Eq(patts, exp);
         }
 
         private AbsFun GetAbsFun()
         {
-            String name = GetIdent();
-            if (DBG) {
-                dbgwrite.WriteLine("AbsFun: '" + name + "'");
+            string name = this.GetIdent();
+            if (debug)
+            {
+                this.Dbgwrite.WriteLine("AbsFun: '" + name + "'");
             }
-            CSPGF.Reader.Type t = GetType2();
-            int i = GetInt();
-            int has_equations = inputstream.ReadByte();
+            CSPGF.Reader.Type t = this.GetType2();
+            int i = this.GetInt();
+            int has_equations = this.Inputstream.ReadByte();
             List<Eq> equations;
-            if (has_equations == 0) {
+            if (has_equations == 0)
+            {
                 equations = new List<Eq>();
             }
-            else {
-                equations = GetListEq();
+            else 
+            {
+                equations = this.GetListEq();
             }
-            double weight = GetDouble();
+            double weight = this.GetDouble();
             AbsFun f = new AbsFun(name, t, i, equations, weight);
-            if (DBG) {
-                dbgwrite.WriteLine("/AbsFun: " + f);
+            if (debug) 
+            {
+                this.Dbgwrite.WriteLine("/AbsFun: " + f);
             }
             return f;
         }
 
         private AbsCat GetAbsCat()
         {
-            String name = GetIdent();
-            List<Hypo> hypos = GetListHypo();
-            List<WeightedIdent> functions = GetListWeightedIdent();
+            string name = this.GetIdent();
+            List<Hypo> hypos = this.GetListHypo();
+            List<WeightedIdent> functions = this.GetListWeightedIdent();
             return new AbsCat(name, hypos, functions);
         }
 
         private List<AbsFun> GetListAbsFun()
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<AbsFun> tmp = new List<AbsFun>();
-            if (npoz == 0) {
+            if (npoz == 0) 
+            {
                 return tmp;
             }
             else {
-                for (int i = 0; i < npoz; i++) {
-                    tmp.Add(GetAbsFun());
+                for (int i = 0; i < npoz; i++) 
+                {
+                    tmp.Add(this.GetAbsFun());
                 }
             }
             return tmp;
@@ -232,14 +260,17 @@ namespace CSPGF
 
         private List<AbsCat> GetListAbsCat()
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<AbsCat> tmp = new List<AbsCat>();
-            if (npoz == 0) {
+            if (npoz == 0) 
+            {
                 return tmp;
             }
-            else {
-                for (int i = 0; i < npoz; i++) {
-                    tmp.Add(GetAbsCat());
+            else 
+            {
+                for (int i = 0; i < npoz; i++) 
+                {
+                    tmp.Add(this.GetAbsCat());
                 }
             }
             return tmp;
@@ -247,192 +278,206 @@ namespace CSPGF
 
         private CSPGF.Reader.Type GetType2()
         {
-            List<Hypo> hypos = GetListHypo();
-            String returnCat = GetIdent();
-            List<Expr> exprs = GetListExpr();
+            List<Hypo> hypos = this.GetListHypo();
+            string returnCat = this.GetIdent();
+            List<Expr> exprs = this.GetListExpr();
             CSPGF.Reader.Type t = new CSPGF.Reader.Type(hypos, returnCat, exprs);
-            if (DBG) {
-                dbgwrite.WriteLine("Type: " + t);
+            if (debug) 
+            {
+                this.Dbgwrite.WriteLine("Type: " + t);
             }
             return t;
         }
 
         private Hypo GetHypo()
         {
-            int btype = inputstream.ReadByte();
-            Boolean b = btype == 0 ? false : true;
-            String varName = GetIdent();
-            CSPGF.Reader.Type t = GetType2();
+            int btype = this.Inputstream.ReadByte();
+            bool b = btype == 0 ? false : true;
+            string varName = this.GetIdent();
+            CSPGF.Reader.Type t = this.GetType2();
             return new Hypo(b, varName, t);
         }
 
         private List<Hypo> GetListHypo()
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<Hypo> tmp = new List<Hypo>();
-            for (int i = 0; i < npoz; i++) {
-                tmp.Add(GetHypo());
+            for (int i = 0; i < npoz; i++) 
+            {
+                tmp.Add(this.GetHypo());
             }
             return tmp;
         }
 
         private List<Expr> GetListExpr()
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<Expr> tmp = new List<Expr>();
-            for (int i = 0; i < npoz; i++) {
-                tmp.Add(GetExpr());
+            for (int i = 0; i < npoz; i++) 
+            {
+                tmp.Add(this.GetExpr());
             }
             return tmp;
         }
 
         private Expr GetExpr()
         {
-            int sel = inputstream.ReadByte();
+            int sel = this.Inputstream.ReadByte();
             Expr expr = null;
-            switch (sel) {
+            switch (sel)
+            {
                 case 0: //lambda abstraction
-                    int bt = inputstream.ReadByte();
-                    Boolean btype = bt == 0 ? false : true;
-                    String varName = GetIdent();
-                    Expr e1 = GetExpr();
+                    int bt = this.Inputstream.ReadByte();
+                    bool btype = bt == 0 ? false : true;
+                    string varName = this.GetIdent();
+                    Expr e1 = this.GetExpr();
                     expr = new LambdaExp(btype, varName, e1);
                     break;
                 case 1: //expression application
-                    Expr e11 = GetExpr();
-                    Expr e2 = GetExpr();
+                    Expr e11 = this.GetExpr();
+                    Expr e2 = this.GetExpr();
                     expr = new AppExp(e11, e2);
                     break;
                 case 2: //literal expression
-                    RLiteral lit = GetLiteral();
+                    RLiteral lit = this.GetLiteral();
                     expr = new LiteralExp(lit);
                     break;
                 case 3: //meta variable
-                    int id = GetInt();
+                    int id = this.GetInt();
                     expr = new MetaExp(id);
                     break;
                 case 4: //abstract function name
-                    String absFun = GetIdent();
+                    string absFun = this.GetIdent();
                     expr = new AbsNameExp(absFun);
                     break;
                 case 5: //variable
-                    int v = GetInt();
+                    int v = this.GetInt();
                     expr = new VarExp(v);
                     break;
                 case 6: //type annotated expression
-                    Expr e = GetExpr();
-                    CSPGF.Reader.Type t = GetType2();
+                    Expr e = this.GetExpr();
+                    CSPGF.Reader.Type t = this.GetType2();
                     expr = new TypedExp(e, t);
                     break;
                 case 7: //implicit argument
-                    Expr ee = GetExpr();
+                    Expr ee = this.GetExpr();
                     expr = new ImplExp(ee);
                     break;
                 default:
                     throw new Exception("Invalid tag for expressions : " + sel);
             }
+
             return expr;
         }
 
         private List<Eq> GetListEq()
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<Eq> tmp = new List<Eq>();
-            for (int i = 0; i < npoz; i++) {
-                tmp.Add(GetEq());
+            for (int i = 0; i < npoz; i++) 
+            {
+                tmp.Add(this.GetEq());
             }
+
             return tmp;
         }
 
         private Pattern GetPattern()
         {
-            int sel = inputstream.ReadByte();
+            int sel = this.Inputstream.ReadByte();
             Pattern patt = null;
-            switch (sel) {
+            switch (sel) 
+            {
                 case 0: //application pattern
-                    String absFun = GetIdent();
-                    List<Pattern> patts = GetListPattern();
+                    string absFun = this.GetIdent();
+                    List<Pattern> patts = this.GetListPattern();
                     patt = new AppPattern(absFun, patts);
                     break;
                 case 1: //variable pattern
-                    String varName = GetIdent();
+                    string varName = this.GetIdent();
                     patt = new VarPattern(varName);
                     break;
                 case 2: //variable as pattern
-                    String pVarName = GetIdent();
-                    Pattern p = GetPattern();
+                    string pVarName = this.GetIdent();
+                    Pattern p = this.GetPattern();
                     patt = new VarAsPattern(pVarName, p);
                     break;
                 case 3: //wild card pattern
                     patt = new WildCardPattern();
                     break;
                 case 4: //literal pattern
-                    RLiteral lit = GetLiteral();
+                    RLiteral lit = this.GetLiteral();
                     patt = new LiteralPattern(lit);
                     break;
                 case 5: //implicit argument
-                    Pattern pp = GetPattern();
+                    Pattern pp = this.GetPattern();
                     patt = new ImpArgPattern(pp);
                     break;
                 case 6: //inaccessible pattern
-                    Expr e = GetExpr();
+                    Expr e = this.GetExpr();
                     patt = new InaccPattern(e);
                     break;
                 default:
                     throw new Exception("Invalid tag for patterns : " + sel);
             }
+
             return patt;
         }
 
         private RLiteral GetLiteral()
         {
-            int sel = inputstream.ReadByte();
+            int sel = this.Inputstream.ReadByte();
             RLiteral ss = null;
-            switch (sel) {
+            switch (sel) 
+            {
                 case 0:
-                    String str = GetString();
+                    string str = this.GetString();
                     ss = new StringLit(str);
                     break;
                 case 1:
-                    int i = GetInt();
+                    int i = this.GetInt();
                     ss = new IntLit(i);
                     break;
                 case 2:
-                    double d = GetDouble();
+                    double d = this.GetDouble();
                     ss = new FloatLit(d);
                     break;
                 default:
                     throw new Exception("Incorrect literal tag " + sel);
             }
+
             return ss;
         }
 
         /* ************************************************* */
         /* Reading concrete grammar                          */
         /* ************************************************* */
-        private Concrete GetConcrete(String name, String startCat)
+        private Concrete GetConcrete(string name, string startCat)
         {
-            if (DBG) {
-                dbgwrite.WriteLine("Concrete: " + name);
-                dbgwrite.WriteLine("Concrete: Reading flags");
+            if (debug)
+            {
+                this.Dbgwrite.WriteLine("Concrete: " + name);
+                this.Dbgwrite.WriteLine("Concrete: Reading flags");
             }
-            Dictionary<String, RLiteral> flags = GetListFlag();
+            Dictionary<string, RLiteral> flags = this.GetListFlag();
             // We don't use the print names, but we need to read them to skip them
-            if (DBG) {
-                dbgwrite.WriteLine("Concrete: Skiping print names");
+            if (debug) 
+            {
+                this.Dbgwrite.WriteLine("Concrete: Skiping print names");
             }
-            GetListPrintName();
-            if (DBG) {
-                dbgwrite.WriteLine("Concrete: Reading sequences");
+            this.GetListPrintName();
+            if (debug) 
+            {
+                this.Dbgwrite.WriteLine("Concrete: Reading sequences");
             }
-            List<Sequence> seqs = GetListSequence();
-            List<CncFun> cncFuns = GetListCncFun(seqs);
+            List<Sequence> seqs = this.GetListSequence();
+            List<CncFun> cncFuns = this.GetListCncFun(seqs);
             // We don't need the lindefs for now but again we need to
             // parse them to skip them
-            GetListLinDef();
-            List<ProductionSet> prods = GetListProductionSet(cncFuns);
-            Dictionary<String, CncCat> cncCats = GetListCncCat();
-            int i = GetInt();
+            this.GetListLinDef();
+            List<ProductionSet> prods = this.GetListProductionSet(cncFuns);
+            Dictionary<string, CncCat> cncCats = this.GetListCncCat();
+            int i = this.GetInt();
             return new Concrete(name, flags, seqs, cncFuns, prods, cncCats, i, startCat);
         }
 
@@ -442,21 +487,24 @@ namespace CSPGF
         // FIXME : not used, we should avoid creating the objects
         private PrintName GetPrintName()
         {
-            String absName = GetIdent();
-            String printName = GetString();
+            string absName = this.GetIdent();
+            string printName = this.GetString();
             return new PrintName(absName, printName);
         }
 
         private List<PrintName> GetListPrintName()
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<PrintName> tmp = new List<PrintName>();
-            if (npoz == 0) {
+            if (npoz == 0) 
+            {
                 return tmp;
             }
-            else {
-                for (int i = 0; i < npoz; i++) {
-                    tmp.Add(GetPrintName());
+            else
+            {
+                for (int i = 0; i < npoz; i++) 
+                {
+                    tmp.Add(this.GetPrintName());
                 }
             }
             return tmp;
@@ -467,81 +515,91 @@ namespace CSPGF
         /* ************************************************* */
         private Sequence GetSequence()
         {
-            List<Symbol> symbols = GetListSymbol();
+            List<Symbol> symbols = this.GetListSymbol();
             return new Sequence(symbols);
         }
 
         private List<Sequence> GetListSequence()
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<Sequence> tmp = new List<Sequence>();
-            for (int i = 0; i < npoz; i++) {
-                tmp.Add(GetSequence());
+            for (int i = 0; i < npoz; i++)
+            {
+                tmp.Add(this.GetSequence());
             }
             return tmp;
         }
 
         private Symbol GetSymbol()
         {
-            int sel = inputstream.ReadByte();
-            if (DBG) {
-                dbgwrite.WriteLine("Symbol: type=" + sel);
+            int sel = this.Inputstream.ReadByte();
+            if (debug) 
+            {
+                this.Dbgwrite.WriteLine("Symbol: type=" + sel);
             }
             Symbol symb = null;
-            switch (sel) {
+            switch (sel) 
+            {
                 case 0: // category (non terminal symbol)
 
                 case 1: // Lit (Not implemented properly)
-                    int i1 = GetInt();
-                    int i2 = GetInt();
+                    int i1 = this.GetInt();
+                    int i2 = this.GetInt();
                     symb = new ArgConstSymbol(i1, i2);
                     break;
                 case 2: // Variable (Not implemented)
                     //UnsupportedOperationException -> Exception
                     throw new Exception("Var symbols are not supported yet");
                 case 3: //sequence of tokens
-                    List<String> strs = GetListString();
+                    List<string> strs = this.GetListString();
                     symb = new ToksSymbol(strs);
                     break;
                 case 4: //alternative tokens
-                    List<String> altstrs = GetListString();
-                    List<Alternative> la = GetListAlternative();
+                    List<string> altstrs = this.GetListString();
+                    List<Alternative> la = this.GetListAlternative();
                     symb = new AlternToksSymbol(altstrs, la);
                     break;
                 // IOException -> Exception
                 default:
                     throw new Exception("Invalid tag for symbols : " + sel);
             }
-            if (DBG) {
-                dbgwrite.WriteLine("/Symbol: " + symb);
+
+            if (debug) 
+            {
+                this.Dbgwrite.WriteLine("/Symbol: " + symb);
             }
+
             return symb;
         }
 
         private List<Alternative> GetListAlternative()
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<Alternative> tmp = new List<Alternative>();
-            for (int i = 0; i < npoz; i++) {
-                tmp.Add(GetAlternative());
+            for (int i = 0; i < npoz; i++) 
+            {
+                tmp.Add(this.GetAlternative());
             }
+
             return tmp;
         }
 
         private Alternative GetAlternative()
         {
-            List<String> s1 = GetListString();
-            List<String> s2 = GetListString();
+            List<string> s1 = this.GetListString();
+            List<string> s2 = this.GetListString();
             return new Alternative(s1, s2);
         }
 
         private List<Symbol> GetListSymbol()
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<Symbol> tmp = new List<Symbol>();
-            for (int i = 0; i < npoz; i++) {
-                tmp.Add(GetSymbol());
+            for (int i = 0; i < npoz; i++) 
+            {
+                tmp.Add(this.GetSymbol());
             }
+
             return tmp;
         }
 
@@ -550,22 +608,26 @@ namespace CSPGF
         /* ************************************************* */
         private CncFun GetCncFun(List<Sequence> sequences)
         {
-            String name = GetIdent();
-            List<int> sIndices = GetListInt();
+            string name = this.GetIdent();
+            List<int> sIndices = this.GetListInt();
             List<Sequence> seqs = new List<Sequence>();
-            foreach (int i in sIndices) {
+            foreach (int i in sIndices) 
+            {
                 seqs.Add(sequences[i]);
             }
+
             return new CncFun(name, seqs);
         }
 
         private List<CncFun> GetListCncFun(List<Sequence> sequences)
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<CncFun> tmp = new List<CncFun>();
-            for (int i = 0; i < npoz; i++) {
-                tmp.Add(GetCncFun(sequences));
+            for (int i = 0; i < npoz; i++) 
+            {
+                tmp.Add(this.GetCncFun(sequences));
             }
+
             return tmp;
         }
 
@@ -576,22 +638,26 @@ namespace CSPGF
 
         private List<LinDef> GetListLinDef()
         {
-            int size = GetInt();
+            int size = this.GetInt();
             List<LinDef> tmp = new List<LinDef>();
-            for (int i = 0; i < size; i++) {
-                tmp.Add(GetLinDef());
+            for (int i = 0; i < size; i++) 
+            {
+                tmp.Add(this.GetLinDef());
             }
+
             return tmp;
         }
 
         private LinDef GetLinDef()
         {
-            int key = GetInt();
-            int listSize = GetInt();
+            int key = this.GetInt();
+            int listSize = this.GetInt();
             List<int> funIds = new List<int>();
-            for (int i = 0; i < listSize; i++) {
-                funIds.Add(GetInt());
+            for (int i = 0; i < listSize; i++) 
+            {
+                funIds.Add(this.GetInt());
             }
+
             return new LinDef(key, funIds);
         }
 
@@ -605,8 +671,8 @@ namespace CSPGF
          */
         private ProductionSet GetProductionSet(List<CncFun> cncFuns)
         {
-            int id = GetInt();
-            List<Production> prods = GetListProduction(id, cncFuns);
+            int id = this.GetInt();
+            List<Production> prods = this.GetListProduction(id, cncFuns);
             return new ProductionSet(id, prods);
         }
 
@@ -617,11 +683,13 @@ namespace CSPGF
          */
         private List<ProductionSet> GetListProductionSet(List<CncFun> cncFuns)
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<ProductionSet> tmp = new List<ProductionSet>();
-            for (int i = 0; i < npoz; i++) {
-                tmp.Add(GetProductionSet(cncFuns));
+            for (int i = 0; i < npoz; i++) 
+            {
+                tmp.Add(this.GetProductionSet(cncFuns));
             }
+
             return tmp;
         }
 
@@ -634,11 +702,13 @@ namespace CSPGF
          */
         private List<Production> GetListProduction(int leftCat, List<CncFun> cncFuns)
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<Production> tmp = new List<Production>();
-            for (int i = 0; i < npoz; i++) {
-                tmp.Add(GetProduction(leftCat, cncFuns));
+            for (int i = 0; i < npoz; i++) 
+            {
+                tmp.Add(this.GetProduction(leftCat, cncFuns));
             }
+
             return tmp;
         }
 
@@ -653,28 +723,34 @@ namespace CSPGF
          */
         private Production GetProduction(int leftCat, List<CncFun> cncFuns)
         {
-            int sel = inputstream.ReadByte();
-            if (DBG) {
-                dbgwrite.WriteLine("Production: type=" + sel);
+            int sel = this.Inputstream.ReadByte();
+            if (debug)
+            {
+                this.Dbgwrite.WriteLine("Production: type=" + sel);
             }
+
             Production prod = null;
-            switch (sel) {
+            switch (sel) 
+            {
                 case 0: //application
-                    int i = GetInt();
-                    List<int> domain = GetDomainFromPArgs();
+                    int i = this.GetInt();
+                    List<int> domain = this.GetDomainFromPArgs();
                     prod = new ApplProduction(leftCat, cncFuns[i], domain);
                     break;
                 case 1: //coercion
-                    int id = GetInt();
+                    int id = this.GetInt();
                     prod = new CoerceProduction(leftCat, id);
                     break;
                 //IOException -> Exception
                 default:
                     throw new Exception("Invalid tag for productions : " + sel);
             }
-            if (DBG) {
-                dbgwrite.WriteLine("/Production: " + prod);
+
+            if (debug) 
+            {
+                this.Dbgwrite.WriteLine("/Production: " + prod);
             }
+
             return prod;
         }
 
@@ -683,79 +759,93 @@ namespace CSPGF
         // since we don't need the rest for now...
         private List<int> GetDomainFromPArgs()
         {
-            int size = GetInt();
+            int size = this.GetInt();
             List<int> tmp = new List<int>();
-            for (int i = 0; i < size; i++) {
+            for (int i = 0; i < size; i++)
+            {
                 // Skiping the list of integers
-                GetListInt();
-                tmp.Add(GetInt());
+                this.GetListInt();
+                tmp.Add(this.GetInt());
             }
+
             return tmp;
         }
 
         private CncCat GetCncCat()
         {
-            String sname = GetIdent();
-            int firstFId = GetInt();
-            int lastFId = GetInt();
-            List<String> ss = GetListString();
+            string sname = this.GetIdent();
+            int firstFId = this.GetInt();
+            int lastFId = this.GetInt();
+            List<string> ss = this.GetListString();
             return new CncCat(sname, firstFId, lastFId, ss);
         }
 
-        private Dictionary<String, CncCat> GetListCncCat()
+        private Dictionary<string, CncCat> GetListCncCat()
         {
-            int npoz = GetInt();
-            Dictionary<String, CncCat> cncCats = new Dictionary<String, CncCat>();
-            String name;
+            int npoz = this.GetInt();
+            Dictionary<string, CncCat> cncCats = new Dictionary<string, CncCat>();
+            string name;
             int firstFID, lastFID;
-            List<String> ss;
-            for (int i = 0; i < npoz; i++) {
-                name = GetIdent();
-                firstFID = GetInt();
-                lastFID = GetInt();
-                ss = GetListString();
+            List<string> ss;
+            for (int i = 0; i < npoz; i++) 
+            {
+                name = this.GetIdent();
+                firstFID = this.GetInt();
+                lastFID = this.GetInt();
+                ss = this.GetListString();
                 cncCats.Add(name, new CncCat(name, firstFID, lastFID, ss));
             }
+
             return cncCats;
         }
 
-        private Dictionary<String, RLiteral> GetListFlag()
+        private Dictionary<string, RLiteral> GetListFlag()
         {
-            int npoz = GetInt();
-            Dictionary<String, RLiteral> flags = new Dictionary<String, RLiteral>();
-            if (npoz == 0) {
+            int npoz = this.GetInt();
+            Dictionary<string, RLiteral> flags = new Dictionary<string, RLiteral>();
+            if (npoz == 0) 
+            {
                 return flags;
             }
-            for (int i = 0; i < npoz; i++) {
-                String ss = GetIdent();
-                RLiteral lit = GetLiteral();
+
+            for (int i = 0; i < npoz; i++) 
+            {
+                string ss = this.GetIdent();
+                RLiteral lit = this.GetLiteral();
                 flags.Add(ss, lit);
             }
+
             return flags;
         }
 
-        private String GetString()
+        private string GetString()
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<char> bytes = new List<char>();
-            foreach (char c in inputstream.ReadChars(npoz)) {
+            foreach (char c in this.Inputstream.ReadChars(npoz))
+            {
                 bytes.Add(c);
             }
-            return new String(bytes.ToArray());
+
+            return new string(bytes.ToArray());
         }
 
-        private List<String> GetListString()
+        private List<string> GetListString()
         {
-            int npoz = GetInt();
-            List<String> tmp = new List<String>();
-            if (npoz == 0) {
+            int npoz = this.GetInt();
+            List<string> tmp = new List<string>();
+            if (npoz == 0) 
+            {
                 return tmp;
             }
-            else {
-                for (int i = 0; i < npoz; i++) {
-                    tmp.Add(GetString());
+            else 
+            {
+                for (int i = 0; i < npoz; i++) 
+                {
+                    tmp.Add(this.GetString());
                 }
             }
+
             return tmp;
         }
 
@@ -764,23 +854,25 @@ namespace CSPGF
          * use the full utf8 tables but only latin 1 caracters.
          * We can read them faster using this knowledge.
          **/
-        private String GetIdent()
+        private string GetIdent()
         {
-            int nbChar = GetInt();
+            int nbChar = this.GetInt();
             byte[] bytes = new byte[nbChar];
-            inputstream.Read(bytes, 0, nbChar);
-            //TODO: check if we have to change encoding or let String fix it instead!
+            this.Inputstream.Read(bytes, 0, nbChar);
+            // TODO: check if we have to change encoding or let String fix it instead!
             System.Text.Encoding enc = System.Text.Encoding.ASCII;
             return enc.GetString(bytes);
         }
 
-        private List<String> GetListIdent()
+        private List<string> GetListIdent()
         {
-            int nb = GetInt();
-            List<String> tmp = new List<String>();
-            for (int i = 0; i < nb; i++) {
-                tmp.Add(GetIdent());
+            int nb = this.GetInt();
+            List<string> tmp = new List<string>();
+            for (int i = 0; i < nb; i++)
+            {
+                tmp.Add(this.GetIdent());
             }
+
             return tmp;
         }
 
@@ -789,11 +881,12 @@ namespace CSPGF
         // (the ident).
         private List<WeightedIdent> GetListWeightedIdent()
         {
-            int nb = GetInt();
+            int nb = this.GetInt();
             List<WeightedIdent> tmp = new List<WeightedIdent>();
-            for (int i = 0; i < nb; i++) {
-                double w = GetDouble();
-                String s = GetIdent();
+            for (int i = 0; i < nb; i++)
+            {
+                double w = this.GetDouble();
+                string s = this.GetIdent();
                 tmp.Add(new WeightedIdent(s, w));
             }
             return tmp;
@@ -807,14 +900,16 @@ namespace CSPGF
         // to gain space.
         private int GetInt()
         {
-            //TODO: Check! WTF? Int räcker gott och väl!
+            // TODO: Check! WTF? Int räcker gott och väl!
             // long -> int
-            int rez = inputstream.ReadByte();
-            if (rez <= 0x7f) {
+            int rez = this.Inputstream.ReadByte();
+            if (rez <= 0x7f) 
+            {
                 return rez;
             }
-            else {
-                int ii = GetInt();
+            else 
+            {
+                int ii = this.GetInt();
                 rez = (ii << 7) | (rez & 0x7f);
                 return (int)rez;
             }
@@ -822,18 +917,18 @@ namespace CSPGF
 
         private List<int> GetListInt()
         {
-            int npoz = GetInt();
+            int npoz = this.GetInt();
             List<int> tmp = new List<int>();
-            for (int i = 0; i < npoz; i++) {
-                tmp.Add(GetInt());
+            for (int i = 0; i < npoz; i++) 
+            {
+                tmp.Add(this.GetInt());
             }
             return tmp;
         }
 
         private double GetDouble()
         {
-            return inputstream.ReadDouble();
+            return this.Inputstream.ReadDouble();
         }
     }
 }
-    

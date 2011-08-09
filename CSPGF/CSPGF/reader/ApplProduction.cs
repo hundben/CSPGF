@@ -24,30 +24,33 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class ApplProduction : Production
     {
-        public CncFun function { get; private set; }
-        public List<int> domain { get; private set; }
 
-        public ApplProduction(int _fId, CncFun _function, List<int> _domain)
-            : base(0, _fId)
+        public ApplProduction(int fId, CncFun function, List<int> domain)
+            : base(0, fId)
         {
-            function = _function;
-            domain = _domain;
+            this.Function = function;
+            this.Domain = domain;
         }
 
-        public override String ToString()
+        public CncFun Function { get; private set; }
+        public List<int> Domain { get; private set; }
+
+        public override string ToString()
         {
             // Was commented out in the java-code.
-            String s = fId + " -> " + function.name + "[ ";
-            foreach (int c in domain) {
+            string s = fId + " -> " + this.Function.Name + "[ ";
+            foreach (int c in this.Domain) 
+            {
                 s += c + " ";
             }
             s += "]";
@@ -56,28 +59,36 @@ namespace CSPGF.Reader
 
         public override List<int> Domain()
         {
-            return domain;
+            return this.Domain;
         }
 
-        public override Boolean Equals(Object o)
+        public override bool Equals(object o)
         {
             // TODO: Fix?
             if (o is ApplProduction) {
                 ApplProduction newo = (ApplProduction)o;
 
-                if (!newo.function.Equals(function)) {
+                if (!newo.Function.Equals(this.Function)) 
+                {
                     return false;
                 }
-                if (domain.Count != newo.domain.Count) {
+
+                if (this.Domain.Count != newo.Domain.Count) 
+                {
                     return false;
                 }
-                for (int i = 0 ; i < domain.Count ; i++) {
-                    if (domain[i] != newo.domain[i]) {
+
+                for (int i = 0; i < this.Domain.Count; i++) 
+                {
+                    if (this.Domain[i] != newo.Domain[i]) 
+                    {
                         return false;
                     }
                 }
+
                 return true;
             }
+
             return false;
         }
 

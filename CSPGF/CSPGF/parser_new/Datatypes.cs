@@ -34,7 +34,6 @@ namespace CSPGF.Parser_new
 
     public class Active
     {
-        
         public Active(int integer, int dotpos, int funid, int seqid, List<PArg> parg, AK activekey)
         {
             this.Integer = integer;
@@ -55,11 +54,10 @@ namespace CSPGF.Parser_new
     }
     public class AK
     {
-        
-        AK(int _Fid, int _LIndex)
+        public AK(int fid, int lIndex)
         {
-            this.Fid = _Fid;
-            this.LIndex = _LIndex;
+            this.Fid = fid;
+            this.LIndex = lIndex;
         }
 
         /// <summary>
@@ -91,7 +89,6 @@ namespace CSPGF.Parser_new
 
     public class PArg
     {
-        
         public PArg(List<Tuple<int, int>> list, int fid)
         {
             this.List = list;

@@ -34,11 +34,6 @@ namespace CSPGF.Reader
 
     public class Abstract
     {
-        public string Name { get; private set; } 
-        private Dictionary<string, RLiteral> Flags;
-        public List<AbsFun> AbsFuns { get; private set; }
-        public List<AbsCat> AbsCats { get; private set; }
-
         public Abstract(string name, Dictionary<string, RLiteral> flags, List<AbsFun> absFuns, List<AbsCat> absCats)
         {
             this.Name = name;
@@ -46,6 +41,11 @@ namespace CSPGF.Reader
             this.AbsFuns = absFuns;
             this.AbsCats = absCats;
         }
+
+        public string Name { get; private set; }
+        private Dictionary<string, RLiteral> Flags;
+        public List<AbsFun> AbsFuns { get; private set; }
+        public List<AbsCat> AbsCats { get; private set; }
 
         public string StartCat()
         {
@@ -62,24 +62,23 @@ namespace CSPGF.Reader
 
         public override string ToString()
         {
-            string ss = "Name : " + Name + " , Flags : (";
+            string ss = "Name : " + this.Name + " , Flags : (";
             // TODO: Är bortkommenterat i javakoden också kanske borde fixa?
             // for(int i=0; i<flags.length;i++)
-            // 	ss+=(" "+flags[i].toString());
-            foreach(KeyValuePair<string,RLiteral> kvp in Flags) 
+            // ss+=(" "+flags[i].toString());
+            foreach (KeyValuePair<string, RLiteral> kvp in this.Flags) 
             {
                 ss += "String: " + kvp.Key + "RLiteral: " + kvp.Value.ToString();
             }
 
-
             ss += ") , Abstract Functions : (";
-            foreach (AbsFun a in AbsFuns) 
+            foreach (AbsFun a in this.AbsFuns) 
             {
                 ss += " " + a.ToString();
             }
 
             ss += ") , Abstract Categories : (";
-            foreach (AbsCat a in AbsCats) 
+            foreach (AbsCat a in this.AbsCats) 
             {
                 ss += " " + a.ToString();
             }

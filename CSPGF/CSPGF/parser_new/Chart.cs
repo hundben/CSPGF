@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Text;
 
-    class Chart
+    public class Chart
     {
         private int nextCat;
         public Chart(int nextCat)

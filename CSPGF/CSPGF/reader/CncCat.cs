@@ -24,13 +24,14 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class CncCat
     {
         /**
@@ -43,22 +44,23 @@ namespace CSPGF.Reader
          *  - a list of labels (names of fields in the pmcfg tuples)
          * Here we will keep only the indices.
          */
-        public String name { get; private set; }
-        public int firstFID { get; private set; }
-        public int lastFID { get; private set; }
-        public List<String> labels { get; private set; }
 
-        public CncCat(String _name, int _firstFId, int _lastFId, List<String> _labels)
+        public CncCat(string name, int firstFId, int lastFId, List<string> labels)
         {
-            name = _name;
-            firstFID = _firstFId;
-            lastFID = _lastFId;
-            labels = _labels; // was also commented out.
+            this.Name = name;
+            this.FirstFID = firstFId;
+            this.LastFID = lastFId;
+            this.Labels = labels; // was also commented out.
         }
 
-        public override String ToString()
+        public string Name { get; private set; }
+        public int FirstFID { get; private set; }
+        public int LastFID { get; private set; }
+        public List<string> Labels { get; private set; }
+
+        public override string ToString()
         {
-            return name + " [C" + firstFID + " ... C" + lastFID + "]";
+            return this.Name + " [C" + this.FirstFID + " ... C" + this.LastFID + "]";
         }
     }
 }

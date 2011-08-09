@@ -32,12 +32,13 @@ namespace CSPGF.Parse
     using System.Linq;
     using System.Text;
 
-    class MetaVariable : Tree
+    public class MetaVariable : Tree
     {
-        public int id;
-        public MetaVariable(int _id)
+        public MetaVariable(int id)
         {
-            this.id = _id;
+            this.ID = id;
         }
+
+        int ID { get; private set; }
     }
 }

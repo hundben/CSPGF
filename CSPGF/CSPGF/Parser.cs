@@ -34,7 +34,7 @@ namespace CSPGF
     using CSPGF.Parse;
     using CSPGF.Reader;
 
-    class Parser
+    public class Parser
     {
         private Concrete language;
         private string startcat;

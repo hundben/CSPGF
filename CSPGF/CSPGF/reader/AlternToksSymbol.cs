@@ -24,38 +24,43 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class AlternToksSymbol : ToksSymbol //SymKP
     {
-        public List<Alternative> alts { get; private set; }
-
-        public AlternToksSymbol(List<String> _toks, List<Alternative> _alts)
-            : base(_toks)
+        public AlternToksSymbol(List<string> toks, List<Alternative> alts)
+            : base(toks)
         {
-            alts = _alts;
+            this.Alts = alts;
         }
 
-        public Boolean IsTerminal()
+        public List<Alternative> Alts { get; private set; }
+
+        public bool IsTerminal()
         {
             return true;
         }
 
-        public override String ToString()
+        public override string ToString()
         {
-            String sb = "pre { ";
-            foreach (String s in base.tokens) {
+            string sb = "pre { ";
+            foreach (string s in base.tokens) 
+            {
                 sb += s + " ";
             }
-            sb += ("; ");
-            foreach (Alternative a in alts) {
+
+            sb += "; ";
+            foreach (Alternative a in this.Alts) 
+            {
                 sb += a + "; ";
             }
+
             sb += "}";
             return sb;
         }

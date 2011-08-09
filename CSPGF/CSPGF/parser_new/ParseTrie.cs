@@ -25,7 +25,6 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-
 namespace CSPGF.Parser_new
 {
     using System;
@@ -33,13 +32,14 @@ namespace CSPGF.Parser_new
     using System.Linq;
     using System.Text;
 
-    class ParseTrie
+    public class ParseTrie
     {
-        public List<ParseTrie> child;
-        public Reader.ApplProduction symbol;
         public ParseTrie()
         {
-            //TODO
+            // TODO
         }
+
+        List<ParseTrie> Child { get; private set; }
+        Reader.ApplProduction Symbol { get; private set; }
     }
 }

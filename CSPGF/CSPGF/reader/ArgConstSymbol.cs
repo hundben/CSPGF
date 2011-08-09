@@ -24,27 +24,28 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class ArgConstSymbol : Symbol
     {
-        public int arg { get; private set; }
-        public int cons { get; private set; }
-
-        public ArgConstSymbol(int _arg, int _cons)
+        public ArgConstSymbol(int arg, int cons)
         {
-            arg = _arg;
-            cons = _cons;
+            this.Arg = arg;
+            this.Cons = cons;
         }
+
+        public int Arg { get; private set; }
+        public int Cons { get; private set; }
         
-        public override String ToString()
+        public override string ToString()
         {
-            return "Argument : " + arg + " Constituent : " + cons;
+            return "Argument : " + this.Arg + " Constituent : " + this.Cons;
         }
     }
 }

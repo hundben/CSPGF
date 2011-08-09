@@ -24,33 +24,34 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class Alternative
     {
-        // tokens = alt1, prefix = alt2
-        public List<String> alt1 { get; private set; }  // Check: Rename to tokens instead?
-        public List<String> alt2 { get; private set; }
 
-        public Alternative(List<String> _alt1, List<String> _alt2)
+        public Alternative(List<string> alt1, List<string> alt2)
         {
-            alt1 = _alt1;
-            alt2 = _alt2;
+            this.Alt1 = alt1;
+            this.Alt2 = alt2;
         }
+        // tokens = alt1, prefix = alt2
+        public List<string> Alt1 { get; private set; }  // Check: Rename to tokens instead?
+        public List<string> Alt2 { get; private set; }
 
-        public override String ToString()
+        public override string ToString()
         {
-            String sb = "";
-            foreach (String t in alt1) {
+            string sb = string.Empty;
+            foreach (string t in this.Alt1) {
                 sb += t + " ";
             }
             sb += "/ ";
-            foreach (String t in alt2) {
+            foreach (string t in this.Alt2) {
                 sb += t + " ";
             }
             return sb;

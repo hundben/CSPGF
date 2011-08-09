@@ -24,29 +24,29 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class AppPattern : Pattern // PApp
     {
-        // TODO: Check if we need to be able to access these.
-        public String name { get; private set; }
-        public List<Pattern> patts { get; private set; }
-
-        public AppPattern(String _name, List<Pattern> _patts)
+        public AppPattern(string name, List<Pattern> patts)
         {
-            name = _name;
-            patts = _patts;
+            this.Name = name;
+            this.Patts = patts;
         }
 
-        public override String ToString()
+        public string Name { get; private set; }
+        public List<Pattern> Patts { get; private set; }
+
+        public override string ToString()
         {
-            String ss = "Application pattern [ Name : " + name + " , Patterns : (";
-            foreach (Pattern p in patts) {
+            string ss = "Application pattern [ Name : " + this.Name + " , Patterns : (";
+            foreach (Pattern p in this.Patts) {
                 ss += " " + p.ToString();
             }
             ss += ")]";

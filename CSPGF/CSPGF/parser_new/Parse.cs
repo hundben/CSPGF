@@ -32,7 +32,7 @@ namespace CSPGF.Parser_new
     using System.Linq;
     using System.Text;
 
-    class Parser
+    public class Parser
     {
         // Notice, the language might be bad here? better to use it when we want to parse a text?
         private PGF pgf;
@@ -59,18 +59,18 @@ namespace CSPGF.Parser_new
             int nextCat = 0;
             foreach (Reader.CncCat c in this.cncCat)
             {
-                nextCat = Math.Max(c.lastFID, nextCat);
+                nextCat = Math.Max(c.LastFID, nextCat);
             }
 
             nextCat++;
             this.chart = new Chart(nextCat);
-            this.cncFun = this.concrete.cncFuns;
+            this.cncFun = this.concrete.CncFuns;
             string startCatName = this.abs.StartCat();
             // This code might be unnecessary, but then we have the startcategory saved at least ;P
             Reader.CncCat startCat = null;
             foreach (Reader.CncCat cat in this.cncCat) 
             {
-                if (cat.name == startCatName) 
+                if (cat.Name == startCatName) 
                 {
                     startCat = cat;
                     break;
@@ -83,7 +83,7 @@ namespace CSPGF.Parser_new
             }
             this.prods = this.concrete.GetProductions();  //load productions
 
-            this.PredictTEMP(startCat.firstFID);
+            this.PredictTEMP(startCat.FirstFID);
 
             string text2 = this.GetToken(this.Predict(0, this.prods)[0]);
 
@@ -185,10 +185,10 @@ namespace CSPGF.Parser_new
             return cats;
         }
 
-        private List<Reader.ApplProduction> RemoveDoubles(List<Reader.ApplProduction> _prods)
+        private List<Reader.ApplProduction> RemoveDoubles(List<Reader.ApplProduction> prods)
         {
             HashSet<Reader.ApplProduction> appList = new HashSet<Reader.ApplProduction>();
-            foreach (Reader.ApplProduction p in _prods)
+            foreach (Reader.ApplProduction p in prods)
             {
                 appList.Add(p);
             }

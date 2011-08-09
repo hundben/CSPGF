@@ -32,12 +32,14 @@ namespace CSPGF.Parse
     using System.Linq;
     using System.Text;
 
-    class Literal : Tree
+    public class Literal : Tree
     {
-        public string value;
-        public Literal(string _value)
+
+        public Literal(string value)
         {
-            this.value = _value;
+            this.Value = value;
         }
+
+        string Value { get; private set; }
     }
 }

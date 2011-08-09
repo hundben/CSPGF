@@ -33,19 +33,19 @@ namespace CSPGF.Parser_new
     using System.Linq;
     using System.Text;
 
-    class ParseState
+    public class ParseState
     {
-        private Chart chart;
-        private Reader.Concrete cnc;
-        private Reader.Abstract abs;
-        private Dictionary<string, object> trie;  //TODO check datatypes for this one...
-        private List<int> activeState;
+        private Chart Chart;
+        private Reader.Concrete Cnc;
+        private Reader.Abstract Abs;
+        private Dictionary<string, object> Trie;  // TODO check datatypes for this one...
+        private List<int> ActiveState;
 
-        public ParseState(Reader.Concrete _cnc, Reader.Abstract _abs)
+        public ParseState(Reader.Concrete cnc, Reader.Abstract abs)
         {
-            this.cnc = _cnc;
-            this.abs = _abs;
-            this.activeState = new List<int>();  //what to do? :'(
+            this.Cnc = cnc;
+            this.Abs = abs;
+            this.ActiveState = new List<int>();  //what to do? :'(
         }
         /*
          * The things below should be here :)

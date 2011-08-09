@@ -34,11 +34,23 @@ namespace CSPGF.Parse
 
     public class Lambda : Tree
     {
-        public List<Tuple<bool, string>> vars;   //går detta att göra smidigare kanske?
-        public Tree body;
-        public Lambda(List<Tuple<bool, string>> _vars, Tree _body) {
-            this.vars = _vars;
-            this.body = _body;
+
+        public Lambda(List<Tuple<bool, string>> vars, Tree body) 
+        {
+            this.Vars = vars;
+            this.Body = body;
+        }
+
+        List<Tuple<bool, string>> Vars
+        {
+            get;
+            private set;
+        }
+
+        Tree Body
+        {
+            get;
+            private set;
         }
     }
 }

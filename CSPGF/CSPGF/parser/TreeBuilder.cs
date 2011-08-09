@@ -58,7 +58,7 @@ namespace CSPGF.Parse
         public List<Tree> BuildTrees(Chart chart, CncCat startCat, int length)
         {
             List<Tree> temp = new List<Tree>();
-            for (int catID = startCat.firstFID; catID < startCat.lastFID + 1; catID++) 
+            for (int catID = startCat.FirstFID; catID < startCat.LastFID + 1; catID++) 
             {
                 int cat = chart.GetCategory(catID, 0, 0, length);
                 if (cat != -1) 

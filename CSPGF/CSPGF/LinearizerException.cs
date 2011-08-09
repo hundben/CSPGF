@@ -34,7 +34,7 @@ namespace CSPGF
 
     public class LinearizerException : Exception
     {
-        public LinearizerException(string _str) : base(_str)
+        public LinearizerException(string str) : base(str)
         {
         }
     

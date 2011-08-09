@@ -32,14 +32,14 @@ namespace CSPGF.Parse
     using System.Linq;
     using System.Text;
 
-    class ParseTrie
+    public class ParseTrie
     {
-        Stack<ActiveItem> value;
-        Dictionary<string, ParseTrie> child = new Dictionary<string, ParseTrie>();
+        private Stack<ActiveItem> Value;
+        private Dictionary<string, ParseTrie> Child = new Dictionary<string, ParseTrie>();
 
-        public ParseTrie(Stack<ActiveItem> _value)
+        public ParseTrie(Stack<ActiveItem> value)
         {
-            this.value = _value;
+            this.Value = value;
         }
 
         public void Add(string[] key, Stack<ActiveItem> value)
@@ -50,24 +50,28 @@ namespace CSPGF.Parse
         public void Add(List<string> keys, Stack<ActiveItem> value)
         {
             //TODO: Might be correct, but check.
-            if (keys == null || keys.Count == 0) {
-                this.value = value;
+            if (keys == null || keys.Count == 0) 
+            {
+                this.Value = value;
             }
-            else {
+            else
+            {
                 ParseTrie tmp2;
                 // Check: Added !, which should be correct, but not 100% sure. Program doesn't crash anymore though =)
-                if (!this.child.TryGetValue(keys.First<string>(), out tmp2) || this.child.Count == 0) {
+                if (!this.Child.TryGetValue(keys.First<string>(), out tmp2) || this.Child.Count == 0) 
+                {
                     ParseTrie newN = new ParseTrie(null);
                     List<string> tmp = new List<string>(keys);
                     tmp.Remove(keys.First<string>());
                     newN.Add(tmp, value);
-                    this.child[keys.First<string>()] = newN;
+                    this.Child[keys.First<string>()] = newN;
                 }
-                else {
+                else 
+                {
                     List<string> tmp = new List<string>(keys);
                     tmp.Remove(keys.First<string>());
                     
-                    this.child[keys.First<string>()].Add(tmp, value);
+                    this.Child[keys.First<string>()].Add(tmp, value);
                 }
             }
         }
@@ -79,10 +83,12 @@ namespace CSPGF.Parse
 
         public Stack<ActiveItem> Lookup(List<string> key)
         {
-            if (this.GetSubTrie(key) != null) {
-                return this.GetSubTrie(key).value;
+            if (this.GetSubTrie(key) != null) 
+            {
+                return this.GetSubTrie(key).Value;
             }
-            else {
+            else 
+            {
                 return null;
             }
         }
@@ -96,7 +102,10 @@ namespace CSPGF.Parse
                 string k = key2.First<string>();
                 key2.Remove(k);
                 ParseTrie trie;
-                if (this.child.TryGetValue(k, out trie)) return trie.GetSubTrie(key2);
+                if (this.Child.TryGetValue(k, out trie))
+                {
+                    return trie.GetSubTrie(key2);
+                }
             }
 
             return this;
@@ -111,7 +120,7 @@ namespace CSPGF.Parse
         
         public List<string> Predict()
         {
-            return this.child.Keys.ToList<string>();
+            return this.Child.Keys.ToList<string>();
         }
         
         public override string ToString()
@@ -122,7 +131,7 @@ namespace CSPGF.Parse
         public string ToStringWithPrefix(string prefix)
         {
             // RETARDKOD! TODO: Gör klart!
-            string tmp = prefix + "<" + this.value.ToString() + ">";
+            string tmp = prefix + "<" + this.Value.ToString() + ">";
             return tmp;
         }
         //  def toStringWithPrefix(prefix:String):String = {

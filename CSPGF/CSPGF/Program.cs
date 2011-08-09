@@ -39,9 +39,9 @@ namespace CSPGF
     using CSPGF.Test;
     using CSPGF.Trees;
     
-    class Program
+    public class Program
     {
-        static void Main(string[] args)
+        public static void Main(string[] args)
         {
             BinaryReader br = new BinaryReader(new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open));
             PGFReader pr = new PGFReader(br);

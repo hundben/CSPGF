@@ -34,9 +34,9 @@ namespace CSPGF.Parse
     using System.Linq;
     using System.Text;
 
-    class ActiveSet
+    public class ActiveSet
     {
-        Dictionary<int, Dictionary<int, HashSet<ActiveItemInt>>> store;
+        private Dictionary<int, Dictionary<int, HashSet<ActiveItemInt>>> store;
         public ActiveSet()
         {
             this.store = new Dictionary<int, Dictionary<int, HashSet<ActiveItemInt>>>();
@@ -73,7 +73,6 @@ namespace CSPGF.Parse
                 aItems.Add(new ActiveItemInt(item, cons2));
                 map.Add(cons, aItems);
                 this.store.Add(cat, map);
-
             }
 
             return true;
@@ -92,9 +91,7 @@ namespace CSPGF.Parse
                     {
                         i.Cons2 = key;
                         aai.Add(i);
-
                     }
-
                 }
             }
             return aai;
@@ -110,7 +107,6 @@ namespace CSPGF.Parse
                 {
                     return aai;
                 }
-
             }
             return aai;
         }

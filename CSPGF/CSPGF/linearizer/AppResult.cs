@@ -33,7 +33,7 @@ namespace CSPGF.Linearize
     using System.Text;
     using CSPGF.Reader;
 
-    class AppResult
+    public class AppResult
     {
         public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
         {

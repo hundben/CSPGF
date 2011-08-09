@@ -25,15 +25,16 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-namespace CSPGF {
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CSPGF.Reader;
-using CSPGF.Trees.Absyn;
+namespace CSPGF 
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using CSPGF.Reader;
+    using CSPGF.Trees.Absyn;
 
-    class Generator
+    public class Generator
     {
         private Random random;
         private PGF pgf;
@@ -43,24 +44,29 @@ using CSPGF.Trees.Absyn;
         /** generates a random expression of a given category
          * does not handle dependent categories or categories with implicit arguments
          **/
-        public Generator(PGF _pgf)
+        public Generator(PGF pgf)
         {
             this.random = new Random();
-            this.pgf = _pgf;
+            this.pgf = pgf;
             this.dirRules = new Dictionary<string, HashSet<string>>();
             this.indirRules = new Dictionary<string, HashSet<string>>();
             List<AbsCat> absCats = this.pgf.GetAbstract().AbsCats;
             List<AbsFun> absFuns = this.pgf.GetAbstract().AbsFuns;
             HashSet<string> dirFuns = new HashSet<string>();
             HashSet<string> indirFuns = new HashSet<string>();
-            foreach (AbsCat abc in absCats) {
+            foreach (AbsCat abc in absCats) 
+            {
                 dirFuns = new HashSet<string>();
                 indirFuns = new HashSet<string>();
-                List<WeightedIdent> functions = abc.functions;
-                foreach (WeightedIdent weid in functions) {
-                    foreach (AbsFun ab in absFuns) {
-                        if (weid.ident.Equals(ab.Name)) {
-                            if (ab.Type.hypos.Count == 0) {
+                List<WeightedIdent> functions = abc.Functions;
+                foreach (WeightedIdent weid in functions) 
+                {
+                    foreach (AbsFun ab in absFuns) 
+                    {
+                        if (weid.ident.Equals(ab.Name)) 
+                        {
+                            if (ab.Type.hypos.Count == 0) 
+                            {
                                 dirFuns.Add(weid.ident);
                             }
                             else 
@@ -123,7 +129,6 @@ using CSPGF.Trees.Absyn;
                         {
                             return null;
                         }
-
                     }
 
                     Tree rez = new Function(funcName);
@@ -218,7 +223,6 @@ using CSPGF.Trees.Absyn;
                     {
                         return rez;
                     }
-
                 }
             }
             foreach (string it in indirFuns) 
@@ -232,7 +236,6 @@ using CSPGF.Trees.Absyn;
                     {
                         return rez;
                     }
-
                 }
             }
             return rez;
