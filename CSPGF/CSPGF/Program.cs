@@ -24,20 +24,21 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using CSPGF.Parse;
-using CSPGF.Test;
-using CSPGF.Trees;
-using System.Speech;
-using System.Speech.Recognition;
-using System.Speech.Synthesis;
 
 namespace CSPGF
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.IO;
+    using System.Speech;
+    using System.Speech.Recognition;
+    using System.Speech.Synthesis;
+    using System.Text;
+    using CSPGF.Parse;
+    using CSPGF.Test;
+    using CSPGF.Trees;
+    
     class Program
     {
         static void Main(string[] args)
@@ -50,8 +51,8 @@ namespace CSPGF
             //Parser parser = new Parser(tmp, "FoodsEng");
 
             ParseState st = new ParseState(pgf.GetConcrete("FoodsEng"));
-            List<String> temp = st.Predict();
-            foreach (String s in temp) System.Console.Out.WriteLine(s);
+            List<string> temp = st.Predict();
+            foreach (string s in temp) System.Console.Out.WriteLine(s);
 
             System.Console.Out.WriteLine("scan this...");
             st.Scan("this");    //TODO check why it locks here (endless loop :D
@@ -60,9 +61,8 @@ namespace CSPGF
             //st.Scan("expensive");
             //List<CSPGF.trees.Absyn.Tree> trees = st.GetTrees();
 
-            
             temp = st.Predict();
-            foreach (String s in temp) System.Console.Out.WriteLine(s);
+            foreach (string s in temp) System.Console.Out.WriteLine(s);
             //ParseState tmp2 = parser.Parse("hello world");
             //List<CSPGF.trees.Absyn.Tree> tmp3 = tmp2.GetTrees();
 

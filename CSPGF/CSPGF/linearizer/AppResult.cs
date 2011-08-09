@@ -35,15 +35,15 @@ namespace CSPGF.Linearize
 
     class AppResult
     {
-        public CncFun cncFun { get; private set; }
-        public CncType cncType { get; private set; }
-        public List<CncType> cncTypes { get; private set; }
-
-        public AppResult(CncFun _cncFun, CncType _cncType, List<CncType> _cncTypes)
+        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
         {
-            this.cncFun = _cncFun;
-            this.cncType = _cncType;
-            this.cncTypes = _cncTypes;
+            this.CncFun = cncFun;
+            this.CncType = cncType;
+            this.CncTypes = cncTypes;
         }
+
+        public CncFun CncFun { get; private set; }
+        public CncType CncType { get; private set; }
+        public List<CncType> CncTypes { get; private set; }
     }
 }

@@ -56,10 +56,10 @@ namespace CSPGF
          * @return the concrete grammar of null if there is no grammr with
          *             that name.
          */
-        public Concrete GetConcrete(String name)
+        public Concrete GetConcrete(string name)
         {
             Concrete conc;
-            if (!concretes.TryGetValue(name, out conc))
+            if (!this.concretes.TryGetValue(name, out conc))
                 throw new UnknownLanguageException(name);
             return conc;
         }
@@ -93,12 +93,15 @@ namespace CSPGF
 
         public override string ToString()
         {
-            string ss = "PGF : \nMajor version : " + majorVersion + ", Minor version : " + minorVersion + "\n" + "Flags : (";
-            foreach (string flagName in flags.Keys) {
-                ss += flagName + ": " + flags[flagName].ToString() + "\n";
+            string ss = "PGF : \nMajor version : " + this.majorVersion + ", Minor version : " + this.minorVersion + "\n" + "Flags : (";
+            foreach (string flagName in this.flags.Keys) 
+            {
+                ss += flagName + ": " + this.flags[flagName].ToString() + "\n";
             }
-            ss += ")\nAbstract : (" + abstr.ToString() + ")\nConcretes : (";
-            foreach (string name in concretes.Keys) {
+
+            ss += ")\nAbstract : (" + this.abstr.ToString() + ")\nConcretes : (";
+            foreach (string name in this.concretes.Keys) 
+            {
                 ss += name + ", ";
             }
             ss += ")";

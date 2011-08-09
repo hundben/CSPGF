@@ -37,8 +37,8 @@ using CSPGF.Trees.Absyn;
     {
         private Random random;
         private PGF pgf;
-        private Dictionary<string, HashSet<String>> dirRules;
-        private Dictionary<string, HashSet<String>> indirRules;
+        private Dictionary<string, HashSet<string>> dirRules;
+        private Dictionary<string, HashSet<string>> indirRules;
 
         /** generates a random expression of a given category
          * does not handle dependent categories or categories with implicit arguments
@@ -73,8 +73,8 @@ using CSPGF.Trees.Absyn;
                     }
                 }
 
-                this.dirRules.Add(abc.name, dirFuns);
-                this.indirRules.Add(abc.name, indirFuns);
+                this.dirRules.Add(abc.Name, dirFuns);
+                this.indirRules.Add(abc.Name, indirFuns);
             }
         }
 

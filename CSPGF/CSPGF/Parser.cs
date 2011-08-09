@@ -24,35 +24,35 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CSPGF.Parse;
-using CSPGF.Reader;
-//using CSPGF.trees.Absyn;
 
 namespace CSPGF
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    using CSPGF.Parse;
+    using CSPGF.Reader;
+
     class Parser
     {
         private Concrete language;
-        private String startcat;
+        private string startcat;
         /* ******************************** API ******************************** */
-        public Parser(PGF pgf, Concrete _language)
+        public Parser(PGF pgf, Concrete language)
         {
-            language = _language;
-            startcat = pgf.GetAbstract().StartCat();
+            this.language = language;
+            this.startcat = pgf.GetAbstract().StartCat();
         }
         
-        public Parser(PGF pgf, String _language) 
-            : this(pgf, pgf.GetConcrete(_language))
+        public Parser(PGF pgf, string language) 
+            : this(pgf, pgf.GetConcrete(language))
         {
         }
 
-        public void SetStartcat(String _startcat)
+        public void SetStartcat(string startcat)
         {
-            startcat = _startcat;
+            this.startcat = startcat;
         }
 
         /**
@@ -61,10 +61,10 @@ namespace CSPGF
          * @return the corresponding parse-state
          **/
         // FIXME: not using the start category ??
-        public ParseState Parse(String[] tokens)
+        public ParseState Parse(string[] tokens)
         {
             ParseState ps = new ParseState(language);
-            foreach (String w in tokens) {
+            foreach (string w in tokens) {
                 if (!ps.Scan(w)) {
                     break;
                 }
@@ -78,9 +78,9 @@ namespace CSPGF
          * @return an array of trees
          **/
         // FIXME: not using the start category ??
-        public List<CSPGF.Trees.Absyn.Tree> ParseToTrees(String[] tokens)
+        public List<CSPGF.Trees.Absyn.Tree> ParseToTrees(string[] tokens)
         {
-            return Parse(tokens).GetTrees();
+            return this.Parse(tokens).GetTrees();
         }
 
         /**
@@ -89,9 +89,9 @@ namespace CSPGF
          * @param phrase the input string
          * @return the corresponding parse-state
          **/
-        public ParseState Parse(String phrase)
+        public ParseState Parse(string phrase)
         {
-            return Parse(phrase.Split(' '));
+            return this.Parse(phrase.Split(' '));
         }
 
         /**
@@ -102,7 +102,7 @@ namespace CSPGF
          **/
         public ParseState Parse()
         {
-            return Parse(new String[0]);
+            return this.Parse(new string[0]);
         }
     }
 }

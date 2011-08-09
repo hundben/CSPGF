@@ -34,17 +34,17 @@ namespace CSPGF.Linearize
 
     public class LeafKS : BracketedTokn
     {
-        public List<string> tokens { get; private set; }
-
-        public LeafKS(List<string> _tokens)
+        public LeafKS(List<string> tokens)
         {
-            this.tokens = _tokens;
+            this.Tokens = tokens;
         }
+
+        public List<string> Tokens { get; private set; }
 
         public override string ToString()
         {
             string rez = "string names : [";
-            foreach (string s in this.tokens) 
+            foreach (string s in this.Tokens) 
             {
                 rez += " " + s;
             }

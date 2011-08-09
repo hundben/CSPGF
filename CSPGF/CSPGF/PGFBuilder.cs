@@ -24,16 +24,19 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.IO;
-using CSPGF.Reader;
 
-namespace CSPGF {
-    class PGFBuilder {
-        private static Boolean DBG = false;
+namespace CSPGF 
+{
+    using System;
+    using System.Collections.Generic;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using CSPGF.Reader;
+
+    class PGFBuilder 
+    {
+        private static bool DBG = false;
 
         /* ************************************************* */
         /* Public reading functions                          */
@@ -44,13 +47,19 @@ namespace CSPGF {
          * @param filename the path of the pgf file.
          */
         
-        public static PGF FromFile(String filename) {
-            if (DBG) { System.Console.WriteLine("Reading pgf from file : " + filename); }
+        public static PGF FromFile(string filename) 
+        {
+            if (DBG) 
+            { 
+                System.Console.WriteLine("Reading pgf from file : " + filename); 
+            }
             BinaryReader stream = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read));
             try 
             {
                 return new PGFReader(stream).ReadPGF();
-            } catch (UnknownLanguageException e) {
+            } 
+            catch (UnknownLanguageException e) 
+            {
                 throw new Exception(e.ToString());
             }
         }
@@ -64,8 +73,13 @@ namespace CSPGF {
          * @param filename the path of the pgf file.
          * @param languages the list of desired languages
          */
-        public static PGF FromFile(String filename, List<String> languages) {
-	        if (DBG) { System.Console.WriteLine("Reading pgf from file : " + filename); }
+        public static PGF FromFile(string filename, List<string> languages) 
+        {
+            if (DBG) 
+            { 
+                System.Console.WriteLine("Reading pgf from file : " + filename); 
+            }
+
             BinaryReader stream = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read));
             return new PGFReader(stream, languages).ReadPGF();
         }
@@ -75,10 +89,13 @@ namespace CSPGF {
          *
          * @param inStream and InputStream to read the pgf binary from.
          */
-        public static PGF FromInputStream(BinaryReader stream) {
+        public static PGF FromInputStream(BinaryReader stream) 
+        {
             try {
                 return new PGFReader(stream).ReadPGF();
-            } catch (UnknownLanguageException e) {
+            } 
+            catch (UnknownLanguageException e) 
+            {
                 throw new Exception(e.ToString());
             }
         }
@@ -90,7 +107,8 @@ namespace CSPGF {
          *
          * @param inStream and InputStream to read the pgf binary from.
          */
-        public static PGF FromInputStream(BinaryReader stream, List<String> languages) {
+        public static PGF FromInputStream(BinaryReader stream, List<string> languages) 
+        {
             return new PGFReader(stream, languages).ReadPGF();
         }
 

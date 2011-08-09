@@ -34,18 +34,17 @@ namespace CSPGF.Linearize
 
     public class CncType
     {
-        public string cId { get; private set; }
-        public int fId { get; private set; }
-
-        public CncType(string _cId, int _fId)
+        public CncType(string cId, int fId)
         {
-            this.cId = _cId;
-            this.fId = _fId;
+            this.CId = cId;
+            this.FId = fId;
         }
+        public string CId { get; private set; }
+        public int FId { get; private set; }
 
         public override string ToString()
         {
-            return "name : " + this.cId + " , fId : " + this.fId;
+            return "name : " + this.CId + " , fId : " + this.FId;
         }
     }
 }

@@ -24,31 +24,31 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class AbsCat
     {
-
-        public String name { get; private set; }
-        public List<Hypo> hypos { get; private set; }
-        public List<WeightedIdent> functions {get; private set; }
-
-        public AbsCat(String _name, List<Hypo> _hypos, List<WeightedIdent> _functions)
+        public AbsCat(string name, List<Hypo> hypos, List<WeightedIdent> functions)
         {
-            name = _name;
-            hypos = _hypos;
-            functions = _functions;
+            Name = name;
+            Hypos = hypos;
+            functions = functions;
         }
+
+        public string Name { get; private set; }
+        public List<Hypo> Hypos { get; private set; }
+        public List<WeightedIdent> functions { get; private set; }
 
         public override String ToString()
         {
-            String ss = "Name : " + name + " , Hypotheses : (";
-            foreach (Hypo h in hypos) {
+            String ss = "Name : " + Name + " , Hypotheses : (";
+            foreach (Hypo h in Hypos) {
                 ss += " " + h.ToString();
             }
             ss += ") , String Names : (";

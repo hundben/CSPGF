@@ -34,26 +34,28 @@ namespace CSPGF.Linearize
 
     public class Bracket : BracketedTokn
     {
-        public string cId { get; private set; }
-        public int lIndex { get; private set; }
-        public int fId { get; private set; }
+        
+        public Bracket(string cId, int lIndex, int fId, List<BracketedTokn> bss)
+        {
+            this.CId = _cId;
+            this.LIndex = _lIndex;
+            this.FId = _fId;
+            this.Bracketedtoks = _bss;
+        }
+
+        public string CId { get; private set; }
+        public int LIndex { get; private set; }
+        public int FId { get; private set; }
 
         /// <summary>
         /// Gets set of bracketed tokens
         /// </summary>
-        public List<BracketedTokn> bracketedtoks { get; private set; }
+        public List<BracketedTokn> Bracketedtoks { get; private set; }
 
-        public Bracket(string _cId, int _lIndex, int _fId, List<BracketedTokn> _bss)
-        {
-            this.cId = _cId;
-            this.lIndex = _lIndex;
-            this.fId = _fId;
-            this.bracketedtoks = _bss;
-        }
 
         public override string ToString()
         {
-            string rez = "name : " + this.cId + ", linIndex : " + this.lIndex + ", fId : " + this.fId + ", bracketed tokens : " + this.bracketedtoks.ToString();
+            string rez = "name : " + this.CId + ", linIndex : " + this.LIndex + ", fId : " + this.FId + ", bracketed tokens : " + this.Bracketedtoks.ToString();
 
             // for(int i=0;i<bss.length;i++)
             //   rez+=(" "+bss[i].toString());

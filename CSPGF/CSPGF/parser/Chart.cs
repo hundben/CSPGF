@@ -94,25 +94,7 @@ namespace CSPGF.Parse
             }
         }
 
-        // Should now work
-        // Changes all Coerceproductions to ApplProductions
-        private List<ApplProduction> Uncoerce(object p)
-        {
-            List<ApplProduction> prodList = new List<ApplProduction>();
-            if (p is ApplProduction) {
-                prodList.Add((ApplProduction)p);
-            }
-            else if (p is CoerceProduction) {
-                CoerceProduction cp = (CoerceProduction)p;
-                foreach (Production prod in this.GetProductions(cp.initId)) {
-                    foreach (ApplProduction prod2 in this.Uncoerce(prod)) {
-                        prodList.Add(prod2);
-                    }
-                }
-            }
-            return prodList;
-        }
-
+        
         public int getFreshCategory(int oldCat, int l, int j, int k)
         {
             // TODO Optimize this, use something else instead of looping through everything
@@ -162,6 +144,26 @@ namespace CSPGF.Parse
             }
             return s;
         }
+
+        // Should now work
+        // Changes all Coerceproductions to ApplProductions
+        private List<ApplProduction> Uncoerce(object p)
+        {
+            List<ApplProduction> prodList = new List<ApplProduction>();
+            if (p is ApplProduction) {
+                prodList.Add((ApplProduction)p);
+            }
+            else if (p is CoerceProduction) {
+                CoerceProduction cp = (CoerceProduction)p;
+                foreach (Production prod in this.GetProductions(cp.initId)) {
+                    foreach (ApplProduction prod2 in this.Uncoerce(prod)) {
+                        prodList.Add(prod2);
+                    }
+                }
+            }
+            return prodList;
+        }
+
     }
 }
 

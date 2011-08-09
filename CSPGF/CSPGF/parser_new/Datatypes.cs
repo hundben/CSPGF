@@ -24,95 +24,108 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Parser_new
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class Active
     {
-        public int _int { get; private set; }
-        public int dotpos { get; private set; }
-        public int funid { get; private set; }
-        public int seqid { get; private set; }
-        public List<PArg> parg { get; private set; }
-        public AK activekey { get; private set; }
-
-        public Active(int __int, int _dotpos, int _funid, int _seqid, List<PArg> _parg, AK _activekey)
+        
+        public Active(int integer, int dotpos, int funid, int seqid, List<PArg> parg, AK activekey)
         {
-            _int = __int;
-            dotpos = _dotpos;
-            funid = _funid;
-            seqid = _seqid;
-            parg = _parg;
-            activekey = _activekey;
+            this.Integer = integer;
+            this.Dotpos = dotpos;
+            this.Funid = funid;
+            this.Seqid = seqid;
+            this.Parg = parg;
+            this.Activekey = activekey;
         }
+
+        public int Integer { get; private set; }
+        public int Dotpos { get; private set; }
+        public int Funid { get; private set; }
+        public int Seqid { get; private set; }
+        public List<PArg> Parg { get; private set; }
+        public AK Activekey { get; private set; }
+
     }
     public class AK
     {
-        public int Fid { get; private set; }
-        public int LIndex { get; private set; }
-
+        
         AK(int _Fid, int _LIndex)
         {
-            Fid = _Fid;
-            LIndex = _LIndex;
+            this.Fid = _Fid;
+            this.LIndex = _LIndex;
         }
+
+        /// <summary>
+        /// Gets Fid
+        /// </summary>
+        public int Fid { get; private set; }
+        public int LIndex { get; private set; }
     }
     public class ActiveSet
     {
-        public HashSet<Active> active { get; private set; }
-
-        public ActiveSet(HashSet<Active> _active)
+        public ActiveSet(HashSet<Active> active)
         {
-            active = _active;
+            this.Active = active;
         }
+
+        public HashSet<Active> Active { get; private set; }
     }
+
     public class ActiveChart
     {
-        public Dictionary<int, Tuple<ActiveSet, Dictionary<int, HashSet<Reader.Production>>>> ac { get; private set; }
         //IntMap.IntMap (IntMap.IntMap (ActiveSet, IntMap.IntMap (Set.Set Production)))
-        public ActiveChart(Dictionary<int, Tuple<ActiveSet, Dictionary<int, HashSet<Reader.Production>>>> _ac)
+        public ActiveChart(Dictionary<int, Tuple<ActiveSet, Dictionary<int, HashSet<Reader.Production>>>> ac)
         {
-            ac = _ac;
+            this.AC = ac;
         }
+        public Dictionary<int, Tuple<ActiveSet, Dictionary<int, HashSet<Reader.Production>>>> AC { get; private set; }
+        
     }
 
     public class PArg
     {
-        public List<Tuple<int, int>> list { get; private set; }
-        public int fid { get; private set; }
-
-        public PArg(List<Tuple<int, int>> _list, int _fid)
+        
+        public PArg(List<Tuple<int, int>> list, int fid)
         {
-            list = _list;
-            fid = _fid;
+            this.List = list;
+            this.Fid = fid;
         }
+
+        public List<Tuple<int, int>> List { get; private set; }
+        public int Fid { get; private set; }
+
     }
 
     public class PK
     {
-        public int fid { get; private set; }
-        public int lindex { get; private set; }
-        public int _int { get; private set; }
-
-        public PK(int _fid, int _lindex, int __int)
+        public PK(int fid, int lindex, int integer)
         {
-            fid = _fid;
-            lindex = _lindex;
-            _int = __int;
+            this.Fid = fid;
+            this.Lindex = lindex;
+            this.Integer = integer;
         }
+
+        public int Fid { get; private set; }
+        public int Lindex { get; private set; }
+        public int Integer { get; private set; }
     }
+
     public class PassiveChart
     {
-        public Dictionary<PK, int> pc { get; private set; }
-
-        public PassiveChart(Dictionary<PK, int> _pc)
+        public PassiveChart(Dictionary<PK, int> pc)
         {
-            pc = _pc;
+            this.PC = pc;
         }
+
+        public Dictionary<PK, int> PC { get; private set; }
+
     }
 
     //public class Chart

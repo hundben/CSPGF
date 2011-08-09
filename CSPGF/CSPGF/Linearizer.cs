@@ -31,9 +31,8 @@ namespace CSPGF
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using CSPGF.Reader;
-    // using CSPGF.trees;
     using CSPGF.Linearize;
+    using CSPGF.Reader;
     using CSPGF.Trees.Absyn;
 
     class Linearizer
@@ -364,7 +363,7 @@ namespace CSPGF
         {
             if (bt is LeafKS) 
             {
-                List<string> d = ((LeafKS)bt).tokens;
+                List<string> d = ((LeafKS)bt).Tokens;
                 List<string> rez = new List<string>();
                 foreach (string str in d) {
                     rez.Add(str);
@@ -373,8 +372,8 @@ namespace CSPGF
             } 
             else if (bt is LeafKP) 
             {
-                List<string> d = ((LeafKP)bt).defaultTokens;
-                List<Alternative> alts = ((LeafKP)bt).alternatives;
+                List<string> d = ((LeafKP)bt).DefaultTokens;
+                List<Alternative> alts = ((LeafKP)bt).Alternatives;
                 List<string> rez = new List<string>();
                 foreach (Alternative alt in alts) 
                 {
