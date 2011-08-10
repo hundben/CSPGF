@@ -4,12 +4,13 @@
 /* pretty-print the result.                                                 */
 /*                                                                          */
 /****************************************************************************/
-using System;
-using System.IO;
-using CSPGF.Trees.Absyn;
 
 namespace CSPGF.Trees
 {
+    using System;
+    using System.IO;
+    using CSPGF.Trees.Absyn;
+
     public class Test
     {
         /*public static void Main(string[] args)

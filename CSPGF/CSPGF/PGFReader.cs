@@ -30,37 +30,36 @@ namespace CSPGF
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Linq;
     using System.Text;
     using CSPGF.Reader;
 
-    class PGFReader
+    public class PGFReader
     {
         private static bool debug = false;
 
-        private StreamWriter Dbgwrite;
-        private BinaryReader Inputstream;
-        private List<string> Languages = null;
+        private StreamWriter dbgwrite;
+        private BinaryReader inputstream;
+        private List<string> languages = null;
 
         public PGFReader(BinaryReader inputstream)
         {
             if (debug) 
             {
-                this.Dbgwrite = new StreamWriter("./dbg.txt", false);
+                this.dbgwrite = new StreamWriter("./dbg.txt", false);
             }
 
-            this.Inputstream = inputstream;
+            this.inputstream = inputstream;
         }
 
         public PGFReader(BinaryReader inputstream, List<string> languages)
         {
             if (debug) 
             {
-                this.Dbgwrite = new StreamWriter("./dbg.txt", false);
+                this.dbgwrite = new StreamWriter("./dbg.txt", false);
             }
 
-            this.Inputstream = inputstream;
-            this.Languages = languages;
+            this.inputstream = inputstream;
+            this.languages = languages;
         }
 
         public PGF ReadPGF()
@@ -69,14 +68,15 @@ namespace CSPGF
             int[] ii = new int[2];
             for (int i = 0; i < 2; i++) 
             {
-                int tmp = this.Inputstream.ReadByte();
+                int tmp = this.inputstream.ReadByte();
                 tmp = tmp << 8;
-                tmp = tmp | this.Inputstream.ReadByte();
+                tmp = tmp | this.inputstream.ReadByte();
                 ii[i] = tmp;
             }
+
             if (debug) 
             {
-                this.Dbgwrite.WriteLine("PGF version : " + ii[0] + "." + ii[1]);
+                this.dbgwrite.WriteLine("PGF version : " + ii[0] + "." + ii[1]);
             }
             // Reading the global flags
             Dictionary<string, RLiteral> flags = this.GetListFlag();
@@ -87,7 +87,7 @@ namespace CSPGF
                 {
                     foreach (KeyValuePair<string, int> kp in index) 
                     {
-                        this.Dbgwrite.WriteLine(kp.Key + ", " + kp.Value);
+                        this.dbgwrite.WriteLine(kp.Key + ", " + kp.Value);
                     }
                 }
             }
@@ -99,12 +99,13 @@ namespace CSPGF
             Dictionary<string, Concrete> concretes = new Dictionary<string, Concrete>();
             for (int i = 0; i < nbConcretes; i++) 
             {
-                string name = GetIdent();
+                string name = this.GetIdent();
                 if (debug) 
                 {
-                    this.Dbgwrite.WriteLine("Language " + name);
+                    this.dbgwrite.WriteLine("Language " + name);
                 }
-                if (this.Languages == null || this.Languages.Remove(name)) 
+
+                if (this.languages == null || this.languages.Remove(name)) 
                 {
                     Concrete tmp = this.GetConcrete(name, startCat);
                     concretes.Add(tmp.Name, tmp);
@@ -114,10 +115,10 @@ namespace CSPGF
                     if (index != null) 
                     {
                         // TODO: CHECK! Maybe this will work?
-                        this.Inputstream.BaseStream.Seek(index[name], SeekOrigin.Current);
+                        this.inputstream.BaseStream.Seek(index[name], SeekOrigin.Current);
                         if (debug) 
                         {
-                            this.Dbgwrite.WriteLine("Skipping " + name);
+                            this.dbgwrite.WriteLine("Skipping " + name);
                         }
                     }
                     else 
@@ -127,9 +128,9 @@ namespace CSPGF
                 }
             }
             // test that we actually found all the selected languages
-            if (this.Languages != null && this.Languages.Count() > 0) 
+            if (this.languages != null && this.languages.Count > 0) 
             {
-                foreach (string l in this.Languages) 
+                foreach (string l in this.languages) 
                 {
                     throw new UnknownLanguageException(l);
                 }
@@ -137,7 +138,7 @@ namespace CSPGF
 
             // builds and returns the pgf object.
             PGF pgf = new PGF(ii[0], ii[1], flags, abs, concretes);
-            this.Inputstream.Close();
+            this.inputstream.Close();
             return pgf;
         }
 
@@ -169,6 +170,7 @@ namespace CSPGF
                 string[] i = item.Split(':');
                 index.Add(i[0].Trim(), int.Parse(i[1]));
             }
+
             return index;
         }
 
@@ -180,8 +182,9 @@ namespace CSPGF
             string name = this.GetIdent();
             if (debug) 
             {
-                this.Dbgwrite.WriteLine("Abstract syntax [" + name + "]");
+                this.dbgwrite.WriteLine("Abstract syntax [" + name + "]");
             }
+
             Dictionary<string, RLiteral> flags = this.GetListFlag();
             List<AbsFun> absFuns = this.GetListAbsFun();
             List<AbsCat> absCats = this.GetListAbsCat();
@@ -196,6 +199,7 @@ namespace CSPGF
             {
                 tmp.Add(this.GetPattern());
             }
+
             return tmp;
         }
 
@@ -211,11 +215,12 @@ namespace CSPGF
             string name = this.GetIdent();
             if (debug)
             {
-                this.Dbgwrite.WriteLine("AbsFun: '" + name + "'");
+                this.dbgwrite.WriteLine("AbsFun: '" + name + "'");
             }
+
             CSPGF.Reader.Type t = this.GetType2();
             int i = this.GetInt();
-            int has_equations = this.Inputstream.ReadByte();
+            int has_equations = this.inputstream.ReadByte();
             List<Eq> equations;
             if (has_equations == 0)
             {
@@ -225,12 +230,14 @@ namespace CSPGF
             {
                 equations = this.GetListEq();
             }
+
             double weight = this.GetDouble();
             AbsFun f = new AbsFun(name, t, i, equations, weight);
             if (debug) 
             {
-                this.Dbgwrite.WriteLine("/AbsFun: " + f);
+                this.dbgwrite.WriteLine("/AbsFun: " + f);
             }
+
             return f;
         }
 
@@ -257,6 +264,7 @@ namespace CSPGF
                     tmp.Add(this.GetAbsFun());
                 }
             }
+
             return tmp;
         }
 
@@ -275,6 +283,7 @@ namespace CSPGF
                     tmp.Add(this.GetAbsCat());
                 }
             }
+
             return tmp;
         }
 
@@ -286,14 +295,15 @@ namespace CSPGF
             CSPGF.Reader.Type t = new CSPGF.Reader.Type(hypos, returnCat, exprs);
             if (debug) 
             {
-                this.Dbgwrite.WriteLine("Type: " + t);
+                this.dbgwrite.WriteLine("Type: " + t);
             }
+
             return t;
         }
 
         private Hypo GetHypo()
         {
-            int btype = this.Inputstream.ReadByte();
+            int btype = this.inputstream.ReadByte();
             bool b = btype == 0 ? false : true;
             string varName = this.GetIdent();
             CSPGF.Reader.Type t = this.GetType2();
@@ -308,6 +318,7 @@ namespace CSPGF
             {
                 tmp.Add(this.GetHypo());
             }
+
             return tmp;
         }
 
@@ -319,17 +330,18 @@ namespace CSPGF
             {
                 tmp.Add(this.GetExpr());
             }
+
             return tmp;
         }
 
         private Expr GetExpr()
         {
-            int sel = this.Inputstream.ReadByte();
+            int sel = this.inputstream.ReadByte();
             Expr expr = null;
             switch (sel)
             {
                 case 0: //lambda abstraction
-                    int bt = this.Inputstream.ReadByte();
+                    int bt = this.inputstream.ReadByte();
                     bool btype = bt == 0 ? false : true;
                     string varName = this.GetIdent();
                     Expr e1 = this.GetExpr();
@@ -386,7 +398,7 @@ namespace CSPGF
 
         private Pattern GetPattern()
         {
-            int sel = this.Inputstream.ReadByte();
+            int sel = this.inputstream.ReadByte();
             Pattern patt = null;
             switch (sel) 
             {
@@ -428,7 +440,7 @@ namespace CSPGF
 
         private RLiteral GetLiteral()
         {
-            int sel = this.Inputstream.ReadByte();
+            int sel = this.inputstream.ReadByte();
             RLiteral ss = null;
             switch (sel) 
             {
@@ -458,20 +470,23 @@ namespace CSPGF
         {
             if (debug)
             {
-                this.Dbgwrite.WriteLine("Concrete: " + name);
-                this.Dbgwrite.WriteLine("Concrete: Reading flags");
+                this.dbgwrite.WriteLine("Concrete: " + name);
+                this.dbgwrite.WriteLine("Concrete: Reading flags");
             }
+
             Dictionary<string, RLiteral> flags = this.GetListFlag();
             // We don't use the print names, but we need to read them to skip them
             if (debug) 
             {
-                this.Dbgwrite.WriteLine("Concrete: Skiping print names");
+                this.dbgwrite.WriteLine("Concrete: Skiping print names");
             }
+
             this.GetListPrintName();
             if (debug) 
             {
-                this.Dbgwrite.WriteLine("Concrete: Reading sequences");
+                this.dbgwrite.WriteLine("Concrete: Reading sequences");
             }
+
             List<Sequence> seqs = this.GetListSequence();
             List<CncFun> cncFuns = this.GetListCncFun(seqs);
             // We don't need the lindefs for now but again we need to
@@ -509,6 +524,7 @@ namespace CSPGF
                     tmp.Add(this.GetPrintName());
                 }
             }
+
             return tmp;
         }
 
@@ -529,16 +545,18 @@ namespace CSPGF
             {
                 tmp.Add(this.GetSequence());
             }
+
             return tmp;
         }
 
         private Symbol GetSymbol()
         {
-            int sel = this.Inputstream.ReadByte();
+            int sel = this.inputstream.ReadByte();
             if (debug) 
             {
-                this.Dbgwrite.WriteLine("Symbol: type=" + sel);
+                this.dbgwrite.WriteLine("Symbol: type=" + sel);
             }
+
             Symbol symb = null;
             switch (sel) 
             {
@@ -568,7 +586,7 @@ namespace CSPGF
 
             if (debug) 
             {
-                this.Dbgwrite.WriteLine("/Symbol: " + symb);
+                this.dbgwrite.WriteLine("/Symbol: " + symb);
             }
 
             return symb;
@@ -637,7 +655,6 @@ namespace CSPGF
         /* Reading LinDefs                                   */
         /* ************************************************* */
         // LinDefs are stored as an int map (Int -> [Int])
-
         private List<LinDef> GetListLinDef()
         {
             int size = this.GetInt();
@@ -725,10 +742,10 @@ namespace CSPGF
          */
         private Production GetProduction(int leftCat, List<CncFun> cncFuns)
         {
-            int sel = this.Inputstream.ReadByte();
+            int sel = this.inputstream.ReadByte();
             if (debug)
             {
-                this.Dbgwrite.WriteLine("Production: type=" + sel);
+                this.dbgwrite.WriteLine("Production: type=" + sel);
             }
 
             Production prod = null;
@@ -750,7 +767,7 @@ namespace CSPGF
 
             if (debug) 
             {
-                this.Dbgwrite.WriteLine("/Production: " + prod);
+                this.dbgwrite.WriteLine("/Production: " + prod);
             }
 
             return prod;
@@ -824,7 +841,7 @@ namespace CSPGF
         {
             int npoz = this.GetInt();
             List<char> bytes = new List<char>();
-            foreach (char c in this.Inputstream.ReadChars(npoz))
+            foreach (char c in this.inputstream.ReadChars(npoz))
             {
                 bytes.Add(c);
             }
@@ -860,7 +877,7 @@ namespace CSPGF
         {
             int nbChar = this.GetInt();
             byte[] bytes = new byte[nbChar];
-            this.Inputstream.Read(bytes, 0, nbChar);
+            this.inputstream.Read(bytes, 0, nbChar);
             // TODO: check if we have to change encoding or let String fix it instead!
             System.Text.Encoding enc = System.Text.Encoding.ASCII;
             return enc.GetString(bytes);
@@ -878,7 +895,6 @@ namespace CSPGF
             return tmp;
         }
 
-
         // Weighted idents are a pair of a String (the ident) and a double
         // (the ident).
         private List<WeightedIdent> GetListWeightedIdent()
@@ -891,6 +907,7 @@ namespace CSPGF
                 string s = this.GetIdent();
                 tmp.Add(new WeightedIdent(s, w));
             }
+
             return tmp;
         }
 
@@ -904,7 +921,7 @@ namespace CSPGF
         {
             // TODO: Check! WTF? Int räcker gott och väl!
             // long -> int
-            int rez = this.Inputstream.ReadByte();
+            int rez = this.inputstream.ReadByte();
             if (rez <= 0x7f) 
             {
                 return rez;
@@ -925,12 +942,13 @@ namespace CSPGF
             {
                 tmp.Add(this.GetInt());
             }
+
             return tmp;
         }
 
         private double GetDouble()
         {
-            return this.Inputstream.ReadDouble();
+            return this.inputstream.ReadDouble();
         }
     }
 }

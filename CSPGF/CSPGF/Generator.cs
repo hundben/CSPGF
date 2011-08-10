@@ -63,15 +63,15 @@ namespace CSPGF
                 {
                     foreach (AbsFun ab in absFuns) 
                     {
-                        if (weid.ident.Equals(ab.Name)) 
+                        if (weid.Ident.Equals(ab.Name)) 
                         {
-                            if (ab.Type.hypos.Count == 0) 
+                            if (ab.Type.Hypos.Count == 0) 
                             {
-                                dirFuns.Add(weid.ident);
+                                dirFuns.Add(weid.Ident);
                             }
                             else 
                             {
-                                indirFuns.Add(weid.ident);
+                                indirFuns.Add(weid.Ident);
                             }
 
                             break;
@@ -92,6 +92,7 @@ namespace CSPGF
         /** generates a category with a random direct rule
          * suitable for simple expressions
          **/
+
         // FIXME what is 'type' for ???
         public Tree GetDirect(string type, HashSet<string> dirFuns)
         {
@@ -117,13 +118,14 @@ namespace CSPGF
             {
                 if (a.Name.Equals(funcName)) 
                 {
-                    List<Hypo> hypos = a.Type.hypos;
+                    List<Hypo> hypos = a.Type.Hypos;
                     string[] tempCats = new string[hypos.Count];
                     Tree[] exps = new Tree[hypos.Count];
+
                     // TODO: Går detta att göra om?
                     for (int k = 0; k < hypos.Count; k++) 
                     {
-                        tempCats[k] = hypos[k].Type.name;
+                        tempCats[k] = hypos[k].Type.Name;
                         exps[k] = Gen(tempCats[k]);
                         if (exps[k] == null) 
                         {
@@ -150,7 +152,7 @@ namespace CSPGF
         /// this decreases the probability of having infinite trees for infinite grammars
         /// Joins a first name and a last name together into a single string.
         /// </summary>
-        /// <param name="type">Insert comment here.</param>
+        /// <param name="type">Insert comment here..</param>
         /// <returns>Insert comment here.</returns>
         public Tree Gen(string type)
         {

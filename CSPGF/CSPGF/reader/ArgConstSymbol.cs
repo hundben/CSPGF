@@ -41,6 +41,7 @@ namespace CSPGF.Reader
         }
 
         public int Arg { get; private set; }
+
         public int Cons { get; private set; }
         
         public override string ToString()

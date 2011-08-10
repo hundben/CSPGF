@@ -41,6 +41,7 @@ namespace CSPGF.Reader
         }
 
         public Expr LExp { get; private set; }
+
         public Expr RExp { get; private set; }
 
         public override string ToString()

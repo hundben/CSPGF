@@ -44,9 +44,13 @@ namespace CSPGF.Reader
         }
 
         public string Name { get; private set; }
+
         public Type Type { get; private set; }
+
         public int Arit { get; private set; }
+
         public List<Eq> Eqs { get; private set; }
+
         private double Weight { get; private set; }
 
         public override string ToString()

@@ -36,8 +36,8 @@ namespace CSPGF.Reader
     public class Concrete
     {
         // TODO: check for errors
-        private Dictionary<string, RLiteral> Flags;
-        private string StartCat;
+        private Dictionary<string, RLiteral> flags;
+        private string startCat;
         // We are missing: printnames, lindefs, lexicon, pproductions, lproductions ? Are any of these needed?
         public Concrete(
             string name,
@@ -50,13 +50,13 @@ namespace CSPGF.Reader
             string defaultStartCat)
         {
             this.Name = name;
-            this.Flags = flags;
+            this.flags = flags;
             this.Seqs = seqs;
             this.CncFuns = cncFuns;
             this.Prods = prods;
             this.CncCats = cncCats;
             this.FId = fId;
-            this.StartCat = defaultStartCat;
+            this.startCat = defaultStartCat;
         }
 
         public string Name { get; private set; }
@@ -78,18 +78,19 @@ namespace CSPGF.Reader
             {
                 tmp.Add(c.Value);
             }
+
             return tmp;
         }
 
         public CncCat GetStartCat()
         {
-            if (this.CncCats.ContainsKey(this.StartCat))
+            if (this.CncCats.ContainsKey(this.startCat))
             {
-                return this.CncCats[this.StartCat];
+                return this.CncCats[this.startCat];
             }
             else
             {
-                return new CncCat(this.StartCat, 0, 0, new List<string>());
+                return new CncCat(this.startCat, 0, 0, new List<string>());
             }
         }
 
@@ -98,11 +99,12 @@ namespace CSPGF.Reader
             List<Production> tmp = new List<Production>();
             foreach (ProductionSet ps in this.Prods) 
             {
-                foreach (Production p in ps.prods) 
+                foreach (Production p in ps.Prods) 
                 {
                     tmp.Add(p);
                 }
             }
+
             return tmp;
         }
 
@@ -116,8 +118,9 @@ namespace CSPGF.Reader
             Dictionary<int, HashSet<Production>> dict = new Dictionary<int, HashSet<Production>>();
             foreach (ProductionSet p in this.Prods) 
             {
-                dict.Add(p.id, p.GetSetOfProductions());
+                dict.Add(p.ID, p.GetSetOfProductions());
             }
+
             return dict;
         }
     }

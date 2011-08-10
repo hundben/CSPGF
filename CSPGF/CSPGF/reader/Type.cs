@@ -24,38 +24,40 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System.Collections.Generic;
+
     public class Type
     {
-        public List<Hypo> hypos { get; private set; }
-        public String name { get; private set; }
-        public List<Expr> exprs { get; private set; }
-
-        public Type(List<Hypo> _hypos, String _str, List<Expr> _exprs)
+        public Type(List<Hypo> hypos, string str, List<Expr> exprs)
         {
-            hypos = _hypos;
-            name = _str;
-            exprs = _exprs;
+            this.Hypos = hypos;
+            this.Name = str;
+            this.Exprs = exprs;
         }
 
-        public override String ToString()
+        public List<Hypo> Hypos { get; private set; }
+
+        public string Name { get; private set; }
+
+        public List<Expr> Exprs { get; private set; }
+
+        public override string ToString()
         {
-            String ss = "Hypotheses : (";
-            foreach (Hypo h in hypos)
+            string ss = "Hypotheses : (";
+            foreach (Hypo h in this.Hypos)
             {
                 ss += " " + h.ToString();
             }
-            ss += (") , Name : " + name + " , Expressions : (");
-            foreach (Expr e in exprs)
+
+            ss += ") , Name : " + this.Name + " , Expressions : (";
+            foreach (Expr e in this.Exprs)
             {
                 ss += " " + e.ToString();
             }
+
             ss += ")";
             return ss;
         }

@@ -54,8 +54,11 @@ namespace CSPGF.Reader
         }
 
         public string Name { get; private set; }
+
         public int FirstFID { get; private set; }
+
         public int LastFID { get; private set; }
+
         public List<string> Labels { get; private set; }
 
         public override string ToString()

@@ -113,7 +113,8 @@ namespace CSPGF
                 foreach (Production prod in i.Value) 
                 {
                     List<string> vs = this.GetFunctions(prod, productions);
-                    if (vs != null) {
+                    if (vs != null) 
+                    {
                         foreach (string str in vs) 
                         {
                             Dictionary<int, HashSet<Production>> htemp = new Dictionary<int, HashSet<Production>>();
@@ -178,7 +179,8 @@ namespace CSPGF
                     foreach (Production pp in prods)
                     {
                         List<string> vrez = this.GetFunctions((Production)pp, productions);
-                        if (vrez != null) {
+                        if (vrez != null) 
+                        {
                             foreach (string str in vrez) 
                             {
                                 rez.Add(str);
@@ -212,7 +214,8 @@ namespace CSPGF
         private HashSet<Production> FilterProdSet1(Dictionary<int, HashSet<Production>> prods0, HashSet<Production> set)
         {
             HashSet<Production> set1 = new HashSet<Production>();
-            foreach (Production prod in set) {
+            foreach (Production prod in set) 
+            {
                 if (this.FilterRule(prods0, prod))
                 {
                     set1.Add(prod);
@@ -302,7 +305,8 @@ namespace CSPGF
         /** checks if a production just has a variable argument **/
         private bool Is_ho_prod(Production p)
         {
-            if (p is ApplProduction) {
+            if (p is ApplProduction) 
+            {
                 List<int> args = ((ApplProduction)p).Domain;
                 if (args.Count == 1 && args[0] == -4)
                 {
@@ -348,15 +352,15 @@ namespace CSPGF
             foreach (AbsFun af in absFuns) 
             {
             // for (int i = 0 ; i < absFuns.length ; i++) {
-                List<Hypo> hypos = af.Type.hypos;
+                List<Hypo> hypos = af.Type.Hypos;
                 // Hypo[] hypos = absFuns[i].getType().getHypos();
                 foreach (Hypo hypo in hypos) 
                 {
                 // for (int j = 0 ; j < hypos.length ; j++)
-                    if (!rezTemp.Contains(hypo.Type.name)) 
+                    if (!rezTemp.Contains(hypo.Type.Name)) 
                     {
                     // if (!rezTemp.contains(hypos[j].getType().getName()))
-                        rezTemp.Add(hypo.Type.name);
+                        rezTemp.Add(hypo.Type.Name);
                     }
                 }
             }
@@ -367,12 +371,12 @@ namespace CSPGF
         /**gets the types from the hypotheses of a type **/
         private List<string> HypoArgsOfType(CSPGF.Reader.Type t)
         {
-            List<Hypo> hypos = t.hypos;
+            List<Hypo> hypos = t.Hypos;
             List<string> tmp = new List<string>();
             foreach (Hypo h in hypos) 
             {
                 // for (int i = 0 ; i < hypos.length ; i++)
-                tmp.Add(h.Type.name);
+                tmp.Add(h.Type.Name);
                 // rez[i] = hypos[i].getType().getName();
             }
 
@@ -386,7 +390,8 @@ namespace CSPGF
             {
                 List<string> d = ((LeafKS)bt).Tokens;
                 List<string> rez = new List<string>();
-                foreach (string str in d) {
+                foreach (string str in d) 
+                {
                     rez.Add(str);
                 }
 
@@ -477,6 +482,7 @@ namespace CSPGF
             {
                 rez.Add(this.RenderLin(lt));
             }
+
             return rez;
         }
 
@@ -515,6 +521,7 @@ namespace CSPGF
                     } 
                     while (tree is CSPGF.Trees.Absyn.Application);
                 }
+
                 if (tree is Function) 
                 {
                     return this.Apply(xs, mb_cty, mb_fid, ((Function)tree).Ident_, es);
@@ -532,12 +539,14 @@ namespace CSPGF
                     //xs.addAll(ys);
                     xs.Add(yss);
                 }
+
                 List<CSPGF.Trees.Absyn.Tree> exprs = new List<CSPGF.Trees.Absyn.Tree>();
                 exprs.Add(tree);
                 for (int i = 0; i < xs.Count; i++) 
                 {
                     exprs.Add(new CSPGF.Trees.Absyn.Literal(new CSPGF.Trees.Absyn.StringLiteral(xs.ElementAt(i))));
                 } 
+
                 return this.Apply(xs, mb_cty, mb_fid, "_B", exprs);
             }
         }
@@ -579,11 +588,13 @@ namespace CSPGF
                     {
                         ctys.Add(copy_ctys.ElementAt(ind));
                     }
+
                     if (es.Count != ctys.Count) 
                     {
                         //LinearizerException -> Exception
                         throw new Exception("lengths of es and ctys don't match" + es.ToString() + " -- " + ctys.ToString());
                     }
+
                     List<Sequence> lins = vApp.ElementAt(i).CncFun.Sequences;
                     string cat = vApp.ElementAt(i).CncType.CId;
                     List<CSPGF.Trees.Absyn.Tree> copy_expr = new List<CSPGF.Trees.Absyn.Tree>();
@@ -605,6 +616,7 @@ namespace CSPGF
                         rez.Add(new LinTriple(n_fid + 1, new CncType(cat, n_fid), linTab));
                     }
                 }
+
                 return rez;
             }
         }
@@ -636,8 +648,8 @@ namespace CSPGF
                                 rez.Add(app);
                             }
                         }
-
                     }
+
                     return rez;
                 }
             } 
@@ -661,6 +673,7 @@ namespace CSPGF
                             rez.Add(app);
                         }
                     }
+
                     return rez;
                 }
             }
@@ -680,9 +693,11 @@ namespace CSPGF
                     {
                         vtype.Add(new CncType("__gfVar", args[i]));
                     }
+
                     rez.Add(new AppResult(cncFun, cty, vtype));
                     return rez;
                 }
+
                 if (f.Equals("_B")) 
                 {
                     vtype.Add(new CncType(cty.CId, args[0]));
@@ -690,6 +705,7 @@ namespace CSPGF
                     {
                         vtype.Add(new CncType("__gfVar", args[i]));
                     }
+
                     rez.Add(new AppResult(cncFun, cty, vtype));
                     return rez;
                 } 
@@ -700,19 +716,24 @@ namespace CSPGF
                     for (int i = 0; i < absFuns.Count; i++) 
                     {
                         if (f.Equals(absFuns[i].Name))
+                        {
                             t = absFuns[i].Type;
+                        }
                     }
+
                     if (t == null) 
                     {
                         // LinearizerException -> Exception
                         throw new Exception(" f not found in the abstract syntax");
                     }
+
                     List<string> catSkel = this.CatSkeleton(t);
                     string res = catSkel.ElementAt(0);
                     for (int i = 0; i < args.Count; i++) 
                     {
                         vtype.Add(new CncType(catSkel.ElementAt(i + 1), args[i]));
                     }
+
                     rez.Add(new AppResult(cncFun, new CncType(res, cty.FId), vtype));
                     return rez;
                 }
@@ -730,20 +751,20 @@ namespace CSPGF
                         rez.Add(app);
                     }
                 }
+
                 return rez;
             }
         }
-
 
         /** computes the types of the arguments of a function type **/
         private List<string> CatSkeleton(CSPGF.Reader.Type t)
         {
             List<string> rez = new List<string>();
-            rez.Add(t.name);
-            List<Hypo> hypos = t.hypos;
+            rez.Add(t.Name);
+            List<Hypo> hypos = t.Hypos;
             foreach (Hypo h in hypos) 
             {
-                rez.Add(h.Type.name);
+                rez.Add(h.Type.Name);
             }
 
             return rez;
@@ -772,7 +793,7 @@ namespace CSPGF
             } 
             else if (s is AlternToksSymbol) 
             {
-                List<string> toks = ((AlternToksSymbol)s).tokens;
+                List<string> toks = ((AlternToksSymbol)s).Tokens;
                 List<Alternative> alts = ((AlternToksSymbol)s).Alts;
                 List<BracketedTokn> v = new List<BracketedTokn>();
                 v.Add(new LeafKP(toks, alts));
@@ -780,7 +801,7 @@ namespace CSPGF
             } 
             else 
             {
-                List<string> toks = ((ToksSymbol)s).tokens;
+                List<string> toks = ((ToksSymbol)s).Tokens;
                 List<BracketedTokn> v = new List<BracketedTokn>();
                 v.Add(new LeafKS(toks));
                 return v;
@@ -860,6 +881,7 @@ namespace CSPGF
                     }
                 }
             }
+
             return rez;
         }
 
@@ -868,7 +890,6 @@ namespace CSPGF
         {
             return p is ApplProduction;
         }
-
 
         /** checks if an integer is the index of an integer literal **/
         private bool IsLiteralInt(int i)
@@ -901,6 +922,7 @@ namespace CSPGF
             {
                 return true;
             }
+
             return false;
         }
     }

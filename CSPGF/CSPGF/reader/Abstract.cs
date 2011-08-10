@@ -34,24 +34,26 @@ namespace CSPGF.Reader
 
     public class Abstract
     {
-        private Dictionary<string, RLiteral> Flags;
+        private Dictionary<string, RLiteral> flags;
 
         public Abstract(string name, Dictionary<string, RLiteral> flags, List<AbsFun> absFuns, List<AbsCat> absCats)
         {
             this.Name = name;
-            this.Flags = flags;
+            this.flags = flags;
             this.AbsFuns = absFuns;
             this.AbsCats = absCats;
         }
 
         public string Name { get; private set; }
+
         public List<AbsFun> AbsFuns { get; private set; }
+
         public List<AbsCat> AbsCats { get; private set; }
 
         public string StartCat()
         {
             RLiteral cat = null;
-            if (this.Flags.TryGetValue("startcat", out cat)) 
+            if (this.flags.TryGetValue("startcat", out cat)) 
             {
                 return ((StringLit)cat).Value;
             }
@@ -67,7 +69,7 @@ namespace CSPGF.Reader
             // TODO: Är bortkommenterat i javakoden också kanske borde fixa?
             // for(int i=0; i<flags.length;i++)
             // ss+=(" "+flags[i].toString());
-            foreach (KeyValuePair<string, RLiteral> kvp in this.Flags) 
+            foreach (KeyValuePair<string, RLiteral> kvp in this.flags) 
             {
                 ss += "String: " + kvp.Key + "RLiteral: " + kvp.Value.ToString();
             }

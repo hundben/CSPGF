@@ -24,31 +24,32 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+
     public class ProductionSet
     {
-        public int id { get; private set; }
-        public List<Production> prods { get; private set; }
-
-        public ProductionSet(int _id, List<Production> _prods)
+        public ProductionSet(int id, List<Production> prods)
         {
-            id = _id;
-            prods = _prods;
+            this.ID = id;
+            this.Prods = prods;
         }
 
-        public override String ToString()
+        public int ID { get; private set; }
+
+        public List<Production> Prods { get; private set; }
+
+        public override string ToString()
         {
-            String ss = "Id : " + id + " , Productions : [";
-            foreach (Production p in prods)
+            string ss = "Id : " + this.ID + " , Productions : [";
+            foreach (Production p in this.Prods)
             {
                 ss += " " + p.ToString();
             }
+
             ss += "]";
             return ss;
         }
@@ -56,10 +57,11 @@ namespace CSPGF.Reader
         public HashSet<Production> GetSetOfProductions()
         {
             HashSet<Production> hs = new HashSet<Production>();
-            foreach (Production p in prods) 
+            foreach (Production p in this.Prods) 
             {
                 hs.Add(p);
             }
+
             return hs;
         }
     }

@@ -43,7 +43,9 @@ namespace CSPGF.Linearize
         }
 
         public string CId { get; private set; }
+
         public int LIndex { get; private set; }
+
         public int FId { get; private set; }
 
         /// <summary>

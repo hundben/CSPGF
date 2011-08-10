@@ -24,25 +24,21 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
     public class VarExp : Expr //EVar
     {
-        public int ind { get; private set; }
-
-        public VarExp(int _ind)
+        public VarExp(int ind)
         {
-            ind = _ind;
+            this.Ind = ind;
         }
 
-        public override String ToString()
+        public int Ind { get; private set; }
+
+        public override string ToString()
         {
-            return "Variable Expression : [Index : " + ind + "]";
+            return "Variable Expression : [Index : " + this.Ind + "]";
         }
     }
 }

@@ -40,6 +40,7 @@ namespace CSPGF.Parser_new
         }
 
         public List<ParseTrie> Child { get; private set; }
+
         public Reader.ApplProduction Symbol { get; private set; }
     }
 }

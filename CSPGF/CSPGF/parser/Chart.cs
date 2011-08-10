@@ -37,6 +37,7 @@ namespace CSPGF.Parse
     {
         // private MultiMap<int, Object> productionSets = new MultiMap<int, Object>();
         private Dictionary<int, HashSet<Production>> productionSets = new Dictionary<int, HashSet<Production>>();
+
         // private Dictionary<Tuple<int, int, int, int>, int> categoryBookKeeper = new Dictionary<Tuple<int, int, int, int>, int>();
         private Dictionary<Category, int> categoryBookKeeper = new Dictionary<Category, int>();
         private int nextCat;
@@ -80,6 +81,7 @@ namespace CSPGF.Parse
         public List<ApplProduction> GetProductions(int resultCat)
         {
             HashSet<Production> prod;
+
             // Check if category exists, if not return empty productionset
             if (this.productionSets.TryGetValue(resultCat, out prod))
             {
@@ -138,6 +140,7 @@ namespace CSPGF.Parse
         {
             int cat = this.nextCat;
             this.nextCat++;
+
             // Category c = new Category(oldCat, l, j, k);
             this.categoryBookKeeper[c] = cat;    //TODO maybe add check here
             return cat;

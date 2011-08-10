@@ -24,29 +24,27 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
 namespace CSPGF.Reader
 {
+    using System.Collections.Generic;
+
     public class ToksSymbol : Symbol //SymKS
     {
-        public List<String> tokens { get; private set; }
-
-        public ToksSymbol(List<String> _toks)
+        public ToksSymbol(List<string> toks)
         {
-            tokens = _toks;
+            this.Tokens = toks;
         }
 
-        public override String ToString()
+        public List<string> Tokens { get; private set; }
+
+        public override string ToString()
         {
-            String s = "Tokens : ";
-            foreach (String st in tokens)
+            string s = "Tokens : ";
+            foreach (string st in this.Tokens)
             {
                 s += " " + st;
             }
+
             return s;
         }
     }

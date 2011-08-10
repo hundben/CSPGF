@@ -24,67 +24,69 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
 
 namespace CSPGF.Test
 {
-    class FoodsPredictTest : PGFTestCase
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    
+    public class FoodsPredictTest : PGFTestCase
     {
-        public FoodsPredictTest(String name) : base(name)
+        private PGF pgf;
+
+        public FoodsPredictTest(string name) : base(name)
         {
         }
 
-        PGF pgf;
-
         public void SetUp()
         {
-            pgf = GetPGF("Foods.pgf");
+            this.pgf = GetPGF("Foods.pgf");
         }
 
         public void TestFoodsEng()
         {
-            Parser parser = new Parser(pgf, "FoodsEng");
-            String[] words = new String[] { "that", "these", "this", "those" };
-            List<String> predictions = parser.Parse().Predict();
+            Parser parser = new Parser(this.pgf, "FoodsEng");
+            string[] words = new string[] { "that", "these", "this", "those" };
+            List<string> predictions = parser.Parse().Predict();
             predictions.Sort();
-            Debug.Assert(words.Length == predictions.Count);
+            Debug.Assert(words.Length == predictions.Count, "Check if the lengths are equal");
             for (int i = 0; i < words.Length; i++)
-                Debug.Assert(words[i].Equals(predictions[i]));
+            {
+                Debug.Assert(words[i].Equals(predictions[i]), "Check if the two are equal");
+            }
         }
 
         public void TestFoodsSwe()
         {
-            Parser parser = new Parser(pgf, "FoodsSwe");
-            String[] words = new String[] { "de", "den", "det" };
-            List<String> predictions = parser.Parse().Predict();
+            Parser parser = new Parser(this.pgf, "FoodsSwe");
+            string[] words = new string[] { "de", "den", "det" };
+            List<string> predictions = parser.Parse().Predict();
             predictions.Sort();
-            Debug.Assert(words.Length == predictions.Count);
+            Debug.Assert(words.Length == predictions.Count, "Check if the lengths are equal");
             for (int i = 0; i < words.Length; i++)
-                Debug.Assert(words[i].Equals(predictions[i]));
+            {
+                Debug.Assert(words[i].Equals(predictions[i]), "Check if the two are equal");
+            }
         }
 
         public void TestFoodsIta()
         {
-            Parser parser = new Parser(pgf, "FoodsIta");
+            Parser parser = new Parser(this.pgf, "FoodsIta");
 
-            String[] words = new String[] {"quei", "quel",	"quella", "quelle",
-					"questa", "queste", "questi", "questo"};
+            string[] words = new string[] { "quei", "quel", "quella", "quelle", "questa", "queste", "questi", "questo" };
 
-            List<String> predictions = parser.Parse().Predict();
+            List<string> predictions = parser.Parse().Predict();
             predictions.Sort();
-            Debug.Assert(words.Length == predictions.Count);
+            Debug.Assert(words.Length == predictions.Count, "Check if the number of elements is equal");
             for (int i = 0; i < words.Length; i++)
-                Debug.Assert(words[i].Equals(predictions[i]));
+            {
+                Debug.Assert(words[i].Equals(predictions[i]), "Check if the two are equal");
+            }
         }
-
 
         public void TearDown()
         {
-            pgf = null;
+            this.pgf = null;
         }
     }
 }

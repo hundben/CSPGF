@@ -12,6 +12,7 @@
         private string sentence = string.Empty;
         private List<LinTrie> curLvl;
         private List<ParseTrie> curParse;
+
         public Linearizer()
         {
             this.curLvl = new List<LinTrie>();
@@ -50,7 +51,7 @@
                 {
                     if (seq.Symbs[i] is ToksSymbol) 
                     {
-                        foreach (string str2 in ((ToksSymbol)seq.Symbs[i]).tokens) 
+                        foreach (string str2 in ((ToksSymbol)seq.Symbs[i]).Tokens) 
                         {
                             str += str2 + " ";
                         }
@@ -94,7 +95,7 @@
             string tmp = string.Empty;
             foreach (Alternative alt in s.Alts) 
             {
-                foreach (string str in nextToken.tokens) 
+                foreach (string str in nextToken.Tokens) 
                 {
                     foreach (string str2 in alt.Alt2) 
                     {
@@ -104,12 +105,14 @@
                             {
                                 tmp += str3 + " ";
                             }
+
                             return tmp.TrimEnd();
                         }
                     }
                 }
             }
-            foreach (string str4 in s.tokens) 
+
+            foreach (string str4 in s.Tokens) 
             {
                 tmp += str4 + " ";
             }
@@ -130,6 +133,7 @@
                     }
                 }
             }
+
             this.curLvl = newlvl;
         }
 
@@ -152,10 +156,11 @@
                 }
                 else if (trees[i].Symbol is ToksSymbol) 
                 {
-                    foreach (string str in ((ToksSymbol)trees[i].Symbol).tokens) 
+                    foreach (string str in ((ToksSymbol)trees[i].Symbol).Tokens) 
                     {
                         tmp += str + " ";
                     }
+
                     tmp = tmp.TrimEnd();
                 }
                 else 
@@ -163,9 +168,11 @@
                     throw new LinearizerException("ohanterad typ av symbol: " + trees[i].Symbol.GetType());
                 }
             }
+
             return tmp;
         }
     }
+
     private class LinTrie
     {
         public LinTrie()
@@ -174,6 +181,7 @@
         }
 
         public List<LinTrie> Child { get; set; }
+
         public Symbol Symbol { get; set; }
     }
 }

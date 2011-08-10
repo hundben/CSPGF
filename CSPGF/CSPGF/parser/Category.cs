@@ -1,5 +1,4 @@
-﻿
-namespace CSPGF.Parse
+﻿namespace CSPGF.Parse
 {
     using System;
     using System.Collections.Generic;
@@ -8,10 +7,11 @@ namespace CSPGF.Parse
     
     public class Category
     {
-        private int OldCat, l, j, k;
+        private int oldCat, l, j, k;
+
         public Category(int oldCat, int l, int j, int k) 
         {
-            this.OldCat = oldCat;
+            this.oldCat = oldCat;
             this.l = l;
             this.j = j;
             this.k = k;
@@ -19,7 +19,7 @@ namespace CSPGF.Parse
 
         public override bool Equals(Category c)
         {
-            if (c.OldCat == this.OldCat && c.l == this.l && c.j == this.j && c.k == this.k) 
+            if (c.oldCat == this.oldCat && c.l == this.l && c.j == this.j && c.k == this.k) 
             {
                 return true;
             }
@@ -29,7 +29,7 @@ namespace CSPGF.Parse
 
         public override string ToString()
         {
-            return "[o:" + this.OldCat + "  l:" + this.l + " j:" + this.j + " k:" + this.k + "]";
+            return "[o:" + this.oldCat + "  l:" + this.l + " j:" + this.j + " k:" + this.k + "]";
         }
     }
 }

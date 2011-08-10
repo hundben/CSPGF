@@ -41,6 +41,7 @@ namespace CSPGF.Parse
         private Stack<ActiveItem> agenda;
         private int position;
         private Dictionary<int, ActiveSet> active;
+
         public ParseState(Concrete grammar)
         {
             this.startCat = grammar.GetStartCat();
@@ -139,7 +140,7 @@ namespace CSPGF.Parse
             if (sym is ToksSymbol) 
             {
                 ToksSymbol tok = (ToksSymbol)sym;
-                List<string> tokens = tok.tokens;
+                List<string> tokens = tok.Tokens;
                 ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
                 //scan
                 Stack<ActiveItem> newAgenda;

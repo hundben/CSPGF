@@ -43,7 +43,9 @@ namespace CSPGF.Linearize
         }
 
         public CncFun CncFun { get; private set; }
+
         public CncType CncType { get; private set; }
+
         public List<CncType> CncTypes { get; private set; }
     }
 }

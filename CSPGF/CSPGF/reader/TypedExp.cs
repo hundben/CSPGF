@@ -34,14 +34,15 @@ namespace CSPGF.Reader
 
     public class TypedExp : Expr //ETyped
     {
-        public Expr Exp { get; private set; }
-        public Type Type { get; private set; }
-
         public TypedExp(Expr exp, Type t)
         {
             this.Exp = exp;
             this.Type = t;
         }
+
+        public Expr Exp { get; private set; }
+
+        public Type Type { get; private set; }
 
         public override string ToString()
         {

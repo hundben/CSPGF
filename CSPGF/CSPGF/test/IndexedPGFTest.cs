@@ -24,72 +24,73 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
 
 namespace CSPGF.Test
 {
-    class IndexedPGFTest
-    {
-        public IndexedPGFTest(String name)
-        {
+    using System.Collections.Generic;
+    using System.Diagnostics;
 
+    public class IndexedPGFTest
+    {
+        public IndexedPGFTest(string name)
+        {
         }
 
         public void TestIndexedPhrasebookSelect()
         {
             //String filename = this.getClass().getResource("PhrasebookIndexed.pgf").getFile();
-            List<String> tmp = new List<String>();
+            List<string> tmp = new List<string>();
             tmp.Add("PhrasebookEng");
             tmp.Add("PhrasebookFre");
             PGF pgf = PGFBuilder.FromFile("PhrasebookIndexed.pgf", tmp);
             
-            Debug.Assert(pgf.HasConcrete("PhrasebookEn"));
-            Debug.Assert(pgf.HasConcrete("PhrasebookFre"));
-            Debug.Assert(!pgf.HasConcrete("PhrasebookIta"));
+            Debug.Assert(pgf.HasConcrete("PhrasebookEn"), "Check if the pgf has the concrete we're after");
+            Debug.Assert(pgf.HasConcrete("PhrasebookFre"), "Check if the pgf has the concrete we're after");
+            Debug.Assert(!pgf.HasConcrete("PhrasebookIta"), "Check that we don't have this concrete");
         }
 
         public void TestIndexedPhrasebookAll()
         {
             //String filename = this.getClass().getResource("PhrasebookIndexed.pgf").getFile();
             PGF pgf = PGFBuilder.FromFile("PhrasebookIndexed.pgf");
-            Debug.Assert(pgf.HasConcrete("PhrasebookEn"));
-            Debug.Assert(pgf.HasConcrete("PhrasebookFre"));
-            Debug.Assert(pgf.HasConcrete("PhrasebookIta"));
+            Debug.Assert(pgf.HasConcrete("PhrasebookEn"), "Check if the pgf has the concrete we're after");
+            Debug.Assert(pgf.HasConcrete("PhrasebookFre"), "Check if the pgf has the concrete we're after");
+            Debug.Assert(pgf.HasConcrete("PhrasebookIta"), "Check if the pgf has the concrete we're after");
         }
 
         public void TestUnknownLanguage()
         {
             //String filename = this.getClass().getResource("Phrasebook.pgf").getFile();
-            try {
-                List<String> tmp = new List<String>();
+            try 
+            {
+                List<string> tmp = new List<string>();
                 tmp.Add("PhrasebookEng");
                 tmp.Add("PhrasebookBORK");
                 PGF pgf = PGFBuilder.FromFile("Phrasebook.pgf", tmp);
                 Debug.Fail("PGFBuilder failed to raise an exception when an unknown language is selected.");
             }
-            catch (UnknownLanguageException e) { System.Console.WriteLine(e.ToString()); }
+            catch (UnknownLanguageException e) 
+            {
+                System.Console.WriteLine(e.ToString()); 
+            }
         }
 
         public void TestUninexedFoodsSelect()
         {
             //String filename = this.getClass().getResource("Foods.pgf").getFile();
-            List<String> tmp = new List<String>();
+            List<string> tmp = new List<string>();
             tmp.Add("FoodsIta");
             PGF pgf = PGFBuilder.FromFile("Foods.pgf", tmp);
-            Debug.Assert(pgf.HasConcrete("FoodsIta"));
-            Debug.Assert(!pgf.HasConcrete("FoodsFre"));
+            Debug.Assert(pgf.HasConcrete("FoodsIta"), "Check if the pgf has the concrete we're after");
+            Debug.Assert(!pgf.HasConcrete("FoodsFre"), "Check if the pgf has the concrete we're after");
         }
 
         public void TestUninexedFoodsAll()
         {
             //String filename = this.getClass().getResource("Foods.pgf").getFile();
             PGF pgf = PGFBuilder.FromFile("Foods.pgf");
-            Debug.Assert(pgf.HasConcrete("FoodsIta"));
-            Debug.Assert(pgf.HasConcrete("FoodsFre"));
+            Debug.Assert(pgf.HasConcrete("FoodsIta"), "Check if the pgf has the concrete we're after");
+            Debug.Assert(pgf.HasConcrete("FoodsFre"), "Check if the pgf has the concrete we're after");
         }
     }
 }

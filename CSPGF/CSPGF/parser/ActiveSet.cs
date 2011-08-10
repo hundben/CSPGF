@@ -36,10 +36,12 @@ namespace CSPGF.Parse
     public class ActiveSet
     {
         private Dictionary<int, Dictionary<int, HashSet<ActiveItemInt>>> store;
+
         public ActiveSet()
         {
             this.store = new Dictionary<int, Dictionary<int, HashSet<ActiveItemInt>>>();
         }
+
         // check this one, might be wrong...
         public bool Add(int cat, int cons, ActiveItem item, int cons2)
         {
@@ -99,6 +101,7 @@ namespace CSPGF.Parse
 
             return aai;
         }
+
         // Also fixed this one I hope /Erik
         public HashSet<ActiveItemInt> Get(int cat, int cons)
         {

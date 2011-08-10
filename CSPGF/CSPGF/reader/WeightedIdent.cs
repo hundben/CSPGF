@@ -24,29 +24,26 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
     public class WeightedIdent
     {
-        public Double weight { get; private set; }
-        public String ident { get; private set; }
-
-        public WeightedIdent(String _ident, Double _weight)
+        public WeightedIdent(string ident, double weight)
         {
-            ident = _ident;
-            weight = _weight;
+            this.Ident = ident;
+            this.Weight = weight;
         }
+
+        public double Weight { get; private set; }
+
+        public string Ident { get; private set; }
 
         //CHECK LATER
         // Did not exist in the java-code
-        public override String ToString()
+        public override string ToString()
         {
-            return "Ident: " + ident + " Weight: " + weight;
+            return "Ident: " + this.Ident + " Weight: " + this.Weight;
         }
     }
 }

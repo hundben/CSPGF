@@ -42,6 +42,7 @@ namespace CSPGF.Parser_new
         private List<Reader.CncFun> cncFun;
         private Reader.Concrete concrete;
         private Chart chart;
+
         public Parser(PGF pgf)
         {
             this.pgf = pgf;
@@ -210,7 +211,7 @@ namespace CSPGF.Parser_new
                     {
                         Reader.ToksSymbol t = (Reader.ToksSymbol)symb;
                         //TODO
-                        foreach (string tok in t.tokens)
+                        foreach (string tok in t.Tokens)
                         {
                             token += tok + " ";
                         } 

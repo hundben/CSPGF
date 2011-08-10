@@ -40,6 +40,7 @@ namespace CSPGF
         private Dictionary<string, RLiteral> flags;
         private Abstract abstr;
         private Dictionary<string, Concrete> concretes;
+
         public PGF(int majorVersion, int minorVersion, Dictionary<string, RLiteral> flags, Abstract abstr, Dictionary<string, Concrete> concretes)
         {
             this.majorVersion = majorVersion;

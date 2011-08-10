@@ -24,67 +24,63 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Diagnostics;
-using CSPGF.Trees.Absyn;
 
 namespace CSPGF.Test
 {
-    class FoodsLinearizeTest : PGFTestCase
+    using System.Diagnostics;
+    using CSPGF.Trees.Absyn;
+
+    public class FoodsLinearizeTest : PGFTestCase
     {
-        public FoodsLinearizeTest(String name) : base(name)
+        private PGF pgf;
+
+        public FoodsLinearizeTest(string name) : base(name)
         {
         }
 
-        PGF pgf;
-
         public void SetUp()
         {
-            pgf = GetPGF("Foods.pgf");
+            this.pgf = GetPGF("Foods.pgf");
         }
 
         public void TestFoodsEng()
         {
-            Linearizer linearizer = new Linearizer(pgf, "FoodsEng");
+            Linearizer linearizer = new Linearizer(this.pgf, "FoodsEng");
 
-            String ex1 = "this fresh pizza is Italian";
+            string ex1 = "this fresh pizza is Italian";
             Tree tree1 = ParseTree("((Pred (This ((Mod Fresh) Pizza))) Italian)");
-            String lin1 = linearizer.LinearizeString(tree1);
-            Debug.Assert(ex1.Equals(lin1));
+            string lin1 = linearizer.LinearizeString(tree1);
+            Debug.Assert(ex1.Equals(lin1), "Check if the two are equal");
 
-            String ex2 = "those boring fish are expensive";
+            string ex2 = "those boring fish are expensive";
             Tree tree2 = ParseTree("((Pred (Those ((Mod Boring) Fish))) Expensive)");
-            String lin2 = linearizer.LinearizeString(tree2);
-            Debug.Assert(ex2.Equals(lin2));
+            string lin2 = linearizer.LinearizeString(tree2);
+            Debug.Assert(ex2.Equals(lin2), "Check if the two are equal");
         }
 
         public void TestFoodsSwe()
         {
-            Linearizer linearizer = new Linearizer(pgf, "FoodsSwe");
+            Linearizer linearizer = new Linearizer(this.pgf, "FoodsSwe");
 
             Tree tree1 = ParseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
-            String ex1 = "den här läckra pizzan är färsk";
-            String lin1 = linearizer.LinearizeString(tree1);
-            Debug.Assert(ex1.Equals(lin1));
+            string ex1 = "den här läckra pizzan är färsk";
+            string lin1 = linearizer.LinearizeString(tree1);
+            Debug.Assert(ex1.Equals(lin1), "Check if the two are equal");
         }
 
         public void TestFoodsIta()
         {
-            Linearizer linearizer = new Linearizer(pgf, "FoodsIta");
+            Linearizer linearizer = new Linearizer(this.pgf, "FoodsIta");
 
-            String ex1 = "questa pizza deliziosa è fresca";
+            string ex1 = "questa pizza deliziosa è fresca";
             Tree tree1 = ParseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
-            String lin1 = linearizer.LinearizeString(tree1);
-            Debug.Assert(ex1.Equals(lin1));
+            string lin1 = linearizer.LinearizeString(tree1);
+            Debug.Assert(ex1.Equals(lin1), "Check if the two are equal");
         }
-
 
         public void TearDown()
         {
-            pgf = null;
+            this.pgf = null;
         }
     }
 }

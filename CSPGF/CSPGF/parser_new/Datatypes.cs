@@ -45,10 +45,15 @@ namespace CSPGF.Parser_new
         }
 
         public int Integer { get; private set; }
+
         public int Dotpos { get; private set; }
+
         public int Funid { get; private set; }
+
         public int Seqid { get; private set; }
+
         public List<PArg> Parg { get; private set; }
+
         public AK Activekey { get; private set; }
     }
 
@@ -84,6 +89,7 @@ namespace CSPGF.Parser_new
         {
             this.AC = ac;
         }
+
         public Dictionary<int, Tuple<ActiveSet, Dictionary<int, HashSet<Reader.Production>>>> AC { get; private set; } 
     }
 

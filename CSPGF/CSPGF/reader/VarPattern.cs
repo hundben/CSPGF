@@ -24,25 +24,21 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
     public class VarPattern : Pattern //PVar
     {
-        String name;
-
-        public VarPattern(String _name)
+        public VarPattern(string name)
         {
-            name = _name;
+            this.Name = name;
         }
 
-        public override String ToString()
+        public string Name { get; private set; }
+
+        public override string ToString()
         {
-            return "Variable Pattern : " + name;
+            return "Variable Pattern : " + this.Name;
         }
     }
 }

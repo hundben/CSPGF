@@ -29,22 +29,21 @@ namespace CSPGF.Parser_new
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
     using System.Text;
 
     public class ParseState
     {
-        private Chart Chart;
-        private Reader.Concrete Cnc;
-        private Reader.Abstract Abs;
-        private Dictionary<string, object> Trie;  // TODO check datatypes for this one...
-        private List<int> ActiveState;
+        private Chart chart;
+        private Reader.Concrete cnc;
+        private Reader.Abstract abs;
+        private Dictionary<string, object> trie;  // TODO check datatypes for this one...
+        private List<int> activeState;
 
         public ParseState(Reader.Concrete cnc, Reader.Abstract abs)
         {
-            this.Cnc = cnc;
-            this.Abs = abs;
-            this.ActiveState = new List<int>();  //what to do? :'(
+            this.cnc = cnc;
+            this.abs = abs;
+            this.activeState = new List<int>();  //what to do? :'(
         }
 
         /*

@@ -63,7 +63,7 @@ namespace CSPGF.Parse
         public int Cons { get; private set; }
 
         /// <summary>
-        /// Gets or Sets the value of Cons2.
+        /// Gets or sets the value of Cons2.
         /// </summary>
         public int Cons2 { get; set; }
 

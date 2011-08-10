@@ -24,77 +24,70 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CSPGF.Trees.Absyn;
-using System.Diagnostics;
-using CSPGF.Parse;
 
 namespace CSPGF.Test
 {
-    class FoodsParseTest : PGFTestCase
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using CSPGF.Parse;
+    using CSPGF.Trees.Absyn;
+
+    public class FoodsParseTest : PGFTestCase
     {
+        private PGF pgf;
 
-        public FoodsParseTest(String name)
-            : base(name)
+        public FoodsParseTest(string name) : base(name)
         {
-
         }
 
-        PGF pgf;
-
-        public void setUp()
+        public void SetUp()
         {
-            pgf = GetPGF("Foods.pgf");
+            this.pgf = GetPGF("Foods.pgf");
         }
 
         public void TestFoodsEng()
         {
-            Parser parser = new Parser(pgf, "FoodsEng");
+            Parser parser = new Parser(this.pgf, "FoodsEng");
 
-            String ex1 = "this fresh pizza is Italian";
+            string ex1 = "this fresh pizza is Italian";
             //Tree tree1 = ParseTree("((Pred (This ((Mod Fresh) Pizza))) Italian)");
             //List<Tree> trees1 = parser.Parse(ex1).GetTrees()
             ParseState ps = parser.Parse(ex1);
             List<CSPGF.Trees.Absyn.Tree> trees1 = ps.GetTrees();
-            Debug.Assert(trees1.Count == 1);
+            Debug.Assert(trees1.Count == 1, "Check that we only have one tree");
             //Debug.Assert(trees1[0].Equals(tree1));
-
-            String ex2 = "those boring fish are expensive";
+            string ex2 = "those boring fish are expensive";
             //Tree tree2 = ParseTree("((Pred (Those ((Mod Boring) Fish))) Expensive)");
             List<CSPGF.Trees.Absyn.Tree> trees2 = parser.Parse(ex2).GetTrees();
-            Debug.Assert(trees2.Count == 1);
+            Debug.Assert(trees2.Count == 1, "Check that we only have one tree");
             //Debug.Assert(trees2[0].Equals(tree2));
         }
 
         public void TestFoodsSwe()
         {
-            Parser parser = new Parser(pgf, "FoodsSwe");
+            Parser parser = new Parser(this.pgf, "FoodsSwe");
 
-            String ex1 = "den här läckra pizzan är färsk";
+            string ex1 = "den här läckra pizzan är färsk";
             CSPGF.Trees.Absyn.Tree tree1 = ParseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
             List<CSPGF.Trees.Absyn.Tree> trees1 = parser.Parse(ex1).GetTrees();
-            Debug.Assert(trees1.Count == 1);
-            Debug.Assert(trees1[0].Equals(tree1));
+            Debug.Assert(trees1.Count == 1, "Check that we only have one tree");
+            Debug.Assert(trees1[0].Equals(tree1), "Check that we only have one tree");
         }
 
         public void TestFoodsIta()
         {
-            Parser parser = new Parser(pgf, "FoodsIta");
+            Parser parser = new Parser(this.pgf, "FoodsIta");
 
-            String ex1 = "questa pizza deliziosa è fresca";
+            string ex1 = "questa pizza deliziosa è fresca";
             CSPGF.Trees.Absyn.Tree tree1 = ParseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
             List<CSPGF.Trees.Absyn.Tree> trees1 = parser.Parse(ex1).GetTrees();
-            Debug.Assert(trees1.Count == 1);
-            Debug.Assert(trees1[0].Equals(tree1));
+            Debug.Assert(trees1.Count == 1, "Check that we only have one tree");
+            Debug.Assert(trees1[0].Equals(tree1), "Check if the trees are equal");
         }
-
 
         public void TearDown()
         {
-            pgf = null;
+            this.pgf = null;
         }
     }
 }

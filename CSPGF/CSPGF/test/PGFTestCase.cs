@@ -24,41 +24,43 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using CSPGF.Trees;
-using CSPGF.Trees.Absyn;
-using System.IO;
 
 namespace CSPGF.Test
 {
-    class PGFTestCase
+    using System;
+    using System.IO;
+    using System.Text;
+    using CSPGF.Trees;
+    using CSPGF.Trees.Absyn;
+
+    public class PGFTestCase
     {
-        String name;
-        public PGFTestCase(String _name)
+        private string name;
+
+        public PGFTestCase(string name)
         {
-            name = _name;
+            this.name = name;
         }
 
-        protected PGF GetPGF(String filename)
+        protected PGF GetPGF(string filename)
         {
             //String fullname = this.getClass().getResource(filename).getFile();
-            PGF pgf = PGFBuilder.FromFile("..\\..\\test\\files\\"+filename);
+            PGF pgf = PGFBuilder.FromFile("..\\..\\test\\files\\" + filename);
             return pgf;
         }
 
-        protected Tree ParseTree(String s)
+        protected Tree ParseTree(string s)
         {
             Scanner l = new Scanner(new MemoryStream(Encoding.UTF8.GetBytes(s)));
             //Scanner l = new Scanner(new StringReader(s));
             CSPGF.Trees.Parser p = new CSPGF.Trees.Parser(l);
-            try {
+            try 
+            {
                 Tree parse_tree = p.ParseTree();
                 return parse_tree;
             }
-            catch (Exception e) {
+            catch (Exception e) 
+            {
                 System.Console.WriteLine(e.ToString());
                 return null;
             }

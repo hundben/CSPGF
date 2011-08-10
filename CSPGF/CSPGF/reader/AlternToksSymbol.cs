@@ -50,7 +50,7 @@ namespace CSPGF.Reader
         public override string ToString()
         {
             string sb = "pre { ";
-            foreach (string s in base.tokens) 
+            foreach (string s in this.Tokens) 
             {
                 sb += s + " ";
             }

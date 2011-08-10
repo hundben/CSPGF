@@ -6,7 +6,7 @@
 namespace CSPGF.Trees.VisitSkeleton
 {
   #region Classes
-  public abstract class AbstractTreeVisitor<R,A> : CSPGF.Trees.Absyn.Tree.Visitor<R,A>
+  public abstract class AbstractTreeVisitor<R, A> : CSPGF.Trees.Absyn.Tree.Visitor<R, A>
   {
     public abstract R Visit(CSPGF.Trees.Absyn.Lambda lambda_, A arg);
  
@@ -21,7 +21,7 @@ namespace CSPGF.Trees.VisitSkeleton
     public abstract R Visit(CSPGF.Trees.Absyn.Function function_, A arg);
   }
  
-  public abstract class AbstractLitVisitor<R,A> : CSPGF.Trees.Absyn.Lit.Visitor<R,A>
+  public abstract class AbstractLitVisitor<R, A> : CSPGF.Trees.Absyn.Lit.Visitor<R, A>
   {
     public abstract R Visit(CSPGF.Trees.Absyn.IntLiteral intliteral_, A arg);
  
