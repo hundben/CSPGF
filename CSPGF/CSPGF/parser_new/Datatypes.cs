@@ -50,8 +50,8 @@ namespace CSPGF.Parser_new
         public int Seqid { get; private set; }
         public List<PArg> Parg { get; private set; }
         public AK Activekey { get; private set; }
-
     }
+
     public class AK
     {
         public AK(int fid, int lIndex)
@@ -66,6 +66,7 @@ namespace CSPGF.Parser_new
         public int Fid { get; private set; }
         public int LIndex { get; private set; }
     }
+
     public class ActiveSet
     {
         public ActiveSet(HashSet<Active> active)
@@ -83,8 +84,7 @@ namespace CSPGF.Parser_new
         {
             this.AC = ac;
         }
-        public Dictionary<int, Tuple<ActiveSet, Dictionary<int, HashSet<Reader.Production>>>> AC { get; private set; }
-        
+        public Dictionary<int, Tuple<ActiveSet, Dictionary<int, HashSet<Reader.Production>>>> AC { get; private set; } 
     }
 
     public class PArg
@@ -97,7 +97,6 @@ namespace CSPGF.Parser_new
 
         public List<Tuple<int, int>> List { get; private set; }
         public int Fid { get; private set; }
-
     }
 
     public class PK
@@ -122,7 +121,6 @@ namespace CSPGF.Parser_new
         }
 
         public Dictionary<PK, int> PC { get; private set; }
-
     }
 
     //public class Chart

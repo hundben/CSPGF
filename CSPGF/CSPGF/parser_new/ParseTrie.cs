@@ -39,7 +39,7 @@ namespace CSPGF.Parser_new
             // TODO
         }
 
-        List<ParseTrie> Child { get; private set; }
-        Reader.ApplProduction Symbol { get; private set; }
+        public List<ParseTrie> Child { get; private set; }
+        public Reader.ApplProduction Symbol { get; private set; }
     }
 }

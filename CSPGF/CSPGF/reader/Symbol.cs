@@ -33,6 +33,6 @@ namespace CSPGF.Reader
 {
     public abstract class Symbol
     {
-        public override abstract String ToString();
+        public override abstract string ToString();
     }
 }

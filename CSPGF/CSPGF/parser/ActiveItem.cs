@@ -97,9 +97,9 @@ namespace CSPGF.Parse
         /// <returns>The next symbol.</returns>
         public Symbol NextSymbol()
         {
-            if (this.Position < this.Function.sequences[this.Constituent].symbs.Count) 
+            if (this.Position < this.Function.Sequences[this.Constituent].Symbs.Count) 
             {
-                Symbol sym = this.Function.sequences[this.Constituent].GetSymbol(this.Position);
+                Symbol sym = this.Function.Sequences[this.Constituent].GetSymbol(this.Position);
                 return sym;
             }
 
@@ -144,7 +144,7 @@ namespace CSPGF.Parse
         public override string ToString()
         {
             string str = "[" + this.Begin.ToString() + ";" + this.Category.ToString() +
-                "->" + this.Function.name + "[" + this.DomainToString() + "];" +
+                "->" + this.Function.Name + "[" + this.DomainToString() + "];" +
                 this.Constituent.ToString() + ";" + this.Position.ToString() + "]";
             return str;
         }

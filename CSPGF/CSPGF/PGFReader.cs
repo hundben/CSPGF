@@ -82,7 +82,7 @@ namespace CSPGF
             Dictionary<string, RLiteral> flags = this.GetListFlag();
             if (flags.ContainsKey("index")) 
             {
-                index = this.ReadIndex(((StringLit)flags["index"]).value);
+                index = this.ReadIndex(((StringLit)flags["index"]).Value);
                 if (debug) 
                 {
                     foreach (KeyValuePair<string, int> kp in index) 
@@ -100,7 +100,8 @@ namespace CSPGF
             for (int i = 0; i < nbConcretes; i++) 
             {
                 string name = GetIdent();
-                if (debug) {
+                if (debug) 
+                {
                     this.Dbgwrite.WriteLine("Language " + name);
                 }
                 if (this.Languages == null || this.Languages.Remove(name)) 
@@ -154,7 +155,7 @@ namespace CSPGF
             }
             else
             {
-                return ((StringLit)cat).value;
+                return ((StringLit)cat).Value;
             }
         }
 
@@ -249,7 +250,8 @@ namespace CSPGF
             {
                 return tmp;
             }
-            else {
+            else
+            {
                 for (int i = 0; i < npoz; i++) 
                 {
                     tmp.Add(this.GetAbsFun());

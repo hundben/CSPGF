@@ -24,25 +24,26 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class ImplExp : Expr //EImplArg
     {
-        public Expr exp { get; private set; }
-
-        public ImplExp(Expr _arg)
+        public ImplExp(Expr arg)
         {
-            exp = _arg;
+            this.Exp = arg;
         }
 
-        public override String ToString()
+        public Expr Exp { get; private set; }
+
+        public override string ToString()
         {
-            return "Implicit Arguments Expression : [ Argument : " + exp.ToString() + "]";
+            return "Implicit Arguments Expression : [ Argument : " + this.Exp.ToString() + "]";
         }
     }
 }

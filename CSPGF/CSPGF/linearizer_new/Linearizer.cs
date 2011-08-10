@@ -27,6 +27,7 @@
                 this.sentence += this.Linearizer2(this.curLvl);
                 this.NextLevel();
             }
+
             return this.sentence;
         }
 
@@ -45,26 +46,27 @@
             string str = string.Empty;
             foreach (Sequence seq in seqs) 
             {
-                for (int i = 0; i < seq.symbs.Count; i++) 
+                for (int i = 0; i < seq.Symbs.Count; i++) 
                 {
-                    if (seq.symbs[i] is ToksSymbol) 
+                    if (seq.Symbs[i] is ToksSymbol) 
                     {
-                        foreach (string str2 in ((ToksSymbol)seq.symbs[i]).tokens) 
+                        foreach (string str2 in ((ToksSymbol)seq.Symbs[i]).tokens) 
                         {
                             str += str2 + " ";
                         }
                     }
-                    else if (i < (seq.symbs.Count - 1) && seq.symbs[i] is AlternToksSymbol) 
+                    else if (i < (seq.Symbs.Count - 1) && seq.Symbs[i] is AlternToksSymbol) 
                     {
-                        str += this.ATSym2St((AlternToksSymbol)seq.symbs[i], (ToksSymbol)seq.symbs[i + 1]);
+                        str += this.ATSym2St((AlternToksSymbol)seq.Symbs[i], (ToksSymbol)seq.Symbs[i + 1]);
                         i++;
                     }
                     else 
                     {
-                        throw new LinearizerException("Failsymbol: " + seq.symbs[i].GetType());
+                        throw new LinearizerException("Failsymbol: " + seq.Symbs[i].GetType());
                     }
                 }
             }
+
             return str;
         }
 

@@ -24,27 +24,29 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class PrintName
     {
-        String absName;
-        String printName;
-
-        public PrintName(String _absName, String _printName)
+        public PrintName(string absName, string printName)
         {
-            absName = _absName;
-            printName = _printName;
+            this.AbsName = absName;
+            this.PrintName = printName;
         }
 
-        public override String ToString()
+        public string AbsName { get; private set; }
+
+        public string PrintName { get; private set; }
+
+        public override string ToString()
         {
-            return "Abstract Name : " + absName + " , Print Name : " + printName;
+            return "Abstract Name : " + this.AbsName + " , Print Name : " + this.PrintName;
         }
     }
 }

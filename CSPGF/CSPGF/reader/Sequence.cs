@@ -24,34 +24,36 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class Sequence
     {
-        public List<Symbol> symbs { get; private set; }
-
-        public Sequence(List<Symbol> _symbs)
+        public Sequence(List<Symbol> symbs)
         {
-            symbs = _symbs;
+            this.Symbs = symbs;
         }
+
+        public List<Symbol> Symbs { get; private set; }
 
         public Symbol GetSymbol(int index)
         {
-            return symbs[index];
+            return this.Symbs[index];
         }
 
-        public override String ToString()
+        public override string ToString()
         {
-            String ss = "Symbols : [";
-            foreach (Symbol s in symbs)
+            string ss = "Symbols : [";
+            foreach (Symbol s in this.Symbs)
             {
                 ss += " " + s.ToString();
             }
+
             ss += "]";
             return ss;
         }

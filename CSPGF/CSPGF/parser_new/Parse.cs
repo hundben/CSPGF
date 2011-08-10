@@ -81,6 +81,7 @@ namespace CSPGF.Parser_new
             {
                 throw new Exception("Start category " + startCatName + " not found!");
             }
+
             this.prods = this.concrete.GetProductions();  //load productions
 
             this.PredictTEMP(startCat.FirstFID);
@@ -105,11 +106,10 @@ namespace CSPGF.Parser_new
                 {
                     foreach (Reader.ApplProduction p2 in this.Predict(dom, this.prods))
                     {
-                        foreach (Reader.Sequence s in p2.function.sequences)
+                        foreach (Reader.Sequence s in p2.Function.Sequences)
                         {
-                            Console.WriteLine(this.GetSymbols(s.symbs));
+                            Console.WriteLine(this.GetSymbols(s.Symbs));
                         }
-
                     }
                 }
             }
@@ -118,8 +118,10 @@ namespace CSPGF.Parser_new
         // TODO merge this with parse later... just to keep it clean
         private void ParseText2(string text, ParseTrie tree, int cat)
         {
-            foreach (string word in text.Split(' ')) {
-                foreach (Reader.ApplProduction ap in this.Predict(cat, this.prods)) {
+            foreach (string word in text.Split(' ')) 
+            {
+                foreach (Reader.ApplProduction ap in this.Predict(cat, this.prods)) 
+                {
                 }
             }
         }
@@ -130,7 +132,7 @@ namespace CSPGF.Parser_new
             List<Reader.ApplProduction> appList = new List<Reader.ApplProduction>();
             foreach (Reader.Production p in prods) 
             {
-                if (p.fId == cat)
+                if (p.FId == cat)
                 {
                     if (p is Reader.ApplProduction)
                     {
@@ -140,9 +142,9 @@ namespace CSPGF.Parser_new
                     {
                         appList.AddRange(this.UnCoerse(cat, prods));
                     }
-
                 }
             }
+
             return this.RemoveDoubles(appList);
         }
         // Tries to remove coersions... should work :)
@@ -152,12 +154,12 @@ namespace CSPGF.Parser_new
 
             foreach (Reader.Production p in prods)
             {
-                if (p.fId == cat)
+                if (p.FId == cat)
                 {
                     if (p is Reader.CoerceProduction)
                     {
                         Reader.CoerceProduction cop = (Reader.CoerceProduction)p;
-                        appList.AddRange(this.UnCoerse(cop.initId, prods));
+                        appList.AddRange(this.UnCoerse(cop.InitId, prods));
                     }
                     else if (p is Reader.ApplProduction)
                     {
@@ -176,6 +178,7 @@ namespace CSPGF.Parser_new
             {
                 all += s + ", ";
             }
+
             return all;
         }
         // Returns the categories for the next step
@@ -192,15 +195,16 @@ namespace CSPGF.Parser_new
             {
                 appList.Add(p);
             }
+
             return appList.ToList<Reader.ApplProduction>();
         }
 
         private string GetToken(Reader.ApplProduction ap)
         {
             string token = string.Empty;
-            foreach (Reader.Sequence seq in ap.function.sequences)
+            foreach (Reader.Sequence seq in ap.Function.Sequences)
             {
-                foreach (Reader.Symbol symb in seq.symbs)
+                foreach (Reader.Symbol symb in seq.Symbs)
                 {
                     if (symb is Reader.ToksSymbol)
                     {
@@ -219,6 +223,7 @@ namespace CSPGF.Parser_new
                     }
                 }
             }
+
             return token.TrimEnd();
         }
     }

@@ -34,7 +34,6 @@ namespace CSPGF.Reader
 
     public class ApplProduction : Production
     {
-
         public ApplProduction(int fId, CncFun function, List<int> domain)
             : base(0, fId)
         {
@@ -43,16 +42,18 @@ namespace CSPGF.Reader
         }
 
         public CncFun Function { get; private set; }
+
         public List<int> Domain { get; private set; }
 
         public override string ToString()
         {
             // Was commented out in the java-code.
-            string s = fId + " -> " + this.Function.Name + "[ ";
+            string s = FId + " -> " + this.Function.Name + "[ ";
             foreach (int c in this.Domain) 
             {
                 s += c + " ";
             }
+
             s += "]";
             return s;
         }
@@ -65,7 +66,8 @@ namespace CSPGF.Reader
         public override bool Equals(object o)
         {
             // TODO: Fix?
-            if (o is ApplProduction) {
+            if (o is ApplProduction) 
+            {
                 ApplProduction newo = (ApplProduction)o;
 
                 if (!newo.Function.Equals(this.Function)) 

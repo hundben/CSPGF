@@ -72,6 +72,7 @@ namespace CSPGF.Parse
                     this.agenda.Push(it);
                 }
             }
+
             this.Compute();
         }
         
@@ -95,7 +96,8 @@ namespace CSPGF.Parse
             {
                 string[] empt = new string[0];
                 Stack<ActiveItem> newAgenda = newTrie.Lookup(empt);
-                if (newAgenda != null) {
+                if (newAgenda != null) 
+                {
                     this.trie = newTrie;
                     this.position++;
                     this.agenda = newAgenda;
@@ -182,7 +184,6 @@ namespace CSPGF.Parse
                         ActiveItem it = new ActiveItem(j, a, f, newDomain, l, p + 1);
                         this.agenda.Push(it);
                     }
-
                 }
             }
             else 
@@ -214,11 +215,11 @@ namespace CSPGF.Parse
                         ActiveItem i = new ActiveItem(this.position, cat, f, b, r, 0);
                         this.agenda.Push(i);
                     }
+
                     this.chart.AddProduction(cat, f, b);
                 }
             }
         }
-
     }
 }
 

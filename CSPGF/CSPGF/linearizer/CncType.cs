@@ -39,7 +39,9 @@ namespace CSPGF.Linearize
             this.CId = cId;
             this.FId = fId;
         }
+
         public string CId { get; private set; }
+
         public int FId { get; private set; }
 
         public override string ToString()

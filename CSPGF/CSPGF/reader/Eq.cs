@@ -24,33 +24,36 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class Eq
     {
-        // TODO: Check if we need to be able to access these.
-        public List<Pattern> patts { get; private set; }
-        public Expr expr { get; private set; }
-
-        public Eq(List<Pattern> _patts, Expr _expr)
+        public Eq(List<Pattern> patts, Expr expr)
         {
-            patts = _patts;
-            expr = _expr;
+            this.Patts = patts;
+            this.Expr = expr;
         }
 
-        public override String ToString()
+        // TODO: Check if we need to be able to access these.
+        public List<Pattern> Patts { get; private set; }
+
+        public Expr Expr { get; private set; }
+
+        public override string ToString()
         {
-            String ss = "Patterns : (";
-            foreach (Pattern p in patts)
+            string ss = "Patterns : (";
+            foreach (Pattern p in this.Patts)
             {
                 ss += " " + p.ToString();
             }
-            ss += ") , Expression : " + expr.ToString();
+
+            ss += ") , Expression : " + Expr.ToString();
             return ss;
         }
     }

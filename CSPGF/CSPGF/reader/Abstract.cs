@@ -34,6 +34,8 @@ namespace CSPGF.Reader
 
     public class Abstract
     {
+        private Dictionary<string, RLiteral> Flags;
+
         public Abstract(string name, Dictionary<string, RLiteral> flags, List<AbsFun> absFuns, List<AbsCat> absCats)
         {
             this.Name = name;
@@ -43,16 +45,15 @@ namespace CSPGF.Reader
         }
 
         public string Name { get; private set; }
-        private Dictionary<string, RLiteral> Flags;
         public List<AbsFun> AbsFuns { get; private set; }
         public List<AbsCat> AbsCats { get; private set; }
 
         public string StartCat()
         {
             RLiteral cat = null;
-            if (Flags.TryGetValue("startcat", out cat)) 
+            if (this.Flags.TryGetValue("startcat", out cat)) 
             {
-                return ((StringLit)cat).value;
+                return ((StringLit)cat).Value;
             }
             else 
             {

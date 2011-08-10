@@ -34,7 +34,6 @@ namespace CSPGF.Reader
 
     public class Alternative
     {
-
         public Alternative(List<string> alt1, List<string> alt2)
         {
             this.Alt1 = alt1;
@@ -42,18 +41,23 @@ namespace CSPGF.Reader
         }
         // tokens = alt1, prefix = alt2
         public List<string> Alt1 { get; private set; }  // Check: Rename to tokens instead?
+
         public List<string> Alt2 { get; private set; }
 
         public override string ToString()
         {
             string sb = string.Empty;
-            foreach (string t in this.Alt1) {
+            foreach (string t in this.Alt1)
+            {
                 sb += t + " ";
             }
+
             sb += "/ ";
-            foreach (string t in this.Alt2) {
+            foreach (string t in this.Alt2)
+            {
                 sb += t + " ";
             }
+
             return sb;
         }
     }

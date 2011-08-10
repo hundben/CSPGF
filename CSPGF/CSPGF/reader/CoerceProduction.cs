@@ -24,45 +24,47 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class CoerceProduction : Production
     {
-        public int initId { get; private set; }
-
-        public CoerceProduction(int _fId, int _initId)
-            : base(1, _fId)
+        public CoerceProduction(int fId, int initId) : base(1, fId)
         {
-            initId = _initId;
+            this.InitId = initId;
         }
+
+        public int InitId { get; private set; }
 
         public override List<int> Domain()
         {
             List<int> tmp = new List<int>();
-            tmp.Add(initId);
+            tmp.Add(this.InitId);
             return tmp;
         }
 
         public int[] GetDomain()
         {
-            return new int[] { initId };
+            return new int[] { this.InitId };
         }
 
-        public override String ToString()
+        public override string ToString()
         {
-            return "Coercion(" + this.fId + " -> " + initId + ")";
+            return "Coercion(" + this.FId + " -> " + this.InitId + ")";
         }
 
-        public override Boolean Equals(Object o)
+        public override bool Equals(object o)
         {
-            if (o is CoerceProduction) {
-                return ((CoerceProduction)o).initId == initId;
+            if (o is CoerceProduction) 
+            {
+                return ((CoerceProduction)o).InitId == this.InitId;
             }
+
             return false;
         }
 

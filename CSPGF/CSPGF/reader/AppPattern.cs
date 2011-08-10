@@ -41,14 +41,17 @@ namespace CSPGF.Reader
         }
 
         public string Name { get; private set; }
+
         public List<Pattern> Patts { get; private set; }
 
         public override string ToString()
         {
             string ss = "Application pattern [ Name : " + this.Name + " , Patterns : (";
-            foreach (Pattern p in this.Patts) {
+            foreach (Pattern p in this.Patts) 
+            {
                 ss += " " + p.ToString();
             }
+
             ss += ")]";
             return ss;
         }

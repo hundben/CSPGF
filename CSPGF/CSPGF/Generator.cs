@@ -123,7 +123,7 @@ namespace CSPGF
                     // TODO: Går detta att göra om?
                     for (int k = 0; k < hypos.Count; k++) 
                     {
-                        tempCats[k] = hypos[k].type.name;
+                        tempCats[k] = hypos[k].Type.name;
                         exps[k] = Gen(tempCats[k]);
                         if (exps[k] == null) 
                         {
@@ -225,6 +225,7 @@ namespace CSPGF
                     }
                 }
             }
+
             foreach (string it in indirFuns) 
             {
                 Tree interm = this.GetIndirect(type, indirFuns);
@@ -238,6 +239,7 @@ namespace CSPGF
                     }
                 }
             }
+
             return rez;
         }
 

@@ -24,29 +24,32 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class LambdaExp : Expr //EAbs
     {
-        public Boolean bType { get; private set; }
-        public String vName { get; private set; }
-        public Expr body { get; private set; }
-
-        public LambdaExp(Boolean _bType, String _vName, Expr _body)
+        public LambdaExp(bool bType, string vName, Expr body)
         {
-            bType = _bType;
-            vName = _vName;
-            body = _body;
+            this.BType = bType;
+            this.VName = vName;
+            this.Body = body;
         }
 
-        public override String ToString()
+        public bool BType { get; private set; }
+
+        public string VName { get; private set; }
+
+        public Expr Body { get; private set; }
+
+        public override string ToString()
         {
-            return "Lambda Expression : [Bound Type : " + bType + " , Name : " + vName + " , Body : " + body.ToString() + "]";
+            return "Lambda Expression : [Bound Type : " + this.BType + " , Name : " + this.VName + " , Body : " + this.Body.ToString() + "]";
         }
     }
 }

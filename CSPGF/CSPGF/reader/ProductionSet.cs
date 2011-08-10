@@ -56,7 +56,8 @@ namespace CSPGF.Reader
         public HashSet<Production> GetSetOfProductions()
         {
             HashSet<Production> hs = new HashSet<Production>();
-            foreach (Production p in prods) {
+            foreach (Production p in prods) 
+            {
                 hs.Add(p);
             }
             return hs;

@@ -24,25 +24,27 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public abstract class Production
     {
-        public int sel { get; private set; }
-        public int fId { get; private set; }
-
-        public Production(int _sel, int _fId)
+        public Production(int sel, int fId)
         {
-            sel = _sel;
-            fId = _fId;
+            this.Sel = sel;
+            this.FId = fId;
         }
 
-        public override abstract String ToString();
+        public int Sel { get; private set; }
+
+        public int FId { get; private set; }
+
+        public override abstract string ToString();
 
         // Domain is the domain of the concrete function
         public abstract List<int> Domain();

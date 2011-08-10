@@ -139,7 +139,6 @@
     <Compile Include="Reader\PrintName.cs" />
     <Compile Include="Reader\Production.cs" />
     <Compile Include="Reader\ProductionSet.cs" />
-    <Compile Include="Reader\Reader.cs" />
     <Compile Include="Reader\RLiteral.cs" />
     <Compile Include="Reader\Sequence.cs" />
     <Compile Include="Reader\StringLit.cs" />

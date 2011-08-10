@@ -26,7 +26,6 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 // Check this class, it seems retarded...
-
 namespace CSPGF.Parse
 {
     using System;
@@ -52,7 +51,10 @@ namespace CSPGF.Parse
                 {
                     foreach (ActiveItemInt aii in aItems)
                     {
-                        if (aii.Equals(item, cons2)) return false;
+                        if (aii.Equals(item, cons2))
+                        {
+                            return false;
+                        }
                     }
 
                     aItems.Add(new ActiveItemInt(item, cons2));
@@ -94,6 +96,7 @@ namespace CSPGF.Parse
                     }
                 }
             }
+
             return aai;
         }
         // Also fixed this one I hope /Erik
@@ -108,6 +111,7 @@ namespace CSPGF.Parse
                     return aai;
                 }
             }
+
             return aai;
         }
     }

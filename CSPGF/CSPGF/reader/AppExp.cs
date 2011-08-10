@@ -34,7 +34,6 @@ namespace CSPGF.Reader
 
     public class AppExp : Expr //EApp
     {
-
         public AppExp(Expr lExp, Expr rExp)
         {
             this.LExp = lExp;

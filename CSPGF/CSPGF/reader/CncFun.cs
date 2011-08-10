@@ -24,30 +24,34 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class CncFun
     {
-        public String name { get; private set; } //TODO: This might not be needed. Isn't used in the haskell-version?
-        public List<Sequence> sequences { get; private set; }
-
-        public CncFun(String _name, List<Sequence> _sequences)
+        public CncFun(string name, List<Sequence> sequences)
         {
-            name = _name;
-            sequences = _sequences;
+            this.Name = name;
+            this.Sequences = sequences;
         }
 
-        public override String ToString()
+        public string Name { get; private set; } // TODO: This might not be needed. Isn't used in the haskell-version?
+
+        public List<Sequence> Sequences { get; private set; }
+
+        public override string ToString()
         {
-            String ss = "Name : " + name + " , Indices : ";
-            foreach (Sequence s in sequences) {
+            string ss = "Name : " + this.Name + " , Indices : ";
+            foreach (Sequence s in this.Sequences) 
+            {
                 ss += " " + s;
             }
+
             return ss;
         }
     }

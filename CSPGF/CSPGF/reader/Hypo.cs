@@ -24,29 +24,32 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class Hypo
     {
-        public Boolean bind { get; private set; }
-        public String name { get; private set; }
-        public Type type { get; private set; }
-
-        public Hypo(Boolean _bind, String _str, Type _type)
+        public Hypo(bool bind, string str, Type type)
         {
-            bind = _bind;
-            name = _str;
-            type = _type;
+            this.Bind = bind;
+            this.Name = str;
+            this.Type = type;
         }
 
-        public override String ToString()
+        public bool Bind { get; private set; }
+
+        public string Name { get; private set; }
+
+        public Type Type { get; private set; }
+
+        public override string ToString()
         {
-            return "Bound Type : " + bind + " , Name : " + name + " , Type : (" + type + ")";
+            return "Bound Type : " + this.Bind + " , Name : " + this.Name + " , Type : (" + Type + ")";
         }
     }
 }

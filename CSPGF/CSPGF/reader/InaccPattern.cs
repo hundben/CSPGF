@@ -24,22 +24,23 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
 
 namespace CSPGF.Reader
 {
+    using System;
+
     public class InaccPattern : Pattern // PTilde
     {
-        Expr exp;
-
-        public InaccPattern(Expr _exp)
+        public InaccPattern(Expr exp)
         {
-            exp = _exp;
+            this.Exp = exp;
         }
 
-        public override String ToString()
+        public Expr Exp { get; private set; }
+
+        public override string ToString()
         {
-            return "Inaccessible Pattern : " + exp.ToString();
+            return "Inaccessible Pattern : " + this.Exp.ToString();
         }
     }
 }

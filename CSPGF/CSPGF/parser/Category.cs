@@ -8,7 +8,7 @@ namespace CSPGF.Parse
     
     public class Category
     {
-        public int OldCat, l, j, k;
+        private int OldCat, l, j, k;
         public Category(int oldCat, int l, int j, int k) 
         {
             this.OldCat = oldCat;
@@ -23,6 +23,7 @@ namespace CSPGF.Parse
             {
                 return true;
             }
+
             return false;
         }
 

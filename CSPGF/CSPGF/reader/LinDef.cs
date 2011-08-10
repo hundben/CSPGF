@@ -24,22 +24,24 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class LinDef
     {
-        private int key;
-        private List<int> funIds;
-
-        public LinDef(int _key, List<int> _funIds)
+        public LinDef(int key, List<int> funIds)
         {
-            key = _key;
-            funIds = _funIds;
+            this.Key = key;
+            this.FunIds = funIds;
         }
+
+        public int Key { get; private set; }
+
+        public List<int> FunIds { get; private set; }
     }
 }

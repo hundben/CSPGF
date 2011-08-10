@@ -42,7 +42,9 @@ namespace CSPGF.Reader
         }
 
         public string Name { get; private set; }
+
         public List<Hypo> Hypos { get; private set; }
+
         public List<WeightedIdent> Functions { get; private set; }
 
         public override string ToString()
@@ -54,7 +56,7 @@ namespace CSPGF.Reader
             }
 
             ss += ") , String Names : (";
-            foreach (WeightedIdent w in this.functions) 
+            foreach (WeightedIdent w in this.Functions) 
             {
                 ss += " " + w.ToString();
             }

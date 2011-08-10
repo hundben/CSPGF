@@ -24,27 +24,26 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+    
     public class ImpArgPattern : Pattern //PImplArg
     {
-        Pattern patt;
-
-        public ImpArgPattern(Pattern _patt)
+        public ImpArgPattern(Pattern patt)
         {
-            patt = _patt;
+            this.Patt = patt;
         }
 
-        public override String ToString()
-        {
-            return "Implicit Argument Pattern : " + patt.ToString();
-        }
+        public Pattern Patt { get; private set; }
 
+        public override string ToString()
+        {
+            return "Implicit Argument Pattern : " + this.Patt.ToString();
+        }
     }
-
 }

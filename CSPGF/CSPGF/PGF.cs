@@ -85,6 +85,7 @@ namespace CSPGF
         {
             return this.abstr;
         }
+
         /**
         * Return true if the given name correspond to a concrete grammar
         * in the pgf, false otherwise.
@@ -107,6 +108,7 @@ namespace CSPGF
             {
                 ss += name + ", ";
             }
+
             ss += ")";
             return ss;
         }

@@ -53,6 +53,7 @@ namespace CSPGF
             { 
                 System.Console.WriteLine("Reading pgf from file : " + filename); 
             }
+
             BinaryReader stream = new BinaryReader(new FileStream(filename, FileMode.Open, FileAccess.Read));
             try 
             {

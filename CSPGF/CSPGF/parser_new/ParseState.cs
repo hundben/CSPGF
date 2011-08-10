@@ -25,7 +25,6 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-
 namespace CSPGF.Parser_new
 {
     using System;
@@ -47,6 +46,7 @@ namespace CSPGF.Parser_new
             this.Abs = abs;
             this.ActiveState = new List<int>();  //what to do? :'(
         }
+
         /*
          * The things below should be here :)
          in PState abs

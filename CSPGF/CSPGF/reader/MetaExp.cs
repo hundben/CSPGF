@@ -24,25 +24,26 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class MetaExp : Expr //EMeta
     {
-        public int meta { get; private set; }
-
-        public MetaExp(int _id)
+        public MetaExp(int id)
         {
-            meta = _id;
+            this.Meta = id;
         }
 
-        public override String ToString()
+        public int Meta { get; private set; }
+
+        public override string ToString()
         {
-            return "Meta Expression : [Id : " + meta + "]";
+            return "Meta Expression : [Id : " + this.Meta + "]";
         }
     }
 }

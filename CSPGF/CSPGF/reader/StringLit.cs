@@ -24,25 +24,26 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class StringLit : RLiteral
     {
-        public String value { get; private set; }
+        public string Value { get; private set; }
 
-        public StringLit(String _value)
+        public StringLit(String value)
         {
-            value = _value;
+            this.Value = value;
         }
 
-        public override String ToString()
+        public override string ToString()
         {
-            return "String literal : " + value;
+            return "String literal : " + this.Value;
         }
     }
 }

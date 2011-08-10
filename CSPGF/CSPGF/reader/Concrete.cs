@@ -24,31 +24,31 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Collections;
 
 namespace CSPGF.Reader
 {
+    using System;
+    using System.Collections;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
     public class Concrete
     {
         // TODO: check for errors
-        public string Name { get; private set; }
         private Dictionary<string, RLiteral> Flags;
-        public List<Sequence> Seqs { get; private set; }
-        public List<CncFun> CncFuns { get; private set; }
-        public List<ProductionSet> Prods { get; private set; }
-        public Dictionary<string, CncCat> CncCats { get; private set; }
-        public int FId { get; private set; }
         private string StartCat;
         // We are missing: printnames, lindefs, lexicon, pproductions, lproductions ? Are any of these needed?
-
-        public Concrete(string name, Dictionary<string, RLiteral> flags, List<Sequence> seqs, List<CncFun> cncFuns,
-            List<ProductionSet> prods, Dictionary<string, CncCat> cncCats, int fId, string defaultStartCat)
+        public Concrete(
+            string name,
+            Dictionary<string, RLiteral> flags,
+            List<Sequence> seqs,
+            List<CncFun> cncFuns,
+            List<ProductionSet> prods,
+            Dictionary<string, CncCat> cncCats,
+            int fId,
+            string defaultStartCat)
         {
-        
             this.Name = name;
             this.Flags = flags;
             this.Seqs = seqs;
@@ -59,10 +59,23 @@ namespace CSPGF.Reader
             this.StartCat = defaultStartCat;
         }
 
+        public string Name { get; private set; }
+
+        public List<Sequence> Seqs { get; private set; }
+
+        public List<CncFun> CncFuns { get; private set; }
+
+        public List<ProductionSet> Prods { get; private set; }
+
+        public Dictionary<string, CncCat> CncCats { get; private set; }
+
+        public int FId { get; private set; }
+
         public List<CncCat> GetCncCats()
         {
             List<CncCat> tmp = new List<CncCat>();
-            foreach (KeyValuePair<string, CncCat> c in CncCats) {
+            foreach (KeyValuePair<string, CncCat> c in this.CncCats) 
+            {
                 tmp.Add(c.Value);
             }
             return tmp;
@@ -70,21 +83,23 @@ namespace CSPGF.Reader
 
         public CncCat GetStartCat()
         {
-            if (this.CncCats.ContainsKey(StartCat))
+            if (this.CncCats.ContainsKey(this.StartCat))
             {
-                return this.CncCats[StartCat];
+                return this.CncCats[this.StartCat];
             }
             else
             {
-                return new CncCat(StartCat, 0, 0, new List<string>());
+                return new CncCat(this.StartCat, 0, 0, new List<string>());
             }
         }
 
         public List<Production> GetProductions()
         {
             List<Production> tmp = new List<Production>();
-            foreach (ProductionSet ps in this.Prods) {
-                foreach (Production p in ps.prods) {
+            foreach (ProductionSet ps in this.Prods) 
+            {
+                foreach (Production p in ps.prods) 
+                {
                     tmp.Add(p);
                 }
             }
@@ -99,7 +114,8 @@ namespace CSPGF.Reader
         public Dictionary<int, HashSet<Production>> GetSetOfProductions()
         {
             Dictionary<int, HashSet<Production>> dict = new Dictionary<int, HashSet<Production>>();
-            foreach (ProductionSet p in this.Prods) {
+            foreach (ProductionSet p in this.Prods) 
+            {
                 dict.Add(p.id, p.GetSetOfProductions());
             }
             return dict;

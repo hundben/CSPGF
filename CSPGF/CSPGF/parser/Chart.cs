@@ -50,21 +50,23 @@ namespace CSPGF.Parse
         {
             // TODO New version, check if it works
             HashSet<Production> prodSet;
-            if (this.productionSets.TryGetValue(p.fId, out prodSet))
+            if (this.productionSets.TryGetValue(p.FId, out prodSet))
             {
                 if (prodSet.Contains(p)) 
                 { 
                     return; 
                 }
+
                 prodSet.Add(p);
             }
             else
             {
                 prodSet = new HashSet<Production>();
                 prodSet.Add(p);
-                this.productionSets.Add(p.fId, prodSet);
+                this.productionSets.Add(p.FId, prodSet);
             }
-            this.nextCat = Math.Max(this.nextCat, p.fId + 1);
+
+            this.nextCat = Math.Max(this.nextCat, p.FId + 1);
         }
 
         // Borde vara rätt... (kolla coersion? eriks anm. ;)
@@ -89,6 +91,7 @@ namespace CSPGF.Parse
                         applProd.Add(ap);
                     }
                 }
+
                 return applProd;
             }
             else
@@ -106,9 +109,13 @@ namespace CSPGF.Parse
                 if (cf.Equals(c))
                 {
                     int i = this.categoryBookKeeper[c];
-                    if (i != -1) return i;
+                    if (i != -1)
+                    {
+                        return i;
+                    }
                 }
             }
+
             return this.GenerateFreshCategory(cf);
         }
 
@@ -143,12 +150,14 @@ namespace CSPGF.Parse
             {
                 s += this.productionSets[i].ToString() + '\n';
             }
+
             s += "=== passive items: ===\n";
             foreach (KeyValuePair<Category, int> ints in this.categoryBookKeeper) 
             {
                 // TODO add ToString on Category I guess? :D
                 s += ints.Key.ToString() + " -> " + ints.Value + '\n';
             }
+
             return s;
         }
 
@@ -164,7 +173,7 @@ namespace CSPGF.Parse
             else if (p is CoerceProduction) 
             {
                 CoerceProduction cp = (CoerceProduction)p;
-                foreach (Production prod in this.GetProductions(cp.initId)) 
+                foreach (Production prod in this.GetProductions(cp.InitId)) 
                 {
                     foreach (ApplProduction prod2 in this.Uncoerce(prod)) 
                     {
@@ -172,6 +181,7 @@ namespace CSPGF.Parse
                     }
                 }
             }
+
             return prodList;
         }
     }
