@@ -34,23 +34,23 @@ namespace CSPGF.Reader
 
     public class ApplProduction : Production
     {
-        public ApplProduction(int fId, CncFun function, List<int> domain)
-            : base(0, fId)
+        private List<int> dom;
+
+        public ApplProduction(int fId, CncFun function, List<int> domain) : base(0, fId)
         {
             this.Function = function;
-            this.Dom = domain;
+            this.dom = domain;
         }
 
         public CncFun Function { get; private set; }
 
-        private List<int> Dom;
         // public List<int> Domain { get; private set; }
 
         public override string ToString()
         {
             // Was commented out in the java-code.
             string s = FId + " -> " + this.Function.Name + "[ ";
-            foreach (int c in this.Dom) 
+            foreach (int c in this.dom) 
             {
                 s += c + " ";
             }
@@ -61,7 +61,7 @@ namespace CSPGF.Reader
 
         public override List<int> Domain()
         {
-            return this.Dom;
+            return this.dom;
         }
 
         public override bool Equals(object o)
@@ -76,14 +76,14 @@ namespace CSPGF.Reader
                     return false;
                 }
 
-                if (this.Dom.Count != newo.Dom.Count) 
+                if (this.dom.Count != newo.dom.Count) 
                 {
                     return false;
                 }
 
-                for (int i = 0; i < this.Dom.Count; i++) 
+                for (int i = 0; i < this.dom.Count; i++) 
                 {
-                    if (this.Dom[i] != newo.Dom[i]) 
+                    if (this.dom[i] != newo.dom[i]) 
                     {
                         return false;
                     }

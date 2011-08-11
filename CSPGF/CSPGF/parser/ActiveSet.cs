@@ -48,10 +48,10 @@ namespace CSPGF.Parse
             Dictionary<int, HashSet<ActiveItemInt>> map;
             if (this.store.TryGetValue(cat, out map))
             {
-                HashSet<ActiveItemInt> aItems;
-                if (map.TryGetValue(cons, out aItems))
+                HashSet<ActiveItemInt> activeItems;
+                if (map.TryGetValue(cons, out activeItems))
                 {
-                    foreach (ActiveItemInt aii in aItems)
+                    foreach (ActiveItemInt aii in activeItems)
                     {
                         if (aii.Equals(item, cons2))
                         {
@@ -59,23 +59,23 @@ namespace CSPGF.Parse
                         }
                     }
 
-                    aItems.Add(new ActiveItemInt(item, cons2));
+                    activeItems.Add(new ActiveItemInt(item, cons2));
                     return true;
                 }
                 else
                 {
                     // TODO this might be wrong (but I don't think so :)
-                    aItems = new HashSet<ActiveItemInt>();
-                    aItems.Add(new ActiveItemInt(item, cons2));
-                    map.Add(cons, aItems);
+                    activeItems = new HashSet<ActiveItemInt>();
+                    activeItems.Add(new ActiveItemInt(item, cons2));
+                    map.Add(cons, activeItems);
                 }
             }
             else
             {
                 map = new Dictionary<int, HashSet<ActiveItemInt>>();
-                HashSet<ActiveItemInt> aItems = new HashSet<ActiveItemInt>();
-                aItems.Add(new ActiveItemInt(item, cons2));
-                map.Add(cons, aItems);
+                HashSet<ActiveItemInt> activeItems = new HashSet<ActiveItemInt>();
+                activeItems.Add(new ActiveItemInt(item, cons2));
+                map.Add(cons, activeItems);
                 this.store.Add(cat, map);
             }
 

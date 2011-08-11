@@ -36,9 +36,24 @@ namespace CSPGF
 
     public class Generator
     {
+        /// <summary>
+        /// Used to get random numbers.
+        /// </summary>
         private Random random;
+
+        /// <summary>
+        /// The current PGF-file.
+        /// </summary>
         private PGF pgf;
+
+        /// <summary>
+        /// Direct rules.
+        /// </summary>
         private Dictionary<string, HashSet<string>> dirRules;
+
+        /// <summary>
+        /// Indirect rules.
+        /// </summary>
         private Dictionary<string, HashSet<string>> indirRules;
 
         /** generates a random expression of a given category

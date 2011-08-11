@@ -34,10 +34,10 @@ namespace CSPGF.Reader
 
     public class AppExp : Expr //EApp
     {
-        public AppExp(Expr lExp, Expr rExp)
+        public AppExp(Expr leftExp, Expr rightExp)
         {
-            this.LExp = lExp;
-            this.RExp = rExp;
+            this.LExp = leftExp;
+            this.RExp = rightExp;
         }
 
         public Expr LExp { get; private set; }

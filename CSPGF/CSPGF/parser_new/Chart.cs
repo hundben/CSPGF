@@ -8,6 +8,7 @@
     public class Chart
     {
         private int nextCat;
+
         public Chart(int nextCat)
         {
         }

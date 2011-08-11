@@ -36,17 +36,34 @@ namespace CSPGF.Parse
     public class Chart
     {
         // private MultiMap<int, Object> productionSets = new MultiMap<int, Object>();
+        /// <summary>
+        /// The set of productions
+        /// </summary>
         private Dictionary<int, HashSet<Production>> productionSets = new Dictionary<int, HashSet<Production>>();
 
         // private Dictionary<Tuple<int, int, int, int>, int> categoryBookKeeper = new Dictionary<Tuple<int, int, int, int>, int>();
+        /// <summary>
+        /// Contains all categories with an index as a value.
+        /// </summary>
         private Dictionary<Category, int> categoryBookKeeper = new Dictionary<Category, int>();
+        /// <summary>
+        /// The next category index to use
+        /// </summary>
         private int nextCat;
 
+        /// <summary>
+        /// Initialises the chart
+        /// </summary>
+        /// <param name="nextCat">The next category index to use.</param>
         public Chart(int nextCat)
         {
             this.nextCat = nextCat;
         }
 
+        /// <summary>
+        /// Adds a production to the productionset.
+        /// </summary>
+        /// <param name="p">The production to add.</param>
         public void AddProduction(Production p)
         {
             // TODO New version, check if it works
@@ -71,6 +88,12 @@ namespace CSPGF.Parse
         }
 
         // Borde vara rätt... (kolla coersion? eriks anm. ;)
+        /// <summary>
+        /// Add a production to the productionset.
+        /// </summary>
+        /// <param name="cat">Category index</param>
+        /// <param name="fun">Function</param>
+        /// <param name="domain">Domain</param>
         public void AddProduction(int cat, CncFun fun, List<int> domain)
         {
             this.AddProduction(new ApplProduction(cat, fun, domain));
@@ -78,6 +101,11 @@ namespace CSPGF.Parse
 
         // TODO: Kolla denna oxå xD (lite skum, borde gå att ta bort massor? (eriks anm.)
         // Fel på den här... oväntat nog ;P Skrev om hoppas skiten blev rätt (eriks anm.)
+        /// <summary>
+        /// Returns all the productions with the index resultCat.
+        /// </summary>
+        /// <param name="resultCat">Category index</param>
+        /// <returns>List of all productions with the index provided.</returns>
         public List<ApplProduction> GetProductions(int resultCat)
         {
             HashSet<Production> prod;
@@ -102,6 +130,14 @@ namespace CSPGF.Parse
             }
         }
         
+        /// <summary>
+        /// Creates a new category.
+        /// </summary>
+        /// <param name="oldCat">Old category index</param>
+        /// <param name="l">Cons</param>
+        /// <param name="j">Start index</param>
+        /// <param name="k">End index</param>
+        /// <returns>New category index.</returns>
         public int GetFreshCategory(int oldCat, int l, int j, int k)
         {
             // TODO Optimize this, use something else instead of looping through everything
@@ -146,6 +182,10 @@ namespace CSPGF.Parse
             return cat;
         }
 
+        /// <summary>
+        /// Creates a string with data for debugging.
+        /// </summary>
+        /// <returns>Pretty print of all the important data for debugging.</returns>
         public override string ToString()
         {
             string s = "=== Productions: ===\n";
@@ -166,6 +206,12 @@ namespace CSPGF.Parse
 
         // Should now work
         // Changes all Coerceproductions to ApplProductions
+
+        /// <summary>
+        /// Converts from CoerceProduction to ApplProducion.
+        /// </summary>
+        /// <param name="p">Production to convert.</param>
+        /// <returns>List of ApplProductions</returns>
         private List<ApplProduction> Uncoerce(object p)
         {
             List<ApplProduction> prodList = new List<ApplProduction>();

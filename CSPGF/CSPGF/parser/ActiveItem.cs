@@ -30,10 +30,7 @@
 
 namespace CSPGF.Parse
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using CncFun = CSPGF.Reader.CncFun;
     using Symbol = CSPGF.Reader.Symbol;
 

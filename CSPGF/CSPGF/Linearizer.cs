@@ -37,41 +37,40 @@ namespace CSPGF
 
     public class Linearizer
     {
+        /// <summary>
+        /// The current PGF-file
+        /// </summary>
         private PGF pgf;
-        private Concrete cnc;
-        private Dictionary<string, Dictionary<int, HashSet<Production>>> lProd;
 
-        /** linearizes an expression to a bracketed token
-         * and further on to a string
-         * not implemented to dependent categories, implicit argument,
-         * and higher-order abstract syntax
-         * @param pgf the pgf object that contains the concrete grammar.
-         * @param concrete the concrete grammar to use.
-         **/
+        /// <summary>
+        /// The current Concrete grammar
+        /// </summary>
+        private Concrete cnc;
+
+        /// <summary>
+        /// TODO: What is this?
+        /// </summary>
+        private Dictionary<string, Dictionary<int, HashSet<Production>>> linProd;
+
+        /// <summary>
+        /// /** linearizes an expression to a bracketed token
+        /// and further on to a string
+        /// not implemented to dependent categories, implicit argument,
+        /// and higher-order abstract syntax
+        /// </summary>
+        /// <param name="pgf">PGF-file containing the concrete grammar</param>
+        /// <param name="concrete">Concrete grammar</param>
         public Linearizer(PGF pgf, Concrete concrete)
         {
             this.pgf = pgf;
             this.cnc = concrete;
-            this.lProd = this.GetLProductions();
-        }
-
-        /** linearizes an expression to a bracketed token
-         * and further on to a string
-         * not implemented to dependent categories, implicit argument,
-         * and higher-order abstract syntax
-         * @param pgf the pgf object that contains the concrete grammar.
-         * @param concrete the name of the concrete grammar to use.
-         **/
-        public Linearizer(PGF pgf, string concrete)
-        {
-            this.pgf = pgf;
-            this.pgf.GetConcrete(concrete);
-            // this(pgf, pgf.concrete(concrete));
+            this.linProd = this.GetLProductions();
         }
 
         /**
          * Linearize a tree to a vector of tokens.
          **/
+        
         public List<string> LinearizeTokens(CSPGF.Trees.Absyn.Tree absyn)
         {
             return this.RenderLin(this.Linearize(absyn).ElementAt(0));
@@ -118,10 +117,10 @@ namespace CSPGF
                         foreach (string str in vs) 
                         {
                             Dictionary<int, HashSet<Production>> htemp = new Dictionary<int, HashSet<Production>>();
-                            HashSet<Production> hSingleton = new HashSet<Production>();
-                            hSingleton.Add(prod);
+                            HashSet<Production> singleton = new HashSet<Production>();
+                            singleton.Add(prod);
                             string newl = str;
-                            htemp.Add(res, hSingleton);
+                            htemp.Add(res, singleton);
                             if (vtemp.ContainsKey(newl)) 
                             {
                                 Dictionary<int, HashSet<Production>> obj = vtemp[newl];
@@ -136,7 +135,7 @@ namespace CSPGF
                                 } 
                                 else 
                                 {
-                                    obj.Add(res, hSingleton);
+                                    obj.Add(res, singleton);
                                     vtemp.Remove(newl);
                                     vtemp.Add(newl, obj);
                                 }
@@ -500,14 +499,14 @@ namespace CSPGF
      * @param e is the tree to linearize
      * @return all the possible linearized tuples for this tree.
      **/
-        private List<LinTriple> Lin0(List<string> xs, List<string> ys, CncType mb_cty, int mb_fid, CSPGF.Trees.Absyn.Tree tree)
+        private List<LinTriple> Lin0(List<string> xs, List<string> ys, CncType mbcty, int mbfid, CSPGF.Trees.Absyn.Tree tree)
         {
             // if tree is a lambda, we add the variable to the list of bound
             // variables and we linearize the subtree.
             if (tree is CSPGF.Trees.Absyn.Lambda) 
             {
                 xs.Add(((CSPGF.Trees.Absyn.Lambda)tree).Ident_);
-                return this.Lin0(xs, ys, mb_cty, mb_fid, ((CSPGF.Trees.Absyn.Lambda)tree).Tree_);
+                return this.Lin0(xs, ys, mbcty, mbfid, ((CSPGF.Trees.Absyn.Lambda)tree).Tree_);
             } 
             else if (xs.Count == 0) 
             {
@@ -524,7 +523,7 @@ namespace CSPGF
 
                 if (tree is Function) 
                 {
-                    return this.Apply(xs, mb_cty, mb_fid, ((Function)tree).Ident_, es);
+                    return this.Apply(xs, mbcty, mbfid, ((Function)tree).Ident_, es);
                 } 
                 else 
                 {
@@ -547,7 +546,7 @@ namespace CSPGF
                     exprs.Add(new CSPGF.Trees.Absyn.Literal(new CSPGF.Trees.Absyn.StringLiteral(xs.ElementAt(i))));
                 } 
 
-                return this.Apply(xs, mb_cty, mb_fid, "_B", exprs);
+                return this.Apply(xs, mbcty, mbfid, "_B", exprs);
             }
         }
 
@@ -566,23 +565,23 @@ namespace CSPGF
      * @param es the argument of the function to linearize
      * @return All the possible linearization for the application of f to es
      **/
-        private List<LinTriple> Apply(List<string> xs, CncType mb_cty, int n_fid, string f, List<CSPGF.Trees.Absyn.Tree> es)
+        private List<LinTriple> Apply(List<string> xs, CncType mbcty, int nextfid, string f, List<CSPGF.Trees.Absyn.Tree> es)
         {
-            Dictionary<int, HashSet<Production>> prods = this.lProd[f];
+            Dictionary<int, HashSet<Production>> prods = this.linProd[f];
             if (prods == null) 
             {
                 List<CSPGF.Trees.Absyn.Tree> newes = new List<CSPGF.Trees.Absyn.Tree>();
                 newes.Add(new CSPGF.Trees.Absyn.Literal(new CSPGF.Trees.Absyn.StringLiteral(f)));
                 System.Console.WriteLine("Function " + f + " does not have a linearization !");
-                return this.Apply(xs, mb_cty, n_fid, "_V", newes);
+                return this.Apply(xs, mbcty, nextfid, "_V", newes);
             } 
             else 
             {
-                List<AppResult> vApp = this.GetApps(prods, mb_cty, f);
+                List<AppResult> listApp = this.GetApps(prods, mbcty, f);
                 List<LinTriple> rez = new List<LinTriple>();
-                for (int i = 0; i < vApp.Count; i++) 
+                for (int i = 0; i < listApp.Count; i++) 
                 {
-                    List<CncType> copy_ctys = vApp.ElementAt(i).CncTypes;
+                    List<CncType> copy_ctys = listApp.ElementAt(i).CncTypes;
                     List<CncType> ctys = new List<CncType>();
                     for (int ind = copy_ctys.Count - 1; ind >= 0; ind--) 
                     {
@@ -595,15 +594,15 @@ namespace CSPGF
                         throw new Exception("lengths of es and ctys don't match" + es.ToString() + " -- " + ctys.ToString());
                     }
 
-                    List<Sequence> lins = vApp.ElementAt(i).CncFun.Sequences;
-                    string cat = vApp.ElementAt(i).CncType.CId;
+                    List<Sequence> lins = listApp.ElementAt(i).CncFun.Sequences;
+                    string cat = listApp.ElementAt(i).CncType.CId;
                     List<CSPGF.Trees.Absyn.Tree> copy_expr = new List<CSPGF.Trees.Absyn.Tree>();
                     for (int ind = 0; ind < es.Count; ind++) 
                     {
                         copy_expr.Add(es.ElementAt(ind));
                     }
 
-                    List<RezDesc> rezDesc = this.Descend(n_fid, ctys, copy_expr, xs);
+                    List<RezDesc> rezDesc = this.Descend(nextfid, ctys, copy_expr, xs);
                     for (int k = 0; k < rezDesc.Count; k++) 
                     {
                         RezDesc intRez = rezDesc.ElementAt(k);
@@ -613,7 +612,7 @@ namespace CSPGF
                             linTab.Add(this.ComputeSeq(lins[ind], intRez.CncTypes, intRez.Bracketedtokn));
                         }
 
-                        rez.Add(new LinTriple(n_fid + 1, new CncType(cat, n_fid), linTab));
+                        rez.Add(new LinTriple(nextfid + 1, new CncType(cat, nextfid), linTab));
                     }
                 }
 
@@ -621,9 +620,9 @@ namespace CSPGF
             }
         }
 
-        private List<AppResult> GetApps(Dictionary<int, HashSet<Production>> prods, CncType mb_cty, string f)
+        private List<AppResult> GetApps(Dictionary<int, HashSet<Production>> prods, CncType mbcty, string f)
         {
-            if (mb_cty == null) 
+            if (mbcty == null) 
             {
                 if (f.Equals("_V") || f.Equals("_B")) 
                 {
@@ -655,7 +654,7 @@ namespace CSPGF
             } 
             else 
             {
-                int fid = mb_cty.FId;
+                int fid = mbcty.FId;
                 HashSet<Production> setProd = prods[fid];
                 List<AppResult> rez = new List<AppResult>();
                 if (setProd == null)
@@ -668,7 +667,7 @@ namespace CSPGF
                     {
                         //Iterator<Production> iter = setProd.iterator();
                         //while (iter.hasNext())
-                        foreach (AppResult app in this.ToApp(mb_cty, prod, f, prods))
+                        foreach (AppResult app in this.ToApp(mbcty, prod, f, prods))
                         {
                             rez.Add(app);
                         }
@@ -851,12 +850,12 @@ namespace CSPGF
         /** shuffles the results of of the intermediate linearization,
      * for generating all the possible combinations
      **/
-        private List<RezDesc> Descend(int n_fid, List<CncType> cncTypes, List<CSPGF.Trees.Absyn.Tree> exps, List<string> xs)
+        private List<RezDesc> Descend(int nextfid, List<CncType> cncTypes, List<CSPGF.Trees.Absyn.Tree> exps, List<string> xs)
         {
             List<RezDesc> rez = new List<RezDesc>();
             if (exps.Count == 0) 
             {
-                rez.Add(new RezDesc(n_fid, new List<CncType>(), new List<List<List<BracketedTokn>>>()));
+                rez.Add(new RezDesc(nextfid, new List<CncType>(), new List<List<List<BracketedTokn>>>()));
                 return rez;
             } 
             else 
@@ -865,8 +864,8 @@ namespace CSPGF
                 cncTypes.RemoveAt(0);
                 CSPGF.Trees.Absyn.Tree exp = exps.First();
                 exps.RemoveAt(0);
-                List<LinTriple> rezLin = this.Lin0(new List<string>(), xs, cncType, n_fid, exp);
-                List<RezDesc> rezDesc = this.Descend(n_fid, cncTypes, exps, xs);
+                List<LinTriple> rezLin = this.Lin0(new List<string>(), xs, cncType, nextfid, exp);
+                List<RezDesc> rezDesc = this.Descend(nextfid, cncTypes, exps, xs);
                 for (int i = 0; i < rezLin.Count; i++)
                 {
                     for (int j = 0; j < rezDesc.Count; j++)
@@ -877,7 +876,7 @@ namespace CSPGF
                         List<List<List<BracketedTokn>>> vbt = rezDesc.ElementAt(j).Bracketedtokn;
                         List<List<BracketedTokn>> bt = rezLin.ElementAt(i).LinTable;
                         vbt.Add(bt);
-                        rez.Add(new RezDesc(n_fid, vcnc, vbt));
+                        rez.Add(new RezDesc(nextfid, vcnc, vbt));
                     }
                 }
             }

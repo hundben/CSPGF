@@ -237,7 +237,7 @@ namespace CSPGF.Parse
                     // null here is wierd? :D
                     if (cat != -1) 
                     {
-                        List<int> newDomain = new List<int>(a);
+                        List<int> newDomain = new List<int>(b);
                         newDomain[d] = cat;
                         ActiveItem it = new ActiveItem(j, a, f, newDomain, l, p + 1);
                         this.agenda.Push(it);

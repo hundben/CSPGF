@@ -45,7 +45,9 @@ namespace CSPGF.Trees
     public abstract class ScanBase : AbstractScanner<ValueType, LexLocation>
     {
         private LexLocation __yylloc = new LexLocation();
+
         public override LexLocation yylloc { get { return __yylloc; } set { __yylloc = value; } }
+
         protected virtual bool yywrap() { return true; }
     }
 
@@ -144,7 +146,10 @@ namespace CSPGF.Trees
             states[18] = new State(-6);
             states[19] = new State(-7);
 
-            for (int sNo = 0; sNo < states.Length; sNo++) states[sNo].number = sNo;
+            for (int sNo = 0; sNo < states.Length; sNo++)
+            {
+                states[sNo].number = sNo;
+            }
 
             rules[1] = new Rule(-3, new int[] { -1, 2 });
             rules[2] = new Rule(-1, new int[] { 3, 12, 4, -1 });
@@ -211,12 +216,17 @@ namespace CSPGF.Trees
         protected override string TerminalToString(int terminal)
         {
             if (aliasses != null && aliasses.ContainsKey(terminal))
+            {
                 return aliasses[terminal];
+            }
             else if (((Tokens)terminal).ToString() != terminal.ToString(CultureInfo.InvariantCulture))
+            {
                 return ((Tokens)terminal).ToString();
+            }
             else
+            {
                 return CharToString((char)terminal);
+            }
         }
-
     }
 }

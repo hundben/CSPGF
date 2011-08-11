@@ -34,10 +34,10 @@ namespace CSPGF.Linearize
 
     public class Bracket : BracketedTokn
     {
-        public Bracket(string cId, int lIndex, int fId, List<BracketedTokn> bss)
+        public Bracket(string cId, int index, int fId, List<BracketedTokn> bss)
         {
             this.CId = cId;
-            this.LIndex = lIndex;
+            this.LIndex = index;
             this.FId = fId;
             this.Bracketedtoks = bss;
         }

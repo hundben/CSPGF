@@ -95,9 +95,9 @@ namespace CSPGF
             Abstract abs = this.GetAbstract();
             string startCat = abs.StartCat();
             // Reading the concrete grammars
-            int nbConcretes = this.GetInt();
+            int numConcretes = this.GetInt();
             Dictionary<string, Concrete> concretes = new Dictionary<string, Concrete>();
-            for (int i = 0; i < nbConcretes; i++) 
+            for (int i = 0; i < numConcretes; i++) 
             {
                 string name = this.GetIdent();
                 if (debug) 
@@ -412,9 +412,9 @@ namespace CSPGF
                     patt = new VarPattern(varName);
                     break;
                 case 2: //variable as pattern
-                    string pVarName = this.GetIdent();
+                    string patternVarName = this.GetIdent();
                     Pattern p = this.GetPattern();
-                    patt = new VarAsPattern(pVarName, p);
+                    patt = new VarAsPattern(patternVarName, p);
                     break;
                 case 3: //wild card pattern
                     patt = new WildCardPattern();
@@ -629,9 +629,9 @@ namespace CSPGF
         private CncFun GetCncFun(List<Sequence> sequences)
         {
             string name = this.GetIdent();
-            List<int> sIndices = this.GetListInt();
+            List<int> seqIndices = this.GetListInt();
             List<Sequence> seqs = new List<Sequence>();
-            foreach (int i in sIndices) 
+            foreach (int i in seqIndices) 
             {
                 seqs.Add(sequences[i]);
             }
@@ -875,9 +875,9 @@ namespace CSPGF
          **/
         private string GetIdent()
         {
-            int nbChar = this.GetInt();
-            byte[] bytes = new byte[nbChar];
-            this.inputstream.Read(bytes, 0, nbChar);
+            int numChar = this.GetInt();
+            byte[] bytes = new byte[numChar];
+            this.inputstream.Read(bytes, 0, numChar);
             // TODO: check if we have to change encoding or let String fix it instead!
             System.Text.Encoding enc = System.Text.Encoding.ASCII;
             return enc.GetString(bytes);

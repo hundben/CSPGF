@@ -59,16 +59,17 @@ namespace CSPGF.Parser_new
 
     public class AK
     {
-        public AK(int fid, int lIndex)
+        public AK(int fid, int index)
         {
             this.Fid = fid;
-            this.LIndex = lIndex;
+            this.LIndex = index;
         }
 
         /// <summary>
         /// Gets Fid
         /// </summary>
         public int Fid { get; private set; }
+
         public int LIndex { get; private set; }
     }
 
@@ -102,6 +103,7 @@ namespace CSPGF.Parser_new
         }
 
         public List<Tuple<int, int>> List { get; private set; }
+
         public int Fid { get; private set; }
     }
 
@@ -115,7 +117,9 @@ namespace CSPGF.Parser_new
         }
 
         public int Fid { get; private set; }
+
         public int Lindex { get; private set; }
+
         public int Integer { get; private set; }
     }
 

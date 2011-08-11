@@ -34,10 +34,10 @@ namespace CSPGF.Reader
 
     public class LambdaExp : Expr //EAbs
     {
-        public LambdaExp(bool bType, string vName, Expr body)
+        public LambdaExp(bool type, string varName, Expr body)
         {
-            this.BType = bType;
-            this.VName = vName;
+            this.BType = type;
+            this.VName = varName;
             this.Body = body;
         }
 
