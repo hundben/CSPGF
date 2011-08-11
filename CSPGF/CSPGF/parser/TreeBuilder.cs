@@ -78,6 +78,7 @@ namespace CSPGF.Parse
         /// <returns>A list of trees.</returns>
         public List<Tree> MkTreesForCat(int cat, Chart chart)
         {
+            System.Console.WriteLine("Making trees for category: " + cat);
             List<Tree> temp = new List<Tree>();
             foreach (ApplProduction p in chart.GetProductions(cat)) 
             {
@@ -109,11 +110,13 @@ namespace CSPGF.Parse
                 List<List<Tree>> lsmx = new List<List<Tree>>();
                 foreach (int pp in p.Domain())
                 {
-                    lsmx.Add(this.MkTreesForCat(pp, chart));
+                    if (pp != p.FId)
+                    {
+                        lsmx.Add(this.MkTreesForCat(pp, chart));    // TODO fix since it can create endless trees.
+                    }
                 }
 
-                List<List<Tree>> lsmx2 = this.ListMixer(lsmx);
-                foreach (List<Tree> tree in lsmx2) 
+                foreach (List<Tree> tree in this.ListMixer(lsmx)) 
                 {
                     temp.Add(new Application(p.Function.Name, tree));
                 }

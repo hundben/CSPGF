@@ -58,10 +58,10 @@ namespace CSPGF
 
             System.Console.Out.WriteLine("scan this...");
             st.Scan("this");    //TODO check why it locks here (endless loop :D
-            
+            st.Scan("wine");
             //st.Scan("is");
             //st.Scan("expensive");
-            //List<CSPGF.trees.Absyn.Tree> trees = st.GetTrees();
+            List<CSPGF.Trees.Absyn.Tree> trees = st.GetTrees();
             temp = st.Predict();
             foreach (string s in temp)
             {
