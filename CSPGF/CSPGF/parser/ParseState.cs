@@ -1,29 +1,32 @@
-﻿/*
-Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), Erik Bergström (erktheorc@gmail.com)
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the <organization> nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+﻿//-----------------------------------------------------------------------
+// <copyright file="ParseState.cs" company="None">
+//  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
+//   Erik Bergström (erktheorc@gmail.com) 
+//  All rights reserved.
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//   * Redistributions of source code must retain the above copyright
+//     notice, this list of conditions and the following disclaimer.
+//   * Redistributions in binary form must reproduce the above copyright
+//     notice, this list of conditions and the following disclaimer in the
+//     documentation and/or other materials provided with the distribution.
+//   * Neither the name of the &lt;organization&gt; nor the
+//     names of its contributors may be used to endorse or promote products
+//     derived from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND
+//  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+//  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+//  DISCLAIMED. IN NO EVENT SHALL &lt;COPYRIGHT HOLDER&gt; BE LIABLE FOR ANY
+//  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+//  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+//  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+//  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+//  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace CSPGF.Parse
 {
@@ -33,24 +36,55 @@ namespace CSPGF.Parse
     using System.Text;
     using CSPGF.Reader;
 
+    /// <summary>
+    /// The parsestate class.
+    /// </summary>
     public class ParseState
     {
+        /// <summary>
+        /// Start category
+        /// </summary>
         private CncCat startCat;
+
+        /// <summary>
+        /// The parse tree.
+        /// </summary>
         private ParseTrie trie;
+
+        /// <summary>
+        /// The chart.
+        /// </summary>
         private Chart chart;
+
+        /// <summary>
+        /// A stack of active items.
+        /// </summary>
         private Stack<ActiveItem> agenda;
+
+        /// <summary>
+        /// Current position.
+        /// </summary>
         private int position;
+
+        /// <summary>
+        /// Dictionary of ActiveSets.
+        /// </summary>
         private Dictionary<int, ActiveSet> active;
 
+        /// <summary>
+        /// Initializes a new instance of the ParseState class.
+        /// </summary>
+        /// <param name="grammar">The concrete grammar we would like to use.</param>
         public ParseState(Concrete grammar)
         {
             this.startCat = grammar.GetStartCat();
             this.trie = new ParseTrie(null);
-            //TODO check if we should use all languages or just the "active" one
+
+            // TODO check if we should use all languages or just the "active" one
             int lastCat = 0;
             foreach (CncCat cncTemp in grammar.GetCncCats())
             {
-                //TODO check if first or last id
+                // TODO check if first or last id
                 lastCat = Math.Max(cncTemp.LastFID, lastCat);
             }
 
@@ -59,7 +93,7 @@ namespace CSPGF.Parse
             this.position = 0;
             this.active = new Dictionary<int, ActiveSet>();
 
-            //initiate
+            // initiate
             foreach (Production k in grammar.GetProductions()) 
             {
                 this.chart.AddProduction(k);
@@ -76,7 +110,11 @@ namespace CSPGF.Parse
 
             this.Compute();
         }
-        
+
+        /// <summary>
+        /// Get the trees.
+        /// </summary>
+        /// <returns>A list of the trees.</returns>
         public List<CSPGF.Trees.Absyn.Tree> GetTrees()
         {
             TreeBuilder tb = new TreeBuilder();
@@ -90,6 +128,11 @@ namespace CSPGF.Parse
             return tmp;
         }
 
+        /// <summary>
+        /// Scans a new token.
+        /// </summary>
+        /// <param name="token">The token to scan.</param>
+        /// <returns>Returns true if scan i complete.</returns>
         public bool Scan(string token)
         {
             ParseTrie newTrie = this.trie.GetSubTrie(token);
@@ -110,15 +153,23 @@ namespace CSPGF.Parse
             return false;
         }
 
+        /// <summary>
+        /// Predicts the next token.
+        /// </summary>
+        /// <returns>A list of valid tokens.</returns>
         public List<string> Predict()
         {
             return this.trie.Predict();
         }
 
+        /// <summary>
+        /// Computes the new trees.
+        /// </summary>
         private void Compute()
         {
             this.active[this.position] = new ActiveSet();
-            //redo this with iterator or something like that?
+
+            // redo this with iterator or something like that?
             while (this.agenda.Count != 0) 
             {
                 ActiveItem e = this.agenda.Pop();
@@ -126,6 +177,10 @@ namespace CSPGF.Parse
             }
         }
 
+        /// <summary>
+        /// Processes an active item.
+        /// </summary>
+        /// <param name="item">The item to be processed.</param>
         private void ProcessActiveItem(ActiveItem item)
         {
             int j = item.Begin;
@@ -135,17 +190,18 @@ namespace CSPGF.Parse
             int l = item.Constituent;
             int p = item.Position;
 
-            Symbol sym = item.NextSymbol(); //is this correct?
+            Symbol sym = item.NextSymbol(); // is this correct?
 
             if (sym is ToksSymbol) 
             {
                 ToksSymbol tok = (ToksSymbol)sym;
                 List<string> tokens = tok.Tokens;
                 ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
-                //scan
+
+                // scan
                 Stack<ActiveItem> newAgenda;
-                Stack<ActiveItem> luAgenda = this.trie.Lookup(tokens);
-                if (luAgenda == null || luAgenda.Count == 0) 
+                Stack<ActiveItem> tempAgenda = this.trie.Lookup(tokens);
+                if (tempAgenda == null || tempAgenda.Count == 0) 
                 {
                     Stack<ActiveItem> sai = new Stack<ActiveItem>();
                     this.trie.Add(tokens, sai);
@@ -153,7 +209,7 @@ namespace CSPGF.Parse
                 }
                 else 
                 {
-                    newAgenda = luAgenda;
+                    newAgenda = tempAgenda;
                 }
 
                 newAgenda.Push(i);
@@ -177,6 +233,7 @@ namespace CSPGF.Parse
                     }
 
                     int cat = this.chart.GetCategory(bd, r, this.position, this.position);
+                    
                     // null here is wierd? :D
                     if (cat != -1) 
                     {
@@ -210,8 +267,8 @@ namespace CSPGF.Parse
                     HashSet<ActiveItemInt> items = this.active[this.position].Get(cat);
                     foreach (ActiveItemInt aii in items) 
                     {
-                        //ActiveItem xprime = aii.item;
-                        //int dprime = aii.cons;
+                        // ActiveItem xprime = aii.item;
+                        // int dprime = aii.cons;
                         int r = aii.Cons2;
                         ActiveItem i = new ActiveItem(this.position, cat, f, b, r, 0);
                         this.agenda.Push(i);
@@ -224,18 +281,15 @@ namespace CSPGF.Parse
     }
 }
 
-//private class ParseState(val grammar:Concrete) {
-    
+// private class ParseState(val grammar:Concrete) {
 //    private val startCat = this.grammar.startCat
 //    private var trie = new ParseTrie
 //    private val chart = new Chart(100) // TODO: 100 is a bad value...
 //    private var agenda = new Stack[ActiveItem]
 //    private var position = 0
-    
 //    // 'active' is the set of all the S_k's, holding the active items which are not
 //    // on the agenda.
 //    private var active = new HashMap[Integer, ActiveSet]
-    
 //    /* ********************************************************************* *
 //     *                           INITIALIZATION                              */
 //    // Adding all grammar productions in the chart
@@ -252,7 +306,6 @@ namespace CSPGF.Parse
 //    compute()
 //    /*                        END OF INITIALIZATION                          *
 //     * ********************************************************************* */
-
 //     /* ********************************************************************* *
 //      *                        PROCESSING AGENDA                              */
 //     private def compute() = {
@@ -265,7 +318,6 @@ namespace CSPGF.Parse
 //             processActiveItem(e)
 //         }
 //     }
-
 //     private def processActiveItem(item:ActiveItem) = {
 //         val j = item.begin
 //         val A = item.category
@@ -294,7 +346,6 @@ namespace CSPGF.Parse
 //                //           + tokens.map(_.toString) + "(from item : " + item + ")")
 //                newAgenda.push(i)
 //            }
-
 //         // ------------------------- before <d,r> -----------------------
 //         case Some(arg:ArgConstSymbol) => {
 //           //log.finest("Case before <d,r>")
@@ -319,7 +370,6 @@ namespace CSPGF.Parse
 //             }
 //           }
 //         }
-
 //         // ------------------------- at the end --------------------------
 //         case None => {
 //           //log.finest("Case at the end")
@@ -351,12 +401,10 @@ namespace CSPGF.Parse
 //     }
 //     /*                                                                       *
 //      * ********************************************************************* */
-
 //  /**
 //   * returns the set of possible next words
 //   * */
 //  def predict():Array[String] = this.trie.predict
-
 //  def getTrees():Array[AbsSynTree] = {
 //    val chart = this.chart
 //    val startCat = this.startCat
@@ -364,7 +412,6 @@ namespace CSPGF.Parse
 //    val parseTrees = TreeBuilder.buildTrees(chart, startCat, length)
 //    return parseTrees.map(TreeConverter.intermediate2abstract).toArray
 //  }
-
 //  def scan(token:String):Boolean = this.trie.getSubTrie(token) match {
 //    case None => return false
 //    case Some(newTrie) => {
@@ -381,13 +428,11 @@ namespace CSPGF.Parse
 //    //log.finer(this.trie.toString)
 //    return true
 //  }
-
-//  /* Overrides */
-  
+//  /* Overrides */ 
 //  override def toString() =
 //    "= ParseState =\n" +
 //    "== Chart ==\n" +
 //    this.chart.toString() +
 //    "== Trie ==\n" +
 //    this.trie.toString()
-//}
+// }
