@@ -27,6 +27,7 @@
 //  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 // </copyright>
 //-----------------------------------------------------------------------
+
 namespace CSPGF.Linearize
 {
     using System;

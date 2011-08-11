@@ -501,8 +501,11 @@ namespace CSPGF
             }
         }
 
-        /** flattens the result of the linearization **/
-
+        /// <summary>
+        /// Flattens the result of the linearization
+        /// </summary>
+        /// <param name="v">LinTriple to flatten</param>
+        /// <returns>List of flattened strings</returns>
         private List<string> RenderLin(LinTriple v)
         {
             List<string> rez = new List<string>();
@@ -530,6 +533,11 @@ namespace CSPGF
             return rezF;
         }
 
+        /// <summary>
+        /// Flatten a list of LinTriples
+        /// </summary>
+        /// <param name="v">List to flatten</param>
+        /// <returns>List of list of strings</returns>
         private List<List<string>> RenderAllLins(List<LinTriple> v)
         {
             List<List<string>> rez = new List<List<string>>();
@@ -541,20 +549,25 @@ namespace CSPGF
             return rez;
         }
 
+        /// <summary>
+        /// Linearize a tree
+        /// </summary>
+        /// <param name="e">Tree to linearize</param>
+        /// <returns>List of LinTriples</returns>
         private List<LinTriple> Linearize(CSPGF.Trees.Absyn.Tree e)
         {
             return this.Lin0(new List<string>(), new List<string>(), null, 0, e);
         }
-
-    /**
-     * main linearization function
-     * @param xs is the list of bound variables (from lambdas)
-     * @param ys
-     * @param mb_cty
-     * @param mb_fid
-     * @param e is the tree to linearize
-     * @return all the possible linearized tuples for this tree.
-     **/
+        
+        /// <summary>
+        /// Main Linearization function
+        /// </summary>
+        /// <param name="xs">list of bound variables (from lambdas)</param>
+        /// <param name="ys">list of strings?</param>
+        /// <param name="mbcty">Concrete type</param>
+        /// <param name="mbfid">First id</param>
+        /// <param name="tree">Tree to linearize</param>
+        /// <returns>List of all possible linearized tuples</returns>
         private List<LinTriple> Lin0(List<string> xs, List<string> ys, CncType mbcty, int mbfid, CSPGF.Trees.Absyn.Tree tree)
         {
             // if tree is a lambda, we add the variable to the list of bound
@@ -606,21 +619,17 @@ namespace CSPGF
             }
         }
 
-        /** intermediate linearization for complex expressions
-     * Linearize function appliction.
-     * To linearize the application of the function "f" to the arguments
-     * (trees) a, b and c use :
-     * apply(???,???,??? "f", [a,b,c])
-     *
-     * 'apply' will linearize the argument and then use the concrete function
-     * for "f" to glue them together.
-     * @param xs
-     * @param mb_cty
-     * @param n_fid
-     * @param f the name of the function to be applied
-     * @param es the argument of the function to linearize
-     * @return All the possible linearization for the application of f to es
-     **/
+        /// <summary>
+        /// Intermediate linearization for complex expressions. 
+        /// </summary>
+        /// To linearize the application of the function "f" to the arguments (trees) a, b and c use : apply(???,???,??? "f", [a,b,c]).
+        /// 'apply' will linearize the argument and then use the concrete function for "f" to glue them together.
+        /// <param name="xs">Insert comment here?</param>
+        /// <param name="mbcty">Insert comment here</param>
+        /// <param name="nextfid">Insert comment</param>
+        /// <param name="f">Name of the function to be applied</param>
+        /// <param name="es">The argiment of the function to linearize</param>
+        /// <returns>All possible linearizations for the application of f to es</returns>
         private List<LinTriple> Apply(List<string> xs, CncType mbcty, int nextfid, string f, List<CSPGF.Trees.Absyn.Tree> es)
         {
             Dictionary<int, HashSet<Production>> prods = this.linProd[f];
@@ -676,6 +685,13 @@ namespace CSPGF
             }
         }
 
+        /// <summary>
+        /// Find AppResults
+        /// </summary>
+        /// <param name="prods">Productions to use</param>
+        /// <param name="mbcty">Concrete type</param>
+        /// <param name="f">Name of the function</param>
+        /// <returns>List of AppResults</returns>
         private List<AppResult> GetApps(Dictionary<int, HashSet<Production>> prods, CncType mbcty, string f)
         {
             if (mbcty == null) 
@@ -734,6 +750,14 @@ namespace CSPGF
             }
         }
 
+        /// <summary>
+        /// :D :D :D ? 
+        /// </summary>
+        /// <param name="cty">Concrete type</param>
+        /// <param name="p">Production to use</param>
+        /// <param name="f">Function to use</param>
+        /// <param name="prods">Productions to use</param>
+        /// <returns>List of AppResults</returns>
         private List<AppResult> ToApp(CncType cty, Production p, string f, Dictionary<int, HashSet<Production>> prods)
         {
             List<AppResult> rez = new List<AppResult>();
@@ -811,7 +835,11 @@ namespace CSPGF
             }
         }
 
-        /** computes the types of the arguments of a function type **/
+        /// <summary>
+        /// Computes the types of the arguments of a function type
+        /// </summary>
+        /// <param name="t">Type to use</param>
+        /// <returns>List of strings</returns>
         private List<string> CatSkeleton(CSPGF.Reader.Type t)
         {
             List<string> rez = new List<string>();
@@ -825,7 +853,11 @@ namespace CSPGF
             return rez;
         }
 
-        /** creates a simple vector of vectors of bracketed tokens containing a string value **/
+        /// <summary>
+        /// Creates a simple vector of vectors of bracketed tokens containing a string value
+        /// </summary>
+        /// <param name="s">String to use</param>
+        /// <returns>List of list of BracketedTokns</returns>
         private List<List<BracketedTokn>> SS(string s)
         {
             List<List<BracketedTokn>> bt = new List<List<BracketedTokn>>();
@@ -837,7 +869,13 @@ namespace CSPGF
             return bt;
         }
 
-        /** computes the sequence of bracketed tokens associated to a symbol **/
+        /// <summary>
+        /// Computes the sequence of bracketed tokens associated to a symbol
+        /// </summary>
+        /// <param name="s">Symbol to use</param>
+        /// <param name="cncTypes">List of Concrete types</param>
+        /// <param name="linTables">List of list of list of BracketedTokns</param>
+        /// <returns>List of BracketedTokn</returns>
         private List<BracketedTokn> Compute(Symbol s, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
             if (s is ArgConstSymbol) 
@@ -863,8 +901,15 @@ namespace CSPGF
             }
         }
 
-        /** retrieves a sequence of bracketed tokens from an intermediate result of the linearization
-        * according to 2 indices from a production **/
+        /// <summary>
+        /// Retrieves a sequence of bracketed tokens from an intermediate result of the linearization 
+        /// according to 2 indices from a production.
+        /// </summary>
+        /// <param name="d">Insert comment here!</param>
+        /// <param name="r">Insert comment here?</param>
+        /// <param name="cncTypes">List of concrete types</param>
+        /// <param name="linTables">List of list of list of BracketedTokns</param>
+        /// <returns>List of BracketedTokns</returns>
         private List<BracketedTokn> GetArg(int d, int r, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
             if (cncTypes.Count <= d)
@@ -887,7 +932,13 @@ namespace CSPGF
             return bt;
         }
 
-        /** computes a sequence of bracketed tokens from the sequence of symbols of a concrete function **/
+        /// <summary>
+        /// Computes a sequence of bracketed tokens from the sequence of symbols of a concrete function
+        /// </summary>
+        /// <param name="seqId">Sequence id</param>
+        /// <param name="cncTypes">List of Concrete types</param>
+        /// <param name="linTables">List of list of list of BracketedTokns</param>
+        /// <returns>List of BracketedTokns</returns>
         private List<BracketedTokn> ComputeSeq(Sequence seqId, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
             List<BracketedTokn> bt = new List<BracketedTokn>();
@@ -903,9 +954,15 @@ namespace CSPGF
             return bt;
         }
 
-        /** shuffles the results of of the intermediate linearization,
-     * for generating all the possible combinations
-     **/
+        /// <summary>
+        /// Shuffles the results of of the intermediate linearization,
+        /// for generating all the possible combinations.
+        /// </summary>
+        /// <param name="nextfid">Next fid</param>
+        /// <param name="cncTypes">List of Concrete types</param>
+        /// <param name="exps">List of trees</param>
+        /// <param name="xs">List of strings</param>
+        /// <returns>List of RezDesc</returns>
         private List<RezDesc> Descend(int nextfid, List<CncType> cncTypes, List<CSPGF.Trees.Absyn.Tree> exps, List<string> xs)
         {
             List<RezDesc> rez = new List<RezDesc>();
@@ -940,37 +997,62 @@ namespace CSPGF
             return rez;
         }
 
-        /**checks if a production is application production **/
+        /// <summary>
+        /// Checks if a production is application production
+        /// TODO: Remove!
+        /// </summary>
+        /// <param name="p">Production to check</param>
+        /// <returns>True if production is an ApplProduction</returns>
         private bool IsApp(Production p) 
         {
             return p is ApplProduction;
         }
 
-        /** checks if an integer is the index of an integer literal **/
+        /// <summary>
+        /// Checks if an integer is the index of an integer literal
+        /// </summary>
+        /// <param name="i">Integer to check</param>
+        /// <returns>True if i = -2</returns>
         private bool IsLiteralInt(int i)
         {
             return i == -2;
         }
 
-        /** checks if an integer is the index of a string literal **/
+        /// <summary>
+        /// Checks if an integer is the index of a string literal
+        /// </summary>
+        /// <param name="i">Integer to check</param>
+        /// <returns>True if i = -1</returns>
         private bool IsLiteralString(int i)
         {
             return i == -1;
         }
 
-        /** checks if an integer is the index of a float literal **/
+        /// <summary>
+        /// Checks if an integer is the index of a float literal 
+        /// </summary>
+        /// <param name="i">Integer to check</param>
+        /// <returns>True if i = -3</returns>
         private bool IsLiteralFloat(int i)
         {
             return i == -3;
         }
 
-        /** checks if an integer is the index of a variable literal **/
+        /// <summary>
+        /// Checks if an integer is the index of a variable literal 
+        /// </summary>
+        /// <param name="i">Integer to check</param>
+        /// <returns>True if i = -4</returns>
         private bool IsLiteralVar(int i)
         {
             return i == -4;
         }
 
-        /** checks if an integer is the index of a literal **/
+        /// <summary>
+        /// Checks if an integer is the index of a literal
+        /// </summary>
+        /// <param name="i">Integer to check</param>
+        /// <returns>True if integer is a literal</returns>
         private bool IsLiteral(int i)
         {
             if (this.IsLiteralString(i) || this.IsLiteralInt(i) || this.IsLiteralFloat(i) || this.IsLiteralVar(i)) 
