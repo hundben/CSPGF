@@ -27,16 +27,19 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 namespace CSPGF.Parse
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
 
     public class ParseTrie
     {
         private Stack<ActiveItem> value;
         private Dictionary<string, ParseTrie> child = new Dictionary<string, ParseTrie>();
 
+
+        public ParseTrie()
+        {
+            this.value = new Stack<ActiveItem>();
+        }
         public ParseTrie(Stack<ActiveItem> value)
         {
             this.value = value;
@@ -56,22 +59,19 @@ namespace CSPGF.Parse
             }
             else
             {
-                ParseTrie tmp2;
-                // Check: Added !, which should be correct, but not 100% sure. Program doesn't crash anymore though =)
-                if (!this.child.TryGetValue(keys.First<string>(), out tmp2) || this.child.Count == 0) 
+                List<string> l = new List<string>(keys);
+                string x = l.First<string>();
+                l.Remove(x);
+                ParseTrie newTrie;
+                if (!this.child.TryGetValue(x, out newTrie))
                 {
-                    ParseTrie newN = new ParseTrie(null);
-                    List<string> tmp = new List<string>(keys);
-                    tmp.Remove(keys.First<string>());
-                    newN.Add(tmp, value);
-                    this.child[keys.First<string>()] = newN;
+                    ParseTrie newN = new ParseTrie();
+                    newN.Add(l, value);
+                    this.child[x] = newN;
                 }
-                else 
+                else
                 {
-                    List<string> tmp = new List<string>(keys);
-                    tmp.Remove(keys.First<string>());
-                    
-                    this.child[keys.First<string>()].Add(tmp, value);
+                    newTrie.Add(l, value);
                 }
             }
         }
@@ -95,20 +95,22 @@ namespace CSPGF.Parse
         
         public ParseTrie GetSubTrie(List<string> key)
         {
-            // TODO check if null is necessary 
-            if (key != null && key.Count > 0)
+            // TODO check if null is necessary
+            if (key == null || key.Count == 0)
             {
-                List<string> key2 = new List<string>(key);
-                string k = key2.First<string>();
-                key2.Remove(k);
-                ParseTrie trie;
-                if (this.child.TryGetValue(k, out trie))
-                {
-                    return trie.GetSubTrie(key2);
-                }
+                return this;
             }
 
-            return this;
+            List<string> l = new List<string>(key);
+            string x = l.First<string>();
+            l.Remove(x);
+
+            ParseTrie newTrie;
+            if (this.child.TryGetValue(x, out newTrie))
+            {
+                return newTrie.GetSubTrie(l);
+            }
+            return newTrie;
         }
 
         public ParseTrie GetSubTrie(string key)
@@ -217,4 +219,4 @@ namespace CSPGF.Parse
 //      this.child(k).toStringWithPrefix(prefix + "  ")
 //    ).foldLeft("")((a:String,b:String) => a + "\n" + b)
 //  }
-//}
+// }
