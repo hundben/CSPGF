@@ -1,39 +1,44 @@
-﻿/*
-Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), Erik Bergström (erktheorc@gmail.com)
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the <organization> nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+﻿//-----------------------------------------------------------------------
+// <copyright file="Generator.cs" company="None">
+//  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
+//   Erik Bergström (erktheorc@gmail.com) 
+//  All rights reserved.
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//   * Redistributions of source code must retain the above copyright
+//     notice, this list of conditions and the following disclaimer.
+//   * Redistributions in binary form must reproduce the above copyright
+//     notice, this list of conditions and the following disclaimer in the
+//     documentation and/or other materials provided with the distribution.
+//   * Neither the name of the &lt;organization&gt; nor the
+//     names of its contributors may be used to endorse or promote products
+//     derived from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND
+//  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+//  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+//  DISCLAIMED. IN NO EVENT SHALL &lt;COPYRIGHT HOLDER&gt; BE LIABLE FOR ANY
+//  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+//  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+//  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+//  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+//  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace CSPGF 
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using CSPGF.Reader;
     using CSPGF.Trees.Absyn;
 
+    /// <summary>
+    /// Used to generate random numbers and trees.
+    /// </summary>
     public class Generator
     {
         /// <summary>
@@ -56,9 +61,11 @@ namespace CSPGF
         /// </summary>
         private Dictionary<string, HashSet<string>> indirRules;
 
-        /** generates a random expression of a given category
-         * does not handle dependent categories or categories with implicit arguments
-         **/
+        /// <summary>
+        /// Initializes a new instance of the Generator class.
+        /// Generates a random expression of a given category does not handle dependent categories or categories with implicit arguments
+        /// </summary>
+        /// <param name="pgf">PGF object to use</param>
         public Generator(PGF pgf)
         {
             this.random = new Random();
@@ -99,26 +106,32 @@ namespace CSPGF
             }
         }
 
+        /// <summary>
+        /// Generates a tree
+        /// </summary>
+        /// <returns>Returns the tree</returns>
         public Tree Gen()
         {
             return Gen(this.pgf.GetAbstract().StartCat());
         }
 
-        /** generates a category with a random direct rule
-         * suitable for simple expressions
-         **/
-
-        // FIXME what is 'type' for ???
-        public Tree GetDirect(string type, HashSet<string> dirFuns)
+        /// <summary>
+        /// Generates a category with a random direct rule. Suitable for simple expressions
+        /// </summary>
+        /// <param name="dirFuns">Direct Functions</param>
+        /// <returns>Generated tree</returns>
+        public Tree GetDirect(HashSet<string> dirFuns)
         {
             int rand = this.random.Next(dirFuns.Count);
             return new Function((string)dirFuns.ToArray()[rand]);
         }
 
-        /** generates a category with a random indirect rule
-         * creates more complex expressions
-         **/
-        public Tree GetIndirect(string type, HashSet<string> indirFuns)
+        /// <summary>
+        /// Generates a category with a random indirect rule. Creates more complex expressions.
+        /// </summary>
+        /// <param name="indirFuns">Indirect Functions</param>
+        /// <returns>Generated tree</returns>
+        public Tree GetIndirect(HashSet<string> indirFuns)
         {
             List<string> vs = new List<string>();
             foreach (string it in indirFuns) 
@@ -167,8 +180,8 @@ namespace CSPGF
         /// this decreases the probability of having infinite trees for infinite grammars
         /// Joins a first name and a last name together into a single string.
         /// </summary>
-        /// <param name="type">Insert comment here..</param>
-        /// <returns>Insert comment here.</returns>
+        /// <param name="type">Type of tree to generate</param>
+        /// <returns>Generated tree</returns>
         public Tree Gen(string type)
         {
             if (type.Equals("Integer")) 
@@ -198,26 +211,29 @@ namespace CSPGF
 
             if (isEmptyDir) 
             {
-                return this.GetIndirect(type, indirFuns);
+                return this.GetIndirect(indirFuns);
             }
 
             if (isEmptyIndir) 
             {
-                return this.GetDirect(type, dirFuns);
+                return this.GetDirect(dirFuns);
             }
 
             if (depth <= 2) 
             {
-                return this.GetDirect(type, dirFuns);
+                return this.GetDirect(dirFuns);
             }
 
-            return this.GetIndirect(type, indirFuns);
+            return this.GetIndirect(indirFuns);
         }
 
-        /** generates a number of expressions of a given category
-        * the expressions are independent
-        * the probability of having simple expressions is higher
-        **/
+        /// <summary>
+        /// Generates a number of expressions of a given category. The expressions are independent.
+        /// The probability of having simple expressions is higher.
+        /// </summary>
+        /// <param name="type">Type to generate</param>
+        /// <param name="count">Number to generate</param>
+        /// <returns>List of trees</returns>
         public List<Tree> GenerateMany(string type, int count)
         {
             int contor = 0;
@@ -231,7 +247,7 @@ namespace CSPGF
             HashSet<string> indirFuns = this.indirRules[type];
             foreach (string it in dirFuns) 
             {
-                Tree interm = this.GetDirect(type, dirFuns);
+                Tree interm = this.GetDirect(dirFuns);
                 if (interm != null) 
                 {
                     contor++;
@@ -245,7 +261,7 @@ namespace CSPGF
 
             foreach (string it in indirFuns) 
             {
-                Tree interm = this.GetIndirect(type, indirFuns);
+                Tree interm = this.GetIndirect(indirFuns);
                 if (interm != null) 
                 {
                     contor++;
@@ -260,19 +276,29 @@ namespace CSPGF
             return rez;
         }
 
+        /// <summary>
+        /// Generates a string
+        /// </summary>
+        /// <returns>Returns the generated string</returns>
         public string GenerateString()
         {
             string[] ss = { "x", "y", "foo", "bar" };
             return ss[this.random.Next(ss.Length)];
         }
 
-        /** generates a random integer **/
+        /// <summary>
+        /// Generates a random integer
+        /// </summary>
+        /// <returns>Generated integer</returns>
         public int GenerateInt()
         {
             return this.random.Next(100000);
         }
 
-        /** generates a random float **/
+        /// <summary>
+        /// Generates a random float
+        /// </summary>
+        /// <returns>Generated float</returns>
         public double GenerateFloat()
         {
             return this.random.NextDouble();

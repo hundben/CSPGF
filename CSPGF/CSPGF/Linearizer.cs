@@ -1,40 +1,45 @@
-﻿/*
-Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), Erik Bergström (erktheorc@gmail.com)
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the <organization> nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+﻿//-----------------------------------------------------------------------
+// <copyright file="Linearizer.cs" company="None">
+//  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
+//   Erik Bergström (erktheorc@gmail.com) 
+//  All rights reserved.
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//   * Redistributions of source code must retain the above copyright
+//     notice, this list of conditions and the following disclaimer.
+//   * Redistributions in binary form must reproduce the above copyright
+//     notice, this list of conditions and the following disclaimer in the
+//     documentation and/or other materials provided with the distribution.
+//   * Neither the name of the &lt;organization&gt; nor the
+//     names of its contributors may be used to endorse or promote products
+//     derived from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND
+//  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+//  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+//  DISCLAIMED. IN NO EVENT SHALL &lt;COPYRIGHT HOLDER&gt; BE LIABLE FOR ANY
+//  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+//  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+//  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+//  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+//  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace CSPGF
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using System.Text;
     using CSPGF.Linearize;
     using CSPGF.Reader;
     using CSPGF.Trees.Absyn;
 
+    /// <summary>
+    /// Linearizer for use with the Parser
+    /// </summary>
     public class Linearizer
     {
         /// <summary>
@@ -53,7 +58,8 @@ namespace CSPGF
         private Dictionary<string, Dictionary<int, HashSet<Production>>> linProd;
 
         /// <summary>
-        /// /** linearizes an expression to a bracketed token
+        /// Initializes a new instance of the Linearizer class.
+        /// Linearizes an expression to a bracketed token
         /// and further on to a string
         /// not implemented to dependent categories, implicit argument,
         /// and higher-order abstract syntax
@@ -67,18 +73,21 @@ namespace CSPGF
             this.linProd = this.GetLProductions();
         }
 
-        /**
-         * Linearize a tree to a vector of tokens.
-         **/
-        
+        /// <summary>
+        /// Linearize a tree to a list of tokens.
+        /// </summary>
+        /// <param name="absyn">Tree to linearize</param>
+        /// <returns>List of strings</returns>
         public List<string> LinearizeTokens(CSPGF.Trees.Absyn.Tree absyn)
         {
             return this.RenderLin(this.Linearize(absyn).ElementAt(0));
         }
 
-        /**
-         * Linearize a tree to a string.
-         **/
+        /// <summary>
+        /// Linearize a tree to a string.
+        /// </summary>
+        /// <param name="absyn">Tree to linearize</param>
+        /// <returns>Linearized string</returns>
         public string LinearizeString(CSPGF.Trees.Absyn.Tree absyn)
         {
             List<string> words = this.RenderLin(this.Linearize(absyn).ElementAt(0));
@@ -91,20 +100,25 @@ namespace CSPGF
         return sb.Trim();
         }
 
-        /** constructs the l-productions of the concrete syntax for
-         * a given language
-         **/
+        /// <summary>
+        /// Constructs the l-productions of the concrete syntax for a given language
+        /// </summary>
+        /// <returns>Dictionary containing the l-productions</returns>
         private Dictionary<string, Dictionary<int, HashSet<Production>>> GetLProductions()
         {
             Dictionary<int, HashSet<Production>> emptyMap = new Dictionary<int, HashSet<Production>>();
             return this.LinIndex(this.FilterProductions(emptyMap, this.cnc.GetSetOfProductions()));
         }
 
-        /** aligns the indexes for the l-productions
-     **/
+        /// <summary>
+        /// Aligns the indexes for the l-productions
+        /// </summary>
+        /// <param name="productions">Productions to align</param>
+        /// <returns>Aligned l-productions</returns>
         private Dictionary<string, Dictionary<int, HashSet<Production>>> LinIndex(Dictionary<int, HashSet<Production>> productions)
         {
             Dictionary<string, Dictionary<int, HashSet<Production>>> vtemp = new Dictionary<string, Dictionary<int, HashSet<Production>>>();
+
             // Iterator<Entry<Integer, HashSet<Production>>> i = productions.entrySet().iterator();
             foreach (KeyValuePair<int, HashSet<Production>> i in productions) 
             {
@@ -152,12 +166,14 @@ namespace CSPGF
             return vtemp;
         }
 
-        /** This function computes the list of abstract function corresponding to
-         * a given production. This is easy for standard productions but less for
-         * coercions because then you have to search reccursively.
-         * @param p the production
-         * @param productions ???
-         **/
+        /// <summary>
+        /// This function computes the list of abstract function corresponding to
+        /// a given production. This is easy for standard productions but less for
+        /// coercions because then you have to search reccursively.
+        /// </summary>
+        /// <param name="p">The production</param>
+        /// <param name="productions">Procutions to use</param>
+        /// <returns>List of strings</returns>
         private List<string> GetFunctions(Production p, Dictionary<int, HashSet<Production>> productions)
         {
             List<string> rez = new List<string>();
@@ -197,7 +213,12 @@ namespace CSPGF
             return rez;
         }
 
-        /** checks if i is the index of a literal or a valid set of productions **/
+        /// <summary>
+        /// Checks if i is the index of a literal or a valid set of productions
+        /// </summary>
+        /// <param name="i">Index to check for</param>
+        /// <param name="prods">Set of productions</param>
+        /// <returns>True if true</returns>
         private bool ConditionProd(int i, Dictionary<int, HashSet<Production>> prods)
         {
             if (this.IsLiteral(i))
@@ -208,8 +229,12 @@ namespace CSPGF
             return prods.ContainsKey(i);
         }
 
-        /** filters a set of productions according to filterRule
-        **/
+        /// <summary>
+        /// Filters a set of productions according to filterRule
+        /// </summary>
+        /// <param name="prods0">Dictionary containing sets of productions</param>
+        /// <param name="set">Set of productions</param>
+        /// <returns>Set of Productions</returns>
         private HashSet<Production> FilterProdSet1(Dictionary<int, HashSet<Production>> prods0, HashSet<Production> set)
         {
             HashSet<Production> set1 = new HashSet<Production>();
@@ -224,9 +249,12 @@ namespace CSPGF
             return set1;
         }
 
-        /** filters an IntMap of productions according to filterProdsSet1
-         *
-         **/
+        /// <summary>
+        /// Filters an IntMap of productions according to filterProdsSet1
+        /// </summary>
+        /// <param name="prods0">Dictionary containing sets of productions</param>
+        /// <param name="prods">Set of productions</param>
+        /// <returns>Dictionary contining sets of productions</returns>
         private Dictionary<int, HashSet<Production>> FilterProductions(Dictionary<int, HashSet<Production>> prods0, Dictionary<int, HashSet<Production>> prods)
         {
             Dictionary<int, HashSet<Production>> tempRez = new Dictionary<int, HashSet<Production>>();
@@ -281,7 +309,12 @@ namespace CSPGF
             }
         }
 
-        /** checks if a production satisfies conditionProd recursively **/
+        /// <summary>
+        /// Checks if a production satisfies conditionProd recursively
+        /// </summary>
+        /// <param name="prods">Productions to check</param>
+        /// <param name="p">Production to use</param>
+        /// <returns>True if true</returns>
         private bool FilterRule(Dictionary<int, HashSet<Production>> prods, Production p)
         {
             if (p is ApplProduction) 
@@ -301,7 +334,11 @@ namespace CSPGF
             return this.ConditionProd(((CoerceProduction)p).InitId, prods);
         }
         
-        /** checks if a production just has a variable argument **/
+        /// <summary>
+        /// Checks if a production just has a variable argument
+        /// </summary>
+        /// <param name="p">Production to check</param>
+        /// <returns>True if true</returns>
         private bool Is_ho_prod(Production p)
         {
             if (p is ApplProduction) 
@@ -316,7 +353,10 @@ namespace CSPGF
             return false;
         }
 
-        /** gets list of forest ids from the categories in ho_cats **/
+        /// <summary>
+        /// Gets list of forest ids from the categories in ho_cats
+        /// </summary>
+        /// <returns>Set of integers</returns>
         private HashSet<int> Ho_fids()
         {
             HashSet<int> rezTemp = new HashSet<int>();
@@ -342,7 +382,10 @@ namespace CSPGF
             return rezTemp;
         }
 
-        /**get all names of types from Concrete **/
+        /// <summary>
+        /// Get all names of types from Concrete
+        /// </summary>
+        /// <returns>List of strings</returns>
         private List<string> Ho_cats()
         {
             List<string> rezTemp = new List<string>();
@@ -352,6 +395,7 @@ namespace CSPGF
             {
             // for (int i = 0 ; i < absFuns.length ; i++) {
                 List<Hypo> hypos = af.Type.Hypos;
+
                 // Hypo[] hypos = absFuns[i].getType().getHypos();
                 foreach (Hypo hypo in hypos) 
                 {
@@ -367,7 +411,11 @@ namespace CSPGF
             return rezTemp;
         }
         
-        /**gets the types from the hypotheses of a type **/
+        /// <summary>
+        /// Gets the types from the hypotheses of a type
+        /// </summary>
+        /// <param name="t">Type to check for</param>
+        /// <returns>List of strings</returns>
         private List<string> HypoArgsOfType(CSPGF.Reader.Type t)
         {
             List<Hypo> hypos = t.Hypos;
@@ -376,13 +424,19 @@ namespace CSPGF
             {
                 // for (int i = 0 ; i < hypos.length ; i++)
                 tmp.Add(h.Type.Name);
+
                 // rez[i] = hypos[i].getType().getName();
             }
 
             return tmp;
         }
 
-        /** flattens a bracketed token **/
+        /// <summary>
+        /// Flattens a bracketed token
+        /// </summary>
+        /// <param name="bt">BracketedTokn to use</param>
+        /// <param name="after">String to use</param>
+        /// <returns>List of strings</returns>
         private List<string> Untokn(BracketedTokn bt, string after)
         {
             if (bt is LeafKS) 
@@ -438,7 +492,8 @@ namespace CSPGF
                     {
                         rez.Add(str);
                     }
-                    //rez.addAll(untokn(bs.elementAt(i),after));
+
+                    // rez.addAll(untokn(bs.elementAt(i),after));
                     after = rez.Last();
                 }
 
@@ -446,8 +501,11 @@ namespace CSPGF
             }
         }
 
-        /** flattens the result of the linearization **/
-
+        /// <summary>
+        /// Flattens the result of the linearization
+        /// </summary>
+        /// <param name="v">LinTriple to flatten</param>
+        /// <returns>List of flattened strings</returns>
         private List<string> RenderLin(LinTriple v)
         {
             List<string> rez = new List<string>();
@@ -456,14 +514,15 @@ namespace CSPGF
             string after = string.Empty;
             for (int k = vtemp.ElementAt(0).Count - 1; k >= 0; k--) 
             {
-                //{rez.addAll(untokn(vtemp.elementAt(0).elementAt(k),after));
+                // {rez.addAll(untokn(vtemp.elementAt(0).elementAt(k),after));
                 foreach (string str in this.Untokn(vtemp.ElementAt(0).ElementAt(k), after)) 
                 {
                     rez.Add(str);
                 }
 
                 after = rez.Last();
-                //rez.addAll(untokn(vtemp.elementAt(0).elementAt(k), after));
+
+                // rez.addAll(untokn(vtemp.elementAt(0).elementAt(k), after));
             }
 
             foreach (string str in rez) 
@@ -474,6 +533,11 @@ namespace CSPGF
             return rezF;
         }
 
+        /// <summary>
+        /// Flatten a list of LinTriples
+        /// </summary>
+        /// <param name="v">List to flatten</param>
+        /// <returns>List of list of strings</returns>
         private List<List<string>> RenderAllLins(List<LinTriple> v)
         {
             List<List<string>> rez = new List<List<string>>();
@@ -485,20 +549,25 @@ namespace CSPGF
             return rez;
         }
 
+        /// <summary>
+        /// Linearize a tree
+        /// </summary>
+        /// <param name="e">Tree to linearize</param>
+        /// <returns>List of LinTriples</returns>
         private List<LinTriple> Linearize(CSPGF.Trees.Absyn.Tree e)
         {
             return this.Lin0(new List<string>(), new List<string>(), null, 0, e);
         }
-
-    /**
-     * main linearization function
-     * @param xs is the list of bound variables (from lambdas)
-     * @param ys
-     * @param mb_cty
-     * @param mb_fid
-     * @param e is the tree to linearize
-     * @return all the possible linearized tuples for this tree.
-     **/
+        
+        /// <summary>
+        /// Main Linearization function
+        /// </summary>
+        /// <param name="xs">list of bound variables (from lambdas)</param>
+        /// <param name="ys">list of strings?</param>
+        /// <param name="mbcty">Concrete type</param>
+        /// <param name="mbfid">First id</param>
+        /// <param name="tree">Tree to linearize</param>
+        /// <returns>List of all possible linearized tuples</returns>
         private List<LinTriple> Lin0(List<string> xs, List<string> ys, CncType mbcty, int mbfid, CSPGF.Trees.Absyn.Tree tree)
         {
             // if tree is a lambda, we add the variable to the list of bound
@@ -535,7 +604,7 @@ namespace CSPGF
             {
                 foreach (string yss in ys) 
                 {
-                    //xs.addAll(ys);
+                    // xs.addAll(ys);
                     xs.Add(yss);
                 }
 
@@ -550,21 +619,17 @@ namespace CSPGF
             }
         }
 
-        /** intermediate linearization for complex expressions
-     * Linearize function appliction.
-     * To linearize the application of the function "f" to the arguments
-     * (trees) a, b and c use :
-     * apply(???,???,??? "f", [a,b,c])
-     *
-     * 'apply' will linearize the argument and then use the concrete function
-     * for "f" to glue them together.
-     * @param xs
-     * @param mb_cty
-     * @param n_fid
-     * @param f the name of the function to be applied
-     * @param es the argument of the function to linearize
-     * @return All the possible linearization for the application of f to es
-     **/
+        /// <summary>
+        /// Intermediate linearization for complex expressions. 
+        /// </summary>
+        /// To linearize the application of the function "f" to the arguments (trees) a, b and c use : apply(???,???,??? "f", [a,b,c]).
+        /// 'apply' will linearize the argument and then use the concrete function for "f" to glue them together.
+        /// <param name="xs">Insert comment here?</param>
+        /// <param name="mbcty">Insert comment here</param>
+        /// <param name="nextfid">Insert comment</param>
+        /// <param name="f">Name of the function to be applied</param>
+        /// <param name="es">The argiment of the function to linearize</param>
+        /// <returns>All possible linearizations for the application of f to es</returns>
         private List<LinTriple> Apply(List<string> xs, CncType mbcty, int nextfid, string f, List<CSPGF.Trees.Absyn.Tree> es)
         {
             Dictionary<int, HashSet<Production>> prods = this.linProd[f];
@@ -590,7 +655,7 @@ namespace CSPGF
 
                     if (es.Count != ctys.Count) 
                     {
-                        //LinearizerException -> Exception
+                        // LinearizerException -> Exception
                         throw new Exception("lengths of es and ctys don't match" + es.ToString() + " -- " + ctys.ToString());
                     }
 
@@ -620,6 +685,13 @@ namespace CSPGF
             }
         }
 
+        /// <summary>
+        /// Find AppResults
+        /// </summary>
+        /// <param name="prods">Productions to use</param>
+        /// <param name="mbcty">Concrete type</param>
+        /// <param name="f">Name of the function</param>
+        /// <returns>List of AppResults</returns>
         private List<AppResult> GetApps(Dictionary<int, HashSet<Production>> prods, CncType mbcty, string f)
         {
             if (mbcty == null) 
@@ -633,14 +705,14 @@ namespace CSPGF
                     List<AppResult> rez = new List<AppResult>();
                     foreach (KeyValuePair<int, HashSet<Production>> it in prods) 
                     {
-                        //Iterator<Entry<Integer, HashSet<Production>>> it = prods.entrySet().iterator();
-                        //while (it.hasNext()) {
-                        //Entry<Integer, HashSet<Production>> en = it.next();
+                        // Iterator<Entry<Integer, HashSet<Production>>> it = prods.entrySet().iterator();
+                        // while (it.hasNext()) {
+                        // Entry<Integer, HashSet<Production>> en = it.next();
                         int fid = it.Key;
                         foreach (Production prod in it.Value) 
                         {
-                            //Iterator<Production> ip = en.getValue().iterator();
-                            //while (ip.hasNext()) {
+                            // Iterator<Production> ip = en.getValue().iterator();
+                            // while (ip.hasNext()) {
                             List<AppResult> appR = this.ToApp(new CncType("_", fid), prod, f, prods);
                             foreach (AppResult app in appR) 
                             {
@@ -665,8 +737,8 @@ namespace CSPGF
                 {
                     foreach (Production prod in setProd)
                     {
-                        //Iterator<Production> iter = setProd.iterator();
-                        //while (iter.hasNext())
+                        // Iterator<Production> iter = setProd.iterator();
+                        // while (iter.hasNext())
                         foreach (AppResult app in this.ToApp(mbcty, prod, f, prods))
                         {
                             rez.Add(app);
@@ -678,6 +750,14 @@ namespace CSPGF
             }
         }
 
+        /// <summary>
+        /// :D :D :D ? 
+        /// </summary>
+        /// <param name="cty">Concrete type</param>
+        /// <param name="p">Production to use</param>
+        /// <param name="f">Function to use</param>
+        /// <param name="prods">Productions to use</param>
+        /// <returns>List of AppResults</returns>
         private List<AppResult> ToApp(CncType cty, Production p, string f, Dictionary<int, HashSet<Production>> prods)
         {
             List<AppResult> rez = new List<AppResult>();
@@ -743,8 +823,8 @@ namespace CSPGF
                 HashSet<Production> setProds = prods[fid];
                 foreach (Production prod in setProds) 
                 {
-                //Iterator<Production> it = setProds.iterator();
-                //while (it.hasNext())
+                // Iterator<Production> it = setProds.iterator();
+                // while (it.hasNext())
                     foreach (AppResult app in this.ToApp(cty, prod, f, prods))
                     {
                         rez.Add(app);
@@ -755,7 +835,11 @@ namespace CSPGF
             }
         }
 
-        /** computes the types of the arguments of a function type **/
+        /// <summary>
+        /// Computes the types of the arguments of a function type
+        /// </summary>
+        /// <param name="t">Type to use</param>
+        /// <returns>List of strings</returns>
         private List<string> CatSkeleton(CSPGF.Reader.Type t)
         {
             List<string> rez = new List<string>();
@@ -769,7 +853,11 @@ namespace CSPGF
             return rez;
         }
 
-        /** creates a simple vector of vectors of bracketed tokens containing a string value **/
+        /// <summary>
+        /// Creates a simple vector of vectors of bracketed tokens containing a string value
+        /// </summary>
+        /// <param name="s">String to use</param>
+        /// <returns>List of list of BracketedTokns</returns>
         private List<List<BracketedTokn>> SS(string s)
         {
             List<List<BracketedTokn>> bt = new List<List<BracketedTokn>>();
@@ -781,7 +869,13 @@ namespace CSPGF
             return bt;
         }
 
-        /** computes the sequence of bracketed tokens associated to a symbol **/
+        /// <summary>
+        /// Computes the sequence of bracketed tokens associated to a symbol
+        /// </summary>
+        /// <param name="s">Symbol to use</param>
+        /// <param name="cncTypes">List of Concrete types</param>
+        /// <param name="linTables">List of list of list of BracketedTokns</param>
+        /// <returns>List of BracketedTokn</returns>
         private List<BracketedTokn> Compute(Symbol s, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
             if (s is ArgConstSymbol) 
@@ -807,8 +901,15 @@ namespace CSPGF
             }
         }
 
-        /** retrieves a sequence of bracketed tokens from an intermediate result of the linearization
-        * according to 2 indices from a production **/
+        /// <summary>
+        /// Retrieves a sequence of bracketed tokens from an intermediate result of the linearization 
+        /// according to 2 indices from a production.
+        /// </summary>
+        /// <param name="d">Insert comment here!</param>
+        /// <param name="r">Insert comment here?</param>
+        /// <param name="cncTypes">List of concrete types</param>
+        /// <param name="linTables">List of list of list of BracketedTokns</param>
+        /// <returns>List of BracketedTokns</returns>
         private List<BracketedTokn> GetArg(int d, int r, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
             if (cncTypes.Count <= d)
@@ -831,7 +932,13 @@ namespace CSPGF
             return bt;
         }
 
-        /** computes a sequence of bracketed tokens from the sequence of symbols of a concrete function **/
+        /// <summary>
+        /// Computes a sequence of bracketed tokens from the sequence of symbols of a concrete function
+        /// </summary>
+        /// <param name="seqId">Sequence id</param>
+        /// <param name="cncTypes">List of Concrete types</param>
+        /// <param name="linTables">List of list of list of BracketedTokns</param>
+        /// <returns>List of BracketedTokns</returns>
         private List<BracketedTokn> ComputeSeq(Sequence seqId, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
             List<BracketedTokn> bt = new List<BracketedTokn>();
@@ -847,9 +954,15 @@ namespace CSPGF
             return bt;
         }
 
-        /** shuffles the results of of the intermediate linearization,
-     * for generating all the possible combinations
-     **/
+        /// <summary>
+        /// Shuffles the results of of the intermediate linearization,
+        /// for generating all the possible combinations.
+        /// </summary>
+        /// <param name="nextfid">Next fid</param>
+        /// <param name="cncTypes">List of Concrete types</param>
+        /// <param name="exps">List of trees</param>
+        /// <param name="xs">List of strings</param>
+        /// <returns>List of RezDesc</returns>
         private List<RezDesc> Descend(int nextfid, List<CncType> cncTypes, List<CSPGF.Trees.Absyn.Tree> exps, List<string> xs)
         {
             List<RezDesc> rez = new List<RezDesc>();
@@ -884,37 +997,62 @@ namespace CSPGF
             return rez;
         }
 
-        /**checks if a production is application production **/
+        /// <summary>
+        /// Checks if a production is application production
+        /// TODO: Remove!
+        /// </summary>
+        /// <param name="p">Production to check</param>
+        /// <returns>True if production is an ApplProduction</returns>
         private bool IsApp(Production p) 
         {
             return p is ApplProduction;
         }
 
-        /** checks if an integer is the index of an integer literal **/
+        /// <summary>
+        /// Checks if an integer is the index of an integer literal
+        /// </summary>
+        /// <param name="i">Integer to check</param>
+        /// <returns>True if i = -2</returns>
         private bool IsLiteralInt(int i)
         {
             return i == -2;
         }
 
-        /** checks if an integer is the index of a string literal **/
+        /// <summary>
+        /// Checks if an integer is the index of a string literal
+        /// </summary>
+        /// <param name="i">Integer to check</param>
+        /// <returns>True if i = -1</returns>
         private bool IsLiteralString(int i)
         {
             return i == -1;
         }
 
-        /** checks if an integer is the index of a float literal **/
+        /// <summary>
+        /// Checks if an integer is the index of a float literal 
+        /// </summary>
+        /// <param name="i">Integer to check</param>
+        /// <returns>True if i = -3</returns>
         private bool IsLiteralFloat(int i)
         {
             return i == -3;
         }
 
-        /** checks if an integer is the index of a variable literal **/
+        /// <summary>
+        /// Checks if an integer is the index of a variable literal 
+        /// </summary>
+        /// <param name="i">Integer to check</param>
+        /// <returns>True if i = -4</returns>
         private bool IsLiteralVar(int i)
         {
             return i == -4;
         }
 
-        /** checks if an integer is the index of a literal **/
+        /// <summary>
+        /// Checks if an integer is the index of a literal
+        /// </summary>
+        /// <param name="i">Integer to check</param>
+        /// <returns>True if integer is a literal</returns>
         private bool IsLiteral(int i)
         {
             if (this.IsLiteralString(i) || this.IsLiteralInt(i) || this.IsLiteralFloat(i) || this.IsLiteralVar(i)) 
