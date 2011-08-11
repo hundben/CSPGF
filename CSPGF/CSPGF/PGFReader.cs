@@ -1,46 +1,69 @@
-﻿/*
-Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), Erik Bergström (erktheorc@gmail.com)
-All rights reserved.
-
-Redistribution and use in source and binary forms, with or without
-modification, are permitted provided that the following conditions are met:
-    * Redistributions of source code must retain the above copyright
-      notice, this list of conditions and the following disclaimer.
-    * Redistributions in binary form must reproduce the above copyright
-      notice, this list of conditions and the following disclaimer in the
-      documentation and/or other materials provided with the distribution.
-    * Neither the name of the <organization> nor the
-      names of its contributors may be used to endorse or promote products
-      derived from this software without specific prior written permission.
-
-THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
-ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
-DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-(INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-*/
+﻿//-----------------------------------------------------------------------
+// <copyright file="PGFReader.cs" company="None">
+//  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
+//   Erik Bergström (erktheorc@gmail.com) 
+//  All rights reserved.
+//
+//  Redistribution and use in source and binary forms, with or without
+//  modification, are permitted provided that the following conditions are met:
+//   * Redistributions of source code must retain the above copyright
+//     notice, this list of conditions and the following disclaimer.
+//   * Redistributions in binary form must reproduce the above copyright
+//     notice, this list of conditions and the following disclaimer in the
+//     documentation and/or other materials provided with the distribution.
+//   * Neither the name of the &lt;organization&gt; nor the
+//     names of its contributors may be used to endorse or promote products
+//     derived from this software without specific prior written permission.
+//
+//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND
+//  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+//  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+//  DISCLAIMED. IN NO EVENT SHALL &lt;COPYRIGHT HOLDER&gt; BE LIABLE FOR ANY
+//  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+//  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+//  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+//  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+//  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+// </copyright>
+//-----------------------------------------------------------------------
 
 namespace CSPGF
 {
     using System;
     using System.Collections.Generic;
     using System.IO;
-    using System.Text;
     using CSPGF.Reader;
 
+    /// <summary>
+    /// Reads an PGF object
+    /// </summary>
     public class PGFReader
     {
+        /// <summary>
+        /// True if debuginformation should be written
+        /// </summary>
         private static bool debug = false;
 
+        /// <summary>
+        /// Stream to write debuginformation to
+        /// </summary>
         private StreamWriter dbgwrite;
+
+        /// <summary>
+        /// Stream to read from
+        /// </summary>
         private BinaryReader inputstream;
+
+        /// <summary>
+        /// Desired languages
+        /// </summary>
         private List<string> languages = null;
 
+        /// <summary>
+        /// Initializes a new instance of the PGFReader class.
+        /// </summary>
+        /// <param name="inputstream">Stream to read from</param>
         public PGFReader(BinaryReader inputstream)
         {
             if (debug) 
@@ -51,6 +74,11 @@ namespace CSPGF
             this.inputstream = inputstream;
         }
 
+        /// <summary>
+        /// Initializes a new instance of the PGFReader class with the desired languages.
+        /// </summary>
+        /// <param name="inputstream">Stream to read from</param>
+        /// <param name="languages">Desired languages</param>
         public PGFReader(BinaryReader inputstream, List<string> languages)
         {
             if (debug) 
@@ -62,6 +90,10 @@ namespace CSPGF
             this.languages = languages;
         }
 
+        /// <summary>
+        /// Starts reading the PGF object
+        /// </summary>
+        /// <returns>PGF object</returns>
         public PGF ReadPGF()
         {
             Dictionary<string, int> index = null;
@@ -78,6 +110,7 @@ namespace CSPGF
             {
                 this.dbgwrite.WriteLine("PGF version : " + ii[0] + "." + ii[1]);
             }
+
             // Reading the global flags
             Dictionary<string, RLiteral> flags = this.GetListFlag();
             if (flags.ContainsKey("index")) 
@@ -91,9 +124,11 @@ namespace CSPGF
                     }
                 }
             }
+
             // Reading the abstract
             Abstract abs = this.GetAbstract();
             string startCat = abs.StartCat();
+
             // Reading the concrete grammars
             int numConcretes = this.GetInt();
             Dictionary<string, Concrete> concretes = new Dictionary<string, Concrete>();
@@ -127,6 +162,7 @@ namespace CSPGF
                     }
                 }
             }
+
             // test that we actually found all the selected languages
             if (this.languages != null && this.languages.Count > 0) 
             {
@@ -142,11 +178,13 @@ namespace CSPGF
             return pgf;
         }
 
-        /**
-         * This function guess the default start category from the
-         * PGF flags: if the startcat flag is set then it is taken as default cat.
-         * otherwise "Sentence" is taken as default category.
-         */
+        /// <summary>
+        /// This function guess the default start category from the
+        /// PGF flags: if the startcat flag is set then it is taken as default cat.
+        /// otherwise "Sentence" is taken as default category.
+        /// </summary>
+        /// <param name="flags">Flags to use</param>
+        /// <returns>Returns the startingcategory</returns>
         private string GetStartCat(Dictionary<string, RLiteral> flags)
         {
             RLiteral cat;
@@ -160,9 +198,13 @@ namespace CSPGF
             }
         }
 
+        /// <summary>
+        /// Reads the index
+        /// </summary>
+        /// <param name="str">String to read from</param>
+        /// <returns>Dictionary with string/int pairs</returns>
         private Dictionary<string, int> ReadIndex(string str)
         {
-            //Original javacode: String[] items = s.Split(" +");
             string[] items = str.Split('+');
             Dictionary<string, int> index = new Dictionary<string, int>();
             foreach (string item in items) 
@@ -174,9 +216,10 @@ namespace CSPGF
             return index;
         }
 
-        /* ************************************************* */
-        /* Reading abstract grammar                          */
-        /* ************************************************* */
+        /// <summary>
+        /// Read the abstract grammar.
+        /// </summary>
+        /// <returns>Abstract grammar</returns>
         private Abstract GetAbstract()
         {
             string name = this.GetIdent();
@@ -191,6 +234,10 @@ namespace CSPGF
             return new Abstract(name, flags, absFuns, absCats);
         }
 
+        /// <summary>
+        /// Reads a list of patterns
+        /// </summary>
+        /// <returns>List of patterns</returns>
         private List<Pattern> GetListPattern()
         {
             int npoz = this.GetInt();
@@ -203,6 +250,10 @@ namespace CSPGF
             return tmp;
         }
 
+        /// <summary>
+        /// Reads an Eq
+        /// </summary>
+        /// <returns>Returns the Eq</returns>
         private Eq GetEq()
         {
             List<Pattern> patts = this.GetListPattern();
@@ -210,6 +261,10 @@ namespace CSPGF
             return new Eq(patts, exp);
         }
 
+        /// <summary>
+        /// Reads an AbsFun
+        /// </summary>
+        /// <returns>Returns the AbsFun</returns>
         private AbsFun GetAbsFun()
         {
             string name = this.GetIdent();
@@ -241,6 +296,10 @@ namespace CSPGF
             return f;
         }
 
+        /// <summary>
+        /// Reads an AbsCat
+        /// </summary>
+        /// <returns>Returns the AbsCat</returns>
         private AbsCat GetAbsCat()
         {
             string name = this.GetIdent();
@@ -249,6 +308,10 @@ namespace CSPGF
             return new AbsCat(name, hypos, functions);
         }
 
+        /// <summary>
+        /// Reads an list of AbsFun
+        /// </summary>
+        /// <returns>List of AbsFun</returns>
         private List<AbsFun> GetListAbsFun()
         {
             int npoz = this.GetInt();
@@ -268,6 +331,10 @@ namespace CSPGF
             return tmp;
         }
 
+        /// <summary>
+        /// Reads a list of AbsCat
+        /// </summary>
+        /// <returns>List of AbsCat</returns>
         private List<AbsCat> GetListAbsCat()
         {
             int npoz = this.GetInt();
@@ -287,6 +354,10 @@ namespace CSPGF
             return tmp;
         }
 
+        /// <summary>
+        /// Reads a Type object
+        /// </summary>
+        /// <returns>Returns the Type object</returns>
         private CSPGF.Reader.Type GetType2()
         {
             List<Hypo> hypos = this.GetListHypo();
@@ -301,6 +372,10 @@ namespace CSPGF
             return t;
         }
 
+        /// <summary>
+        /// Reads a Hypo
+        /// </summary>
+        /// <returns>Returns the Hypo</returns>
         private Hypo GetHypo()
         {
             int btype = this.inputstream.ReadByte();
@@ -310,6 +385,10 @@ namespace CSPGF
             return new Hypo(b, varName, t);
         }
 
+        /// <summary>
+        /// Reads a list of Hypos
+        /// </summary>
+        /// <returns>List of Hypos</returns>
         private List<Hypo> GetListHypo()
         {
             int npoz = this.GetInt();
@@ -322,6 +401,10 @@ namespace CSPGF
             return tmp;
         }
 
+        /// <summary>
+        /// Reads a list of Exprs
+        /// </summary>
+        /// <returns>List of Exprs</returns>
         private List<Expr> GetListExpr()
         {
             int npoz = this.GetInt();
@@ -334,46 +417,50 @@ namespace CSPGF
             return tmp;
         }
 
+        /// <summary>
+        /// Reads an Expr
+        /// </summary>
+        /// <returns>Returns the Expr</returns>
         private Expr GetExpr()
         {
             int sel = this.inputstream.ReadByte();
             Expr expr = null;
             switch (sel)
             {
-                case 0: //lambda abstraction
+                case 0: // lambda abstraction
                     int bt = this.inputstream.ReadByte();
                     bool btype = bt == 0 ? false : true;
                     string varName = this.GetIdent();
                     Expr e1 = this.GetExpr();
                     expr = new LambdaExp(btype, varName, e1);
                     break;
-                case 1: //expression application
+                case 1: // expression application
                     Expr e11 = this.GetExpr();
                     Expr e2 = this.GetExpr();
                     expr = new AppExp(e11, e2);
                     break;
-                case 2: //literal expression
+                case 2: // literal expression
                     RLiteral lit = this.GetLiteral();
                     expr = new LiteralExp(lit);
                     break;
-                case 3: //meta variable
+                case 3: // meta variable
                     int id = this.GetInt();
                     expr = new MetaExp(id);
                     break;
-                case 4: //abstract function name
+                case 4: // abstract function name
                     string absFun = this.GetIdent();
                     expr = new AbsNameExp(absFun);
                     break;
-                case 5: //variable
+                case 5: // variable
                     int v = this.GetInt();
                     expr = new VarExp(v);
                     break;
-                case 6: //type annotated expression
+                case 6: // type annotated expression
                     Expr e = this.GetExpr();
                     CSPGF.Reader.Type t = this.GetType2();
                     expr = new TypedExp(e, t);
                     break;
-                case 7: //implicit argument
+                case 7: // implicit argument
                     Expr ee = this.GetExpr();
                     expr = new ImplExp(ee);
                     break;
@@ -384,6 +471,10 @@ namespace CSPGF
             return expr;
         }
 
+        /// <summary>
+        /// Reads a list of Eqs
+        /// </summary>
+        /// <returns>List of Eqs</returns>
         private List<Eq> GetListEq()
         {
             int npoz = this.GetInt();
@@ -396,38 +487,42 @@ namespace CSPGF
             return tmp;
         }
 
+        /// <summary>
+        /// Reads a Pattern
+        /// </summary>
+        /// <returns>Returns the Pattern</returns>
         private Pattern GetPattern()
         {
             int sel = this.inputstream.ReadByte();
             Pattern patt = null;
             switch (sel) 
             {
-                case 0: //application pattern
+                case 0: // application pattern
                     string absFun = this.GetIdent();
                     List<Pattern> patts = this.GetListPattern();
                     patt = new AppPattern(absFun, patts);
                     break;
-                case 1: //variable pattern
+                case 1: // variable pattern
                     string varName = this.GetIdent();
                     patt = new VarPattern(varName);
                     break;
-                case 2: //variable as pattern
+                case 2: // variable as pattern
                     string patternVarName = this.GetIdent();
                     Pattern p = this.GetPattern();
                     patt = new VarAsPattern(patternVarName, p);
                     break;
-                case 3: //wild card pattern
+                case 3: // wild card pattern
                     patt = new WildCardPattern();
                     break;
-                case 4: //literal pattern
+                case 4: // literal pattern
                     RLiteral lit = this.GetLiteral();
                     patt = new LiteralPattern(lit);
                     break;
-                case 5: //implicit argument
+                case 5: // implicit argument
                     Pattern pp = this.GetPattern();
                     patt = new ImpArgPattern(pp);
                     break;
-                case 6: //inaccessible pattern
+                case 6: // inaccessible pattern
                     Expr e = this.GetExpr();
                     patt = new InaccPattern(e);
                     break;
@@ -438,6 +533,10 @@ namespace CSPGF
             return patt;
         }
 
+        /// <summary>
+        /// Reads a RLiteral
+        /// </summary>
+        /// <returns>Returns the RLiteral</returns>
         private RLiteral GetLiteral()
         {
             int sel = this.inputstream.ReadByte();
@@ -463,9 +562,12 @@ namespace CSPGF
             return ss;
         }
 
-        /* ************************************************* */
-        /* Reading concrete grammar                          */
-        /* ************************************************* */
+        /// <summary>
+        /// Reads a Concrete grammar
+        /// </summary>
+        /// <param name="name">Name of the grammar</param>
+        /// <param name="startCat">Start category</param>
+        /// <returns>The concrete grammar</returns>
         private Concrete GetConcrete(string name, string startCat)
         {
             if (debug)
@@ -475,6 +577,7 @@ namespace CSPGF
             }
 
             Dictionary<string, RLiteral> flags = this.GetListFlag();
+
             // We don't use the print names, but we need to read them to skip them
             if (debug) 
             {
@@ -489,6 +592,7 @@ namespace CSPGF
 
             List<Sequence> seqs = this.GetListSequence();
             List<CncFun> cncFuns = this.GetListCncFun(seqs);
+
             // We don't need the lindefs for now but again we need to
             // parse them to skip them
             this.GetListLinDef();
@@ -498,10 +602,10 @@ namespace CSPGF
             return new Concrete(name, flags, seqs, cncFuns, prods, cncCats, i, startCat);
         }
 
-        /* ************************************************* */
-        /* Reading print names                               */
-        /* ************************************************* */
-        // FIXME : not used, we should avoid creating the objects
+        /// <summary>
+        /// Reads a PrintName
+        /// </summary>
+        /// <returns>Returns the PrintName</returns>
         private PrintName GetPrintName()
         {
             string absName = this.GetIdent();
@@ -509,6 +613,10 @@ namespace CSPGF
             return new PrintName(absName, printName);
         }
 
+        /// <summary>
+        /// Reads a list of PrintNames
+        /// </summary>
+        /// <returns>List of PrintNames</returns>
         private List<PrintName> GetListPrintName()
         {
             int npoz = this.GetInt();
@@ -528,15 +636,20 @@ namespace CSPGF
             return tmp;
         }
 
-        /* ************************************************* */
-        /* Reading sequences                                 */
-        /* ************************************************* */
+        /// <summary>
+        /// Reads a Sequence
+        /// </summary>
+        /// <returns>Returns the Sequence</returns>
         private Sequence GetSequence()
         {
             List<Symbol> symbols = this.GetListSymbol();
             return new Sequence(symbols);
         }
 
+        /// <summary>
+        /// Reads a list of Sequences
+        /// </summary>
+        /// <returns>List of Sequences</returns>
         private List<Sequence> GetListSequence()
         {
             int npoz = this.GetInt();
@@ -549,6 +662,10 @@ namespace CSPGF
             return tmp;
         }
 
+        /// <summary>
+        /// Reads a Symbol
+        /// </summary>
+        /// <returns>Return the Symbol</returns>
         private Symbol GetSymbol()
         {
             int sel = this.inputstream.ReadByte();
@@ -568,17 +685,18 @@ namespace CSPGF
                     symb = new ArgConstSymbol(i1, i2);
                     break;
                 case 2: // Variable (Not implemented)
-                    //UnsupportedOperationException -> Exception
+                    // UnsupportedOperationException -> Exception
                     throw new Exception("Var symbols are not supported yet");
-                case 3: //sequence of tokens
+                case 3: // sequence of tokens
                     List<string> strs = this.GetListString();
                     symb = new ToksSymbol(strs);
                     break;
-                case 4: //alternative tokens
+                case 4: // alternative tokens
                     List<string> altstrs = this.GetListString();
                     List<Alternative> la = this.GetListAlternative();
                     symb = new AlternToksSymbol(altstrs, la);
                     break;
+
                 // IOException -> Exception
                 default:
                     throw new Exception("Invalid tag for symbols : " + sel);
@@ -592,6 +710,10 @@ namespace CSPGF
             return symb;
         }
 
+        /// <summary>
+        /// Reads a list of Alternatives
+        /// </summary>
+        /// <returns>List of Alternatives</returns>
         private List<Alternative> GetListAlternative()
         {
             int npoz = this.GetInt();
@@ -604,6 +726,10 @@ namespace CSPGF
             return tmp;
         }
 
+        /// <summary>
+        /// Reads an Alternative
+        /// </summary>
+        /// <returns>Returns the Alternative</returns>
         private Alternative GetAlternative()
         {
             List<string> s1 = this.GetListString();
@@ -611,6 +737,10 @@ namespace CSPGF
             return new Alternative(s1, s2);
         }
 
+        /// <summary>
+        /// Reads a list of Symbols
+        /// </summary>
+        /// <returns>List of Symbols</returns>
         private List<Symbol> GetListSymbol()
         {
             int npoz = this.GetInt();
@@ -623,9 +753,11 @@ namespace CSPGF
             return tmp;
         }
 
-        /* ************************************************* */
-        /* Reading concrete functions                        */
-        /* ************************************************* */
+        /// <summary>
+        /// Reads a Concrete Function
+        /// </summary>
+        /// <param name="sequences">List of sequences</param>
+        /// <returns>Returns the Concrete Function</returns>
         private CncFun GetCncFun(List<Sequence> sequences)
         {
             string name = this.GetIdent();
@@ -639,6 +771,11 @@ namespace CSPGF
             return new CncFun(name, seqs);
         }
 
+        /// <summary>
+        /// Read a list of Concrete Functions
+        /// </summary>
+        /// <param name="sequences">List of Sequences</param>
+        /// <returns>List of Concrete Functions</returns>
         private List<CncFun> GetListCncFun(List<Sequence> sequences)
         {
             int npoz = this.GetInt();
@@ -651,10 +788,10 @@ namespace CSPGF
             return tmp;
         }
 
-        /* ************************************************* */
-        /* Reading LinDefs                                   */
-        /* ************************************************* */
-        // LinDefs are stored as an int map (Int -> [Int])
+        /// <summary>
+        /// Reads a list of LinDefs
+        /// </summary>
+        /// <returns>List of LinDefs</returns>
         private List<LinDef> GetListLinDef()
         {
             int size = this.GetInt();
@@ -667,6 +804,10 @@ namespace CSPGF
             return tmp;
         }
 
+        /// <summary>
+        /// Reads a LinDef
+        /// </summary>
+        /// <returns>Returns the LinDef</returns>
         private LinDef GetLinDef()
         {
             int key = this.GetInt();
@@ -680,14 +821,11 @@ namespace CSPGF
             return new LinDef(key, funIds);
         }
 
-        /* ************************************************* */
-        /* Reading productions and production sets           */
-        /* ************************************************* */
-        /**
-         * Read a production set
-         * @param is is the input stream to read from
-         * @param cncFuns is the list of concrete function
-         */
+        /// <summary>
+        /// Reads a ProductionSet
+        /// </summary>
+        /// <param name="cncFuns">List of Concrete Functions</param>
+        /// <returns>Returns the ProductionSet</returns>
         private ProductionSet GetProductionSet(List<CncFun> cncFuns)
         {
             int id = this.GetInt();
@@ -695,11 +833,11 @@ namespace CSPGF
             return new ProductionSet(id, prods);
         }
 
-        /**
-         * Read a list of production set
-         * @param is is the input stream to read from
-         * @param cncFuns is the list of concrete function
-         */
+        /// <summary>
+        /// Read a list of ProductionSets
+        /// </summary>
+        /// <param name="cncFuns">List of Concrete Functions</param>
+        /// <returns>List of ProductionSets</returns>
         private List<ProductionSet> GetListProductionSet(List<CncFun> cncFuns)
         {
             int npoz = this.GetInt();
@@ -712,13 +850,12 @@ namespace CSPGF
             return tmp;
         }
 
-        /**
-         * Read a list of production
-         * @param is is the input stream to read from
-         * @param leftCat is the left hand side category of this production (
-         * read only once for the whole production set)
-         * @param cncFuns is the list of concrete function
-         */
+        /// <summary>
+        /// Read a list of Productions.
+        /// </summary>
+        /// <param name="leftCat">Left hand side category</param>
+        /// <param name="cncFuns">List of Concrete Functions</param>
+        /// <returns>List of Productions</returns>
         private List<Production> GetListProduction(int leftCat, List<CncFun> cncFuns)
         {
             int npoz = this.GetInt();
@@ -731,15 +868,12 @@ namespace CSPGF
             return tmp;
         }
 
-        /**
-         * Read a production
-         * @param is is the input stream to read from
-         * @param leftCat is the left hand side category of this production
-         *                (read only once for the whole production set)
-         * @param cncFuns is the list of concrete function, used here to set the
-         *                function of the production (only given by its index in
-         *                the list)
-         */
+        /// <summary>
+        /// Read a Production
+        /// </summary>
+        /// <param name="leftCat">Left hand side category</param>
+        /// <param name="cncFuns">List of Concrete Functions</param>
+        /// <returns>Returns the Production</returns>
         private Production GetProduction(int leftCat, List<CncFun> cncFuns)
         {
             int sel = this.inputstream.ReadByte();
@@ -751,16 +885,17 @@ namespace CSPGF
             Production prod = null;
             switch (sel) 
             {
-                case 0: //application
+                case 0: // application
                     int i = this.GetInt();
                     List<int> domain = this.GetDomainFromPArgs();
                     prod = new ApplProduction(leftCat, cncFuns[i], domain);
                     break;
-                case 1: //coercion
+                case 1: // coercion
                     int id = this.GetInt();
                     prod = new CoerceProduction(leftCat, id);
                     break;
-                //IOException -> Exception
+
+                // IOException -> Exception
                 default:
                     throw new Exception("Invalid tag for productions : " + sel);
             }
@@ -773,9 +908,10 @@ namespace CSPGF
             return prod;
         }
 
-        // This function reads a list of PArgs (Productions arguments)
-        // but returns only the actual domain (the category of the argumetns)
-        // since we don't need the rest for now...
+        /// <summary>
+        /// Reads a list of PArgs and returns the domain
+        /// </summary>
+        /// <returns>Returns the domain</returns>
         private List<int> GetDomainFromPArgs()
         {
             int size = this.GetInt();
@@ -790,6 +926,10 @@ namespace CSPGF
             return tmp;
         }
 
+        /// <summary>
+        /// Reads a Concrete Category
+        /// </summary>
+        /// <returns>Returns the Concrete Category</returns>
         private CncCat GetCncCat()
         {
             string sname = this.GetIdent();
@@ -799,6 +939,10 @@ namespace CSPGF
             return new CncCat(sname, firstFId, lastFId, ss);
         }
 
+        /// <summary>
+        /// Read a list of Concrete Categories
+        /// </summary>
+        /// <returns>Dictionary of name/category</returns>
         private Dictionary<string, CncCat> GetListCncCat()
         {
             int npoz = this.GetInt();
@@ -818,6 +962,10 @@ namespace CSPGF
             return cncCats;
         }
 
+        /// <summary>
+        /// Reads a list of Flags
+        /// </summary>
+        /// <returns>Dictionary of string/literal</returns>
         private Dictionary<string, RLiteral> GetListFlag()
         {
             int npoz = this.GetInt();
@@ -837,6 +985,10 @@ namespace CSPGF
             return flags;
         }
 
+        /// <summary>
+        /// Reads a string
+        /// </summary>
+        /// <returns>Returns the string</returns>
         private string GetString()
         {
             int npoz = this.GetInt();
@@ -849,6 +1001,10 @@ namespace CSPGF
             return new string(bytes.ToArray());
         }
 
+        /// <summary>
+        /// Reads a list of strings
+        /// </summary>
+        /// <returns>List of strings</returns>
         private List<string> GetListString()
         {
             int npoz = this.GetInt();
@@ -868,21 +1024,25 @@ namespace CSPGF
             return tmp;
         }
 
-        /**
-         * Some string (like categories identifiers) are not allowed to
-         * use the full utf8 tables but only latin 1 caracters.
-         * We can read them faster using this knowledge.
-         **/
+        /// <summary>
+        /// Reads an identifier
+        /// </summary>
+        /// <returns>Returns the identifier</returns>
         private string GetIdent()
         {
             int numChar = this.GetInt();
             byte[] bytes = new byte[numChar];
             this.inputstream.Read(bytes, 0, numChar);
+
             // TODO: check if we have to change encoding or let String fix it instead!
             System.Text.Encoding enc = System.Text.Encoding.ASCII;
             return enc.GetString(bytes);
         }
 
+        /// <summary>
+        /// Reads a list of identifiers
+        /// </summary>
+        /// <returns>List of identifiers</returns>
         private List<string> GetListIdent()
         {
             int nb = this.GetInt();
@@ -895,8 +1055,10 @@ namespace CSPGF
             return tmp;
         }
 
-        // Weighted idents are a pair of a String (the ident) and a double
-        // (the ident).
+        /// <summary>
+        /// Reads a list of WeightedIdents
+        /// </summary>
+        /// <returns>List of WeightedIdents</returns>
         private List<WeightedIdent> GetListWeightedIdent()
         {
             int nb = this.GetInt();
@@ -911,15 +1073,12 @@ namespace CSPGF
             return tmp;
         }
 
-        /* ************************************************* */
-        /* Reading integers                                  */
-        /* ************************************************* */
-        // this reads a 'Int' in haskell serialized by the pgf serializer.
-        // Those are srialized with a variable length (like some strings)
-        // to gain space.
+        /// <summary>
+        /// Reads an integer
+        /// </summary>
+        /// <returns>Returns the integer</returns>
         private int GetInt()
         {
-            // TODO: Check! WTF? Int räcker gott och väl!
             // long -> int
             int rez = this.inputstream.ReadByte();
             if (rez <= 0x7f) 
@@ -934,6 +1093,10 @@ namespace CSPGF
             }
         }
 
+        /// <summary>
+        /// Reads a list of integers
+        /// </summary>
+        /// <returns>List of integers</returns>
         private List<int> GetListInt()
         {
             int npoz = this.GetInt();
@@ -946,6 +1109,10 @@ namespace CSPGF
             return tmp;
         }
 
+        /// <summary>
+        /// Read a double
+        /// </summary>
+        /// <returns>Returns the double</returns>
         private double GetDouble()
         {
             return this.inputstream.ReadDouble();
