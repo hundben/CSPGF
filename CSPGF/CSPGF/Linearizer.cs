@@ -288,7 +288,7 @@ namespace CSPGF
             if (p is ApplProduction) 
             {
                 ApplProduction ap = (ApplProduction)p;
-                foreach (int i in ap.Domain) 
+                foreach (int i in ap.Domain()) 
                 {
                     if (!this.ConditionProd(i, prods)) 
                     {
@@ -307,7 +307,7 @@ namespace CSPGF
         {
             if (p is ApplProduction) 
             {
-                List<int> args = ((ApplProduction)p).Domain;
+                List<int> args = ((ApplProduction)p).Domain();
                 if (args.Count == 1 && args[0] == -4)
                 {
                     return true;
@@ -684,7 +684,7 @@ namespace CSPGF
             List<AppResult> rez = new List<AppResult>();
             if (p is ApplProduction) 
             {
-                List<int> args = ((ApplProduction)p).Domain;
+                List<int> args = ((ApplProduction)p).Domain();
                 CncFun cncFun = ((ApplProduction)p).Function;
                 List<CncType> vtype = new List<CncType>();
                 if (f.Equals("V")) 

@@ -173,7 +173,7 @@
         }
     }
 
-    private class LinTrie
+    public class LinTrie
     {
         public LinTrie()
         {

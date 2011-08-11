@@ -37,16 +37,16 @@ namespace CSPGF.Reader
         public PrintName(string absName, string printName)
         {
             this.AbsName = absName;
-            this.PrintName = printName;
+            this.PName = printName;
         }
 
         public string AbsName { get; private set; }
 
-        public string PrintName { get; private set; }
+        public string PName { get; private set; }
 
         public override string ToString()
         {
-            return "Abstract Name : " + this.AbsName + " , Print Name : " + this.PrintName;
+            return "Abstract Name : " + this.AbsName + " , Print Name : " + this.PName;
         }
     }
 }

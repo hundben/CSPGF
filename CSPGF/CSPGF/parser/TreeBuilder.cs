@@ -101,7 +101,7 @@ namespace CSPGF.Parse
             List<Tree> temp = new List<Tree>();
             if (p.Domain().Count == 0)
             {
-                temp.Add(new Application(p.function.name, new List<Tree>()));
+                temp.Add(new Application(p.Function.Name, new List<Tree>()));
                 return temp;
             }
             else
@@ -115,7 +115,7 @@ namespace CSPGF.Parse
                 List<List<Tree>> lsmx2 = this.ListMixer(lsmx);
                 foreach (List<Tree> tree in lsmx2) 
                 {
-                    temp.Add(new Application(p.function.name, tree));
+                    temp.Add(new Application(p.Function.Name, tree));
                 }
 
                 return temp;

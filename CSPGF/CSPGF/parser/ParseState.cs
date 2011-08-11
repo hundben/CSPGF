@@ -69,7 +69,7 @@ namespace CSPGF.Parse
             {
                 foreach (ApplProduction prod in this.chart.GetProductions(id)) 
                 {
-                    ActiveItem it = new ActiveItem(0, id, prod.Function, prod.Domain, 0, 0);
+                    ActiveItem it = new ActiveItem(0, id, prod.Function, prod.Domain(), 0, 0);
                     this.agenda.Push(it);
                 }
             }

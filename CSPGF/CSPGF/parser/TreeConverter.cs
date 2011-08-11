@@ -70,7 +70,7 @@ namespace CSPGF.Parse
             {
                 Lambda tmp = (Lambda)t;
                 List<string> tmp2 = new List<string>();
-                foreach (Tuple<bool, string> tup in tmp.vars) 
+                foreach (Tuple<bool, string> tup in tmp.Vars) 
                 {
                     tmp2.Add(tup.Item2);
                 }
@@ -81,9 +81,9 @@ namespace CSPGF.Parse
                     tmp2.Add(s);
                 }
 
-                tmp.vars.Reverse();
-                CSPGF.Trees.Absyn.Tree tmptree = this.C2a(tmp.body, tmp2);
-                foreach (Tuple<bool, string> tup in tmp.vars) 
+                tmp.Vars.Reverse();
+                CSPGF.Trees.Absyn.Tree tmptree = this.C2a(tmp.Body, tmp2);
+                foreach (Tuple<bool, string> tup in tmp.Vars) 
                 {
                     tmptree = this.MkELambda(tup, tmptree);
                 }
@@ -99,8 +99,8 @@ namespace CSPGF.Parse
             {
                 Application tmp = (Application)t;
                 List<CSPGF.Trees.Absyn.Tree> tmp2 = new List<CSPGF.Trees.Absyn.Tree>();
-                tmp2.Add(new CSPGF.Trees.Absyn.Function(tmp.fun));
-                foreach (Tree tr in tmp.args) 
+                tmp2.Add(new CSPGF.Trees.Absyn.Function(tmp.Fun));
+                foreach (Tree tr in tmp.Args) 
                 {
                     tmp2.Add(this.C2a(tr, vars));
                 }
@@ -111,12 +111,12 @@ namespace CSPGF.Parse
             else if (t is Literal) 
             {
                 Literal tmp = (Literal)t;
-                return new CSPGF.Trees.Absyn.Literal(new CSPGF.Trees.Absyn.StringLiteral(tmp.value));
+                return new CSPGF.Trees.Absyn.Literal(new CSPGF.Trees.Absyn.StringLiteral(tmp.Value));
             }
             else if (t is MetaVariable) 
             {
                 MetaVariable tmp = (MetaVariable)t;
-                return new CSPGF.Trees.Absyn.MetaVariable(tmp.id);
+                return new CSPGF.Trees.Absyn.MetaVariable(tmp.ID);
             }
 
             return null;

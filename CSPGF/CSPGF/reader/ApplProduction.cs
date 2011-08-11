@@ -38,18 +38,19 @@ namespace CSPGF.Reader
             : base(0, fId)
         {
             this.Function = function;
-            this.Domain = domain;
+            this.Dom = domain;
         }
 
         public CncFun Function { get; private set; }
 
-        public List<int> Domain { get; private set; }
+        private List<int> Dom;
+        // public List<int> Domain { get; private set; }
 
         public override string ToString()
         {
             // Was commented out in the java-code.
             string s = FId + " -> " + this.Function.Name + "[ ";
-            foreach (int c in this.Domain) 
+            foreach (int c in this.Dom) 
             {
                 s += c + " ";
             }
@@ -60,7 +61,7 @@ namespace CSPGF.Reader
 
         public override List<int> Domain()
         {
-            return this.Domain;
+            return this.Dom;
         }
 
         public override bool Equals(object o)
@@ -75,14 +76,14 @@ namespace CSPGF.Reader
                     return false;
                 }
 
-                if (this.Domain.Count != newo.Domain.Count) 
+                if (this.Dom.Count != newo.Dom.Count) 
                 {
                     return false;
                 }
 
-                for (int i = 0; i < this.Domain.Count; i++) 
+                for (int i = 0; i < this.Dom.Count; i++) 
                 {
-                    if (this.Domain[i] != newo.Domain[i]) 
+                    if (this.Dom[i] != newo.Dom[i]) 
                     {
                         return false;
                     }

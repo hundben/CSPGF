@@ -17,7 +17,7 @@
             this.k = k;
         }
 
-        public override bool Equals(Category c)
+        public /* override */ bool Equals(Category c)
         {
             if (c.oldCat == this.oldCat && c.l == this.l && c.j == this.j && c.k == this.k) 
             {

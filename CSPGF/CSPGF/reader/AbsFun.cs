@@ -51,7 +51,7 @@ namespace CSPGF.Reader
 
         public List<Eq> Eqs { get; private set; }
 
-        private double Weight { get; private set; }
+        private double Weight { get; set; }
 
         public override string ToString()
         {
