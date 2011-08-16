@@ -63,7 +63,8 @@ namespace CSPGF
             {
                 System.Console.Out.WriteLine(s);
             }
-
+            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsEng"));
+            //string temp123 = lin.LinearizeString(trees[0]);
             // SpeechSynthesizer ss = new SpeechSynthesizer();
             // ss.SetOutputToDefaultAudioDevice();
             // ss.Speak("wheeeeee!");

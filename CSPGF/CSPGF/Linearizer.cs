@@ -319,6 +319,7 @@ namespace CSPGF
         {
             if (p is ApplProduction) 
             {
+                // Detta funkar ej D:! TODO!
                 ApplProduction ap = (ApplProduction)p;
                 foreach (int i in ap.Domain()) 
                 {
@@ -329,9 +330,19 @@ namespace CSPGF
 
                     return true;
                 }
-            }
 
-            return this.ConditionProd(((CoerceProduction)p).InitId, prods);
+            }
+            else if (p is CoerceProduction)
+            {
+                return this.ConditionProd(((CoerceProduction)p).InitId, prods);
+            }
+            else
+            {
+                System.Console.WriteLine("Filter-fail");
+
+                throw new Exception(p.ToString());
+            }
+            return false;
         }
         
         /// <summary>
