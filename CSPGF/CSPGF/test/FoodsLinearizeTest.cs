@@ -45,7 +45,7 @@ namespace CSPGF.Test
 
         public void TestFoodsEng()
         {
-            Linearizer linearizer = new Linearizer(this.pgf, "FoodsEng");
+            Linearizer linearizer = new Linearizer(this.pgf, this.pgf.GetConcrete("FoodsEng"));
 
             string ex1 = "this fresh pizza is Italian";
             Tree tree1 = ParseTree("((Pred (This ((Mod Fresh) Pizza))) Italian)");
@@ -60,7 +60,7 @@ namespace CSPGF.Test
 
         public void TestFoodsSwe()
         {
-            Linearizer linearizer = new Linearizer(this.pgf, "FoodsSwe");
+            Linearizer linearizer = new Linearizer(this.pgf, this.pgf.GetConcrete("FoodsSwe"));
 
             Tree tree1 = ParseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");
             string ex1 = "den här läckra pizzan är färsk";
@@ -70,7 +70,7 @@ namespace CSPGF.Test
 
         public void TestFoodsIta()
         {
-            Linearizer linearizer = new Linearizer(this.pgf, "FoodsIta");
+            Linearizer linearizer = new Linearizer(this.pgf, this.pgf.GetConcrete("FoodsIta"));
 
             string ex1 = "questa pizza deliziosa è fresca";
             Tree tree1 = ParseTree("((Pred (This ((Mod Delicious) Pizza))) Fresh)");

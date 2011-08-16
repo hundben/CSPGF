@@ -81,7 +81,6 @@
     <Compile Include="Linearizer\LinTriple.cs" />
     <Compile Include="Linearizer\RezDesc.cs" />
     <Compile Include="Linearizer\Tokn.cs" />
-    <Compile Include="Linearizer_new\Linearizer.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Parser\ActiveItem.cs" />
     <Compile Include="Parser\ActiveItemInt.cs" />
@@ -98,11 +97,6 @@
     <Compile Include="Parser\Variable.cs" />
     <Compile Include="Parser\Lambda.cs" />
     <Compile Include="Parser\Tree.cs" />
-    <Compile Include="Parser_new\Chart.cs" />
-    <Compile Include="Parser_new\Datatypes.cs" />
-    <Compile Include="Parser_new\Parse.cs" />
-    <Compile Include="Parser_new\ParseState.cs" />
-    <Compile Include="Parser_new\ParseTrie.cs" />
     <Compile Include="PGF.cs" />
     <Compile Include="PGFBuilder.cs" />
     <Compile Include="PGFReader.cs" />

@@ -48,10 +48,10 @@ namespace CSPGF
             BinaryReader br = new BinaryReader(new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open));
             PGFReader pr = new PGFReader(br);
             PGF pgf = pr.ReadPGF();
-            Parser_new.Parser ps = new Parser_new.Parser(pgf);
+            //Parser_new.Parser ps = new Parser_new.Parser(pgf);
 
             // ps.ParseText("FoodsEng","hello world");
-            // Parser parser = new Parser(tmp, "FoodsEng");
+            //Parser parser = new Parser(tmp, "FoodsEng");
             ParseState st = new ParseState(pgf.GetConcrete("FoodsEng"));
             List<string> temp = st.Predict();
             foreach (string s in temp) 
@@ -61,7 +61,7 @@ namespace CSPGF
 
             System.Console.Out.WriteLine("scan this...");
             st.Scan("this");    //TODO check why it locks here (endless loop :D
-            st.Scan("wine");
+            //st.Scan("wine");
             //st.Scan("is");
             //st.Scan("expensive");
             List<CSPGF.Trees.Absyn.Tree> trees = st.GetTrees();
