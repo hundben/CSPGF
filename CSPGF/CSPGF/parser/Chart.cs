@@ -177,6 +177,7 @@ namespace CSPGF.Parse
             int cat = this.nextCat;
             this.nextCat++;
 
+            System.Console.WriteLine("Inserting category: " + c);
             // Category c = new Category(oldCat, l, j, k);
             this.categoryBookKeeper[c] = cat;    //TODO maybe add check here
             return cat;
