@@ -35,6 +35,7 @@ namespace CSPGF
     /// <summary>
     /// Exception used to show that the linearizing process failed somehow.
     /// </summary>
+    [Serializable]
     public class LinearizerException : Exception
     {
         /// <summary>

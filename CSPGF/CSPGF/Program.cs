@@ -45,9 +45,11 @@ namespace CSPGF
         /// <param name="args">Commandline arguments</param>
         public static void Main(string[] args)
         {
-            BinaryReader br = new BinaryReader(new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open));
+            FileStream fs = new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open);
+            BinaryReader br = new BinaryReader(fs);
             PGFReader pr = new PGFReader(br);
             PGF pgf = pr.ReadPGF();
+            fs.Close();
             ParseState st = new ParseState(pgf.GetConcrete("FoodsEng"));
             List<string> temp = st.Predict();
             System.Console.Out.WriteLine("scan this...");

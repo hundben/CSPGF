@@ -32,9 +32,10 @@ namespace CSPGF
 {
     using System;
 
-    /// <summary>
+    /// <summar>
     /// Exception to show that a language does not exist.
     /// </summary>
+    [Serializable]
     public class UnknownLanguageException : Exception
     {
         /// <summary>

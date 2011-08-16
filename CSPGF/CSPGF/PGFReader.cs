@@ -66,11 +66,6 @@ namespace CSPGF
         /// <param name="inputstream">Stream to read from</param>
         public PGFReader(BinaryReader inputstream)
         {
-            if (debug) 
-            {
-                this.dbgwrite = new StreamWriter("./dbg.txt", false);
-            }
-
             this.inputstream = inputstream;
         }
 
@@ -81,11 +76,6 @@ namespace CSPGF
         /// <param name="languages">Desired languages</param>
         public PGFReader(BinaryReader inputstream, List<string> languages)
         {
-            if (debug) 
-            {
-                this.dbgwrite = new StreamWriter("./dbg.txt", false);
-            }
-
             this.inputstream = inputstream;
             this.languages = languages;
         }
@@ -96,6 +86,11 @@ namespace CSPGF
         /// <returns>PGF object</returns>
         public PGF ReadPGF()
         {
+            if (debug)
+            {
+                this.dbgwrite = new StreamWriter("./dbg.txt", false);
+            }
+
             Dictionary<string, int> index = null;
             int[] ii = new int[2];
             for (int i = 0; i < 2; i++) 
@@ -174,7 +169,6 @@ namespace CSPGF
 
             // builds and returns the pgf object.
             PGF pgf = new PGF(ii[0], ii[1], flags, abs, concretes);
-            this.inputstream.Close();
             return pgf;
         }
 
