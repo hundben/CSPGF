@@ -746,9 +746,10 @@ namespace CSPGF
             } 
             else 
             {
-                HashSet<Production> setProd = prods[mbcty.FId];
+
+                HashSet<Production> setProd;
                 List<AppResult> rez = new List<AppResult>();
-                if (setProd == null)
+                if (!prods.TryGetValue(mbcty.FId,out setProd))
                 {
                     return new List<AppResult>();
                 }
