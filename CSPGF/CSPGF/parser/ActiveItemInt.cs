@@ -38,6 +38,7 @@ namespace CSPGF.Parse
     /// <summary>
     /// Tuple of active item and int to simplify the usage.
     /// </summary>
+    [Serializable]
     public class ActiveItemInt
     {
         /// <summary>

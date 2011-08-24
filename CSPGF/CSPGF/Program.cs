@@ -32,6 +32,7 @@ namespace CSPGF
 {
     using System.Collections.Generic;
     using System.IO;
+    using System;
     using CSPGF.Parse;
 
     /// <summary>
@@ -63,7 +64,18 @@ namespace CSPGF
             {
                 System.Console.Out.WriteLine(s);
             }
-            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsEng"));
+
+            // Try deep copy
+            try
+            {
+                ParseState st2 = ObjectCopier.Clone<ParseState>(st);
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine(e.ToString());
+            }
+
+            //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsEng"));
             //string temp123 = lin.LinearizeString(trees[0]);
             // SpeechSynthesizer ss = new SpeechSynthesizer();
             // ss.SetOutputToDefaultAudioDevice();

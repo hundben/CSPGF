@@ -39,6 +39,7 @@ namespace CSPGF.Parse
     /// <summary>
     /// The parsestate class.
     /// </summary>
+    [Serializable]
     public class ParseState
     {
         /// <summary>

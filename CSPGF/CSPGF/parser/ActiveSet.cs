@@ -32,10 +32,12 @@
 namespace CSPGF.Parse
 {
     using System.Collections.Generic;
+    using System;
 
     /// <summary>
     /// Contains all the current active items.
     /// </summary>
+    [Serializable]
     public class ActiveSet
     {
         /// <summary>
