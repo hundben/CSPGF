@@ -1,9 +1,6 @@
 ﻿namespace CSPGF.Parse
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using System.IO;
     using System.Runtime.Serialization;
     using System.Runtime.Serialization.Formatters.Binary;    
@@ -31,7 +28,7 @@
             }
 
             // Don't serialize a null object, simply return the default for that object
-            if (Object.ReferenceEquals(source, null))
+            if (object.ReferenceEquals(source, null))
             {
                 return default(T);
             }

@@ -31,8 +31,8 @@
 // Check this class, it seems retarded...
 namespace CSPGF.Parse
 {
-    using System.Collections.Generic;
     using System;
+    using System.Collections.Generic;
 
     /// <summary>
     /// Contains all the current active items.
@@ -46,7 +46,7 @@ namespace CSPGF.Parse
         private Dictionary<int, Dictionary<int, HashSet<ActiveItemInt>>> store;
 
         /// <summary>
-        /// Initialized a new instance of the ActiveSet class.
+        /// Initializes a new instance of the ActiveSet class.
         /// </summary>
         public ActiveSet()
         {
