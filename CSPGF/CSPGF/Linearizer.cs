@@ -259,54 +259,69 @@ namespace CSPGF
         {
             Dictionary<int, HashSet<Production>> tempRez = new Dictionary<int, HashSet<Production>>();
             bool are_diff = false;
-            foreach (int index in prods.Keys) 
+            foreach (int index in prods.Keys)
             {
                 HashSet<Production> setProd = prods[index];
                 HashSet<Production> intermRez = this.FilterProdSet1(prods0, setProd);
-                if (!(intermRez.Count == 0)) 
+                if (!(intermRez.Count == 0))
                 {
                     tempRez.Add(index, intermRez);
                 }
             }
 
-            Dictionary<int, HashSet<Production>> prods1 = new Dictionary<int, HashSet<Production>>();
-            foreach (KeyValuePair<int, HashSet<Production>> kvp in prods0) 
-            {
-                prods1.Add(kvp.Key, kvp.Value);
-            }
-
-            foreach (KeyValuePair<int, HashSet<Production>> kvp in tempRez) 
+            Dictionary<int, HashSet<Production>> prods1 = new Dictionary<int, HashSet<Production>>(prods0);
+            foreach (KeyValuePair<int, HashSet<Production>> kvp in tempRez)
             {
                 int index = kvp.Key;
                 HashSet<Production> hp = kvp.Value;
-                if (prods0.ContainsKey(index)) 
+                if (prods0.ContainsKey(index))
                 {
-                    if (!prods0[index].Equals(hp)) 
+                    if (!this.HashEquals(prods0[index], hp))
                     {
-                        foreach (Production prod in prods0[index]) 
+                        foreach (Production p in prods0[index])
                         {
-                            hp.Add(prod);
+                            System.Console.WriteLine(p.ToString());
+                            hp.Add(p);
                         }
 
-                        prods1.Add(index, hp);
+                        prods1[index] = hp;
                         are_diff = true;
                     }
-                } 
-                else 
+                }
+                else
                 {
                     prods1.Add(index, hp);
                     are_diff = true;
                 }
             }
 
-            if (are_diff) 
+            if (are_diff)
             {
                 return this.FilterProductions(prods1, prods);
-            } 
-            else 
+            }
+            else
             {
                 return prods0;
             }
+        }
+
+        /// <summary>
+        /// Checks if two HashMaps containing Productions are equal
+        /// </summary>
+        /// <param name="set1">First set to compare</param>
+        /// <param name="set2">Secons set to compare</param>
+        /// <returns>True if equal</returns>
+        private bool HashEquals(HashSet<Production> set1, HashSet<Production> set2)
+        {
+            foreach (Production p in set1)
+            {
+                if (!set2.Contains(p))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
         /// <summary>
@@ -319,7 +334,6 @@ namespace CSPGF
         {
             if (p is ApplProduction) 
             {
-                // Detta funkar ej D:! TODO!
                 ApplProduction ap = (ApplProduction)p;
                 foreach (int i in ap.Domain()) 
                 {
@@ -327,22 +341,17 @@ namespace CSPGF
                     {
                         return false;
                     }
-
-                    return true;
                 }
 
+                return true;
             }
-            else if (p is CoerceProduction)
+
+            if (p is CoerceProduction)
             {
                 return this.ConditionProd(((CoerceProduction)p).InitId, prods);
             }
-            else
-            {
-                System.Console.WriteLine("Filter-fail");
 
-                throw new Exception(p.ToString());
-            }
-            return false;
+            throw new LinearizerException("Filter-fail");
         }
         
         /// <summary>
@@ -737,8 +746,7 @@ namespace CSPGF
             } 
             else 
             {
-                int fid = mbcty.FId;
-                HashSet<Production> setProd = prods[fid];
+                HashSet<Production> setProd = prods[mbcty.FId];
                 List<AppResult> rez = new List<AppResult>();
                 if (setProd == null)
                 {
@@ -1009,64 +1017,17 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// Checks if a production is application production
-        /// TODO: Remove!
-        /// </summary>
-        /// <param name="p">Production to check</param>
-        /// <returns>True if production is an ApplProduction</returns>
-        private bool IsApp(Production p) 
-        {
-            return p is ApplProduction;
-        }
-
-        /// <summary>
-        /// Checks if an integer is the index of an integer literal
-        /// </summary>
-        /// <param name="i">Integer to check</param>
-        /// <returns>True if i = -2</returns>
-        private bool IsLiteralInt(int i)
-        {
-            return i == -2;
-        }
-
-        /// <summary>
-        /// Checks if an integer is the index of a string literal
-        /// </summary>
-        /// <param name="i">Integer to check</param>
-        /// <returns>True if i = -1</returns>
-        private bool IsLiteralString(int i)
-        {
-            return i == -1;
-        }
-
-        /// <summary>
-        /// Checks if an integer is the index of a float literal 
-        /// </summary>
-        /// <param name="i">Integer to check</param>
-        /// <returns>True if i = -3</returns>
-        private bool IsLiteralFloat(int i)
-        {
-            return i == -3;
-        }
-
-        /// <summary>
-        /// Checks if an integer is the index of a variable literal 
-        /// </summary>
-        /// <param name="i">Integer to check</param>
-        /// <returns>True if i = -4</returns>
-        private bool IsLiteralVar(int i)
-        {
-            return i == -4;
-        }
-
-        /// <summary>
         /// Checks if an integer is the index of a literal
         /// </summary>
         /// <param name="i">Integer to check</param>
         /// <returns>True if integer is a literal</returns>
         private bool IsLiteral(int i)
         {
-            if (this.IsLiteralString(i) || this.IsLiteralInt(i) || this.IsLiteralFloat(i) || this.IsLiteralVar(i)) 
+            // LiteralVar = -4
+            // LiteralFloat = -3
+            // LiteralInt = -2
+            // LiteralString = -1
+            if (i >= -4 && i <= -1) 
             {
                 return true;
             }
