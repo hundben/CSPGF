@@ -32,6 +32,7 @@ namespace CSPGF.Reader
     using System.Linq;
     using System.Text;
 
+    [Serializable]
     public class CncCat
     {
         /**

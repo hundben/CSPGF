@@ -33,6 +33,7 @@ namespace CSPGF.Parse
     using System.Text;
     using CSPGF.Reader;
 
+    [Serializable]
     public class Chart
     {
         // private MultiMap<int, Object> productionSets = new MultiMap<int, Object>();
