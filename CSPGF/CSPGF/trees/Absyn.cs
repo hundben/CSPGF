@@ -94,12 +94,12 @@ namespace CSPGF.Trees.Absyn
     
     public override bool Equals(object obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
 
-      if(obj is CSPGF.Trees.Absyn.Lambda)
+      if (obj is CSPGF.Trees.Absyn.Lambda)
       {
         return this.Equals((CSPGF.Trees.Absyn.Lambda)obj);
       }
@@ -109,7 +109,7 @@ namespace CSPGF.Trees.Absyn
     
     public bool Equals(CSPGF.Trees.Absyn.Lambda obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
@@ -152,12 +152,12 @@ namespace CSPGF.Trees.Absyn
     
     public override bool Equals(object obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
 
-      if(obj is CSPGF.Trees.Absyn.Variable)
+      if (obj is CSPGF.Trees.Absyn.Variable)
       {
         return this.Equals((CSPGF.Trees.Absyn.Variable)obj);
       }
@@ -167,7 +167,7 @@ namespace CSPGF.Trees.Absyn
     
     public bool Equals(CSPGF.Trees.Absyn.Variable obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
@@ -225,12 +225,12 @@ namespace CSPGF.Trees.Absyn
     
     public override bool Equals(object obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
 
-      if(obj is CSPGF.Trees.Absyn.Application)
+      if (obj is CSPGF.Trees.Absyn.Application)
       {
         return this.Equals((CSPGF.Trees.Absyn.Application)obj);
       }
@@ -240,7 +240,7 @@ namespace CSPGF.Trees.Absyn
     
     public bool Equals(CSPGF.Trees.Absyn.Application obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
@@ -282,12 +282,12 @@ namespace CSPGF.Trees.Absyn
     
     public override bool Equals(object obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
 
-      if(obj is CSPGF.Trees.Absyn.Literal)
+      if (obj is CSPGF.Trees.Absyn.Literal)
       {
         return this.Equals((CSPGF.Trees.Absyn.Literal)obj);
       }
@@ -297,7 +297,7 @@ namespace CSPGF.Trees.Absyn
     
     public bool Equals(CSPGF.Trees.Absyn.Literal obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
@@ -339,12 +339,12 @@ namespace CSPGF.Trees.Absyn
     
     public override bool Equals(object obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
 
-      if(obj is CSPGF.Trees.Absyn.MetaVariable)
+      if (obj is CSPGF.Trees.Absyn.MetaVariable)
       {
         return this.Equals((CSPGF.Trees.Absyn.MetaVariable)obj);
       }
@@ -354,7 +354,7 @@ namespace CSPGF.Trees.Absyn
     
     public bool Equals(CSPGF.Trees.Absyn.MetaVariable obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
@@ -397,12 +397,12 @@ namespace CSPGF.Trees.Absyn
     
     public override bool Equals(object obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
 
-      if(obj is CSPGF.Trees.Absyn.Function)
+      if (obj is CSPGF.Trees.Absyn.Function)
       {
         return this.Equals((CSPGF.Trees.Absyn.Function)obj);
       }
@@ -412,7 +412,7 @@ namespace CSPGF.Trees.Absyn
     
     public bool Equals(CSPGF.Trees.Absyn.Function obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
@@ -455,12 +455,12 @@ namespace CSPGF.Trees.Absyn
     
     public override bool Equals(object obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
 
-      if(obj is CSPGF.Trees.Absyn.IntLiteral)
+      if (obj is CSPGF.Trees.Absyn.IntLiteral)
       {
         return this.Equals((CSPGF.Trees.Absyn.IntLiteral)obj);
       }
@@ -470,7 +470,7 @@ namespace CSPGF.Trees.Absyn
     
     public bool Equals(CSPGF.Trees.Absyn.IntLiteral obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
@@ -513,12 +513,12 @@ namespace CSPGF.Trees.Absyn
     
     public override bool Equals(object obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
 
-      if(obj is CSPGF.Trees.Absyn.FloatLiteral)
+      if (obj is CSPGF.Trees.Absyn.FloatLiteral)
       {
         return this.Equals((CSPGF.Trees.Absyn.FloatLiteral)obj);
       }
@@ -528,7 +528,7 @@ namespace CSPGF.Trees.Absyn
     
     public bool Equals(CSPGF.Trees.Absyn.FloatLiteral obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
@@ -571,12 +571,12 @@ namespace CSPGF.Trees.Absyn
     
     public override bool Equals(object obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }
 
-      if(obj is CSPGF.Trees.Absyn.StringLiteral)
+      if (obj is CSPGF.Trees.Absyn.StringLiteral)
       {
         return this.Equals((CSPGF.Trees.Absyn.StringLiteral)obj);
       }
@@ -586,7 +586,7 @@ namespace CSPGF.Trees.Absyn
     
     public bool Equals(CSPGF.Trees.Absyn.StringLiteral obj)
     {
-      if(this == obj)
+      if (this == obj)
       {
         return true;
       }

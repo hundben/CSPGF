@@ -1,11 +1,11 @@
 /*** BNFC-Generated Pretty Printer and Abstract Syntax Viewer ***/
  
-using System;
-using System.Text; // for StringBuilder
-using CSPGF.Trees.Absyn;
- 
 namespace CSPGF.Trees
 {
+    using System;
+    using System.Text; // for StringBuilder
+    using CSPGF.Trees.Absyn;
+
   #region Pretty-printer class
   public class PrettyPrinter
   {
@@ -19,10 +19,10 @@ namespace CSPGF.Trees
     private static int _n_ = 0;
     private static StringBuilder buffer = new StringBuilder(BUFFER_INITIAL_CAPACITY);
     
-    //You may wish to change render
-    private static void Render(String s)
+    // You may wish to change render
+    private static void Render(string s)
     {
-      if(s == "{")
+      if (s == "{")
       {
         buffer.Append("\n");
         Indent();
@@ -31,15 +31,15 @@ namespace CSPGF.Trees
         buffer.Append("\n");
         Indent();
       }
-      else if(s == "(" || s == "[")
+      else if (s == "(" || s == "[")
         buffer.Append(s);
-      else if(s == ")" || s == "]")
+      else if (s == ")" || s == "]")
       {
         Backup();
         buffer.Append(s);
         buffer.Append(" ");
       }
-      else if(s == "}")
+      else if (s == "}")
       {
         _n_ = _n_ - 2;
         Backup();
@@ -48,43 +48,46 @@ namespace CSPGF.Trees
         buffer.Append("\n");
         Indent();
       }
-      else if(s == ",")
+      else if (s == ",")
       {
         Backup();
         buffer.Append(s);
         buffer.Append(" ");
       }
-      else if(s == ";")
+      else if (s == ";")
       {
         Backup();
         buffer.Append(s);
         buffer.Append("\n");
         Indent();
       }
-      else if(s == "") return;
+      else if (s == string.Empty)
+      { 
+          return; 
+      }
       else
       {
-        // Make sure escaped characters are printed properly!
-        if(s.StartsWith("\"") && s.EndsWith("\""))
-        {
-          buffer.Append('"');
-          StringBuilder sb = new StringBuilder(s);
-          // Remove enclosing citation marks
-          sb.Remove(0,1);
-          sb.Remove(sb.Length-1,1);
-          // Note: we have to replace backslashes first! (otherwise it will "double-escape" the other escapes)
-          sb.Replace("\\", "\\\\");
-          sb.Replace("\n", "\\n");
-          sb.Replace("\t", "\\t");
-          sb.Replace("\"", "\\\"");
-          buffer.Append(sb.ToString());
-          buffer.Append('"');
-        }
-        else
-        {
-          buffer.Append(s);
-        }
-        buffer.Append(" ");
+          // Make sure escaped characters are printed properly!
+          if (s.StartsWith("\"") && s.EndsWith("\""))
+          {
+              buffer.Append('"');
+              StringBuilder sb = new StringBuilder(s);
+              // Remove enclosing citation marks
+              sb.Remove(0, 1);
+              sb.Remove(sb.Length - 1, 1);
+              // Note: we have to replace backslashes first! (otherwise it will "double-escape" the other escapes)
+              sb.Replace("\\", "\\\\");
+              sb.Replace("\n", "\\n");
+              sb.Replace("\t", "\\t");
+              sb.Replace("\"", "\\\"");
+              buffer.Append(sb.ToString());
+              buffer.Append('"');
+          }
+          else
+          {
+              buffer.Append(s);
+          }
+          buffer.Append(" ");
       }
     }
     
@@ -141,8 +144,8 @@ namespace CSPGF.Trees
     {
       // Makes sure the character is escaped properly before printing it.
       string str = c.ToString();
-      if(c == '\n') str = "\\n";
-      if(c == '\t') str = "\\t";
+      if (c == '\n') str = "\\n";
+      if (c == '\t') str = "\\t";
       Render("'" + str + "'");
     }
     
@@ -158,7 +161,7 @@ namespace CSPGF.Trees
     
     private static void Backup()
     {
-      if(buffer[buffer.Length - 1] == ' ')
+      if (buffer[buffer.Length - 1] == ' ')
       {
         buffer.Length = buffer.Length - 1;
       }
@@ -166,10 +169,10 @@ namespace CSPGF.Trees
     
     private static void Trim()
     {
-      while(buffer.Length > 0 && buffer[0] == ' ')
+      while (buffer.Length > 0 && buffer[0] == ' ')
         buffer.Remove(0, 1); 
-      while(buffer.Length > 0 && buffer[buffer.Length-1] == ' ')
-        buffer.Remove(buffer.Length-1, 1);
+      while (buffer.Length > 0 && buffer[buffer.Length - 1] == ' ')
+        buffer.Remove(buffer.Length - 1, 1);
     }
     
     private static string GetAndReset()
@@ -201,13 +204,13 @@ namespace CSPGF.Trees
     #endregion
     
     #region Show Entry Points
-    public static String Show(CSPGF.Trees.Absyn.Tree cat)
+    public static string Show(CSPGF.Trees.Absyn.Tree cat)
     {
       ShowInternal(cat);
       return GetAndReset();
     }
  
-    public static String Show(CSPGF.Trees.Absyn.Lit cat)
+    public static string Show(CSPGF.Trees.Absyn.Lit cat)
     {
       ShowInternal(cat);
       return GetAndReset();
@@ -217,80 +220,80 @@ namespace CSPGF.Trees
     #region (Internal) Print Methods
     private static void PrintInternal(CSPGF.Trees.Absyn.Tree p, int _i_)
     {
-      if(p is CSPGF.Trees.Absyn.Lambda)
+      if (p is CSPGF.Trees.Absyn.Lambda)
       {
         CSPGF.Trees.Absyn.Lambda _lambda = (CSPGF.Trees.Absyn.Lambda)p;
-        if(_i_ > 0) Render(LEFT_PARENTHESIS);
+        if (_i_ > 0) Render(LEFT_PARENTHESIS);
         Render("\\");
         PrintInternal(_lambda.Ident_, 0);
         Render("->");
         PrintInternal(_lambda.Tree_, 0);
-        if(_i_ > 0) Render(RIGHT_PARENTHESIS);
+        if (_i_ > 0) Render(RIGHT_PARENTHESIS);
       }
-      else if(p is CSPGF.Trees.Absyn.Variable)
+      else if (p is CSPGF.Trees.Absyn.Variable)
       {
         CSPGF.Trees.Absyn.Variable _variable = (CSPGF.Trees.Absyn.Variable)p;
-        if(_i_ > 0) Render(LEFT_PARENTHESIS);
+        if (_i_ > 0) Render(LEFT_PARENTHESIS);
         Render("$");
         PrintInternal(_variable.Integer_, 0);
-        if(_i_ > 0) Render(RIGHT_PARENTHESIS);
+        if (_i_ > 0) Render(RIGHT_PARENTHESIS);
       }
-      else if(p is CSPGF.Trees.Absyn.Application)
+      else if (p is CSPGF.Trees.Absyn.Application)
       {
         CSPGF.Trees.Absyn.Application _application = (CSPGF.Trees.Absyn.Application)p;
-        if(_i_ > 0) Render(LEFT_PARENTHESIS);
+        if (_i_ > 0) Render(LEFT_PARENTHESIS);
         Render("(");
         PrintInternal(_application.Tree_1, 0);
         PrintInternal(_application.Tree_2, 0);
         Render(")");
-        if(_i_ > 0) Render(RIGHT_PARENTHESIS);
+        if (_i_ > 0) Render(RIGHT_PARENTHESIS);
       }
-      else if(p is CSPGF.Trees.Absyn.Literal)
+      else if (p is CSPGF.Trees.Absyn.Literal)
       {
         CSPGF.Trees.Absyn.Literal _literal = (CSPGF.Trees.Absyn.Literal)p;
-        if(_i_ > 0) Render(LEFT_PARENTHESIS);
+        if (_i_ > 0) Render(LEFT_PARENTHESIS);
         PrintInternal(_literal.Lit_, 0);
-        if(_i_ > 0) Render(RIGHT_PARENTHESIS);
+        if (_i_ > 0) Render(RIGHT_PARENTHESIS);
       }
-      else if(p is CSPGF.Trees.Absyn.MetaVariable)
+      else if (p is CSPGF.Trees.Absyn.MetaVariable)
       {
         CSPGF.Trees.Absyn.MetaVariable _metavariable = (CSPGF.Trees.Absyn.MetaVariable)p;
-        if(_i_ > 0) Render(LEFT_PARENTHESIS);
+        if (_i_ > 0) Render(LEFT_PARENTHESIS);
         Render("META_");
         PrintInternal(_metavariable.Integer_, 0);
-        if(_i_ > 0) Render(RIGHT_PARENTHESIS);
+        if (_i_ > 0) Render(RIGHT_PARENTHESIS);
       }
-      else if(p is CSPGF.Trees.Absyn.Function)
+      else if (p is CSPGF.Trees.Absyn.Function)
       {
         CSPGF.Trees.Absyn.Function _function = (CSPGF.Trees.Absyn.Function)p;
-        if(_i_ > 0) Render(LEFT_PARENTHESIS);
+        if (_i_ > 0) Render(LEFT_PARENTHESIS);
         PrintInternal(_function.Ident_, 0);
-        if(_i_ > 0) Render(RIGHT_PARENTHESIS);
+        if (_i_ > 0) Render(RIGHT_PARENTHESIS);
       }
     }
  
     private static void PrintInternal(CSPGF.Trees.Absyn.Lit p, int _i_)
     {
-      if(p is CSPGF.Trees.Absyn.IntLiteral)
+      if (p is CSPGF.Trees.Absyn.IntLiteral)
       {
         CSPGF.Trees.Absyn.IntLiteral _intliteral = (CSPGF.Trees.Absyn.IntLiteral)p;
-        if(_i_ > 0) Render(LEFT_PARENTHESIS);
+        if (_i_ > 0) Render(LEFT_PARENTHESIS);
         PrintInternal(_intliteral.Integer_, 0);
-        if(_i_ > 0) Render(RIGHT_PARENTHESIS);
+        if (_i_ > 0) Render(RIGHT_PARENTHESIS);
       }
-      else if(p is CSPGF.Trees.Absyn.FloatLiteral)
+      else if (p is CSPGF.Trees.Absyn.FloatLiteral)
       {
         CSPGF.Trees.Absyn.FloatLiteral _floatliteral = (CSPGF.Trees.Absyn.FloatLiteral)p;
-        if(_i_ > 0) Render(LEFT_PARENTHESIS);
+        if (_i_ > 0) Render(LEFT_PARENTHESIS);
         PrintInternal(_floatliteral.Double_, 0);
-        if(_i_ > 0) Render(RIGHT_PARENTHESIS);
+        if (_i_ > 0) Render(RIGHT_PARENTHESIS);
       }
-      else if(p is CSPGF.Trees.Absyn.StringLiteral)
+      else if (p is CSPGF.Trees.Absyn.StringLiteral)
       {
         CSPGF.Trees.Absyn.StringLiteral _stringliteral = (CSPGF.Trees.Absyn.StringLiteral)p;
-        if(_i_ > 0) Render(LEFT_PARENTHESIS);
+        if (_i_ > 0) Render(LEFT_PARENTHESIS);
         PrintInternal(_stringliteral.String_, 0);
-        if(_i_ > 0) Render(RIGHT_PARENTHESIS);
+        if (_i_ > 0) Render(RIGHT_PARENTHESIS);
       }
     }
     #endregion
@@ -298,7 +301,7 @@ namespace CSPGF.Trees
     #region (Internal) Show Methods
     private static void ShowInternal(CSPGF.Trees.Absyn.Tree p)
     {
-      if(p is CSPGF.Trees.Absyn.Lambda)
+      if (p is CSPGF.Trees.Absyn.Lambda)
       {
         CSPGF.Trees.Absyn.Lambda _lambda = (CSPGF.Trees.Absyn.Lambda)p;
         Render("(");
@@ -307,7 +310,8 @@ namespace CSPGF.Trees
         ShowInternal(_lambda.Tree_);
         Render(")");
       }
-      if(p is CSPGF.Trees.Absyn.Variable)
+
+      if (p is CSPGF.Trees.Absyn.Variable)
       {
         CSPGF.Trees.Absyn.Variable _variable = (CSPGF.Trees.Absyn.Variable)p;
         Render("(");
@@ -315,7 +319,8 @@ namespace CSPGF.Trees
         ShowInternal(_variable.Integer_);
         Render(")");
       }
-      if(p is CSPGF.Trees.Absyn.Application)
+
+      if (p is CSPGF.Trees.Absyn.Application)
       {
         CSPGF.Trees.Absyn.Application _application = (CSPGF.Trees.Absyn.Application)p;
         Render("(");
@@ -324,7 +329,8 @@ namespace CSPGF.Trees
         ShowInternal(_application.Tree_2);
         Render(")");
       }
-      if(p is CSPGF.Trees.Absyn.Literal)
+
+      if (p is CSPGF.Trees.Absyn.Literal)
       {
         CSPGF.Trees.Absyn.Literal _literal = (CSPGF.Trees.Absyn.Literal)p;
         Render("(");
@@ -332,7 +338,8 @@ namespace CSPGF.Trees
         ShowInternal(_literal.Lit_);
         Render(")");
       }
-      if(p is CSPGF.Trees.Absyn.MetaVariable)
+
+      if (p is CSPGF.Trees.Absyn.MetaVariable)
       {
         CSPGF.Trees.Absyn.MetaVariable _metavariable = (CSPGF.Trees.Absyn.MetaVariable)p;
         Render("(");
@@ -340,7 +347,8 @@ namespace CSPGF.Trees
         ShowInternal(_metavariable.Integer_);
         Render(")");
       }
-      if(p is CSPGF.Trees.Absyn.Function)
+
+      if (p is CSPGF.Trees.Absyn.Function)
       {
         CSPGF.Trees.Absyn.Function _function = (CSPGF.Trees.Absyn.Function)p;
         Render("(");
@@ -352,7 +360,7 @@ namespace CSPGF.Trees
  
     private static void ShowInternal(CSPGF.Trees.Absyn.Lit p)
     {
-      if(p is CSPGF.Trees.Absyn.IntLiteral)
+      if (p is CSPGF.Trees.Absyn.IntLiteral)
       {
         CSPGF.Trees.Absyn.IntLiteral _intliteral = (CSPGF.Trees.Absyn.IntLiteral)p;
         Render("(");
@@ -360,7 +368,8 @@ namespace CSPGF.Trees
         ShowInternal(_intliteral.Integer_);
         Render(")");
       }
-      if(p is CSPGF.Trees.Absyn.FloatLiteral)
+
+      if (p is CSPGF.Trees.Absyn.FloatLiteral)
       {
         CSPGF.Trees.Absyn.FloatLiteral _floatliteral = (CSPGF.Trees.Absyn.FloatLiteral)p;
         Render("(");
@@ -368,7 +377,8 @@ namespace CSPGF.Trees
         ShowInternal(_floatliteral.Double_);
         Render(")");
       }
-      if(p is CSPGF.Trees.Absyn.StringLiteral)
+
+      if (p is CSPGF.Trees.Absyn.StringLiteral)
       {
         CSPGF.Trees.Absyn.StringLiteral _stringliteral = (CSPGF.Trees.Absyn.StringLiteral)p;
         Render("(");
