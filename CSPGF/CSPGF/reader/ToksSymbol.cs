@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="TokSymbol.cs" company="None">
+// <copyright file="ToksSymbol.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -30,11 +30,11 @@
 
 namespace CSPGF.Reader
 {
-    using System.Collections.Generic;
     using System;
+    using System.Collections.Generic;
 
     [Serializable]
-    public class ToksSymbol : Symbol //SymKS
+    public class ToksSymbol : Symbol // SymKS
     {
         public ToksSymbol(List<string> toks)
         {
