@@ -46,6 +46,7 @@ namespace CSPGF
         /// <param name="args">Commandline arguments</param>
         public static void Main(string[] args)
         {
+            // Tests below.
             FileStream fs = new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open);
             BinaryReader br = new BinaryReader(fs);
             PGFReader pr = new PGFReader(br);
@@ -82,15 +83,14 @@ namespace CSPGF
             // SpeechSynthesizer ss = new SpeechSynthesizer();
             // ss.SetOutputToDefaultAudioDevice();
             // ss.Speak("wheeeeee!");
-
             RecoveryParser rp = new RecoveryParser(pgf, "FoodsEng");
-            rp.debug();
+            rp.Debug();
             rp.Scan("this");
             rp.Scan("wine");
-            rp.debug();
+            rp.Debug();
             rp.RemoveOne();
             rp.Scan("cheese");
-            rp.debug();
+            rp.Debug();
 
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();
