@@ -90,7 +90,9 @@ namespace CSPGF
         /// <returns>Linearized string</returns>
         public string LinearizeString(CSPGF.Trees.Absyn.Tree absyn)
         {
-            List<string> words = this.RenderLin(this.Linearize(absyn).ElementAt(0));
+            List<LinTriple> tmp = this.Linearize(absyn);
+            LinTriple tmp2 = tmp.First<LinTriple>();
+            List<string> words = this.RenderLin(tmp2);
             string sb = string.Empty;
             foreach (string w in words) 
             {
@@ -463,9 +465,9 @@ namespace CSPGF
             {
                 List<string> d = ((LeafKS)bt).Tokens;
                 List<string> rez = new List<string>();
-                foreach (string str in d) 
+                for (int i = d.Count - 1; i >= 0; i--)
                 {
-                    rez.Add(str);
+                    rez.Add(d[i]);
                 }
 
                 return rez;
@@ -484,12 +486,12 @@ namespace CSPGF
                         if (after.StartsWith(str)) 
                         {
                             List<string> ss1 = alt.Alt1;
-                            foreach (string str2 in ss1) 
+                            for (int k = ss1.Count - 1; k >= 0; k--)
                             {
-                                // for(int k = ss1.Length-1; k>=0; k--)
-                                rez.Add(str2);
+                                rez.Add(ss1[k]);
                             }
 
+                            ss1.Reverse();
                             return rez;
                         }
                     }
@@ -506,14 +508,10 @@ namespace CSPGF
             {
                 List<string> rez = new List<string>();
                 List<BracketedTokn> bs = ((Bracket)bt).Bracketedtoks;
-                for (int i = bs.Count - 1; i >= 0; i--) 
-                {
-                    foreach (string str in this.Untokn(bs.ElementAt(i), after)) 
-                    {
-                        rez.Add(str);
-                    }
 
-                    // rez.addAll(untokn(bs.elementAt(i),after));
+                for (int i = bs.Count - 1; i >= 0; i--)
+                {
+                    rez.AddRange(this.Untokn(bs.ElementAt(i), after));
                     after = rez.Last();
                 }
 
@@ -746,10 +744,9 @@ namespace CSPGF
             } 
             else 
             {
-
                 HashSet<Production> setProd;
                 List<AppResult> rez = new List<AppResult>();
-                if (!prods.TryGetValue(mbcty.FId,out setProd))
+                if (!prods.TryGetValue(mbcty.FId, out setProd))
                 {
                     return new List<AppResult>();
                 }
