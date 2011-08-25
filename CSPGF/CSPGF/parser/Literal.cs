@@ -35,13 +35,23 @@ namespace CSPGF.Parse
     using System.Linq;
     using System.Text;
 
+    /// <summary>
+    /// Literal node of the tree.
+    /// </summary>
     public class Literal : Tree
     {
+        /// <summary>
+        /// Initializes a new instance of the Literal class.
+        /// </summary>
+        /// <param name="value">The value.</param>
         public Literal(string value)
         {
             this.Value = value;
         }
 
+        /// <summary>
+        /// Gets the value.
+        /// </summary>
         public string Value { get; private set; }
     }
 }

@@ -32,19 +32,31 @@ namespace CSPGF.Parse
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    /// <summary>
+    /// Lambda node of the tree.
+    /// </summary>
     public class Lambda : Tree
     {
+        /// <summary>
+        /// Initializes a new instance of the Lambda class.
+        /// </summary>
+        /// <param name="vars">List of variables.</param>
+        /// <param name="body">The body (tree).</param>
         public Lambda(List<Tuple<bool, string>> vars, Tree body) 
         {
             this.Vars = vars;
             this.Body = body;
         }
 
+        /// <summary>
+        /// Gets the variables.
+        /// </summary>
         public List<Tuple<bool, string>> Vars { get; private set; }
 
+        /// <summary>
+        /// Gets the body (tree).
+        /// </summary>
         public Tree Body { get; private set; }
     }
 }
