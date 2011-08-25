@@ -76,21 +76,16 @@ namespace CSPGF
                 System.Console.WriteLine(e.ToString());
             }
 
-            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsIta"));
+            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsSwe"));
             string temp123 = lin.LinearizeString(trees[0]);
             System.Console.WriteLine(temp123);
 
             // SpeechSynthesizer ss = new SpeechSynthesizer();
             // ss.SetOutputToDefaultAudioDevice();
             // ss.Speak("wheeeeee!");
-            RecoveryParser rp = new RecoveryParser(pgf, "FoodsEng");
+            RecoveryParser rp = new RecoveryParser(pgf, "FoodsGer");
             rp.Debug();
-            rp.Scan("this");
-            rp.Scan("wine");
-            rp.Debug();
-            rp.RemoveOne();
-            rp.Scan("cheese");
-            rp.Debug();
+            //rp.Debug();
 
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();

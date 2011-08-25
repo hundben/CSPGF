@@ -35,6 +35,7 @@ namespace CSPGF.Reader
     using System.Linq;
     using System.Text;
 
+    [Serializable]
     public class CoerceProduction : Production
     {
         public CoerceProduction(int fId, int initId) : base(1, fId)
