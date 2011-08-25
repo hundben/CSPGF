@@ -36,16 +36,17 @@ namespace CSPGF.Parse
     using System.Text;
     using CSPGF.Reader;
 
+    /// <summary>
+    /// The chart.
+    /// </summary>
     [Serializable]
     public class Chart
     {
-        // private MultiMap<int, Object> productionSets = new MultiMap<int, Object>();
         /// <summary>
         /// The set of productions
         /// </summary>
         private Dictionary<int, HashSet<Production>> productionSets = new Dictionary<int, HashSet<Production>>();
 
-        // private Dictionary<Tuple<int, int, int, int>, int> categoryBookKeeper = new Dictionary<Tuple<int, int, int, int>, int>();
         /// <summary>
         /// Contains all categories with an index as a value.
         /// </summary>
@@ -57,7 +58,7 @@ namespace CSPGF.Parse
         private int nextCat;
 
         /// <summary>
-        /// Initialises a new instance of the Chart class.
+        /// Initializes a new instance of the Chart class.
         /// </summary>
         /// <param name="nextCat">The next category index to use.</param>
         public Chart(int nextCat)
@@ -92,20 +93,17 @@ namespace CSPGF.Parse
             this.nextCat = Math.Max(this.nextCat, p.FId + 1);
         }
 
-        // Borde vara rätt... (kolla coersion? eriks anm. ;)
         /// <summary>
         /// Add a production to the productionset.
         /// </summary>
-        /// <param name="cat">Category index</param>
-        /// <param name="fun">Function</param>
-        /// <param name="domain">Domain</param>
+        /// <param name="cat">Category index.</param>
+        /// <param name="fun">The function.</param>
+        /// <param name="domain">A list of domains.</param>
         public void AddProduction(int cat, CncFun fun, List<int> domain)
         {
             this.AddProduction(new ApplProduction(cat, fun, domain));
         }
 
-        // TODO: Kolla denna oxå xD (lite skum, borde gå att ta bort massor? (eriks anm.)
-        // Fel på den här... oväntat nog ;P Skrev om hoppas skiten blev rätt (eriks anm.)
         /// <summary>
         /// Returns all the productions with the index resultCat.
         /// </summary>
@@ -139,7 +137,7 @@ namespace CSPGF.Parse
         /// Creates a new category.
         /// </summary>
         /// <param name="oldCat">Old category index</param>
-        /// <param name="l">Cons</param>
+        /// <param name="l">The Cons value.</param>
         /// <param name="j">Start index</param>
         /// <param name="k">End index</param>
         /// <returns>New category index.</returns>
@@ -162,6 +160,14 @@ namespace CSPGF.Parse
             return this.GenerateFreshCategory(cf);
         }
 
+        /// <summary>
+        /// Get a category.
+        /// </summary>
+        /// <param name="oldCat">The old category.</param>
+        /// <param name="cons">Add description for cons.</param>
+        /// <param name="begin">Where it begins.</param>
+        /// <param name="end">Where it ends.</param>
+        /// <returns>Returns the category.</returns>
         public int GetCategory(int oldCat, int cons, int begin, int end)
         {
             Category cf = new Category(oldCat, cons, begin, end);
@@ -177,14 +183,15 @@ namespace CSPGF.Parse
             return -1;
         }
 
+        /// <summary>
+        /// Generate a fresh category.
+        /// </summary>
+        /// <param name="c">The old category.</param>
+        /// <returns>The new category</returns>
         public int GenerateFreshCategory(Category c)
         {
             int cat = this.nextCat;
             this.nextCat++;
-
-            System.Console.WriteLine("Inserting category: " + c);
-
-            // Category c = new Category(oldCat, l, j, k);
             this.categoryBookKeeper[c] = cat;    // TODO maybe add check here
             return cat;
         }
@@ -242,74 +249,3 @@ namespace CSPGF.Parse
         }
     }
 }
-
-// private class Chart(var nextCat:Int) {
-
-//  /** **********************************************************************
-//   * Handling Productions
-//   * */
-//  private val productionSets : MultiMap[Int,AnyProduction] =
-//    new HashMap[Int, Set[AnyProduction]] with MultiMap[Int,AnyProduction]
-
-//  def addProduction(p:AnyProduction):Boolean = {
-//    if (productionSets.entryExists(p.getCategory(), p.==))
-//      return false
-//    else {
-//      //log.finest("Adding production " + p + " in chart.")
-//      productionSets.addBinding(p.getCategory(), p)
-//      this.nextCat = this.nextCat.max(p.getCategory() + 1)
-//      return true
-//    }
-//  }
-
-//  def addProduction(cat:Int, fun: CncFun, domain:Array[Int]):Boolean =
-//    this.addProduction(new Production(cat, fun, domain))
-
-//  def getProductions(resultCat : Int):Array[Production] =
-//    productionSets.get(resultCat) match {
-//      case Some(ps) =>
-//        for ((anyP:AnyProduction) <- ps.toArray;
-//             prod <- this.uncoerce(anyP) )
-//        yield prod
-//      case None => new Array[Production](0)
-//    }
-
-//  private def uncoerce(p : AnyProduction):Array[Production] = p match {
-//    case (p:Production) => Array(p)
-//    case (c:Coercion) => for (prod <- this.getProductions(c.getInitId()) ;
-//                              a <- this.uncoerce(prod) )
-//                          yield a
-//  }
-
-//  /** **********************************************************************
-//   *  Handling fresh categories
-//   * */
-//  private val categoryBookKeeper: HashMap[(Int, Int, Int, Int), Int]
-//  = new HashMap[(Int, Int, Int, Int), Int]()
-
-//  def getFreshCategory(oldCat:Int, l:Int, j:Int, k:Int):Int =
-//    categoryBookKeeper.get((oldCat, l, j, k)) match {
-//      case None => this.generateFreshCategory(oldCat, l, j, k)
-//      case Some(c) => c
-//    }
-//  def getCategory(oldCat:Int, cons:Int, begin:Int, end:Int):Option[Int] =
-//    categoryBookKeeper.get((oldCat, cons, begin, end))
-
-//  def generateFreshCategory(oldCat:Int, l:Int, j:Int, k:Int):Int = {
-//    val cat = this.nextCat
-//    this.nextCat += 1
-//    categoryBookKeeper.update((oldCat, l, j, k), cat)
-//    return cat
-//  }
-
-//  override def toString() = {
-//    var s = "=== Productions: ===\n"
-//    for(cat <- this.productionSets.keys ;
-//        prod <- this.productionSets(cat))
-//      s += prod.toString + "\n"
-//    s += "=== passive items: ===\n"
-//    for(fk <- this.categoryBookKeeper.keys)
-//      s += fk + " -> " + this.categoryBookKeeper(fk) + "\n"
-//    s
-//  }
-// }

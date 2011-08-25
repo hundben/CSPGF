@@ -145,11 +145,7 @@
     <Compile Include="Reader\VarPattern.cs" />
     <Compile Include="Reader\WeightedIdent.cs" />
     <Compile Include="Reader\WildCardPattern.cs" />
-    <Compile Include="Test\FoodsLinearizeTest.cs" />
-    <Compile Include="Test\FoodsParseTest.cs" />
-    <Compile Include="Test\FoodsPredictTest.cs" />
-    <Compile Include="Test\IndexedPGFTest.cs" />
-    <Compile Include="Test\PGFTestCase.cs" />
+    <Compile Include="RecoveryParser.cs" />
     <Compile Include="Trees\AbstractVisitSkeleton.cs" />
     <Compile Include="Trees\Absyn.cs" />
     <Compile Include="Trees\Parser.cs" />
