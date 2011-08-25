@@ -82,6 +82,16 @@ namespace CSPGF
             // SpeechSynthesizer ss = new SpeechSynthesizer();
             // ss.SetOutputToDefaultAudioDevice();
             // ss.Speak("wheeeeee!");
+
+            RecoveryParser rp = new RecoveryParser(pgf, "FoodsEng");
+            rp.debug();
+            rp.Scan("this");
+            rp.Scan("wine");
+            rp.debug();
+            rp.RemoveOne();
+            rp.Scan("cheese");
+            rp.debug();
+
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();
         }
