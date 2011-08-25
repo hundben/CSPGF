@@ -138,30 +138,29 @@ namespace CSPGF
                             Dictionary<int, HashSet<Production>> htemp = new Dictionary<int, HashSet<Production>>();
                             HashSet<Production> singleton = new HashSet<Production>();
                             singleton.Add(prod);
-                            string newl = str;
                             htemp.Add(res, singleton);
-                            if (vtemp.ContainsKey(newl)) 
+                            if (vtemp.ContainsKey(str)) 
                             {
-                                Dictionary<int, HashSet<Production>> obj = vtemp[newl];
+                                Dictionary<int, HashSet<Production>> obj = vtemp[str];
                                 if (obj.ContainsKey(res)) 
                                 {
                                     HashSet<Production> ttemp = obj[res];
                                     ttemp.Add(prod);
                                     obj.Remove(res);
                                     obj.Add(res, ttemp);
-                                    vtemp.Remove(newl);
-                                    vtemp.Add(newl, obj);
+                                    vtemp.Remove(str);
+                                    vtemp.Add(str, obj);
                                 } 
                                 else 
                                 {
                                     obj.Add(res, singleton);
-                                    vtemp.Remove(newl);
-                                    vtemp.Add(newl, obj);
+                                    vtemp.Remove(str);
+                                    vtemp.Add(str, obj);
                                 }
                             } 
                             else 
                             {
-                                vtemp.Add(newl, htemp);
+                                vtemp.Add(str, htemp);
                             }
                         }
                     }
@@ -198,7 +197,7 @@ namespace CSPGF
                 {
                     foreach (Production pp in prods)
                     {
-                        List<string> vrez = this.GetFunctions((Production)pp, productions);
+                        List<string> vrez = this.GetFunctions(pp, productions);
                         if (vrez.Count != 0) 
                         {
                             foreach (string str in vrez) 
@@ -263,7 +262,7 @@ namespace CSPGF
             {
                 HashSet<Production> setProd = prods[index];
                 HashSet<Production> intermRez = this.FilterProdSet1(prods0, setProd);
-                if (!(intermRez.Count == 0))
+                if (intermRez.Count != 0)
                 {
                     tempRez.Add(index, intermRez);
                 }
@@ -571,7 +570,8 @@ namespace CSPGF
             if (tree is CSPGF.Trees.Absyn.Lambda) 
             {
                 xs.Add(((CSPGF.Trees.Absyn.Lambda)tree).Ident_);
-                return this.Lin0(xs, ys, mbcty, mbfid, ((CSPGF.Trees.Absyn.Lambda)tree).Tree_);
+                List<LinTriple> tmp = this.Lin0(xs, ys, mbcty, mbfid, ((CSPGF.Trees.Absyn.Lambda)tree).Tree_);
+                return tmp;
             } 
             else if (xs.Count == 0) 
             {
@@ -588,7 +588,9 @@ namespace CSPGF
 
                 if (tree is Function) 
                 {
-                    return this.Apply(xs, mbcty, mbfid, ((Function)tree).Ident_, es);
+                    List<LinTriple> tmp = this.Apply(xs, mbcty, mbfid, ((Function)tree).Ident_, es);
+                    
+                    return tmp;
                 } 
                 else 
                 {

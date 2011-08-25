@@ -52,13 +52,17 @@ namespace CSPGF
             PGFReader pr = new PGFReader(br);
             PGF pgf = pr.ReadPGF();
             fs.Close();
-            ParseState st = new ParseState(pgf.GetConcrete("FoodsEng"));
+            ParseState st = new ParseState(pgf.GetConcrete("FoodsGer"));
             List<string> temp = st.Predict();
             System.Console.Out.WriteLine("scan this...");
-            st.Scan("this");
-            st.Scan("wine");
-            st.Scan("is");
-            st.Scan("Italian");
+            st.Scan("dieser");
+            st.Scan("Wein");
+            st.Scan("ist");
+            st.Scan("italienisch");
+            // st.Scan("this");
+            // st.Scan("wine");
+            // st.Scan("is");
+            // st.Scan("Italian");
             List<CSPGF.Trees.Absyn.Tree> trees = st.GetTrees();
             temp = st.Predict();
             foreach (string s in temp)
