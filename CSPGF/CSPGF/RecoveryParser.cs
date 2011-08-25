@@ -131,6 +131,16 @@ namespace CSPGF
         }
 
         /// <summary>
+        /// Get the trees
+        /// </summary>
+        /// <returns>Returns the trees.</returns>
+        public List<CSPGF.Trees.Absyn.Tree> GetTrees()
+        {
+            ParseState ps = this.parseStates.Peek();
+            return ps.GetTrees();
+        }
+
+        /// <summary>
         /// Prints the current predictions.
         /// </summary>
         public void Debug()

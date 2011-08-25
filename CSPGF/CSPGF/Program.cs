@@ -47,49 +47,24 @@ namespace CSPGF
         public static void Main(string[] args)
         {
             // Tests below.
-            FileStream fs = new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open);
+            FileStream fs = new FileStream("..\\..\\test\\files\\Phrasebook.pgf", FileMode.Open);
             BinaryReader br = new BinaryReader(fs);
             PGFReader pr = new PGFReader(br);
             PGF pgf = pr.ReadPGF();
             fs.Close();
-            ParseState st = new ParseState(pgf.GetConcrete("FoodsGer"));
-            List<string> temp = st.Predict();
-            System.Console.Out.WriteLine("scan this...");
-            st.Scan("dieser");
-            st.Scan("Wein");
-            st.Scan("ist");
-            st.Scan("italienisch");
-            // st.Scan("this");
-            // st.Scan("wine");
-            // st.Scan("is");
-            // st.Scan("Italian");
-            List<CSPGF.Trees.Absyn.Tree> trees = st.GetTrees();
-            temp = st.Predict();
-            foreach (string s in temp)
-            {
-                System.Console.Out.WriteLine(s);
-            }
 
-            // Try deep copy
-            try
-            {
-                ParseState st2 = ObjectCopier.Clone<ParseState>(st);
-            }
-            catch (Exception e)
-            {
-                System.Console.WriteLine(e.ToString());
-            }
+            RecoveryParser rp = new RecoveryParser(pgf, "PhrasebookEng");
+            rp.Scan("Finnish");
+            rp.Scan("fish");
+            rp.Scan("is");
+            rp.Scan("too");
+            rp.Scan("warm");
 
-            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
-            string temp123 = lin.LinearizeString(trees[0]);
-            System.Console.WriteLine(temp123);
+            List<Trees.Absyn.Tree> trees = rp.GetTrees();
+            System.Console.WriteLine(trees.Count);
 
-            // SpeechSynthesizer ss = new SpeechSynthesizer();
-            // ss.SetOutputToDefaultAudioDevice();
-            // ss.Speak("wheeeeee!");
-            RecoveryParser rp = new RecoveryParser(pgf, "FoodsGer");
-            rp.Debug();
-            //rp.Debug();
+            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookDan"));
+            System.Console.WriteLine(lin.LinearizeString(trees[0]));
 
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();

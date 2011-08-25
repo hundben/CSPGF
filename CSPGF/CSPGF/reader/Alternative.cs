@@ -35,6 +35,7 @@ namespace CSPGF.Reader
     using System.Linq;
     using System.Text;
 
+    [Serializable]
     public class Alternative
     {
         public Alternative(List<string> alt1, List<string> alt2)

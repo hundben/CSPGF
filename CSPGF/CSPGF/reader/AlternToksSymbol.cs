@@ -35,6 +35,7 @@ namespace CSPGF.Reader
     using System.Linq;
     using System.Text;
 
+    [Serializable]
     public class AlternToksSymbol : ToksSymbol // SymKP
     {
         public AlternToksSymbol(List<string> toks, List<Alternative> alts)
