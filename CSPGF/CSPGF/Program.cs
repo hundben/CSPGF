@@ -76,7 +76,7 @@ namespace CSPGF
                 System.Console.WriteLine(e.ToString());
             }
 
-            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
+            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsIta"));
             string temp123 = lin.LinearizeString(trees[0]);
             System.Console.WriteLine(temp123);
 

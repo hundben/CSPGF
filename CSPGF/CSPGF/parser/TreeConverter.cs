@@ -64,59 +64,72 @@ namespace CSPGF.Parse
         /// <param name="t">A tree.</param>
         /// <param name="vars">Some variables.</param>
         /// <returns>The abstract tree.</returns>
-        public CSPGF.Trees.Absyn.Tree C2a(Tree t, List<string> vars)
+        private CSPGF.Trees.Absyn.Tree C2a(Tree t, List<string> vars)
         {
             if (t is Lambda) 
             {
-                Lambda tmp = (Lambda)t;
+                //lvars.foldRight(c2a(body, lvars.map(_._2).reverse ++ vars))(mkELambda)
+                Lambda lt = (Lambda)t;
+
+                List<Tuple<bool, string>> lvars = lt.Vars;
+                Tree body = lt.Body;
+
+                // lvars.map(_._2)
                 List<string> tmp2 = new List<string>();
-                foreach (Tuple<bool, string> tup in tmp.Vars) 
+                foreach (Tuple<bool, string> tup in lvars) 
                 {
                     tmp2.Add(tup.Item2);
                 }
 
+                // lvars.map(_._2).reverse
                 tmp2.Reverse();
+
+                // lvars.map(_._2).reverse ++ vars
                 foreach (string s in vars) 
                 {
                     tmp2.Add(s);
                 }
 
-                tmp.Vars.Reverse();
-                CSPGF.Trees.Absyn.Tree tmptree = this.C2a(tmp.Body, tmp2);
-                foreach (Tuple<bool, string> tup in tmp.Vars) 
+                // tree = c2a(body, lvars.map(_._2).reverse ++ vars)
+                CSPGF.Trees.Absyn.Tree tree = this.C2a(body, tmp2);
+
+                // tree.foldRight(tree)(MkELambda)
+                lvars.Reverse();
+                foreach (Tuple<bool, string> tup in lvars) 
                 {
-                    tmptree = this.MkELambda(tup, tmptree);
+                    tree = this.MkELambda(tup, tree);
                 }
 
-                return tmptree;
+                lvars.Reverse();    
+                return tree;
             }
             else if (t is Variable) 
             {
-                Variable tmp = (Variable)t;
-                return new CSPGF.Trees.Absyn.Variable(vars.IndexOf(tmp.Cid));
+                Variable var = (Variable)t;
+                return new CSPGF.Trees.Absyn.Variable(vars.IndexOf(var.Cid));
             }
             else if (t is Application) 
             {
-                Application tmp = (Application)t;
-                List<CSPGF.Trees.Absyn.Tree> tmp2 = new List<CSPGF.Trees.Absyn.Tree>();
-                tmp2.Add(new CSPGF.Trees.Absyn.Function(tmp.Fun));
-                foreach (Tree tr in tmp.Args) 
+                Application app = (Application)t;
+                List<CSPGF.Trees.Absyn.Tree> trees = new List<CSPGF.Trees.Absyn.Tree>();
+                trees.Add(new CSPGF.Trees.Absyn.Function(app.Fun));
+                foreach (Tree tr in app.Args) 
                 {
-                    tmp2.Add(this.C2a(tr, vars));
+                    trees.Add(this.C2a(tr, vars));
                 }
 
                 // TODO: Check if it works :D
-                return tmp2.Aggregate<CSPGF.Trees.Absyn.Tree>(this.MkEApp);
+                return trees.Aggregate<CSPGF.Trees.Absyn.Tree>(this.MkEApp);
             }
             else if (t is Literal) 
             {
-                Literal tmp = (Literal)t;
-                return new CSPGF.Trees.Absyn.Literal(new CSPGF.Trees.Absyn.StringLiteral(tmp.Value));
+                Literal lit = (Literal)t;
+                return new CSPGF.Trees.Absyn.Literal(new CSPGF.Trees.Absyn.StringLiteral(lit.Value));
             }
             else if (t is MetaVariable) 
             {
-                MetaVariable tmp = (MetaVariable)t;
-                return new CSPGF.Trees.Absyn.MetaVariable(tmp.ID);
+                MetaVariable meta = (MetaVariable)t;
+                return new CSPGF.Trees.Absyn.MetaVariable(meta.ID);
             }
 
             return null;
@@ -128,7 +141,7 @@ namespace CSPGF.Parse
         /// <param name="f">The first tree.</param>
         /// <param name="x">The second tree.</param>
         /// <returns>An application with both trees.</returns>
-        public CSPGF.Trees.Absyn.Tree MkEApp(CSPGF.Trees.Absyn.Tree f, CSPGF.Trees.Absyn.Tree x)
+        private CSPGF.Trees.Absyn.Tree MkEApp(CSPGF.Trees.Absyn.Tree f, CSPGF.Trees.Absyn.Tree x)
         {
             return new CSPGF.Trees.Absyn.Application(f, x);
         }
@@ -139,16 +152,14 @@ namespace CSPGF.Parse
         /// <param name="v">A tuple with the boolean and a string.</param>
         /// <param name="body">The body of the tree.</param>
         /// <returns>A new tree.</returns>
-        public CSPGF.Trees.Absyn.Tree MkELambda(Tuple<bool, string> v, CSPGF.Trees.Absyn.Tree body)
+        private CSPGF.Trees.Absyn.Tree MkELambda(Tuple<bool, string> v, CSPGF.Trees.Absyn.Tree body)
         {
             if (v != null) 
             {
                 return new CSPGF.Trees.Absyn.Lambda(v.Item2, body);
             }
-            else 
-            {
-                return null;
-            }
+
+            return null;
         }
     }
 }
