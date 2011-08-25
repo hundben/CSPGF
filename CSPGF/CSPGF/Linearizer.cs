@@ -268,7 +268,12 @@ namespace CSPGF
                 }
             }
 
-            Dictionary<int, HashSet<Production>> prods1 = new Dictionary<int, HashSet<Production>>(prods0);
+            Dictionary<int, HashSet<Production>> prods1 = new Dictionary<int,HashSet<Production>>();
+            
+            foreach (KeyValuePair<int, HashSet<Production>> cp in prods0) {
+                prods1.Add(cp.Key, cp.Value);
+            }
+            
             foreach (KeyValuePair<int, HashSet<Production>> kvp in tempRez)
             {
                 int index = kvp.Key;
@@ -288,7 +293,7 @@ namespace CSPGF
                 }
                 else
                 {
-                    prods1.Add(index, hp);
+                    prods1[index] = hp;
                     are_diff = true;
                 }
             }
@@ -626,7 +631,7 @@ namespace CSPGF
         private List<LinTriple> Apply(List<string> xs, CncType mbcty, int nextfid, string f, List<CSPGF.Trees.Absyn.Tree> es)
         {
             Dictionary<int, HashSet<Production>> prods;
-            if (!this.linProd.TryGetValue(f,out prods)) 
+            if (!this.linProd.TryGetValue(f, out prods)) 
             {
                 List<CSPGF.Trees.Absyn.Tree> newes = new List<CSPGF.Trees.Absyn.Tree>();
                 newes.Add(new CSPGF.Trees.Absyn.Literal(new CSPGF.Trees.Absyn.StringLiteral(f)));
