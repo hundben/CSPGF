@@ -81,15 +81,7 @@ namespace CSPGF.Parse
             this.startCat = grammar.GetStartCat();
             this.trie = new ParseTrie(null);
 
-            // TODO check if we should use all languages or just the "active" one
-            int lastCat = 0;
-            foreach (CncCat cncTemp in grammar.GetCncCats())
-            {
-                // TODO check if first or last id
-                lastCat = Math.Max(cncTemp.LastFID, lastCat);
-            }
-
-            this.chart = new Chart(lastCat++); // was 100
+            this.chart = new Chart(grammar.FId + 1);
             this.agenda = new Stack<ActiveItem>();
             this.position = 0;
             this.active = new Dictionary<int, ActiveSet>();
