@@ -59,6 +59,7 @@ namespace CSPGF
             rp.Scan("is");
             rp.Scan("too");
             rp.Scan("warm");
+            rp.Scan(".");
 
             List<Trees.Absyn.Tree> trees = rp.GetTrees();
 
