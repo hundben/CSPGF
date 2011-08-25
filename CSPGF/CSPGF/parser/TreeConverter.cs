@@ -68,7 +68,7 @@ namespace CSPGF.Parse
         {
             if (t is Lambda) 
             {
-                //lvars.foldRight(c2a(body, lvars.map(_._2).reverse ++ vars))(mkELambda)
+                // lvars.foldRight(c2a(body, lvars.map(_._2).reverse ++ vars))(mkELambda)
                 Lambda lt = (Lambda)t;
 
                 List<Tuple<bool, string>> lvars = lt.Vars;
