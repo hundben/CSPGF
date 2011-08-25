@@ -35,8 +35,17 @@ namespace CSPGF.Reader
     using System.Linq;
     using System.Text;
 
+    /// <summary>
+    /// Abstract Category
+    /// </summary>
     public class AbsCat
     {
+        /// <summary>
+        /// Initializes a new instance of the AbsCat class.
+        /// </summary>
+        /// <param name="name">Name of category</param>
+        /// <param name="hypos">List of hypos</param>
+        /// <param name="functions">List of weightedidents</param>
         public AbsCat(string name, List<Hypo> hypos, List<WeightedIdent> functions)
         {
             this.Name = name;

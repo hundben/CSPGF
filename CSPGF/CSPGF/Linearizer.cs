@@ -601,9 +601,9 @@ namespace CSPGF
                 xs.AddRange(ys);
                 List<CSPGF.Trees.Absyn.Tree> exprs = new List<CSPGF.Trees.Absyn.Tree>();
                 exprs.Add(tree);
-                for (int i = 0; i < xs.Count; i++) 
+                foreach (string str in xs)
                 {
-                    exprs.Add(new CSPGF.Trees.Absyn.Literal(new CSPGF.Trees.Absyn.StringLiteral(xs.ElementAt(i))));
+                    exprs.Add(new CSPGF.Trees.Absyn.Literal(new CSPGF.Trees.Absyn.StringLiteral(str)));
                 } 
 
                 return this.Apply(xs, mbcty, mbfid, "_B", exprs);
@@ -635,9 +635,9 @@ namespace CSPGF
             {
                 List<AppResult> listApp = this.GetApps(prods, mbcty, f);
                 List<LinTriple> rez = new List<LinTriple>();
-                for (int i = 0; i < listApp.Count; i++) 
+                foreach (AppResult appr in listApp)
                 {
-                    List<CncType> copy_ctys = listApp.ElementAt(i).CncTypes;
+                    List<CncType> copy_ctys = appr.CncTypes;
                     List<CncType> ctys = new List<CncType>();
                     for (int ind = copy_ctys.Count - 1; ind >= 0; ind--) 
                     {
@@ -649,22 +649,22 @@ namespace CSPGF
                         throw new LinearizerException("lengths of es and ctys don't match" + es.ToString() + " -- " + ctys.ToString());
                     }
 
-                    List<Sequence> lins = listApp.ElementAt(i).CncFun.Sequences;
-                    string cat = listApp.ElementAt(i).CncType.CId;
+                    List<Sequence> lins = appr.CncFun.Sequences;
+                    string cat = appr.CncType.CId;
                     List<CSPGF.Trees.Absyn.Tree> copy_expr = new List<CSPGF.Trees.Absyn.Tree>();
-                    for (int ind = 0; ind < es.Count; ind++) 
+                    foreach (Tree tree in es)
                     {
-                        copy_expr.Add(es.ElementAt(ind));
+                        copy_expr.Add(tree);
                     }
 
                     List<RezDesc> rezDesc = this.Descend(nextfid, ctys, copy_expr, xs);
-                    for (int k = 0; k < rezDesc.Count; k++) 
+                    foreach (RezDesc rez2 in rezDesc)
                     {
-                        RezDesc intRez = rezDesc.ElementAt(k);
+                        RezDesc intRez = rez2;
                         List<List<BracketedTokn>> linTab = new List<List<BracketedTokn>>();
-                        for (int ind = 0; ind < lins.Count; ind++) 
+                        foreach (Sequence seq in lins)
                         {
-                            linTab.Add(this.ComputeSeq(lins[ind], intRez.CncTypes, intRez.Bracketedtokn));
+                            linTab.Add(this.ComputeSeq(seq, intRez.CncTypes, intRez.Bracketedtokn));
                         }
 
                         rez.Add(new LinTriple(nextfid + 1, new CncType(cat, nextfid), linTab));
@@ -755,7 +755,7 @@ namespace CSPGF
                 List<CncType> vtype = new List<CncType>();
                 if (f.Equals("V")) 
                 {
-                    for (int i = 0; i < args.Count; i++) 
+                    foreach (int i in args)
                     {
                         vtype.Add(new CncType("__gfVar", args[i]));
                     }
