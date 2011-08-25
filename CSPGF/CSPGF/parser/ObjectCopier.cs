@@ -1,4 +1,11 @@
-﻿namespace CSPGF.Parse
+﻿//-----------------------------------------------------------------------
+// <copyright file="ObjectCopier.cs" company="None">
+// Licensed under The Code Project Open License (CPOL).
+// http://www.codeproject.com/info/cpol10.aspx
+// </copyright>
+//-----------------------------------------------------------------------
+
+namespace CSPGF.Parse
 {
     using System;
     using System.IO;
@@ -7,11 +14,9 @@
 
     /// <summary>
     /// Reference Article http://www.codeproject.com/KB/tips/SerializedObjectCloner.aspx
-    /// 
     /// Provides a method for performing a deep copy of an object.
     /// Binary Serialization is used to perform the copy.
     /// </summary>
-
     public static class ObjectCopier
     {
         /// <summary>

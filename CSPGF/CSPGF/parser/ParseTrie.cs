@@ -34,27 +34,54 @@ namespace CSPGF.Parse
     using System.Collections.Generic;
     using System.Linq;
 
+    /// <summary>
+    /// The ParseTrie class.
+    /// </summary>
     [Serializable]
     public class ParseTrie
     {
+        /// <summary>
+        /// A stack of active items.
+        /// </summary>
         private Stack<ActiveItem> value;
+
+        /// <summary>
+        /// All the childs
+        /// </summary>
         private Dictionary<string, ParseTrie> child = new Dictionary<string, ParseTrie>();
 
+        /// <summary>
+        /// Initializes a new instance of the ParseTrie class.
+        /// </summary>
         public ParseTrie()
         {
             this.value = new Stack<ActiveItem>();
         }
 
+        /// <summary>
+        /// Initializes a new instance of the ParseTrie class.
+        /// </summary>
+        /// <param name="value">A stack of active items.</param>
         public ParseTrie(Stack<ActiveItem> value)
         {
             this.value = value;
         }
 
+        /// <summary>
+        /// Insert description.
+        /// </summary>
+        /// <param name="key">A list of keys.</param>
+        /// <param name="value">A stack of active items.</param>
         public void Add(string[] key, Stack<ActiveItem> value)
         {
             this.Add(key.ToList<string>(), value);
         }
 
+        /// <summary>
+        /// Insert description.
+        /// </summary>
+        /// <param name="keys">A list of keys.</param>
+        /// <param name="value">A stack of active items.</param>
         public void Add(List<string> keys, Stack<ActiveItem> value)
         {
             // TODO: Might be correct, but check.
@@ -81,11 +108,21 @@ namespace CSPGF.Parse
             }
         }
 
+        /// <summary>
+        /// Looks for a stack of active items.
+        /// </summary>
+        /// <param name="key">The keys.</param>
+        /// <returns>The stack of active items.</returns>
         public Stack<ActiveItem> Lookup(string[] key)
         {
             return this.Lookup(key.ToList<string>());
         }
 
+        /// <summary>
+        /// Look for a stack of active items.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>The corresponding stack of active items.</returns>
         public Stack<ActiveItem> Lookup(List<string> key)
         {
             if (this.GetSubTrie(key) != null) 
@@ -98,6 +135,11 @@ namespace CSPGF.Parse
             }
         }
         
+        /// <summary>
+        /// Returns the subtrie.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>The subtrie if any.</returns>
         public ParseTrie GetSubTrie(List<string> key)
         {
             // TODO check if null is necessary
@@ -119,6 +161,11 @@ namespace CSPGF.Parse
             return newTrie;
         }
 
+        /// <summary>
+        /// Returns the subtrie of one key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>The subtrie.</returns>
         public ParseTrie GetSubTrie(string key)
         {
             List<string> tmp = new List<string>();
@@ -126,104 +173,42 @@ namespace CSPGF.Parse
             return this.GetSubTrie(tmp);
         }
         
+        /// <summary>
+        /// Predicts the next token.
+        /// </summary>
+        /// <returns>Returns a list of tokens.</returns>
         public List<string> Predict()
         {
             return this.child.Keys.ToList<string>();
         }
         
+        /// <summary>
+        /// Returns the class as a string.
+        /// </summary>
+        /// <returns>A string.</returns>
         public override string ToString()
         {
             return this.ToStringWithPrefix(string.Empty);
         }
         
+        /// <summary>
+        /// Returns a string with the class with a prefix.
+        /// </summary>
+        /// <param name="prefix">The prefix.</param>
+        /// <returns>A string with the class.</returns>
         public string ToStringWithPrefix(string prefix)
         {
-            // RETARDKOD! TODO: Gör klart!
+            // TODO complete this.
             string tmp = prefix + "<" + this.value.ToString() + ">";
             return tmp;
         }
 
-        //  def toStringWithPrefix(prefix:String):String = {
+        // def toStringWithPrefix(prefix:String):String = {
         //    prefix + "<" + this.value + ">" +
         //    this.child.keys.map(k =>
         //      prefix + k.toString + ":\n" +
         //      this.child(k).toStringWithPrefix(prefix + "  ")
         //    ).foldLeft("")((a:String,b:String) => a + "\n" + b)
-        //  }
+        // }
     }
 }
-
-// /* ************************************************************************* */
-// /**
-// * The ParseTries are used to keep track of the possible next symbols.
-// * It is a trie where the symbol (edge labels) are string (words) and the values (node) are agendas
-// * (stacks of ActiveItems)
-// * The parse tries is used in the parsing algorithm when a dot is before a token. Then the dot is
-// * moved after the tokens and the resulting active item is added to the trie (to the agenda indexed by
-// * the words of the token.)
-// * Then the scan operation is a simple lookup in the trie...
-// * The trie is also used for predictions.
-// * In gf, a token in a rule can consist of multiple words (separated by a whitespace), thus the trie is
-// * needed and cannot be replaced by a simple map.
-// *
-// * @param value the value at this node.
-// * */
-//private class ParseTrie(var value:Stack[ActiveItem]) {
-//  import scala.collection.mutable.HashMap
-
-//  val child = new HashMap[String,ParseTrie]
-
-//  def this() = this(new Stack)
-
-//  def add(key:Seq[String], value:Stack[ActiveItem]):Unit =
-//    this.add(key.toList, value)
-
-//  def add(keys:List[String], value:Stack[ActiveItem]):Unit =
-//    keys match {
-//      case Nil => this.value = value
-//      case x::l => this.child.get(x) match {
-//        case None => {
-//          val newN = new ParseTrie
-//          newN.add(l,value)
-//          this.child.update(x, newN)
-//        }
-//        case Some(n) => n.add(l,value)
-//      }
-//    }
-
-//  def lookup(key:Seq[String]):Option[Stack[ActiveItem]] =
-//    this.lookup(key.toList)
-
-//  def lookup(key:List[String]):Option[Stack[ActiveItem]] =
-//    getSubTrie(key) match {
-//      case None => None
-//      case Some(t) => Some(t.value)
-//    }
-
-//  def lookup(key:String):Option[Stack[ActiveItem]] =
-//    this.lookup(key::Nil)
-
-//  def getSubTrie(key:List[String]):Option[ParseTrie] =
-//    key match {
-//      case Nil => Some(this)
-//      case x::l => this.child.get(x) match {
-//        case None => None
-//        case Some(n) => n.getSubTrie(l)
-//      }
-//    }
-
-//  def getSubTrie(key:String):Option[ParseTrie] =
-//    this.getSubTrie(key::Nil)
-
-//  def predict():Array[String] = this.child.keySet.toArray
-
-//  override def toString() = this.toStringWithPrefix("")
-
-//  def toStringWithPrefix(prefix:String):String = {
-//    prefix + "<" + this.value + ">" +
-//    this.child.keys.map(k =>
-//      prefix + k.toString + ":\n" +
-//      this.child(k).toStringWithPrefix(prefix + "  ")
-//    ).foldLeft("")((a:String,b:String) => a + "\n" + b)
-//  }
-// }

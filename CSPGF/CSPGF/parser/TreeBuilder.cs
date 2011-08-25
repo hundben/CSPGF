@@ -78,7 +78,6 @@ namespace CSPGF.Parse
         /// <returns>A list of trees.</returns>
         public List<Tree> MkTreesForCat(int cat, Chart chart)
         {
-            System.Console.WriteLine("Making trees for category: " + cat);
             List<Tree> temp = new List<Tree>();
             foreach (ApplProduction p in chart.GetProductions(cat)) 
             {
