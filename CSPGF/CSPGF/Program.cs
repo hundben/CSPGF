@@ -30,9 +30,9 @@
 
 namespace CSPGF
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
-    using System;
     using CSPGF.Parse;
 
     /// <summary>
@@ -75,9 +75,10 @@ namespace CSPGF
                 System.Console.WriteLine(e.ToString());
             }
 
-            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsEng"));
+            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsSwe"));
             string temp123 = lin.LinearizeString(trees[0]);
             System.Console.WriteLine(temp123);
+
             // SpeechSynthesizer ss = new SpeechSynthesizer();
             // ss.SetOutputToDefaultAudioDevice();
             // ss.Speak("wheeeeee!");
