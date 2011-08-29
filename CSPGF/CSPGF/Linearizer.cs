@@ -267,7 +267,17 @@ namespace CSPGF
         {
             Dictionary<int, HashSet<Production>> tempRez = new Dictionary<int, HashSet<Production>>();
             bool are_diff = false;
-            foreach (int index in prods.Keys)
+
+            foreach (KeyValuePair<int, HashSet<Production>> kvp in prods)
+            {
+                HashSet<Production> setProd = kvp.Value;
+                HashSet<Production> intermRez = this.FilterProdSet1(prods0, setProd);
+                if (intermRez.Count != 0)
+                {
+                    tempRez.Add(kvp.Key, intermRez);
+                }
+            }
+            /*foreach (int index in prods.Keys)
             {
                 HashSet<Production> setProd = prods[index];
                 HashSet<Production> intermRez = this.FilterProdSet1(prods0, setProd);
@@ -275,14 +285,9 @@ namespace CSPGF
                 {
                     tempRez.Add(index, intermRez);
                 }
-            }
+            }*/
 
-            Dictionary<int, HashSet<Production>> prods1 = new Dictionary<int, HashSet<Production>>();
-            
-            foreach (KeyValuePair<int, HashSet<Production>> cp in prods0) 
-            {
-                prods1.Add(cp.Key, cp.Value);
-            }
+            Dictionary<int, HashSet<Production>> prods1 = new Dictionary<int, HashSet<Production>>(prods0);
             
             foreach (KeyValuePair<int, HashSet<Production>> kvp in tempRez)
             {
