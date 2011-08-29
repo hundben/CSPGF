@@ -148,6 +148,7 @@
     <Compile Include="Trees\Parser.cs" />
     <Compile Include="Trees\Printer.cs" />
     <Compile Include="Trees\Scanner.cs" />
+    <Compile Include="Trees\ShiftReduceParserCode.cs" />
     <Compile Include="Trees\Test.cs" />
     <Compile Include="Trees\VisitSkeleton.cs" />
     <Compile Include="UnknownLanguageException.cs" />
