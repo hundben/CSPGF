@@ -66,7 +66,6 @@
   <ItemGroup>
     <Compile Include="Generator.cs" />
     <Compile Include="Linearizer.cs" />
-    <Compile Include="Linearizer2.cs" />
     <Compile Include="LinearizerException.cs" />
     <Compile Include="Linearizer\AppResult.cs" />
     <Compile Include="Linearizer\Bracket.cs" />
@@ -79,7 +78,6 @@
     <Compile Include="Linearizer\Tokn.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Parser\ActiveItem.cs" />
-    <Compile Include="Parser\ActiveItemInt.cs" />
     <Compile Include="Parser\ActiveSet.cs" />
     <Compile Include="Parser\Application.cs" />
     <Compile Include="Parser\Category.cs" />
