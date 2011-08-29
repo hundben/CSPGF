@@ -72,7 +72,6 @@ namespace CSPGF.Parse
         /// <param name="p">The production to add.</param>
         public void AddProduction(Production p)
         {
-            // TODO New version, check if it works
             HashSet<Production> prodSet;
             if (this.productionSets.TryGetValue(p.FId, out prodSet))
             {
@@ -217,9 +216,6 @@ namespace CSPGF.Parse
 
             return s;
         }
-
-        // Should now work
-        // Changes all Coerceproductions to ApplProductions
 
         /// <summary>
         /// Converts from CoerceProduction to ApplProducion.

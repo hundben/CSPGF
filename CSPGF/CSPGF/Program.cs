@@ -63,7 +63,7 @@ namespace CSPGF
             Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
             System.Console.WriteLine(lin.LinearizeString(trees[0]));
             rp.Debug2();
-            rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
+            //rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
 
             //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookDan"));
             //System.Console.WriteLine(lin.LinearizeString(trees[0]));
