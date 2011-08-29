@@ -72,6 +72,8 @@ namespace CSPGF.Parse
         /// </summary>
         private Dictionary<int, ActiveSet> active;
 
+        //private List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>> active;
+
         /// <summary>
         /// Initializes a new instance of the ParseState class.
         /// </summary>
@@ -84,8 +86,8 @@ namespace CSPGF.Parse
             this.chart = new Chart(grammar.FId + 1);
             this.agenda = new Stack<ActiveItem>();
             this.position = 0;
+            // this.active = new List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>>();
             this.active = new Dictionary<int, ActiveSet>();
-
             // initiate
             foreach (Production k in grammar.GetProductions()) 
             {
@@ -96,8 +98,8 @@ namespace CSPGF.Parse
             {
                 foreach (ApplProduction prod in this.chart.GetProductions(id)) 
                 {
-                    ActiveItem it = new ActiveItem(0, id, prod.Function, prod.Domain(), 0, 0);
-                    this.agenda.Push(it);
+                    ActiveItem ai = new ActiveItem(0, id, prod.Function, prod.Domain(), 0, 0);
+                    this.agenda.Push(ai);
                 }
             }
 
@@ -112,13 +114,13 @@ namespace CSPGF.Parse
         {
             TreeBuilder tb = new TreeBuilder();
             TreeConverter tc = new TreeConverter();
-            List<CSPGF.Trees.Absyn.Tree> tmp = new List<CSPGF.Trees.Absyn.Tree>();
+            List<CSPGF.Trees.Absyn.Tree> trees = new List<CSPGF.Trees.Absyn.Tree>();
             foreach (Tree t in tb.BuildTrees(this.chart, this.startCat, this.position)) 
             {
-                tmp.Add(tc.Intermediate2Abstract(t));
+                trees.Add(tc.Intermediate2Abstract(t));
             }
 
-            return tmp;
+            return trees;
         }
 
         /// <summary>
@@ -183,7 +185,7 @@ namespace CSPGF.Parse
             int l = item.Constituent;
             int p = item.Position;
 
-            Symbol sym = item.NextSymbol(); // is this correct?
+            Symbol sym = item.CurrentSymbol(); // is this correct?
 
             if (sym is ToksSymbol) 
             {
@@ -243,10 +245,10 @@ namespace CSPGF.Parse
                 if (cat == -1) 
                 {
                     int n = this.chart.GenerateFreshCategory(new Category(a, l, j, this.position));
-                    foreach (ActiveItemInt aii in this.active[j].Get(a, l)) 
+                    foreach (ActiveItem ai in this.active[j].Get(a, l)) 
                     {
-                        ActiveItem ip = aii.Item;
-                        int d = aii.Cons;
+                        ActiveItem ip = ai;
+                        int d = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;    // TODO Cons?
                         List<int> domain = new List<int>(ip.Domain);
                         domain[d] = n;
                         ActiveItem i = new ActiveItem(ip.Begin, ip.Category, ip.Function, domain, ip.Constituent, ip.Position + 1);
@@ -257,10 +259,11 @@ namespace CSPGF.Parse
                 }
                 else 
                 {
-                    HashSet<ActiveItemInt> items = this.active[this.position].Get(cat);
-                    foreach (ActiveItemInt aii in items) 
+                    HashSet<ActiveItem> items = this.active[this.position].Get(cat);
+                    foreach (ActiveItem ai in items) 
                     {
-                        int r = aii.Cons2;
+                        //int r = aii.Cons2;
+                        int r = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;  //Cons?
                         ActiveItem i = new ActiveItem(this.position, cat, f, b, r, 0);
                         this.agenda.Push(i);
                     }

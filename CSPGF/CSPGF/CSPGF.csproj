@@ -78,7 +78,6 @@
     <Compile Include="Linearizer\Tokn.cs" />
     <Compile Include="Parser.cs" />
     <Compile Include="Parser\ActiveItem.cs" />
-    <Compile Include="Parser\ActiveItemInt.cs" />
     <Compile Include="Parser\ActiveSet.cs" />
     <Compile Include="Parser\Application.cs" />
     <Compile Include="Parser\Category.cs" />

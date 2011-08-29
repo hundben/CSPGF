@@ -94,7 +94,7 @@ namespace CSPGF.Parse
         /// Gets the next symbol.
         /// </summary>
         /// <returns>The next symbol.</returns>
-        public Symbol NextSymbol()
+        public Symbol CurrentSymbol()
         {
             if (this.Position < this.Function.Sequences[this.Constituent].Symbs.Count) 
             {

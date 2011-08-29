@@ -43,14 +43,14 @@ namespace CSPGF.Parse
         /// <summary>
         /// Dictionary where everything is stored
         /// </summary>
-        private Dictionary<int, Dictionary<int, HashSet<ActiveItemInt>>> store;
+        private Dictionary<int, Dictionary<int, HashSet<ActiveItem>>> store;
 
         /// <summary>
         /// Initializes a new instance of the ActiveSet class.
         /// </summary>
         public ActiveSet()
         {
-            this.store = new Dictionary<int, Dictionary<int, HashSet<ActiveItemInt>>>();
+            this.store = new Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>();
         }
 
         // check this one, might be wrong...
@@ -64,36 +64,35 @@ namespace CSPGF.Parse
         /// <returns></returns>
         public bool Add(int cat, int cons, ActiveItem item, int cons2)
         {
-            Dictionary<int, HashSet<ActiveItemInt>> map;
+            Dictionary<int, HashSet<ActiveItem>> map;
             if (this.store.TryGetValue(cat, out map))
             {
-                HashSet<ActiveItemInt> activeItems;
+                HashSet<ActiveItem> activeItems;
                 if (map.TryGetValue(cons, out activeItems))
                 {
-                    foreach (ActiveItemInt aii in activeItems)
+                    foreach (ActiveItem ai in activeItems)
                     {
-                        if (aii.Equals(item, cons2))
+                        if (ai.Equals(item))
                         {
                             return false;
                         }
                     }
 
-                    activeItems.Add(new ActiveItemInt(item, cons2));
+                    activeItems.Add(item);
                     return true;
                 }
                 else
                 {
-                    // TODO this might be wrong (but I don't think so :)
-                    activeItems = new HashSet<ActiveItemInt>();
-                    activeItems.Add(new ActiveItemInt(item, cons2));
+                    activeItems = new HashSet<ActiveItem>();
+                    activeItems.Add(item);
                     map.Add(cons, activeItems);
                 }
             }
             else
             {
-                map = new Dictionary<int, HashSet<ActiveItemInt>>();
-                HashSet<ActiveItemInt> activeItems = new HashSet<ActiveItemInt>();
-                activeItems.Add(new ActiveItemInt(item, cons2));
+                map = new Dictionary<int, HashSet<ActiveItem>>();
+                HashSet<ActiveItem> activeItems = new HashSet<ActiveItem>();
+                activeItems.Add(item);
                 map.Add(cons, activeItems);
                 this.store.Add(cat, map);
             }
@@ -101,29 +100,28 @@ namespace CSPGF.Parse
             return true;
         }
 
-        // TODO check if this is correct, new version
         /// <summary>
         /// 
         /// </summary>
         /// <param name="cat"></param>
         /// <returns></returns>
-        public HashSet<ActiveItemInt> Get(int cat)
+        public HashSet<ActiveItem> Get(int cat)
         {
-            HashSet<ActiveItemInt> aai = new HashSet<ActiveItemInt>();
-            Dictionary<int, HashSet<ActiveItemInt>> map;
+            HashSet<ActiveItem> ai = new HashSet<ActiveItem>();
+            Dictionary<int, HashSet<ActiveItem>> map;
             if (this.store.TryGetValue(cat, out map))
             {
                 foreach (int key in map.Keys)
                 {
-                    foreach (ActiveItemInt i in map[key])
+                    foreach (ActiveItem i in map[key])
                     {
-                        i.Cons2 = key;
-                        aai.Add(i);
+                        //i.Cons2 = key;    ??
+                        ai.Add(i);
                     }
                 }
             }
 
-            return aai;
+            return ai;
         }
 
         // Also fixed this one I hope /Erik
@@ -133,60 +131,19 @@ namespace CSPGF.Parse
         /// <param name="cat"></param>
         /// <param name="cons"></param>
         /// <returns></returns>
-        public HashSet<ActiveItemInt> Get(int cat, int cons)
+        public HashSet<ActiveItem> Get(int cat, int cons)
         {
-            HashSet<ActiveItemInt> aai = new HashSet<ActiveItemInt>();
-            Dictionary<int, HashSet<ActiveItemInt>> map;
+            HashSet<ActiveItem> ai = new HashSet<ActiveItem>();
+            Dictionary<int, HashSet<ActiveItem>> map;
             if (this.store.TryGetValue(cat, out map))
             {
-                if (map.TryGetValue(cons, out aai))
+                if (map.TryGetValue(cons, out ai))
                 {
-                    return aai;
+                    return ai;
                 }
             }
 
-            return aai;
+            return ai;
         }
     }
 }
-
-// * this is used to keed track of sets of active items (the S_k)
-// * */
-// private class ActiveSet {
-//  //val log = Logger.getLogger("org.grammaticalframework.parser")
-//  val store = new HashMap[Int, MultiMap[Int, (ActiveItem,Int)]]
-//  def add(cat:Int, cons:Int, item:ActiveItem, cons2:Int):Boolean =
-//    this.store.get(cat) match {
-//      case None => {
-//        val newMap = new HashMap[Int, Set[(ActiveItem,Int)]]
-//                              with MultiMap[Int, (ActiveItem,Int)]
-//        newMap.addBinding(cons,(item,cons2))
-//        this.store.update(cat, newMap)
-//        return true
-//      }
-//      case Some(map) =>
-//        if (map.entryExists(cons, (item,cons2).equals))
-//          return false
-//        else {
-//          map.addBinding(cons, (item,cons2))
-//          return true
-//        }
-//    }
-//  def get(cat:Int):Iterator[(ActiveItem, Int, Int)] =
-//    this.store.get(cat) match {
-//      case None => return Iterator.empty
-//      case Some(amap) => {
-//        for( k <- amap.keys.iterator ;
-//             (item, d) <- amap(k).iterator)
-//            yield (item, d, k)
-//      }
-//    }
-//  def get(cat:Int, cons:Int):Seq[(ActiveItem,Int)] =
-//    this.store.get(cat) match {
-//      case None => return Nil
-//      case Some(map) => map.get(cons) match {
-//        case None => return Nil
-//        case Some(s) => return s.toSeq
-//      }
-//    }
-// }
