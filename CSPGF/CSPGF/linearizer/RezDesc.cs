@@ -43,7 +43,7 @@ namespace CSPGF.Linearize
         /// <summary>
         /// Initializes a new instance of the RezDesc class.
         /// </summary>
-        /// <param name="fid">The first id.</param>
+        /// <param name="fid">Function id.</param>
         /// <param name="cncTypes">A list of cnc types.</param>
         /// <param name="bss">A list of lists of lists of lists of bracketed tokens.</param>
         public RezDesc(int fid, List<CncType> cncTypes, List<List<List<BracketedTokn>>> bss)
