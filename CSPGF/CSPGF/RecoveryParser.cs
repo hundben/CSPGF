@@ -151,5 +151,95 @@ namespace CSPGF
                 Console.WriteLine(tok);
             }
         }
+
+        /// <summary>
+        /// Prints out the first tree.
+        /// </summary>
+        public void Debug2()
+        {
+            ParseState ps = this.parseStates.Peek();
+            List<Trees.Absyn.Tree> trees = ps.GetTrees();
+            if (trees.Count > 0)
+            {
+                Trees.Absyn.Tree tree = trees[0];
+                Console.WriteLine("Tree: " + this.TreeToString(tree));
+            }
+        }
+
+        /// <summary>
+        /// Converts the Abstract tree to a string, good for debug.
+        /// Under construction :)
+        /// </summary>
+        /// <param name="tree">The abstract tree.</param>
+        /// <returns>A string representation of the tree.</returns>
+        private string TreeToString(Trees.Absyn.Tree tree)
+        {
+            if (tree == null)
+            {
+                return string.Empty;
+            }
+            else if (tree is Trees.Absyn.Lambda)
+            {
+                Trees.Absyn.Lambda t = (Trees.Absyn.Lambda)tree;
+                return " Lambda(" + t.Ident_ + "(" + this.TreeToString(t.Tree_) + ")" + ")";
+            }
+            else if (tree is Trees.Absyn.Variable)
+            {
+                Trees.Absyn.Variable t = (Trees.Absyn.Variable)tree;
+                return " Variable(" + t.Integer_ + ")";
+            }
+            else if (tree is Trees.Absyn.Application)
+            {
+                Trees.Absyn.Application t = (Trees.Absyn.Application)tree;
+                return " Application(" + this.TreeToString(t.Tree_1) + "," + this.TreeToString(t.Tree_2) + ")";
+            }
+            else if (tree is Trees.Absyn.Literal)
+            {
+                Trees.Absyn.Literal t = (Trees.Absyn.Literal)tree;
+                return " Literal(" + this.LiteralToString(t.Lit_)  + ")";
+            }
+            else if (tree is Trees.Absyn.MetaVariable)
+            {
+                Trees.Absyn.MetaVariable t = (Trees.Absyn.MetaVariable)tree;
+                return " MetaVariable(" + t.Integer_ + ")";
+            }
+            else if (tree is Trees.Absyn.Function)
+            {
+                Trees.Absyn.Function t = (Trees.Absyn.Function)tree;
+                return " Function(" + t.Ident_ + ")";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+
+        /// <summary>
+        /// Turns a literal to a string.
+        /// </summary>
+        /// <param name="lit">The literal.</param>
+        /// <returns>A string representation of the literal.</returns>
+        private string LiteralToString(Trees.Absyn.Lit lit)
+        {
+            if (lit is Trees.Absyn.IntLiteral)
+            {
+                Trees.Absyn.IntLiteral l = (Trees.Absyn.IntLiteral)lit;
+                return l.Integer_.ToString();
+            }
+            else if (lit is Trees.Absyn.FloatLiteral)
+            {
+                Trees.Absyn.FloatLiteral l = (Trees.Absyn.FloatLiteral)lit;
+                return l.Double_.ToString();
+            }
+            else if (lit is Trees.Absyn.StringLiteral)
+            {
+                Trees.Absyn.StringLiteral l = (Trees.Absyn.StringLiteral)lit;
+                return l.String_;
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
     }
 }

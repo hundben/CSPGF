@@ -64,8 +64,10 @@ namespace CSPGF
             List<Trees.Absyn.Tree> trees = rp.GetTrees();
             System.Console.WriteLine(trees.Count);
 
-            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookDan"));
-            System.Console.WriteLine(lin.LinearizeString(trees[0]));
+            rp.Debug2();
+
+            //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookDan"));
+            //System.Console.WriteLine(lin.LinearizeString(trees[0]));
 
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();
