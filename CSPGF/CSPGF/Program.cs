@@ -65,6 +65,7 @@ namespace CSPGF
             System.Console.WriteLine(trees.Count);
 
             rp.Debug2();
+            rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
 
             //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookDan"));
             //System.Console.WriteLine(lin.LinearizeString(trees[0]));

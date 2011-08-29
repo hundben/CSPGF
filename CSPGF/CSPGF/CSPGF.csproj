@@ -52,10 +52,6 @@
     <StartupObject>CSPGF.Program</StartupObject>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="QUT.ShiftReduceParser, Version=1.4.1.0, Culture=neutral, PublicKeyToken=402396ef6102baec, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>.\QUT.ShiftReduceParser.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -151,6 +147,7 @@
     <Compile Include="Trees\Parser.cs" />
     <Compile Include="Trees\Printer.cs" />
     <Compile Include="Trees\Scanner.cs" />
+    <Compile Include="Trees\ShiftReduceParserCode.cs" />
     <Compile Include="Trees\Test.cs" />
     <Compile Include="Trees\VisitSkeleton.cs" />
     <Compile Include="UnknownLanguageException.cs" />
@@ -176,9 +173,6 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="QUT.ShiftReduceParser.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

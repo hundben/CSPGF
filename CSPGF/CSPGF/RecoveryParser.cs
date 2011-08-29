@@ -166,6 +166,17 @@ namespace CSPGF
             }
         }
 
+        public void Debug3(Concrete lang)
+        {
+            ParseState ps = this.parseStates.Peek();
+            List<Trees.Absyn.Tree> trees = ps.GetTrees();
+            if (trees.Count > 0)
+            {
+                Trees.Absyn.Tree tree = trees[0];
+                Test(lang, tree);
+            }
+        }
+
         /// <summary>
         /// Converts the Abstract tree to a string, good for debug.
         /// Under construction :)
@@ -240,6 +251,74 @@ namespace CSPGF
             {
                 return string.Empty;
             }
+        }
+        // Below is just a test
+
+        public void Test(Concrete lang, Trees.Absyn.Tree tree)
+        {
+            Console.WriteLine("Test: "+TreeToConc(lang, tree));
+        }
+
+        public string TreeToConc(Concrete lang, Trees.Absyn.Tree tree)
+        {
+            if (tree == null)
+            {
+                return string.Empty;
+            }
+            else if (tree is Trees.Absyn.Lambda)
+            {
+                Trees.Absyn.Lambda t = (Trees.Absyn.Lambda)tree;
+                return "(" + t.Ident_ + "(" + this.TreeToConc(lang, t.Tree_) + ")" + ")";
+            }
+            else if (tree is Trees.Absyn.Variable)
+            {
+                Trees.Absyn.Variable t = (Trees.Absyn.Variable)tree;
+                return "(" + t.Integer_ + ")";
+            }
+            else if (tree is Trees.Absyn.Application)
+            {
+                Trees.Absyn.Application t = (Trees.Absyn.Application)tree;
+                return "(" + this.TreeToConc(lang, t.Tree_1) + "," + this.TreeToConc(lang, t.Tree_2) + ")";
+            }
+            else if (tree is Trees.Absyn.Literal)
+            {
+                Trees.Absyn.Literal t = (Trees.Absyn.Literal)tree;
+                return "(" + this.LiteralToString(t.Lit_) + ")";
+            }
+            else if (tree is Trees.Absyn.MetaVariable)
+            {
+                Trees.Absyn.MetaVariable t = (Trees.Absyn.MetaVariable)tree;
+                return "(" + t.Integer_ + ")";
+            }
+            else if (tree is Trees.Absyn.Function)
+            {
+                Trees.Absyn.Function t = (Trees.Absyn.Function)tree;
+                return "(" + this.GetToken(t, lang) + ")";
+            }
+            else
+            {
+                return string.Empty;
+            }
+        }
+        private string GetToken(Trees.Absyn.Function f, Concrete lang)
+        {
+            foreach (CncFun name in lang.CncFuns)
+            {
+                if (name.Name == f.Ident_)
+                {
+                    foreach (Sequence seq in name.Sequences)
+                    {
+                        foreach (Symbol symb in seq.Symbs)
+                        {
+                            if (symb is ToksSymbol)
+                            {
+                                return symb.ToString();
+                            }
+                        }
+                    }
+                }
+            }
+            return string.Empty;
         }
     }
 }
