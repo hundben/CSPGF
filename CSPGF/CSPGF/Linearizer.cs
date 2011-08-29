@@ -114,7 +114,10 @@ namespace CSPGF
         private Dictionary<string, Dictionary<int, HashSet<Production>>> GetLProductions()
         {
             Dictionary<int, HashSet<Production>> emptyMap = new Dictionary<int, HashSet<Production>>();
-            return this.LinIndex(this.FilterProductions(emptyMap, this.cnc.GetSetOfProductions()));
+            Dictionary<int, HashSet<Production>> tmp3 = this.cnc.GetSetOfProductions();
+            Dictionary<int, HashSet<Production>> tmp2 = this.FilterProductions(emptyMap, tmp3);
+            Dictionary<string, Dictionary<int, HashSet<Production>>> tmp = this.LinIndex(tmp2);
+            return tmp;
         }
 
         /// <summary>
@@ -146,16 +149,22 @@ namespace CSPGF
                                 {
                                     HashSet<Production> ttemp = obj[res];
                                     ttemp.Add(prod);
-                                    obj.Remove(res);
-                                    obj.Add(res, ttemp);
-                                    vtemp.Remove(str);
-                                    vtemp.Add(str, obj);
+                                    obj[res] = ttemp;
+
+                                    // obj.Remove(res);
+                                    // obj.Add(res, ttemp);
+                                    vtemp[str] = obj;
+
+                                    // vtemp.Remove(str);
+                                    // vtemp.Add(str, obj);
                                 } 
                                 else 
                                 {
                                     obj.Add(res, singleton);
-                                    vtemp.Remove(str);
-                                    vtemp.Add(str, obj);
+                                    vtemp[str] = obj;
+
+                                    // vtemp.Remove(str);
+                                    // vtemp.Add(str, obj);
                                 }
                             } 
                             else 
@@ -268,9 +277,10 @@ namespace CSPGF
                 }
             }
 
-            Dictionary<int, HashSet<Production>> prods1 = new Dictionary<int,HashSet<Production>>();
+            Dictionary<int, HashSet<Production>> prods1 = new Dictionary<int, HashSet<Production>>();
             
-            foreach (KeyValuePair<int, HashSet<Production>> cp in prods0) {
+            foreach (KeyValuePair<int, HashSet<Production>> cp in prods0) 
+            {
                 prods1.Add(cp.Key, cp.Value);
             }
             
@@ -319,6 +329,14 @@ namespace CSPGF
             foreach (Production p in set1)
             {
                 if (!set2.Contains(p))
+                {
+                    return false;
+                }
+            }
+
+            foreach (Production p2 in set2)
+            {
+                if (!set1.Contains(p2)) 
                 {
                     return false;
                 }
@@ -760,7 +778,7 @@ namespace CSPGF
                 List<int> args = ((ApplProduction)p).Domain();
                 CncFun cncFun = ((ApplProduction)p).Function;
                 List<CncType> vtype = new List<CncType>();
-                if (f.Equals("V")) 
+                if (f.Equals("_V")) 
                 {
                     foreach (int i in args)
                     {

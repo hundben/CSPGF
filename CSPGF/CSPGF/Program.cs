@@ -47,29 +47,26 @@ namespace CSPGF
         public static void Main(string[] args)
         {
             // Tests below.
-            FileStream fs = new FileStream("..\\..\\test\\files\\Phrasebook.pgf", FileMode.Open);
+            FileStream fs = new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open);
             BinaryReader br = new BinaryReader(fs);
             PGFReader pr = new PGFReader(br);
             PGF pgf = pr.ReadPGF();
             fs.Close();
 
-            RecoveryParser rp = new RecoveryParser(pgf, "PhrasebookEng");
-            rp.Scan("Finnish");
-            rp.Scan("fish");
+            RecoveryParser rp = new RecoveryParser(pgf, "FoodsEng");
+            rp.Scan("this");
+            rp.Scan("wine");
             rp.Scan("is");
-            rp.Scan("too");
-            rp.Scan("warm");
-            rp.Scan(".");
-
+            rp.Scan("Italian");
             List<Trees.Absyn.Tree> trees = rp.GetTrees();
             System.Console.WriteLine(trees.Count);
-
+            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
+            System.Console.WriteLine(lin.LinearizeString(trees[0]));
             rp.Debug2();
             rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
 
             //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookDan"));
             //System.Console.WriteLine(lin.LinearizeString(trees[0]));
-
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();
         }
