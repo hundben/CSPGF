@@ -85,7 +85,6 @@ namespace CSPGF.Parse
             this.agenda = new Stack<ActiveItem>();
             this.position = 0;
             this.active = new List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>>();
-            // this.active = new Dictionary<int, ActiveSet>();
             // initiate
             foreach (Production k in grammar.GetProductions()) 
             {
@@ -161,7 +160,6 @@ namespace CSPGF.Parse
         private void Compute()
         {
             this.active.Add(new Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>());
-            // this.active[this.position] = new Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>();
 
             // redo this with iterator or something like that?
             while (this.agenda.Count != 0) 
@@ -184,7 +182,7 @@ namespace CSPGF.Parse
             int l = item.Constituent;
             int p = item.Position;
 
-            Symbol sym = item.CurrentSymbol(); // is this correct?
+            Symbol sym = item.CurrentSymbol();
 
             if (sym is ToksSymbol) 
             {
@@ -214,12 +212,10 @@ namespace CSPGF.Parse
                 int d = arg.Arg;
                 int r = arg.Cons;
                 int bd = item.Domain[d];
-                if (this.active.Count >= this.position) // TODO check if correct
-                //if (this.active.ContainsKey(this.position)) 
+                if (this.active.Count >= this.position) // TODO check if this is correct
                 {
                     // a bit strange, check if we should create an active set first...
                     if (AddActiveSet(bd, r, item, this.active[this.position])) 
-                    // if (this.active[this.position].Add(bd, r, item, d)) 
                     {
                         foreach (ApplProduction prod in this.chart.GetProductions(bd)) 
                         {
@@ -246,8 +242,7 @@ namespace CSPGF.Parse
                 if (cat == -1) 
                 {
                     int n = this.chart.GenerateFreshCategory(new Category(a, l, j, this.position));
-                    foreach (ActiveItem ai in GetActiveSet(a, this.active[j])) // TODO might be wrong
-                    // foreach (ActiveItem ai in this.active[j].Get(a)) 
+                    foreach (ActiveItem ai in GetActiveSet(a, this.active[j]))
                     {
                         ActiveItem ip = ai;
                         int d = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;    // TODO Cons?
@@ -262,7 +257,6 @@ namespace CSPGF.Parse
                 else 
                 {
                     HashSet<ActiveItem> items = GetActiveSet(cat, this.active[this.position]);
-                    // HashSet<ActiveItem> items = this.active[this.position].Get(cat);
                     foreach (ActiveItem ai in items) 
                     {
                         //int r = aii.Cons2;
@@ -284,7 +278,7 @@ namespace CSPGF.Parse
         /// <param name="cons">The part.</param>
         /// <param name="item">The active item.</param>
         /// <returns>True if added successfully.</returns>
-        public bool AddActiveSet(int cat, int cons, ActiveItem item, Dictionary<int, Dictionary<int, HashSet<ActiveItem>>> currentActive )
+        private bool AddActiveSet(int cat, int cons, ActiveItem item, Dictionary<int, Dictionary<int, HashSet<ActiveItem>>> currentActive )
         {
             Dictionary<int, HashSet<ActiveItem>> map;
             if (currentActive.TryGetValue(cat, out map))
