@@ -37,6 +37,7 @@ namespace CSPGF
 
     /// <summary>
     /// TODO: Update summary.
+    /// Remove most of this later.
     /// </summary>
     public class RecoveryParser
     {
@@ -91,6 +92,8 @@ namespace CSPGF
             }
 
             ParseState ps = this.parseStates.Peek();
+            // TODO change this since it is of course very slow.
+            // Was only here for a test of ObjectCopier.
             ParseState copy = ObjectCopier.Clone<ParseState>(ps);
             bool result = copy.Scan(token);
             if (!result)

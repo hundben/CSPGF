@@ -243,7 +243,7 @@ namespace CSPGF.Parse
                 int cat = this.chart.GetCategory(a, l, j, this.position);
                 if (cat == -1) 
                 {
-                    int n = this.chart.GenerateFreshCategory(new Category(a, l, j, this.position));
+                    int n = this.chart.GenerateFreshCategory(a, l, j, this.position);
                     foreach (ActiveItem ai in this.GetActiveSet(a, this.active[j]))
                     {
                         ActiveItem ip = ai;
