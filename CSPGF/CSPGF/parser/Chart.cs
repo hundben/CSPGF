@@ -49,8 +49,9 @@ namespace CSPGF.Parse
 
         /// <summary>
         /// Contains all categories with an index as a value.
+        /// This is just a fun test :D Is faster than old version but probably not near a good solution.
         /// </summary>
-        private Dictionary<Category, int> categoryBookKeeper = new Dictionary<Category, int>();
+        private Dictionary<string, int> categoryBookKeeperHash = new Dictionary<string, int>();
 
         /// <summary>
         /// The next category index to use
@@ -142,21 +143,17 @@ namespace CSPGF.Parse
         /// <returns>New category index.</returns>
         public int GetFreshCategory(int oldCat, int l, int j, int k)
         {
-            // TODO Optimize this, use something else instead of looping through everything
-            Category cf = new Category(oldCat, l, j, k);
-            foreach (Category c in this.categoryBookKeeper.Keys)
-            {
-                if (cf.Equals(c))
-                {
-                    int i = this.categoryBookKeeper[c];
-                    if (i != -1)
-                    {
-                        return i;
-                    }
-                }
-            }
+            //Crappy optimization 
+            string hash = oldCat + " " + l + " " + j + " " + k;
 
-            return this.GenerateFreshCategory(cf);
+            if (this.categoryBookKeeperHash.ContainsKey(hash))
+            {
+                return this.categoryBookKeeperHash[hash];
+            }
+            else
+            {
+                return this.GenerateFreshCategory(hash);
+            }
         }
 
         /// <summary>
@@ -169,30 +166,33 @@ namespace CSPGF.Parse
         /// <returns>Returns the category.</returns>
         public int GetCategory(int oldCat, int cons, int begin, int end)
         {
-            Category cf = new Category(oldCat, cons, begin, end);
-            foreach (Category c in this.categoryBookKeeper.Keys)
+            string hash = oldCat + " " + cons + " " + begin + " " + end;
+            if (this.categoryBookKeeperHash.ContainsKey(hash))
             {
-                if (c.Equals(cf))
-                {
-                    return this.categoryBookKeeper[c];
-                }
+                return this.categoryBookKeeperHash[hash];
             }
-
-            // TODO check consistency of this
-            return -1;
+            else
+            {
+                return -1;
+            }
         }
 
         /// <summary>
         /// Generate a fresh category.
         /// </summary>
-        /// <param name="c">The old category.</param>
+        /// <param name="hash">The old category.</param>
         /// <returns>The new category</returns>
-        public int GenerateFreshCategory(Category c)
+        private int GenerateFreshCategory(string hash)
         {
             int cat = this.nextCat;
             this.nextCat++;
-            this.categoryBookKeeper[c] = cat;    // TODO maybe add check here
+            this.categoryBookKeeperHash[hash] = cat;
             return cat;
+        }
+
+        public int GenerateFreshCategory(int oldCat, int l, int j, int k)
+        {
+            return this.GenerateFreshCategory(oldCat + " " + l + " " + j + " " + k);
         }
 
         /// <summary>
@@ -208,7 +208,7 @@ namespace CSPGF.Parse
             }
 
             s += "=== passive items: ===\n";
-            foreach (KeyValuePair<Category, int> ints in this.categoryBookKeeper) 
+            foreach (KeyValuePair<string, int> ints in this.categoryBookKeeperHash) 
             {
                 // TODO add ToString on Category I guess? :D
                 s += ints.Key.ToString() + " -> " + ints.Value + '\n';
