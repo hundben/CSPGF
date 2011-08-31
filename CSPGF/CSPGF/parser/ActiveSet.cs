@@ -115,31 +115,8 @@ namespace CSPGF.Parse
                 {
                     foreach (ActiveItem i in map[key])
                     {
-                        //i.Cons2 = key;    ??
                         ai.Add(i);
                     }
-                }
-            }
-
-            return ai;
-        }
-
-        // Also fixed this one I hope /Erik
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="cat"></param>
-        /// <param name="cons"></param>
-        /// <returns></returns>
-        public HashSet<ActiveItem> Get(int cat, int cons)
-        {
-            HashSet<ActiveItem> ai = new HashSet<ActiveItem>();
-            Dictionary<int, HashSet<ActiveItem>> map;
-            if (this.store.TryGetValue(cat, out map))
-            {
-                if (map.TryGetValue(cons, out ai))
-                {
-                    return ai;
                 }
             }
 

@@ -72,7 +72,7 @@ namespace CSPGF.Parse
         /// </summary>
         private Dictionary<int, ActiveSet> active;
 
-        //private List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>> active;
+        private List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>> active2;
 
         /// <summary>
         /// Initializes a new instance of the ParseState class.
@@ -86,7 +86,7 @@ namespace CSPGF.Parse
             this.chart = new Chart(grammar.FId + 1);
             this.agenda = new Stack<ActiveItem>();
             this.position = 0;
-            // this.active = new List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>>();
+            this.active2 = new List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>>();
             this.active = new Dictionary<int, ActiveSet>();
             // initiate
             foreach (Production k in grammar.GetProductions()) 
@@ -245,7 +245,7 @@ namespace CSPGF.Parse
                 if (cat == -1) 
                 {
                     int n = this.chart.GenerateFreshCategory(new Category(a, l, j, this.position));
-                    foreach (ActiveItem ai in this.active[j].Get(a, l)) 
+                    foreach (ActiveItem ai in this.active[j].Get(a)) 
                     {
                         ActiveItem ip = ai;
                         int d = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;    // TODO Cons?
@@ -271,6 +271,76 @@ namespace CSPGF.Parse
                     this.chart.AddProduction(cat, f, b);
                 }
             }
+        }
+
+
+        /// <summary>
+        /// Ads an active item to the active set.
+        /// </summary>
+        /// <param name="cat">The category.</param>
+        /// <param name="cons">The part.</param>
+        /// <param name="item">The active item.</param>
+        /// <returns>True if added successfully.</returns>
+        public bool Add(int cat, int cons, ActiveItem item, Dictionary<int, Dictionary<int, HashSet<ActiveItem>>> currentActive )
+        {
+            Dictionary<int, HashSet<ActiveItem>> map;
+            if (currentActive.TryGetValue(cat, out map))
+            {
+                HashSet<ActiveItem> activeItems;
+                if (map.TryGetValue(cons, out activeItems))
+                {
+                    foreach (ActiveItem ai in activeItems)
+                    {
+                        if (ai.Equals(item))
+                        {
+                            return false;
+                        }
+                    }
+
+                    activeItems.Add(item);
+                    return true;
+                }
+                else
+                {
+                    activeItems = new HashSet<ActiveItem>();
+                    activeItems.Add(item);
+                    map.Add(cons, activeItems);
+                }
+            }
+            else
+            {
+                map = new Dictionary<int, HashSet<ActiveItem>>();
+                HashSet<ActiveItem> activeItems = new HashSet<ActiveItem>();
+                activeItems.Add(item);
+                map.Add(cons, activeItems);
+                currentActive.Add(cat, map);
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Gets the current active set.
+        /// </summary>
+        /// <param name="cat">Current category.</param>
+        /// <param name="currentActive">The dictionary with ActiveItems</param>
+        /// <returns>Returns a HashSet with active items.</returns>
+        private HashSet<ActiveItem> GetActiveSet(int cat, Dictionary<int, Dictionary<int, HashSet<ActiveItem>>> currentActive)
+        {
+            HashSet<ActiveItem> ai = new HashSet<ActiveItem>();
+            Dictionary<int, HashSet<ActiveItem>> map;
+            if (currentActive.TryGetValue(cat, out map))
+            {
+                foreach (int key in map.Keys)
+                {
+                    foreach (ActiveItem i in map[key])
+                    {
+                        ai.Add(i);
+                    }
+                }
+            }
+
+            return ai;
         }
     }
 }
