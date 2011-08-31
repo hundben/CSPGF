@@ -293,7 +293,7 @@ namespace CSPGF
                 HashSet<Production> hp = kvp.Value;
                 if (prods0.ContainsKey(index))
                 {
-                    if (!this.HashEquals(prods0[index], hp))
+                    if (!prods0[index].SetEquals(hp))
                     {
                         foreach (Production p in prods0[index])
                         {
@@ -319,32 +319,6 @@ namespace CSPGF
             {
                 return prods0;
             }
-        }
-
-        /// <summary>
-        /// Checks if two HashMaps containing Productions are equal
-        /// </summary>
-        /// <param name="set1">First set to compare</param>
-        /// <param name="set2">Secons set to compare</param>
-        /// <returns>True if equal</returns>
-        private bool HashEquals(HashSet<Production> set1, HashSet<Production> set2)
-        {
-            //foreach (Production p in set1)
-            //{
-            //    if (!set2.Contains(p))
-            //    {
-            //        return false;
-            //    }
-            //}
-
-            //foreach (Production p2 in set2)
-            //{
-            //    if (!set1.Contains(p2))
-            //    {
-            //        return false;
-            //    }
-            //}
-            return set1.SetEquals(set2);
         }
 
         /// <summary>
@@ -527,9 +501,7 @@ namespace CSPGF
 
                 if (tree is Function)
                 {
-                    List<LinTriple> tmp = this.Apply(xs, mbcty, mbfid, ((Function)tree).Ident_, es);
-
-                    return tmp;
+                    return this.Apply(xs, mbcty, mbfid, ((Function)tree).Ident_, es);
                 }
                 else
                 {
@@ -556,19 +528,19 @@ namespace CSPGF
         /// </summary>
         /// To linearize the application of the function "f" to the arguments (trees) a, b and c use : apply(???,???,??? "f", [a,b,c]).
         /// 'apply' will linearize the argument and then use the concrete function for "f" to glue them together.
-        /// <param name="xs">Insert comment here?</param>
-        /// <param name="mbcty">Insert comment here</param>
+        /// <param name="xs">List of bound variables</param>
+        /// <param name="mbcty">Concrete type</param>
         /// <param name="nextfid">Insert comment</param>
         /// <param name="f">Name of the function to be applied</param>
-        /// <param name="es">The argiment of the function to linearize</param>
+        /// <param name="es">The argument of the function to linearize</param>
         /// <returns>All possible linearizations for the application of f to es</returns>
-        private List<LinTriple> Apply(List<string> xs, CncType mbcty, int nextfid, string f, List<CSPGF.Trees.Absyn.Tree> es)
+        private List<LinTriple> Apply(List<string> xs, CncType mbcty, int nextfid, string f, List<Tree> es)
         {
             Dictionary<int, HashSet<Production>> prods;
             if (!this.linProd.TryGetValue(f, out prods))
             {
-                List<CSPGF.Trees.Absyn.Tree> newes = new List<CSPGF.Trees.Absyn.Tree>();
-                newes.Add(new CSPGF.Trees.Absyn.Literal(new CSPGF.Trees.Absyn.StringLiteral(f)));
+                List<CSPGF.Trees.Absyn.Tree> newes = new List<Tree>();
+                newes.Add(new Literal(new StringLiteral(f)));
                 System.Console.WriteLine("Function " + f + " does not have a linearization !");
                 return this.Apply(xs, mbcty, nextfid, "_V", newes);
             }
@@ -592,7 +564,7 @@ namespace CSPGF
 
                     List<Sequence> lins = appr.CncFun.Sequences;
                     string cat = appr.CncType.CId;
-                    List<CSPGF.Trees.Absyn.Tree> copy_expr = new List<CSPGF.Trees.Absyn.Tree>();
+                    List<Tree> copy_expr = new List<Tree>();
                     foreach (Tree tree in es)
                     {
                         copy_expr.Add(tree);
@@ -636,19 +608,10 @@ namespace CSPGF
                     List<AppResult> rez = new List<AppResult>();
                     foreach (KeyValuePair<int, HashSet<Production>> it in prods)
                     {
-                        // Iterator<Entry<Integer, HashSet<Production>>> it = prods.entrySet().iterator();
-                        // while (it.hasNext()) {
-                        // Entry<Integer, HashSet<Production>> en = it.next();
                         int fid = it.Key;
                         foreach (Production prod in it.Value)
                         {
-                            // Iterator<Production> ip = en.getValue().iterator();
-                            // while (ip.hasNext()) {
-                            List<AppResult> appR = this.ToApp(new CncType("_", fid), prod, f, prods);
-                            foreach (AppResult app in appR)
-                            {
-                                rez.Add(app);
-                            }
+                            rez.AddRange(this.ToApp(new CncType("_", fid), prod, f, prods));
                         }
                     }
 
@@ -661,16 +624,13 @@ namespace CSPGF
                 List<AppResult> rez = new List<AppResult>();
                 if (!prods.TryGetValue(mbcty.FId, out setProd))
                 {
-                    return new List<AppResult>();
+                    return rez;
                 }
                 else
                 {
                     foreach (Production prod in setProd)
                     {
-                        foreach (AppResult app in this.ToApp(mbcty, prod, f, prods))
-                        {
-                            rez.Add(app);
-                        }
+                        rez.AddRange(this.ToApp(mbcty, prod, f, prods));
                     }
 
                     return rez;
@@ -694,7 +654,7 @@ namespace CSPGF
                 List<int> args = ((ApplProduction)p).Domain();
                 CncFun cncFun = ((ApplProduction)p).Function;
                 List<CncType> vtype = new List<CncType>();
-                if (f.Equals("_V"))
+                if (f.Equals("V"))
                 {
                     foreach (int i in args)
                     {
@@ -718,14 +678,13 @@ namespace CSPGF
                 }
                 else
                 {
-                    List<AbsFun> absFuns = this.pgf.GetAbstract().AbsFuns;
                     CSPGF.Reader.Type t = null;
-                    foreach (AbsFun abs in absFuns)
+                    foreach (AbsFun abs in this.pgf.GetAbstract().AbsFuns)
                     {
                         if (f.Equals(abs.Name))
                         {
                             t = abs.Type;
-                            break;
+                            //break;
                         }
                     }
 
@@ -751,10 +710,7 @@ namespace CSPGF
                 HashSet<Production> setProds = prods[fid];
                 foreach (Production prod in setProds)
                 {
-                    foreach (AppResult app in this.ToApp(cty, prod, f, prods))
-                    {
-                        rez.Add(app);
-                    }
+                    rez.AddRange(this.ToApp(cty, prod, f, prods));
                 }
 
                 return rez;

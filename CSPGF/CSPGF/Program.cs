@@ -46,7 +46,6 @@ namespace CSPGF
         /// <param name="args">Commandline arguments</param>
         public static void Main(string[] args)
         {
-            DateTime start = DateTime.Now;
             // Tests below.
             FileStream fs = new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open);
             BinaryReader br = new BinaryReader(fs);
@@ -65,17 +64,16 @@ namespace CSPGF
             //Linearizer2 lin2 = new Linearizer2(pgf, pgf.GetConcrete("FoodsGer"));
             //lin2.SetProductions(lin.LProds());
             //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
-            //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
+            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
             //rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
-            //System.Console.WriteLine(lin.LinearizeString(trees[0]));
+            System.Console.WriteLine(lin.LinearizeString(trees[0]));
             rp.Debug2();
             //lin2.Linearize(trees[0]);
             //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookDan"));
             //System.Console.WriteLine(lin.LinearizeString(trees[0]));
             System.Console.Out.WriteLine("done");
-            DateTime stop = DateTime.Now;
-            TimeSpan span = start - stop;
-            System.Console.WriteLine(span);
+            //DateTime stop = DateTime.Now;
+            //TimeSpan span = stop - start;
             System.Console.In.ReadLine();
         }
     }
