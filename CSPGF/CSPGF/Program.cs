@@ -65,18 +65,10 @@ namespace CSPGF
             rp.Scan("Swedish");
             rp.Scan(".");
             List<Trees.Absyn.Tree> trees = rp.GetTrees();
-            System.Console.WriteLine(trees.Count);
-            //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
-            //Linearizer2 lin2 = new Linearizer2(pgf, pgf.GetConcrete("FoodsGer"));
-            //lin2.SetProductions(lin.LProds());
-            //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
             Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookSwe"));
             //rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
             System.Console.WriteLine(lin.LinearizeString(trees[0]));
             rp.Debug2();
-            //lin2.Linearize(trees[0]);
-            //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookDan"));
-            //System.Console.WriteLine(lin.LinearizeString(trees[0]));
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();
         }

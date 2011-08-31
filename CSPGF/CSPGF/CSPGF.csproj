@@ -66,7 +66,6 @@
   <ItemGroup>
     <Compile Include="Generator.cs" />
     <Compile Include="Linearizer.cs" />
-    <Compile Include="Linearizer2.cs" />
     <Compile Include="LinearizerException.cs" />
     <Compile Include="Linearizer\AppResult.cs" />
     <Compile Include="Linearizer\Bracket.cs" />
