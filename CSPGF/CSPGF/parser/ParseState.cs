@@ -85,6 +85,7 @@ namespace CSPGF.Parse
             this.agenda = new Stack<ActiveItem>();
             this.position = 0;
             this.active = new List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>>();
+
             // initiate
             foreach (Production k in grammar.GetProductions()) 
             {
@@ -212,10 +213,12 @@ namespace CSPGF.Parse
                 int d = arg.Arg;
                 int r = arg.Cons;
                 int bd = item.Domain[d];
-                if (this.active.Count >= this.position) // TODO check if this is correct
+
+                // TODO check if this is correct
+                if (this.active.Count >= this.position) 
                 {
                     // a bit strange, check if we should create an active set first...
-                    if (AddActiveSet(bd, r, item, this.active[this.position])) 
+                    if (this.AddActiveSet(bd, r, item, this.active[this.position])) 
                     {
                         foreach (ApplProduction prod in this.chart.GetProductions(bd)) 
                         {
@@ -226,7 +229,6 @@ namespace CSPGF.Parse
 
                     int cat = this.chart.GetCategory(bd, r, this.position, this.position);
                     
-                    // null here is wierd? :D
                     if (cat != -1) 
                     {
                         List<int> newDomain = new List<int>(b);
@@ -242,7 +244,7 @@ namespace CSPGF.Parse
                 if (cat == -1) 
                 {
                     int n = this.chart.GenerateFreshCategory(new Category(a, l, j, this.position));
-                    foreach (ActiveItem ai in GetActiveSet(a, this.active[j]))
+                    foreach (ActiveItem ai in this.GetActiveSet(a, this.active[j]))
                     {
                         ActiveItem ip = ai;
                         int d = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;    // TODO Cons?
@@ -256,11 +258,10 @@ namespace CSPGF.Parse
                 }
                 else 
                 {
-                    HashSet<ActiveItem> items = GetActiveSet(cat, this.active[this.position]);
+                    HashSet<ActiveItem> items = this.GetActiveSet(cat, this.active[this.position]);
                     foreach (ActiveItem ai in items) 
                     {
-                        //int r = aii.Cons2;
-                        int r = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;  //Cons?
+                        int r = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;  // Cons?
                         ActiveItem i = new ActiveItem(this.position, cat, f, b, r, 0);
                         this.agenda.Push(i);
                     }
@@ -270,15 +271,15 @@ namespace CSPGF.Parse
             }
         }
 
-
         /// <summary>
         /// Ads an active item to the active set.
         /// </summary>
         /// <param name="cat">The category.</param>
         /// <param name="cons">The part.</param>
         /// <param name="item">The active item.</param>
+        /// <param name="currentActive">Current active set.</param>
         /// <returns>True if added successfully.</returns>
-        private bool AddActiveSet(int cat, int cons, ActiveItem item, Dictionary<int, Dictionary<int, HashSet<ActiveItem>>> currentActive )
+        private bool AddActiveSet(int cat, int cons, ActiveItem item, Dictionary<int, Dictionary<int, HashSet<ActiveItem>>> currentActive)
         {
             Dictionary<int, HashSet<ActiveItem>> map;
             if (currentActive.TryGetValue(cat, out map))
