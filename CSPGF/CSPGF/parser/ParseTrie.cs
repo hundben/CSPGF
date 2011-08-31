@@ -181,34 +181,5 @@ namespace CSPGF.Parse
         {
             return this.child.Keys.ToList<string>();
         }
-        
-        /// <summary>
-        /// Returns the class as a string.
-        /// </summary>
-        /// <returns>A string.</returns>
-        public override string ToString()
-        {
-            return this.ToStringWithPrefix(string.Empty);
-        }
-        
-        /// <summary>
-        /// Returns a string with the class with a prefix.
-        /// </summary>
-        /// <param name="prefix">The prefix.</param>
-        /// <returns>A string with the class.</returns>
-        public string ToStringWithPrefix(string prefix)
-        {
-            // TODO complete this.
-            string tmp = prefix + "<" + this.value.ToString() + ">";
-            return tmp;
-        }
-
-        // def toStringWithPrefix(prefix:String):String = {
-        //    prefix + "<" + this.value + ">" +
-        //    this.child.keys.map(k =>
-        //      prefix + k.toString + ":\n" +
-        //      this.child(k).toStringWithPrefix(prefix + "  ")
-        //    ).foldLeft("")((a:String,b:String) => a + "\n" + b)
-        // }
     }
 }
