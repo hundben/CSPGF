@@ -72,8 +72,6 @@ namespace CSPGF
             //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookDan"));
             //System.Console.WriteLine(lin.LinearizeString(trees[0]));
             System.Console.Out.WriteLine("done");
-            //DateTime stop = DateTime.Now;
-            //TimeSpan span = stop - start;
             System.Console.In.ReadLine();
         }
     }
