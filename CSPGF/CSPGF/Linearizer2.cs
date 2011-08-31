@@ -30,10 +30,7 @@
 
 namespace CSPGF
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
     using CSPGF.Reader;
     using CSPGF.Trees.Absyn;
 
@@ -63,14 +60,73 @@ namespace CSPGF
 
         public string Linearize(Tree tree)
         {
+            List<Tree> trees = new List<Tree>();
+            if (tree is Application)
+            {
+                do
+                {
+                    trees.Add(((Application)tree).Tree_2);
+                    tree = ((Application)tree).Tree_1;
+                } while (tree is Application);
+            }
 
+            if (tree is Function)
+            {
+                this.Apply(tree); 
+                System.Console.WriteLine(((Function)tree).Ident_);
+            }
+            else
+            {
+                throw new LinearizerException("Unhandled tree");
+            }
             return string.Empty;
+        }
+
+        public void SetProductions(Dictionary<string, Dictionary<int, HashSet<Production>>> prods)
+        {
+            linProds = prods;
         }
 
         private void CreateProductions() 
         {
-            RemoveProds(this.concrete.GetSetOfProductions());
+            // RemoveProds(this.concrete.GetSetOfProductions());
         }
+
+        private void Apply(Tree tree)
+        {
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        /// <summary>
+        /// /////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        /// </summary>
+        /// <param name="prods"></param>
+        /// <returns></returns>
+
 
         private Dictionary<int, HashSet<Production>> RemoveProds(Dictionary<int, HashSet<Production>> prods)
         {
@@ -92,7 +148,8 @@ namespace CSPGF
                     }
                     else if (p is CoerceProduction)
                     {
-                        if (prods.ContainsKey(p.FId))
+                        // if (prods.ContainsKey(p.FId))
+                        if(FailCoerce(p, prods))
                         {
                             set.Add(p);
                         }
@@ -101,6 +158,38 @@ namespace CSPGF
                 prods0.Add(kvp.Key, set);
                 set = new HashSet<Production>();
             }
+
+            Dictionary<int, HashSet<Production>> prods123 = new Dictionary<int, HashSet<Production>>();
+            set = new HashSet<Production>();
+            foreach (KeyValuePair<int, HashSet<Production>> kvp in prods)
+            {
+                foreach (Production p in kvp.Value)
+                {
+                    if (p is ApplProduction)
+                    {
+                        foreach (int i in p.Domain())
+                        {
+                            if (this.IsLiteral(i) || prods.ContainsKey(i))
+                            {
+                                set.Add(p);
+                            }
+                        }
+                    }
+                    else if (p is CoerceProduction)
+                    {
+                        // if (prods.ContainsKey(p.FId))
+                        if (FailCoerce(p, prods))
+                        {
+                            set.Add(p);
+                        }
+                    }
+                }
+                prods123.Add(kvp.Key, set);
+                set = new HashSet<Production>();
+            }
+
+
+
             Dictionary<int, HashSet<Production>> productions = new Dictionary<int, HashSet<Production>>();
             foreach (KeyValuePair<int, HashSet<Production>> kvp in prods0)
             {
@@ -129,6 +218,10 @@ namespace CSPGF
                     productions.Remove(kvp.Key);
                 }
                 ert = new HashSet<Production>();
+            }
+
+            foreach (KeyValuePair<int, HashSet<Production>> kvp in productions)
+            {
             }
 
             return productions;
