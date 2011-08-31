@@ -96,9 +96,9 @@ namespace CSPGF.Parse
         /// <returns>The next symbol.</returns>
         public Symbol CurrentSymbol()
         {
-            if (this.Position < this.Function.Sequences[this.Constituent].Symbs.Count) 
+            if (this.Position < this.Function.Sequences[this.Constituent].Count) 
             {
-                Symbol sym = this.Function.Sequences[this.Constituent].GetSymbol(this.Position);
+                Symbol sym = this.Function.Sequences[this.Constituent][this.Position];
                 return sym;
             }
 

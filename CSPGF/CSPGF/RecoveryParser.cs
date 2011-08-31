@@ -309,9 +309,9 @@ namespace CSPGF
             {
                 if (name.Name == f.Ident_)
                 {
-                    foreach (Sequence seq in name.Sequences)
+                    foreach (List<Symbol> seq in name.Sequences)
                     {
-                        foreach (Symbol symb in seq.Symbs)
+                        foreach (Symbol symb in seq)
                         {
                             if (symb is ToksSymbol)
                             {
