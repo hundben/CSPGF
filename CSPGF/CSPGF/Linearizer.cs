@@ -562,7 +562,7 @@ namespace CSPGF
                         throw new LinearizerException("lengths of es and ctys don't match" + es.ToString() + " -- " + ctys.ToString());
                     }
 
-                    List<Sequence> lins = appr.CncFun.Sequences;
+                    List<List<Symbol>> lins = appr.CncFun.Sequences;
                     string cat = appr.CncType.CId;
                     List<Tree> copy_expr = new List<Tree>();
                     foreach (Tree tree in es)
@@ -575,7 +575,7 @@ namespace CSPGF
                     {
                         RezDesc intRez = rez2;
                         List<List<BracketedTokn>> linTab = new List<List<BracketedTokn>>();
-                        foreach (Sequence seq in lins)
+                        foreach (List<Symbol> seq in lins)
                         {
                             linTab.Add(this.ComputeSeq(seq, intRez.CncTypes, intRez.Bracketedtokn));
                         }
@@ -821,11 +821,10 @@ namespace CSPGF
         /// <param name="cncTypes">List of Concrete types</param>
         /// <param name="linTables">List of list of list of BracketedTokns</param>
         /// <returns>List of BracketedTokns</returns>
-        private List<BracketedTokn> ComputeSeq(Sequence seqId, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
+        private List<BracketedTokn> ComputeSeq(List<Symbol> seqId, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
             List<BracketedTokn> bt = new List<BracketedTokn>();
-            List<Symbol> symbs = seqId.Symbs;
-            foreach (Symbol sym in symbs)
+            foreach (Symbol sym in seqId)
             {
                 foreach (BracketedTokn btn in this.Compute(sym, cncTypes, linTables))
                 {
@@ -845,7 +844,7 @@ namespace CSPGF
         /// <param name="exps">List of trees</param>
         /// <param name="xs">List of strings</param>
         /// <returns>List of RezDesc</returns>
-        private List<RezDesc> Descend(int nextfid, List<CncType> cncTypes, List<CSPGF.Trees.Absyn.Tree> exps, List<string> xs)
+        private List<RezDesc> Descend(int nextfid, List<CncType> cncTypes, List<Tree> exps, List<string> xs)
         {
             List<RezDesc> rez = new List<RezDesc>();
             if (exps.Count == 0)
@@ -879,40 +878,12 @@ namespace CSPGF
             return rez;
         }
 
-
-
-        bool isLiteralInt(int i)
-        { return i == -2; }
-
-        /** checks if an integer is the index of a string literal
-        **/
-        bool isLiteralString(int i)
-        { return i == -1; }
-
-        /** checks if an integer is the index of a float literal
-        **/
-        bool isLiteralFloat(int i)
-        { return i == -3; }
-
-        /** checks if an integer is the index of a variable literal
-        **/
-        bool isLiteralVar(int i)
-        { return i == -4; }
-
-        /** checks if an integer is the index of a literal
-        **/
-        bool IsLiteral(int i)
-        {
-            if (isLiteralString(i) || isLiteralInt(i) || isLiteralFloat(i) || isLiteralVar(i)) return true;
-            return false;
-        }
-
         /// <summary>
         /// Checks if an integer is the index of a literal
         /// </summary>
         /// <param name="i">Integer to check</param>
         /// <returns>True if integer is a literal</returns>
-        private bool isLiteral(int i)
+        private bool IsLiteral(int i)
         {
             // LiteralVar = -4
             // LiteralFloat = -3
@@ -922,10 +893,7 @@ namespace CSPGF
             {
                 return true;
             }
-            else
-            {
                 return false;
-            }
         }
     }
 }

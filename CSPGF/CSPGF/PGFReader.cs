@@ -584,7 +584,7 @@ namespace CSPGF
                 this.dbgwrite.WriteLine("Concrete: Reading sequences");
             }
 
-            List<Sequence> seqs = this.GetListSequence();
+            List<List<Symbol>> seqs = this.GetListSequence();
             List<CncFun> cncFuns = this.GetListCncFun(seqs);
 
             // We don't need the lindefs for now but again we need to
@@ -634,20 +634,20 @@ namespace CSPGF
         /// Reads a Sequence
         /// </summary>
         /// <returns>Returns the Sequence</returns>
-        private Sequence GetSequence()
+        private List<Symbol> GetSequence()
         {
             List<Symbol> symbols = this.GetListSymbol();
-            return new Sequence(symbols);
+            return symbols;
         }
 
         /// <summary>
         /// Reads a list of Sequences
         /// </summary>
         /// <returns>List of Sequences</returns>
-        private List<Sequence> GetListSequence()
+        private List<List<Symbol>> GetListSequence()
         {
             int npoz = this.GetInt();
-            List<Sequence> tmp = new List<Sequence>();
+            List<List<Symbol>> tmp = new List<List<Symbol>>();
             for (int i = 0; i < npoz; i++)
             {
                 tmp.Add(this.GetSequence());
@@ -752,11 +752,11 @@ namespace CSPGF
         /// </summary>
         /// <param name="sequences">List of sequences</param>
         /// <returns>Returns the Concrete Function</returns>
-        private CncFun GetCncFun(List<Sequence> sequences)
+        private CncFun GetCncFun(List<List<Symbol>> sequences)
         {
             string name = this.GetIdent();
             List<int> seqIndices = this.GetListInt();
-            List<Sequence> seqs = new List<Sequence>();
+            List<List<Symbol>> seqs = new List<List<Symbol>>();
             foreach (int i in seqIndices) 
             {
                 seqs.Add(sequences[i]);
@@ -770,7 +770,7 @@ namespace CSPGF
         /// </summary>
         /// <param name="sequences">List of Sequences</param>
         /// <returns>List of Concrete Functions</returns>
-        private List<CncFun> GetListCncFun(List<Sequence> sequences)
+        private List<CncFun> GetListCncFun(List<List<Symbol>> sequences)
         {
             int npoz = this.GetInt();
             List<CncFun> tmp = new List<CncFun>();

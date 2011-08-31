@@ -128,7 +128,6 @@
     <Compile Include="Reader\Production.cs" />
     <Compile Include="Reader\ProductionSet.cs" />
     <Compile Include="Reader\RLiteral.cs" />
-    <Compile Include="Reader\Sequence.cs" />
     <Compile Include="Reader\StringLit.cs" />
     <Compile Include="Reader\Symbol.cs" />
     <Compile Include="Reader\ToksSymbol.cs" />

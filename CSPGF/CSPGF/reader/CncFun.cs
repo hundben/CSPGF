@@ -38,7 +38,7 @@ namespace CSPGF.Reader
     [Serializable]
     public class CncFun
     {
-        public CncFun(string name, List<Sequence> sequences)
+        public CncFun(string name, List<List<Symbol>> sequences)
         {
             this.Name = name;
             this.Sequences = sequences;
@@ -46,12 +46,12 @@ namespace CSPGF.Reader
 
         public string Name { get; private set; } // TODO: This might not be needed. Isn't used in the haskell-version?
 
-        public List<Sequence> Sequences { get; private set; }
+        public List<List<Symbol>> Sequences { get; private set; }
 
         public override string ToString()
         {
             string ss = "Name : " + this.Name + " , Indices : ";
-            foreach (Sequence s in this.Sequences) 
+            foreach (List<Symbol> s in this.Sequences) 
             {
                 ss += " " + s;
             }

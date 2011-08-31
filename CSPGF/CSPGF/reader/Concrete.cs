@@ -46,7 +46,7 @@ namespace CSPGF.Reader
         public Concrete(
             string name,
             Dictionary<string, RLiteral> flags,
-            List<Sequence> seqs,
+            List<List<Symbol>> seqs,
             List<CncFun> cncFuns,
             List<ProductionSet> prods,
             Dictionary<string, CncCat> cncCats,
@@ -65,7 +65,7 @@ namespace CSPGF.Reader
 
         public string Name { get; private set; }
 
-        public List<Sequence> Seqs { get; private set; }
+        public List<List<Symbol>> Seqs { get; private set; }
 
         public List<CncFun> CncFuns { get; private set; }
 
