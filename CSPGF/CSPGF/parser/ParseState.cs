@@ -68,11 +68,9 @@ namespace CSPGF.Parse
         private int position;
 
         /// <summary>
-        /// Dictionary of ActiveSets.
+        /// List with sets of acctive items.
         /// </summary>
-        private Dictionary<int, ActiveSet> active;
-
-        private List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>> active2;
+        private List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>> active;
 
         /// <summary>
         /// Initializes a new instance of the ParseState class.
@@ -86,8 +84,8 @@ namespace CSPGF.Parse
             this.chart = new Chart(grammar.FId + 1);
             this.agenda = new Stack<ActiveItem>();
             this.position = 0;
-            this.active2 = new List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>>();
-            this.active = new Dictionary<int, ActiveSet>();
+            this.active = new List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>>();
+            // this.active = new Dictionary<int, ActiveSet>();
             // initiate
             foreach (Production k in grammar.GetProductions()) 
             {
@@ -162,7 +160,8 @@ namespace CSPGF.Parse
         /// </summary>
         private void Compute()
         {
-            this.active[this.position] = new ActiveSet();
+            this.active.Add(new Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>());
+            // this.active[this.position] = new Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>();
 
             // redo this with iterator or something like that?
             while (this.agenda.Count != 0) 
@@ -215,10 +214,12 @@ namespace CSPGF.Parse
                 int d = arg.Arg;
                 int r = arg.Cons;
                 int bd = item.Domain[d];
-                if (this.active.ContainsKey(this.position)) 
+                if (this.active.Count >= this.position) // TODO check if correct
+                //if (this.active.ContainsKey(this.position)) 
                 {
                     // a bit strange, check if we should create an active set first...
-                    if (this.active[this.position].Add(bd, r, item, d)) 
+                    if (AddActiveSet(bd, r, item, this.active[this.position])) 
+                    // if (this.active[this.position].Add(bd, r, item, d)) 
                     {
                         foreach (ApplProduction prod in this.chart.GetProductions(bd)) 
                         {
@@ -245,7 +246,8 @@ namespace CSPGF.Parse
                 if (cat == -1) 
                 {
                     int n = this.chart.GenerateFreshCategory(new Category(a, l, j, this.position));
-                    foreach (ActiveItem ai in this.active[j].Get(a)) 
+                    foreach (ActiveItem ai in GetActiveSet(a, this.active[j])) // TODO might be wrong
+                    // foreach (ActiveItem ai in this.active[j].Get(a)) 
                     {
                         ActiveItem ip = ai;
                         int d = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;    // TODO Cons?
@@ -259,7 +261,8 @@ namespace CSPGF.Parse
                 }
                 else 
                 {
-                    HashSet<ActiveItem> items = this.active[this.position].Get(cat);
+                    HashSet<ActiveItem> items = GetActiveSet(cat, this.active[this.position]);
+                    // HashSet<ActiveItem> items = this.active[this.position].Get(cat);
                     foreach (ActiveItem ai in items) 
                     {
                         //int r = aii.Cons2;
@@ -281,7 +284,7 @@ namespace CSPGF.Parse
         /// <param name="cons">The part.</param>
         /// <param name="item">The active item.</param>
         /// <returns>True if added successfully.</returns>
-        public bool Add(int cat, int cons, ActiveItem item, Dictionary<int, Dictionary<int, HashSet<ActiveItem>>> currentActive )
+        public bool AddActiveSet(int cat, int cons, ActiveItem item, Dictionary<int, Dictionary<int, HashSet<ActiveItem>>> currentActive )
         {
             Dictionary<int, HashSet<ActiveItem>> map;
             if (currentActive.TryGetValue(cat, out map))
