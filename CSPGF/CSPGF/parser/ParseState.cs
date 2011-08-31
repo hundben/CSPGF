@@ -79,7 +79,7 @@ namespace CSPGF.Parse
         public ParseState(Concrete grammar)
         {
             this.startCat = grammar.GetStartCat();
-            this.trie = new ParseTrie(null);
+            this.trie = new ParseTrie();
 
             this.chart = new Chart(grammar.FId + 1);
             this.agenda = new Stack<ActiveItem>();
