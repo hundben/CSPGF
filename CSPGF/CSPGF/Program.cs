@@ -47,24 +47,30 @@ namespace CSPGF
         public static void Main(string[] args)
         {
             // Tests below.
-            FileStream fs = new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open);
+            FileStream fs = new FileStream("..\\..\\test\\files\\Phrasebook.pgf", FileMode.Open);
             BinaryReader br = new BinaryReader(fs);
             PGFReader pr = new PGFReader(br);
             PGF pgf = pr.ReadPGF();
             fs.Close();
 
-            RecoveryParser rp = new RecoveryParser(pgf, "FoodsEng");
+            /*RecoveryParser rp = new RecoveryParser(pgf, "FoodsEng");
             rp.Scan("this");
             rp.Scan("wine");
             rp.Scan("is");
-            rp.Scan("Italian");
+            rp.Scan("Italian");*/
+            RecoveryParser rp = new RecoveryParser(pgf, "PhrasebookEng");
+            rp.Scan("this");
+            rp.Scan("meat");
+            rp.Scan("is");
+            rp.Scan("Swedish");
+            rp.Scan(".");
             List<Trees.Absyn.Tree> trees = rp.GetTrees();
             System.Console.WriteLine(trees.Count);
             //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
             //Linearizer2 lin2 = new Linearizer2(pgf, pgf.GetConcrete("FoodsGer"));
             //lin2.SetProductions(lin.LProds());
             //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
-            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsIta"));
+            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookSwe"));
             //rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
             System.Console.WriteLine(lin.LinearizeString(trees[0]));
             rp.Debug2();
