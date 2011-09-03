@@ -59,15 +59,29 @@ namespace CSPGF
             rp.Scan("is");
             rp.Scan("Italian");*/
             RecoveryParser rp = new RecoveryParser(pgf, "PhrasebookEng");
-            rp.Scan("this");
-            rp.Scan("meat");
+            /*rp.Scan("Finnish");
+            rp.Scan("fish");
             rp.Scan("is");
-            rp.Scan("Swedish");
-            rp.Scan(".");
+            rp.Scan("too");
+            rp.Scan("warm");
+            rp.Scan(".");*/
+            rp.Scan("bad");
+            rp.Scan("chicken");
+            rp.Scan("and");
+            rp.Scan("apples");
+            rp.Scan("please");
+            rp.Scan("!");
             List<Trees.Absyn.Tree> trees = rp.GetTrees();
             Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookSwe"));
             //rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
-            System.Console.WriteLine(lin.LinearizeString(trees[0]));
+            if (trees.Count != 0)
+            {
+                System.Console.WriteLine(lin.LinearizeString(trees[0]));
+            }
+            else
+            {
+                System.Console.WriteLine("Failade att parsea :D");
+            }
             rp.Debug2();
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();
