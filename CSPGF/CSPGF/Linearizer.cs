@@ -53,7 +53,7 @@ namespace CSPGF
         private Concrete cnc;
 
         /// <summary>
-        /// TODO: What is this?
+        /// Linearization productions
         /// </summary>
         private Dictionary<string, Dictionary<int, HashSet<Production>>> linProd;
 
@@ -90,14 +90,7 @@ namespace CSPGF
         /// <returns>Linearized string</returns>
         public string LinearizeString(CSPGF.Trees.Absyn.Tree absyn)
         {
-            List<LinTriple> tmp = this.Linearize(absyn);
-            if (tmp.Count == 0)
-            {
-                throw new LinearizerException("Failed to linearize");
-            }
-
-            LinTriple tmp2 = tmp.First<LinTriple>();
-            List<string> words = this.RenderLin(tmp2);
+            List<string> words = this.RenderLin(this.Linearize(absyn).ElementAt(0));
             string sb = string.Empty;
             foreach (string w in words)
             {
@@ -275,15 +268,6 @@ namespace CSPGF
                     tempRez.Add(kvp.Key, intermRez);
                 }
             }
-            /*foreach (int index in prods.Keys)
-            {
-                HashSet<Production> setProd = prods[index];
-                HashSet<Production> intermRez = this.FilterProdSet1(prods0, setProd);
-                if (intermRez.Count != 0)
-                {
-                    tempRez.Add(index, intermRez);
-                }
-            }*/
 
             Dictionary<int, HashSet<Production>> prods1 = new Dictionary<int, HashSet<Production>>(prods0);
 
@@ -663,9 +647,7 @@ namespace CSPGF
 
                     rez.Add(new AppResult(cncFun, cty, vtype));
                     return rez;
-                }
-
-                if (f.Equals("_B"))
+                } else if (f.Equals("_B"))
                 {
                     vtype.Add(new CncType(cty.CId, args[0]));
                     for (int i = 1; i < args.Count; i++)
@@ -684,7 +666,7 @@ namespace CSPGF
                         if (f.Equals(abs.Name))
                         {
                             t = abs.Type;
-                            //break;
+                            break;
                         }
                     }
 
