@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Generator2.cs" company="None">
+// <copyright file="Generator.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -36,29 +36,45 @@ namespace CSPGF
     using CSPGF.Reader;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// Generates random sentences.
     /// </summary>
     public class Generator
     {
+        /// <summary>
+        /// Parsestate to generate sentences with
+        /// </summary>
         private ParseState ps;
+
+        /// <summary>
+        /// Random number generator
+        /// </summary>
         private Random ran;
 
+        /// <summary>
+        /// Initializes a new instance of the Generator class.
+        /// </summary>
+        /// <param name="grammar">Concrete grammar</param>
         public Generator(Concrete grammar)
         {
-            ps = new ParseState(grammar);
+            this.ps = new ParseState(grammar);
         }
 
+        /// <summary>
+        /// Generates a random tree.
+        /// </summary>
+        /// <returns>Generated tree</returns>
         public Trees.Absyn.Tree Gen()
         {
-            ran = new Random();
-            List<string> pre = ps.Predict();
+            this.ran = new Random();
+            List<string> pre = this.ps.Predict();
             while (pre.Count != 0)
             {
-                ps.Scan(pre[ran.Next(pre.Count - 1)]);
-                pre = ps.Predict();
+                this.ps.Scan(pre[this.ran.Next(pre.Count - 1)]);
+                pre = this.ps.Predict();
             }
-            List<Trees.Absyn.Tree> list = ps.GetTrees();
-            return list[ran.Next(list.Count-1)];
+
+            List<Trees.Absyn.Tree> list = this.ps.GetTrees();
+            return list[this.ran.Next(list.Count - 1)];
         }
     }
 }
