@@ -30,11 +30,6 @@
 
 namespace CSPGF.Parse
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
     /// <summary>
     /// Literal node of the tree.
     /// </summary>

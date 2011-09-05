@@ -129,7 +129,8 @@ namespace CSPGF.Parse
             ParseTrie newTrie = this.trie.GetSubTrie(token);
             if (newTrie != null) 
             {
-                string[] empt = new string[0];
+                List<string> empt = new List<string>();
+                //string[] empt = new string[0];
                 Stack<ActiveItem> newAgenda = newTrie.Lookup(empt);
                 if (newAgenda != null) 
                 {
