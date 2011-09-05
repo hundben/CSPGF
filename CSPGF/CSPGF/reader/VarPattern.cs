@@ -30,15 +30,29 @@
 
 namespace CSPGF.Reader
 {
+    /// <summary>
+    /// Variable pattern
+    /// </summary>
     public class VarPattern : Pattern // PVar
     {
+        /// <summary>
+        /// Initializes a new instance of the VarPattern class.
+        /// </summary>
+        /// <param name="name">Name of pattern</param>
         public VarPattern(string name)
         {
             this.Name = name;
         }
 
+        /// <summary>
+        /// Gets the name
+        /// </summary>
         public string Name { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Variable Pattern : " + this.Name;

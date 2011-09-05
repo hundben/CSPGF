@@ -30,13 +30,17 @@
 
 namespace CSPGF.Reader
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
+    /// <summary>
+    /// Lambda Expression
+    /// </summary>
     public class LambdaExp : Expr // EAbs
     {
+        /// <summary>
+        /// Initializes a new instance of the LambdaExp class.
+        /// </summary>
+        /// <param name="type">Bind type</param>
+        /// <param name="varName">Variable name</param>
+        /// <param name="body">Lambda expression</param>
         public LambdaExp(bool type, string varName, Expr body)
         {
             this.BType = type;
@@ -44,12 +48,25 @@ namespace CSPGF.Reader
             this.Body = body;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether it binds or not
+        /// </summary>
         public bool BType { get; private set; }
 
+        /// <summary>
+        /// Gets the variable name
+        /// </summary>
         public string VName { get; private set; }
 
+        /// <summary>
+        /// Gets the expression
+        /// </summary>
         public Expr Body { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Lambda Expression : [Bound Type : " + this.BType + " , Name : " + this.VName + " , Body : " + this.Body.ToString() + "]";

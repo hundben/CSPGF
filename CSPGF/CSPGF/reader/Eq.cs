@@ -30,24 +30,38 @@
 
 namespace CSPGF.Reader
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    /// <summary>
+    /// Eq class
+    /// </summary>
     public class Eq
     {
+        /// <summary>
+        /// Initializes a new instance of the Eq class.
+        /// </summary>
+        /// <param name="patts">List of patterns</param>
+        /// <param name="expr">The expression</param>
         public Eq(List<Pattern> patts, Expr expr)
         {
             this.Patts = patts;
             this.Expr = expr;
         }
 
-        // TODO: Check if we need to be able to access these.
+        /// <summary>
+        /// Gets the list of patterns
+        /// </summary>
         public List<Pattern> Patts { get; private set; }
 
+        /// <summary>
+        /// Gets the expression
+        /// </summary>
         public Expr Expr { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             string ss = "Patterns : (";

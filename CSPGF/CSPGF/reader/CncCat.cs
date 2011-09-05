@@ -32,23 +32,27 @@ namespace CSPGF.Reader
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    /// <summary>
+    /// Concrete category are a maping from category names (abstract-categories)
+    /// to multiple, conjoint, concrete categories.
+    /// They are represented in the pgf binary by :
+    ///  - the name of the abstract category (ex: Adj)
+    ///  - the first concrete categoy (ex : C18)
+    ///  - the last corresponding concrete category (ex : C21)
+    ///  - a list of labels (names of fields in the pmcfg tuples)
+    /// Here we will keep only the indices.
+    /// </summary>
     [Serializable]
     public class CncCat
     {
-        /**
-         * Concrete category are a maping from category names (abstract-categories)
-         * to multiple, conjoint, concrete categories.
-         * They are represented in the pgf binary by :
-         *  - the name of the abstract category (ex: Adj)
-         *  - the first concrete categoy (ex : C18)
-         *  - the last corresponding concrete category (ex : C21)
-         *  - a list of labels (names of fields in the pmcfg tuples)
-         * Here we will keep only the indices.
-         */
-
+        /// <summary>
+        /// Initializes a new instance of the CncCat class.
+        /// </summary>
+        /// <param name="name">Name of category</param>
+        /// <param name="firstFId">First id</param>
+        /// <param name="lastFId">Last id</param>
+        /// <param name="labels">List of labels</param>
         public CncCat(string name, int firstFId, int lastFId, List<string> labels)
         {
             this.Name = name;
@@ -57,14 +61,30 @@ namespace CSPGF.Reader
             this.Labels = labels; // was also commented out.
         }
 
+        /// <summary>
+        /// Gets the name of the category
+        /// </summary>
         public string Name { get; private set; }
 
+        /// <summary>
+        /// Gets the first id
+        /// </summary>
         public int FirstFID { get; private set; }
 
+        /// <summary>
+        /// Gets the last id
+        /// </summary>
         public int LastFID { get; private set; }
 
+        /// <summary>
+        /// Gets the list of labels
+        /// </summary>
         public List<string> Labels { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return this.Name + " [C" + this.FirstFID + " ... C" + this.LastFID + "]";

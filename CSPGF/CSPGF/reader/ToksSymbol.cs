@@ -33,16 +33,30 @@ namespace CSPGF.Reader
     using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Token Symbol class
+    /// </summary>
     [Serializable]
     public class ToksSymbol : Symbol // SymKS
     {
+        /// <summary>
+        /// Initializes a new instance of the ToksSymbol class.
+        /// </summary>
+        /// <param name="toks">List of strings</param>
         public ToksSymbol(List<string> toks)
         {
             this.Tokens = toks;
         }
 
+        /// <summary>
+        /// Gets the list of strings
+        /// </summary>
         public List<string> Tokens { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             string s = "Tokens : ";

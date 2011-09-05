@@ -30,20 +30,29 @@
 
 namespace CSPGF.Reader
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
+    /// <summary>
+    /// Literal Pattern
+    /// </summary>
     public class LiteralPattern : Pattern // PLit
     {
+        /// <summary>
+        /// Initializes a new instance of the LiteralPattern class.
+        /// </summary>
+        /// <param name="value">RLiteral</param>
         public LiteralPattern(RLiteral value)
         {
             this.Value = value;
         }
 
+        /// <summary>
+        /// Gets the value
+        /// </summary>
         public RLiteral Value { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Literal Pattern : " + this.Value.ToString();

@@ -30,20 +30,29 @@
 
 namespace CSPGF.Reader
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    
+    /// <summary>
+    /// Implicit argument pattern class
+    /// </summary>
     public class ImpArgPattern : Pattern // PImplArg
     {
+        /// <summary>
+        /// Initializes a new instance of the ImpArgPattern class.
+        /// </summary>
+        /// <param name="patt">Implicit argument pattern</param>
         public ImpArgPattern(Pattern patt)
         {
             this.Patt = patt;
         }
 
+        /// <summary>
+        /// Gets the pattern
+        /// </summary>
         public Pattern Patt { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Implicit Argument Pattern : " + this.Patt.ToString();

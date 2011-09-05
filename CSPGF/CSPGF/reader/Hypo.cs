@@ -30,13 +30,17 @@
 
 namespace CSPGF.Reader
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
+    /// <summary>
+    /// Hypo class
+    /// </summary>
     public class Hypo
     {
+        /// <summary>
+        /// Initializes a new instance of the Hypo class.
+        /// </summary>
+        /// <param name="bind">Bind type</param>
+        /// <param name="str">Name of hypo</param>
+        /// <param name="type">Typ of hypo</param>
         public Hypo(bool bind, string str, Type type)
         {
             this.Bind = bind;
@@ -44,12 +48,25 @@ namespace CSPGF.Reader
             this.Type = type;
         }
 
+        /// <summary>
+        /// Gets a value indicating whether it binds or not
+        /// </summary>
         public bool Bind { get; private set; }
 
+        /// <summary>
+        /// Gets the name of the hypo
+        /// </summary>
         public string Name { get; private set; }
 
+        /// <summary>
+        /// Gets the type of the hypo
+        /// </summary>
         public Type Type { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Bound Type : " + this.Bind + " , Name : " + this.Name + " , Type : (" + Type + ")";

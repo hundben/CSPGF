@@ -63,7 +63,7 @@ namespace CSPGF.Linearize
         public int LIndex { get; private set; }
 
         /// <summary>
-        /// Gets the first id
+        /// Gets the function id
         /// </summary>
         public int FId { get; private set; }
 

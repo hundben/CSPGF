@@ -30,20 +30,29 @@
 
 namespace CSPGF.Reader
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
+    /// <summary>
+    /// Abstract name expression
+    /// </summary>
     public class AbsNameExp : Expr // EFun?????
     {
+        /// <summary>
+        /// Initializes a new instance of the AbsNameExp class.
+        /// </summary>
+        /// <param name="name">Name of expression</param>
         public AbsNameExp(string name)
         {
             this.Name = name;
         }
 
+        /// <summary>
+        /// Gets the name of the expression
+        /// </summary>
         public string Name { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Abstract Name Expression : [Name : " + this.Name + "]";

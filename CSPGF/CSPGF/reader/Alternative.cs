@@ -32,12 +32,18 @@ namespace CSPGF.Reader
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    /// <summary>
+    /// Alternative class
+    /// </summary>
     [Serializable]
     public class Alternative
     {
+        /// <summary>
+        /// Initializes a new instance of the Alternative class.
+        /// </summary>
+        /// <param name="alt1">Normal tokens</param>
+        /// <param name="alt2">List of prefixes</param>
         public Alternative(List<string> alt1, List<string> alt2)
         {
             this.Alt1 = alt1;
@@ -45,10 +51,21 @@ namespace CSPGF.Reader
         }
 
         // tokens = alt1, prefix = alt2
+
+        /// <summary>
+        /// Gets a list of tokens
+        /// </summary>
         public List<string> Alt1 { get; private set; }  // Check: Rename to tokens instead?
 
+        /// <summary>
+        /// Gets a list of prefixes
+        /// </summary>
         public List<string> Alt2 { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             string sb = string.Empty;

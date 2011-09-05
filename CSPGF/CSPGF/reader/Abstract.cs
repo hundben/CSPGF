@@ -30,15 +30,25 @@
 
 namespace CSPGF.Reader
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    /// <summary>
+    /// The Abstract class
+    /// </summary>
     public class Abstract
     {
+        /// <summary>
+        /// Abstract flags
+        /// </summary>
         private Dictionary<string, RLiteral> flags;
-
+        
+        /// <summary>
+        /// Initializes a new instance of the Abstract class.
+        /// </summary>
+        /// <param name="name">Abstract name</param>
+        /// <param name="flags">Abstract flags</param>
+        /// <param name="absFuns">Abstract functions</param>
+        /// <param name="absCats">Abstract categories</param>
         public Abstract(string name, Dictionary<string, RLiteral> flags, List<AbsFun> absFuns, List<AbsCat> absCats)
         {
             this.Name = name;
@@ -47,12 +57,25 @@ namespace CSPGF.Reader
             this.AbsCats = absCats;
         }
 
+        /// <summary>
+        /// Gets the name of the abstract
+        /// </summary>
         public string Name { get; private set; }
 
+        /// <summary>
+        /// Gets a list of abstract functions
+        /// </summary>
         public List<AbsFun> AbsFuns { get; private set; }
 
+        /// <summary>
+        /// Gets a list of abstract categories
+        /// </summary>
         public List<AbsCat> AbsCats { get; private set; }
 
+        /// <summary>
+        /// Returns the starting category, or "Sentence" if it doesn't exist.
+        /// </summary>
+        /// <returns>Returns the starting category</returns>
         public string StartCat()
         {
             RLiteral cat = null;
@@ -66,6 +89,10 @@ namespace CSPGF.Reader
             }
         }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             string ss = "Name : " + this.Name + " , Flags : (";

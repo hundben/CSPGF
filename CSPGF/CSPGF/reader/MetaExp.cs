@@ -30,20 +30,29 @@
 
 namespace CSPGF.Reader
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
+    /// <summary>
+    /// Meta Expression
+    /// </summary>
     public class MetaExp : Expr // EMeta
     {
+        /// <summary>
+        /// Initializes a new instance of the MetaExp class.
+        /// </summary>
+        /// <param name="id">Expression id</param>
         public MetaExp(int id)
         {
             this.Meta = id;
         }
 
+        /// <summary>
+        /// Gets the id
+        /// </summary>
         public int Meta { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Meta Expression : [Id : " + this.Meta + "]";

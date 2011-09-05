@@ -32,19 +32,32 @@ namespace CSPGF.Reader
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    /// <summary>
+    /// Coerce Production
+    /// </summary>
     [Serializable]
     public class CoerceProduction : Production
     {
+        /// <summary>
+        /// Initializes a new instance of the CoerceProduction class.
+        /// </summary>
+        /// <param name="fId">Function id</param>
+        /// <param name="initId">Initial id</param>
         public CoerceProduction(int fId, int initId) : base(1, fId)
         {
             this.InitId = initId;
         }
 
+        /// <summary>
+        /// Gets the initial id
+        /// </summary>
         public int InitId { get; private set; }
 
+        /// <summary>
+        /// Returns the domains
+        /// </summary>
+        /// <returns>Returns a list of domains</returns>
         public override List<int> Domain()
         {
             List<int> tmp = new List<int>();
@@ -52,16 +65,20 @@ namespace CSPGF.Reader
             return tmp;
         }
 
-        public int[] GetDomain()
-        {
-            return new int[] { this.InitId };
-        }
-
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Coercion(" + this.FId + " -> " + this.InitId + ")";
         }
 
+        /// <summary>
+        /// Checks if the contents of two CoerceProductions is equal.
+        /// </summary>
+        /// <param name="o">Production to compare to</param>
+        /// <returns>True if equal</returns>
         public override bool Equals(object o)
         {
             if (o is CoerceProduction) 
@@ -72,6 +89,10 @@ namespace CSPGF.Reader
             return false;
         }
 
+        /// <summary>
+        /// Returns the hashcode for this object.
+        /// </summary>
+        /// <returns>Returns the hashcode for this object</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();

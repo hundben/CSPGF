@@ -32,9 +32,16 @@ namespace CSPGF.Reader
 {
     using System;
 
+    /// <summary>
+    /// Abstract symbol class
+    /// </summary>
     [Serializable]
     public abstract class Symbol
     {
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override abstract string ToString();
     }
 }

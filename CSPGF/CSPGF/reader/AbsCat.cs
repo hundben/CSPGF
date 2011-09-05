@@ -30,10 +30,7 @@
 
 namespace CSPGF.Reader
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
     /// <summary>
     /// Abstract Category
@@ -53,12 +50,25 @@ namespace CSPGF.Reader
             this.Functions = functions;
         }
 
+        /// <summary>
+        /// Gets the name of the abstract category
+        /// </summary>
         public string Name { get; private set; }
 
+        /// <summary>
+        /// Gets a list of hypos.
+        /// </summary>
         public List<Hypo> Hypos { get; private set; }
 
+        /// <summary>
+        /// Gets a list of WeightedIdents
+        /// </summary>
         public List<WeightedIdent> Functions { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             string ss = "Name : " + this.Name + " , Hypotheses : (";

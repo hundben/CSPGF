@@ -30,12 +30,22 @@
 
 namespace CSPGF.Reader
 {
+    /// <summary>
+    /// Wildcard Pattern
+    /// </summary>
     public class WildCardPattern : Pattern // PWild
     {
+        /// <summary>
+        /// Initializes a new instance of the WildCardPattern class.
+        /// </summary>
         public WildCardPattern()
         {
         }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Wild Card Pattern";
