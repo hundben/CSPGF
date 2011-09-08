@@ -46,6 +46,7 @@ namespace CSPGF
         /// <param name="args">Commandline arguments</param>
         public static void Main(string[] args)
         {
+            TempLog.NewLog();
             // Tests below.
             FileStream fs = new FileStream("..\\..\\test\\files\\Phrasebook.pgf", FileMode.Open);
             BinaryReader br = new BinaryReader(fs);
@@ -59,21 +60,21 @@ namespace CSPGF
             rp.Scan("is");
             rp.Scan("Italian");*/
             RecoveryParser rp = new RecoveryParser(pgf, "PhrasebookEng");
-            /*rp.Scan("Finnish");
+            rp.Scan("Finnish");
             rp.Scan("fish");
-            rp.Scan("is");
+            rp.Scan("isn't");
             rp.Scan("too");
             rp.Scan("warm");
-            rp.Scan(".");*/
-            rp.Scan("bad");
-            rp.Scan("chicken");
-            rp.Scan("and");
-            rp.Scan("apples");
-            rp.Scan("please");
-            rp.Scan("!");
+            rp.Scan(".");
+            //rp.Scan("bad");
+            //rp.Scan("chicken");
+            //rp.Scan("and");
+            //rp.Scan("apples");
+            //rp.Scan("please");
+            //rp.Scan("!");
             List<Trees.Absyn.Tree> trees = rp.GetTrees();
             Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookSwe"));
-            //rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
+            rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
             if (trees.Count != 0)
             {
                 System.Console.WriteLine(lin.LinearizeString(trees[0]));

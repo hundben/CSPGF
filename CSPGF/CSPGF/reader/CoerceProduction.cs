@@ -71,10 +71,11 @@ namespace CSPGF.Reader
 
             return false;
         }
-
+        
         public override int GetHashCode()
         {
             return base.GetHashCode();
         }
+         
     }
 }

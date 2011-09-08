@@ -111,7 +111,7 @@ namespace CSPGF.Parse
                     {
                         lsmx.Add(this.MkTreesForCat(pp, chart));    // TODO fix since it can create endless trees.
                     }
-                }
+                }           
 
                 foreach (List<Tree> tree in this.ListMixer(lsmx)) 
                 {
@@ -159,6 +159,25 @@ namespace CSPGF.Parse
                 }
 
                 return newList;
+            }
+        }
+        public void epicCrap(List<List<Tree>> trees)
+        {
+            foreach (List<Tree> tmp in trees)
+            {
+                string tr = "[";
+                foreach(Tree t in tmp)
+                {
+                    tr += "[";
+                    if (t is Application)
+                    {
+                        tr += ((Application)t).Fun;
+                    }   
+
+                    tr += "]";
+                }
+                tr += "]";
+                TempLog.LogMessageToFile(tr);
             }
         }
     }

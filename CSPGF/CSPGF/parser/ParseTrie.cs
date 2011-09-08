@@ -181,5 +181,17 @@ namespace CSPGF.Parse
         {
             return this.child.Keys.ToList<string>();
         }
+
+        public override string ToString()
+        {
+            string temp = "[";
+            foreach (string key in child.Keys)
+            {
+                ParseTrie t = child[key];
+                temp += key + "[" + t.ToString()+ "]";
+            }
+            temp += "]";
+            return temp;
+        }
     }
 }

@@ -92,6 +92,7 @@ namespace CSPGF
             }
 
             ParseState ps = this.parseStates.Peek();
+
             // TODO change this since it is of course very slow.
             // Was only here for a test of ObjectCopier.
             ParseState copy = ObjectCopier.Clone<ParseState>(ps);
@@ -162,10 +163,9 @@ namespace CSPGF
         {
             ParseState ps = this.parseStates.Peek();
             List<Trees.Absyn.Tree> trees = ps.GetTrees();
-            if (trees.Count > 0)
+            foreach (Trees.Absyn.Tree tree in trees)
             {
-                Trees.Absyn.Tree tree = trees[0];
-                Console.WriteLine("Tree: " + this.TreeToString(tree));
+                TempLog.LogMessageToFile("Tree: " + this.TreeToString(tree));
             }
         }
 
@@ -259,7 +259,7 @@ namespace CSPGF
 
         public void Test(Concrete lang, Trees.Absyn.Tree tree)
         {
-            Console.WriteLine("Test: "+TreeToConc(lang, tree));
+            TempLog.LogMessageToFile("Test: " + TreeToConc(lang, tree));
         }
 
         public string TreeToConc(Concrete lang, Trees.Absyn.Tree tree)
@@ -316,6 +316,10 @@ namespace CSPGF
                             if (symb is ToksSymbol)
                             {
                                 return symb.ToString();
+                            }
+                            else if (symb is AlternToksSymbol)
+                            {
+                                return symb.ToString(); 
                             }
                         }
                     }

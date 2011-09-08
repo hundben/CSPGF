@@ -138,6 +138,7 @@
     <Compile Include="Reader\WeightedIdent.cs" />
     <Compile Include="Reader\WildCardPattern.cs" />
     <Compile Include="RecoveryParser.cs" />
+    <Compile Include="TempLog.cs" />
     <Compile Include="Trees\AbstractVisitSkeleton.cs" />
     <Compile Include="Trees\Absyn.cs" />
     <Compile Include="Trees\Parser.cs" />
