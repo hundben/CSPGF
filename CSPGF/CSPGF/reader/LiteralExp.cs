@@ -30,20 +30,29 @@
 
 namespace CSPGF.Reader
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
+    /// <summary>
+    /// Literal Expression class
+    /// </summary>
     public class LiteralExp : Expr // ELit
     {
+        /// <summary>
+        /// Initializes a new instance of the LiteralExp class.
+        /// </summary>
+        /// <param name="literal">RLiteral</param>
         public LiteralExp(RLiteral literal)
         {
             this.Literal = literal;
         }
 
+        /// <summary>
+        /// Gets the literal
+        /// </summary>
         public RLiteral Literal { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Literal Expression : " + this.Literal.ToString();

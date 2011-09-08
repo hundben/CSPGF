@@ -32,22 +32,39 @@ namespace CSPGF.Reader
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    /// <summary>
+    /// Application production
+    /// </summary>
     [Serializable]
     public class ApplProduction : Production
     {
+        /// <summary>
+        /// List of domains
+        /// </summary>
         private List<int> dom;
 
+        /// <summary>
+        /// Initializes a new instance of the ApplProduction class.
+        /// </summary>
+        /// <param name="fId">Function id</param>
+        /// <param name="function">Concrete function</param>
+        /// <param name="domain">List of domains</param>
         public ApplProduction(int fId, CncFun function, List<int> domain) : base(0, fId)
         {
             this.Function = function;
             this.dom = domain;
         }
 
+        /// <summary>
+        /// Gets the concrete function.
+        /// </summary>
         public CncFun Function { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             // Was commented out in the java-code.
@@ -61,11 +78,20 @@ namespace CSPGF.Reader
             return s;
         }
 
+        /// <summary>
+        /// Get the list of domains
+        /// </summary>
+        /// <returns>List of domains</returns>
         public override List<int> Domain()
         {
             return this.dom;
         }
 
+        /// <summary>
+        /// Checks if the contents of two ApplProductions are equal.
+        /// </summary>
+        /// <param name="o">Object to compare to</param>
+        /// <returns>True if equal</returns>
         public override bool Equals(object o)
         {
             // TODO: Fix? 
@@ -98,6 +124,10 @@ namespace CSPGF.Reader
         }
         
 
+        /// <summary>
+        /// Returns the hashcode for this object.
+        /// </summary>
+        /// <returns>Returns the hashcode for this object</returns>
         public override int GetHashCode()
         {
             return base.GetHashCode();

@@ -30,10 +30,8 @@
 
 namespace CSPGF
 {
-    using System;
     using System.Collections.Generic;
     using System.IO;
-    using CSPGF.Parse;
 
     /// <summary>
     /// The mainclass that runs the program
@@ -66,22 +64,12 @@ namespace CSPGF
             rp.Scan("too");
             rp.Scan("warm");
             rp.Scan(".");
-            //rp.Scan("bad");
-            //rp.Scan("chicken");
-            //rp.Scan("and");
-            //rp.Scan("apples");
-            //rp.Scan("please");
-            //rp.Scan("!");
             List<Trees.Absyn.Tree> trees = rp.GetTrees();
             Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookSwe"));
             rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
             if (trees.Count != 0)
             {
                 System.Console.WriteLine(lin.LinearizeString(trees[0]));
-            }
-            else
-            {
-                System.Console.WriteLine("Failade att parsea :D");
             }
             rp.Debug2();
             System.Console.Out.WriteLine("done");

@@ -30,13 +30,15 @@
 
 namespace CSPGF.Reader
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
+    /// <summary>
+    /// Abstract class RLiteral
+    /// </summary>
     public abstract class RLiteral
     {
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override abstract string ToString();
     }
 }

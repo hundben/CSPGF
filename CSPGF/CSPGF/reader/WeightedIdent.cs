@@ -30,23 +30,30 @@
 
 namespace CSPGF.Reader
 {
+    /// <summary>
+    /// Weighted Ident class
+    /// </summary>
     public class WeightedIdent
     {
+        /// <summary>
+        /// Initializes a new instance of the WeightedIdent class.
+        /// </summary>
+        /// <param name="ident">Identifier</param>
+        /// <param name="weight">Weight</param>
         public WeightedIdent(string ident, double weight)
         {
             this.Ident = ident;
             this.Weight = weight;
         }
 
+        /// <summary>
+        /// Gets the weight
+        /// </summary>
         public double Weight { get; private set; }
 
+        /// <summary>
+        /// Gets the ident
+        /// </summary>
         public string Ident { get; private set; }
-
-        // CHECK LATER
-        // Did not exist in the java-code
-        public override string ToString()
-        {
-            return "Ident: " + this.Ident + " Weight: " + this.Weight;
-        }
     }
 }

@@ -30,20 +30,29 @@
 
 namespace CSPGF.Reader
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
+    /// <summary>
+    /// Integer Literal
+    /// </summary>
     public class IntLit : RLiteral
     {
+        /// <summary>
+        /// Initializes a new instance of the IntLit class.
+        /// </summary>
+        /// <param name="value">Integer value</param>
         public IntLit(int value)
         {
             this.Value = value;
         }
 
+        /// <summary>
+        /// Gets the value
+        /// </summary>
         public int Value { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Integer Literal : " + this.Value;

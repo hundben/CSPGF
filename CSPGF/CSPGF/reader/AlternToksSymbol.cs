@@ -32,25 +32,42 @@ namespace CSPGF.Reader
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    /// <summary>
+    /// Alternative Token Symbol
+    /// </summary>
     [Serializable]
     public class AlternToksSymbol : ToksSymbol // SymKP
     {
+        /// <summary>
+        /// Initializes a new instance of the AlternToksSymbol class.
+        /// </summary>
+        /// <param name="toks">List of tokens</param>
+        /// <param name="alts">List of alternatives</param>
         public AlternToksSymbol(List<string> toks, List<Alternative> alts)
             : base(toks)
         {
             this.Alts = alts;
         }
 
+        /// <summary>
+        /// Gets the list of Alternatives
+        /// </summary>
         public List<Alternative> Alts { get; private set; }
 
+        /// <summary>
+        /// Returns true if terminal.
+        /// </summary>
+        /// <returns>Returns true if terminal</returns>
         public bool IsTerminal()
         {
             return true;
         }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             string sb = "pre { ";

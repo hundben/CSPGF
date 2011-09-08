@@ -32,25 +32,44 @@ namespace CSPGF.Reader
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    /// <summary>
+    /// Production, abstract class.
+    /// </summary>
     [Serializable]
     public abstract class Production
     {
+        /// <summary>
+        /// Initializes a new instance of the Production class.
+        /// </summary>
+        /// <param name="sel">Selection</param>
+        /// <param name="fId">Function id</param>
         public Production(int sel, int fId)
         {
             this.Sel = sel;
             this.FId = fId;
         }
 
+        /// <summary>
+        /// Gets the selection
+        /// </summary>
         public int Sel { get; private set; }
 
+        /// <summary>
+        /// Gets the function id
+        /// </summary>
         public int FId { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override abstract string ToString();
 
-        // Domain is the domain of the concrete function
+        /// <summary>
+        /// Returns the list of domains.
+        /// </summary>
+        /// <returns>Returns the list of domains</returns>
         public abstract List<int> Domain();
     }
 }

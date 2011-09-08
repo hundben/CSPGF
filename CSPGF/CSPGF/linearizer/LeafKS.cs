@@ -33,7 +33,7 @@ namespace CSPGF.Linearize
     using System.Collections.Generic;
 
     /// <summary>
-    /// Dunno actually?
+    /// This class represents a standard token
     /// </summary>
     public class LeafKS : BracketedTokn
     {

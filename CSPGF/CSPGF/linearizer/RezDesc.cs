@@ -30,11 +30,8 @@
 
 namespace CSPGF.Linearize
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    
+
     /// <summary>
     /// The RezDesc class.
     /// </summary>
@@ -54,12 +51,12 @@ namespace CSPGF.Linearize
         }
 
         /// <summary>
-        /// Gets the first id.
+        /// Gets the function id.
         /// </summary>
         public int Fid { get; private set; }
         
         /// <summary>
-        /// Gets or sets a list of cnc types.
+        /// Gets or sets a list of CncTypes.
         /// </summary>
         public List<CncType> CncTypes { get; set; }
         

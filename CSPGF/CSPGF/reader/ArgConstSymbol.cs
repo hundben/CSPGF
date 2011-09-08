@@ -31,23 +31,38 @@
 namespace CSPGF.Reader
 {
     using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    /// <summary>
+    /// Argument Constant Symbol?
+    /// </summary>
     [Serializable]
     public class ArgConstSymbol : Symbol
     {
+        /// <summary>
+        /// Initializes a new instance of the ArgConstSymbol class.
+        /// </summary>
+        /// <param name="arg">Argument int</param>
+        /// <param name="cons">Constant int</param>
         public ArgConstSymbol(int arg, int cons)
         {
             this.Arg = arg;
             this.Cons = cons;
         }
 
+        /// <summary>
+        /// Gets the argument
+        /// </summary>
         public int Arg { get; private set; }
 
+        /// <summary>
+        /// Gets the constant
+        /// </summary>
         public int Cons { get; private set; }
-        
+
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Argument : " + this.Arg + " Constituent : " + this.Cons;

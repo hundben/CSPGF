@@ -30,15 +30,29 @@
 
 namespace CSPGF.Reader
 {
+    /// <summary>
+    /// String Literal
+    /// </summary>
     public class StringLit : RLiteral
     {
+        /// <summary>
+        /// Initializes a new instance of the StringLit class.
+        /// </summary>
+        /// <param name="value">String literal</param>
         public StringLit(string value)
         {
             this.Value = value;
         }
 
+        /// <summary>
+        /// Gets the string value
+        /// </summary>
         public string Value { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "String literal : " + this.Value;

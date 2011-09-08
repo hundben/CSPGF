@@ -30,18 +30,36 @@
 
 namespace CSPGF.Reader
 {
+    /// <summary>
+    /// Variable as Pattern class
+    /// </summary>
     public class VarAsPattern : Pattern  // PAs
     {
+        /// <summary>
+        /// Initializes a new instance of the VarAsPattern class.
+        /// </summary>
+        /// <param name="name">Name of pattern</param>
+        /// <param name="patt">Pattern</param>
         public VarAsPattern(string name, Pattern patt)
         {
             this.Name = name;
             this.Patt = patt;
         }
 
+        /// <summary>
+        /// Gets name of pattern
+        /// </summary>
         public string Name { get; private set; }
 
+        /// <summary>
+        /// Gets pattern
+        /// </summary>
         public Pattern Patt { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Variable as Pattern : [ Variable Name : " + this.Name + " , Pattern : " + this.Patt + "]";

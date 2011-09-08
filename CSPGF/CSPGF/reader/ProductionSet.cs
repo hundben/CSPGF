@@ -30,21 +30,38 @@
 
 namespace CSPGF.Reader
 {
-    using System;
     using System.Collections.Generic;
 
+    /// <summary>
+    /// Production set class
+    /// </summary>
     public class ProductionSet
     {
+        /// <summary>
+        /// Initializes a new instance of the ProductionSet class.
+        /// </summary>
+        /// <param name="id">Set id</param>
+        /// <param name="prods">List of productions</param>
         public ProductionSet(int id, List<Production> prods)
         {
             this.ID = id;
             this.Prods = prods;
         }
 
+        /// <summary>
+        /// Gets the id
+        /// </summary>
         public int ID { get; private set; }
 
+        /// <summary>
+        /// Gets the list of productions
+        /// </summary>
         public List<Production> Prods { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             string ss = "Id : " + this.ID + " , Productions : [";
@@ -57,15 +74,13 @@ namespace CSPGF.Reader
             return ss;
         }
 
+        /// <summary>
+        /// Returns a HashSet with productions in the set.
+        /// </summary>
+        /// <returns>HashSet of productions</returns>
         public HashSet<Production> GetSetOfProductions()
         {
-            HashSet<Production> hs = new HashSet<Production>();
-            foreach (Production p in this.Prods) 
-            {
-                hs.Add(p);
-            }
-
-            return hs;
+            return new HashSet<Production>(this.Prods);
         }
     }
 }

@@ -30,15 +30,29 @@
 
 namespace CSPGF.Reader
 {
+    /// <summary>
+    /// Variable Expression
+    /// </summary>
     public class VarExp : Expr // EVar
     {
+        /// <summary>
+        /// Initializes a new instance of the VarExp class.
+        /// </summary>
+        /// <param name="ind">Index</param>
         public VarExp(int ind)
         {
             this.Ind = ind;
         }
 
+        /// <summary>
+        /// Gets the index
+        /// </summary>
         public int Ind { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Variable Expression : [Index : " + this.Ind + "]";

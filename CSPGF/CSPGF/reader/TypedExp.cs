@@ -30,23 +30,36 @@
 
 namespace CSPGF.Reader
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
+    /// <summary>
+    /// Typed Expression
+    /// </summary>
     public class TypedExp : Expr // ETyped
     {
+        /// <summary>
+        /// Initializes a new instance of the TypedExp class.
+        /// </summary>
+        /// <param name="exp">Expression</param>
+        /// <param name="t">Type</param>
         public TypedExp(Expr exp, Type t)
         {
             this.Exp = exp;
             this.Type = t;
         }
 
+        /// <summary>
+        /// Gets the expression
+        /// </summary>
         public Expr Exp { get; private set; }
 
+        /// <summary>
+        /// Gets the type
+        /// </summary>
         public Type Type { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Typed Expression : [Expr : " + this.Exp.ToString() + " , Type : " + this.Type.ToString() + "]";

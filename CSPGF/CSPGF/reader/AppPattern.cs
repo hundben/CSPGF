@@ -30,23 +30,38 @@
 
 namespace CSPGF.Reader
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    /// <summary>
+    /// Application Pattern
+    /// </summary>
     public class AppPattern : Pattern // PApp
     {
+        /// <summary>
+        /// Initializes a new instance of the AppPattern class.
+        /// </summary>
+        /// <param name="name">Name of AppPattern</param>
+        /// <param name="patts">List of patterns</param>
         public AppPattern(string name, List<Pattern> patts)
         {
             this.Name = name;
             this.Patts = patts;
         }
 
+        /// <summary>
+        /// Gets the name of the AppPattern
+        /// </summary>
         public string Name { get; private set; }
 
+        /// <summary>
+        /// Gets the list of patterns.
+        /// </summary>
         public List<Pattern> Patts { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             string ss = "Application pattern [ Name : " + this.Name + " , Patterns : (";

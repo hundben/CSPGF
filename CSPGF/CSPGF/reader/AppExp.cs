@@ -30,23 +30,36 @@
 
 namespace CSPGF.Reader
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
+    /// <summary>
+    /// Application Expression
+    /// </summary>
     public class AppExp : Expr // EApp
     {
+        /// <summary>
+        /// Initializes a new instance of the AppExp class.
+        /// </summary>
+        /// <param name="leftExp">Left expression</param>
+        /// <param name="rightExp">Right expression</param>
         public AppExp(Expr leftExp, Expr rightExp)
         {
             this.LExp = leftExp;
             this.RExp = rightExp;
         }
 
+        /// <summary>
+        /// Gets the left expression
+        /// </summary>
         public Expr LExp { get; private set; }
 
+        /// <summary>
+        /// Gets the right expression
+        /// </summary>
         public Expr RExp { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Expression application [Left-hand side : ( " + this.LExp.ToString() + "), Right-hand side : (" + this.RExp.ToString() + ")]";

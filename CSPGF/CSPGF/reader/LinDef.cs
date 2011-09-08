@@ -30,21 +30,32 @@
 
 namespace CSPGF.Reader
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    /// <summary>
+    /// LinDef class
+    /// </summary>
     public class LinDef
     {
+        /// <summary>
+        /// Initializes a new instance of the LinDef class.
+        /// </summary>
+        /// <param name="key">Integer key</param>
+        /// <param name="funIds">List of function ids</param>
         public LinDef(int key, List<int> funIds)
         {
             this.Key = key;
             this.FunIds = funIds;
         }
 
+        /// <summary>
+        /// Gets the key
+        /// </summary>
         public int Key { get; private set; }
 
+        /// <summary>
+        /// Gets the list of function ids
+        /// </summary>
         public List<int> FunIds { get; private set; }
     }
 }

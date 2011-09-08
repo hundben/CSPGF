@@ -30,17 +30,29 @@
 
 namespace CSPGF.Reader
 {
-    using System;
-
+    /// <summary>
+    /// Inaccessible pattern class
+    /// </summary>
     public class InaccPattern : Pattern // PTilde
     {
+        /// <summary>
+        /// Initializes a new instance of the InaccPattern class.
+        /// </summary>
+        /// <param name="exp">Inaccessible pattern</param>
         public InaccPattern(Expr exp)
         {
             this.Exp = exp;
         }
 
+        /// <summary>
+        /// Gets the expression
+        /// </summary>
         public Expr Exp { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Inaccessible Pattern : " + this.Exp.ToString();

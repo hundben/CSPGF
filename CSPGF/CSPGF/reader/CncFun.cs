@@ -32,22 +32,38 @@ namespace CSPGF.Reader
 {
     using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    /// <summary>
+    /// Concrete function
+    /// </summary>
     [Serializable]
     public class CncFun
     {
+        /// <summary>
+        /// Initializes a new instance of the CncFun class.
+        /// </summary>
+        /// <param name="name">Name of function</param>
+        /// <param name="sequences">List of list of symbols</param>
         public CncFun(string name, List<List<Symbol>> sequences)
         {
             this.Name = name;
             this.Sequences = sequences;
         }
 
+        /// <summary>
+        /// Gets the name of the concrete function
+        /// </summary>
         public string Name { get; private set; } // TODO: This might not be needed. Isn't used in the haskell-version?
 
+        /// <summary>
+        /// Gets a list of list of symbols
+        /// </summary>
         public List<List<Symbol>> Sequences { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             string ss = "Name : " + this.Name + " , Indices : ";

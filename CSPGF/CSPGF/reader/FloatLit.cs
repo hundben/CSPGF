@@ -30,20 +30,29 @@
 
 namespace CSPGF.Reader
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
+    /// <summary>
+    /// Float literal
+    /// </summary>
     public class FloatLit : RLiteral
     {
+        /// <summary>
+        /// Initializes a new instance of the FloatLit class.
+        /// </summary>
+        /// <param name="value">Double value</param>
         public FloatLit(double value)
         {
             this.Value = value;
         }
 
+        /// <summary>
+        /// Gets the value
+        /// </summary>
         public double Value { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Float literal : " + this.Value;

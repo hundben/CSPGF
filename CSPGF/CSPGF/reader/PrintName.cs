@@ -30,23 +30,36 @@
 
 namespace CSPGF.Reader
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-
+    /// <summary>
+    /// PrintName class
+    /// </summary>
     public class PrintName
     {
+        /// <summary>
+        /// Initializes a new instance of the PrintName class.
+        /// </summary>
+        /// <param name="absName">Abstract name</param>
+        /// <param name="printName">Print name</param>
         public PrintName(string absName, string printName)
         {
             this.AbsName = absName;
             this.PName = printName;
         }
 
+        /// <summary>
+        /// Gets the name of the abstract
+        /// </summary>
         public string AbsName { get; private set; }
 
+        /// <summary>
+        /// Gets the print name
+        /// </summary>
         public string PName { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             return "Abstract Name : " + this.AbsName + " , Print Name : " + this.PName;

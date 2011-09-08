@@ -30,13 +30,21 @@
 
 namespace CSPGF.Reader
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
+    /// <summary>
+    /// Abstract Function
+    /// </summary>
     public class AbsFun
     {
+        /// <summary>
+        /// Initializes a new instance of the AbsFun class.
+        /// </summary>
+        /// <param name="str">Name of the function</param>
+        /// <param name="type">Type of function</param>
+        /// <param name="arit">Some integer</param>
+        /// <param name="eqs">List of Eqs</param>
+        /// <param name="weight">Weight of function</param>
         public AbsFun(string str, Type type, int arit, List<Eq> eqs, double weight)
         {
             this.Name = str;
@@ -46,16 +54,35 @@ namespace CSPGF.Reader
             this.Weight = weight;
         }
 
+        /// <summary>
+        /// Gets the name of the functions
+        /// </summary>
         public string Name { get; private set; }
 
+        /// <summary>
+        /// Gets the type of the function
+        /// </summary>
         public Type Type { get; private set; }
 
+        /// <summary>
+        /// Gets some integer
+        /// </summary>
         public int Arit { get; private set; }
 
+        /// <summary>
+        /// Gets a list of Eqs
+        /// </summary>
         public List<Eq> Eqs { get; private set; }
 
-        private double Weight { get; set; }
+        /// <summary>
+        /// Gets the weight of the functions
+        /// </summary>
+        public double Weight { get; private set; }
 
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
             string sb = "<function name = " + this.Name + " type = " + this.Type + " arity = " + this.Arit + " equations = [";
