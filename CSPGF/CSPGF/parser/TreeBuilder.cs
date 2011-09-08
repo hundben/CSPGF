@@ -161,7 +161,12 @@ namespace CSPGF.Parse
                 return newList;
             }
         }
-        public void epicCrap(List<List<Tree>> trees)
+
+        /// <summary>
+        /// This is only for debug. Prints a list of lists of trees to the log.
+        /// </summary>
+        /// <param name="trees">The tree to display.</param>
+        public void DisplayTree(List<List<Tree>> trees)
         {
             foreach (List<Tree> tmp in trees)
             {
@@ -206,13 +211,4 @@ namespace CSPGF.Parse
 //         for (args <- listMixer( p.domain.toList.map(mkTreesForCat(_,chart)) ) )
 //         yield new Application(p.function.name, args)
 //  }
-//  def listMixer(l:List[List[Tree]]):List[List[Tree]] = l match {
-//    case Nil => Nil
-//    case List(subL) => subL.map(List(_))
-//    case head::tail => {
-//      for {first <- head;
-//           then <- listMixer(tail)}
-//      yield first::then
-//    }
-//  } 
-// }
+
