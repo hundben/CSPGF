@@ -51,13 +51,6 @@ namespace CSPGF
             PGFReader pr = new PGFReader(br);
             PGF pgf = pr.ReadPGF();
             fs.Close();
-
-<<<<<<< HEAD
-            //Generator gen = new Generator(pgf.GetConcrete("PhrasebookEng"));
-            //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookSwe"));
-            //System.Console.WriteLine(lin.LinearizeString(gen.Gen()));
-=======
->>>>>>> 15661b048eb9a48dc222fce54024ca67411acaea
             /*RecoveryParser rp = new RecoveryParser(pgf, "FoodsEng");
             rp.Scan("this");
             rp.Scan("wine");
@@ -72,17 +65,10 @@ namespace CSPGF
             rp.Scan(".");
             List<Trees.Absyn.Tree> trees = rp.GetTrees();
             Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookSwe"));
-<<<<<<< HEAD
             //rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
             foreach (Trees.Absyn.Tree tree in trees)
             {
                 System.Console.WriteLine(lin.LinearizeString(tree));
-=======
-            rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
-            if (trees.Count != 0)
-            {
-                System.Console.WriteLine(lin.LinearizeString(trees[0]));
->>>>>>> 15661b048eb9a48dc222fce54024ca67411acaea
             }
             rp.Debug2();
             System.Console.Out.WriteLine("done");
