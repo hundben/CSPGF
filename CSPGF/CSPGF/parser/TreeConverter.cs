@@ -53,7 +53,7 @@ namespace CSPGF.Parse
         /// <returns>The abstract tree.</returns>
         public CSPGF.Trees.Absyn.Tree Intermediate2Abstract(Tree t)
         {
-            return this.C2a(t, null);
+            return this.C2a(t, new List<string>());
         }
 
         /// <summary>

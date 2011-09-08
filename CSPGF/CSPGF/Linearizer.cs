@@ -631,7 +631,7 @@ namespace CSPGF
                 List<int> args = ((ApplProduction)p).Domain();
                 CncFun cncFun = ((ApplProduction)p).Function;
                 List<CncType> vtype = new List<CncType>();
-                if (f.Equals("V"))
+                if (f.Equals("_V"))
                 {
                     foreach (int i in args)
                     {

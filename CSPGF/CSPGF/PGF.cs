@@ -159,5 +159,15 @@ namespace CSPGF
             ss += ")";
             return ss;
         }
+
+        public List<string> GetLanguages()
+        {
+            List<string> tmp = new List<string>();
+            foreach (KeyValuePair<string, Concrete> kvp in concretes)
+            {
+                tmp.Add(kvp.Key);
+            }
+            return tmp;
+        }
     }
 }

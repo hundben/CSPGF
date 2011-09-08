@@ -94,7 +94,7 @@ namespace CSPGF.Reader
         /// <returns>True if equal</returns>
         public override bool Equals(object o)
         {
-            // TODO: Fix?
+            // TODO: Fix? 
             if (o is ApplProduction) 
             {
                 ApplProduction newo = (ApplProduction)o;
@@ -122,6 +122,7 @@ namespace CSPGF.Reader
 
             return false;
         }
+        
 
         /// <summary>
         /// Returns the hashcode for this object.

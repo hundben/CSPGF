@@ -126,6 +126,8 @@ namespace CSPGF.Parse
         /// <returns>Returns true if scan i complete.</returns>
         public bool Scan(string token)
         {
+            TempLog.LogMessageToFile("Scan token: " + token);
+
             ParseTrie newTrie = this.trie.GetSubTrie(token);
             if (newTrie != null) 
             {
@@ -138,6 +140,10 @@ namespace CSPGF.Parse
                     this.position++;
                     this.agenda = newAgenda;
                     this.Compute();
+
+                    TempLog.LogMessageToFile("Tree for: " + token);
+                    TempLog.LogMessageToFile(this.trie.ToString());
+
                     return true;
                 }
             }
@@ -182,10 +188,13 @@ namespace CSPGF.Parse
             int l = item.Constituent;
             int p = item.Position;
 
+            TempLog.LogMessageToFile("Processing active item: " + item + " ");
+
             Symbol sym = item.CurrentSymbol();
 
-            if (sym is ToksSymbol) 
+            if (sym is ToksSymbol)
             {
+                TempLog.LogMessageToFile("Case before s in T");
                 ToksSymbol tok = (ToksSymbol)sym;
                 List<string> tokens = tok.Tokens;
                 ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
@@ -208,6 +217,7 @@ namespace CSPGF.Parse
             }
             else if (sym is ArgConstSymbol) 
             {
+                TempLog.LogMessageToFile("Case before <d,r>");
                 ArgConstSymbol arg = (ArgConstSymbol)sym;
                 int d = arg.Arg;
                 int r = arg.Cons;
@@ -234,11 +244,13 @@ namespace CSPGF.Parse
                         newDomain[d] = cat;
                         ActiveItem it = new ActiveItem(j, a, f, newDomain, l, p + 1);
                         this.agenda.Push(it);
+                        TempLog.LogMessageToFile("Adding to agenda: " + it.ToString());
                     }
                 }
             }
             else 
             {
+                TempLog.LogMessageToFile("Case at the end");
                 int cat = this.chart.GetCategory(a, l, j, this.position);
                 if (cat == -1) 
                 {
@@ -246,8 +258,9 @@ namespace CSPGF.Parse
                     foreach (ActiveItem ai in this.GetActiveSet(a, this.active[j]))
                     {
                         ActiveItem ip = ai;
-                        int d = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;    // TODO Cons?
+                        int d = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;
                         List<int> domain = new List<int>(ip.Domain);
+                        TempLog.LogMessageToFile("Combine with " + ip.ToString() + "(" + domain[d] + ")");
                         domain[d] = n;
                         ActiveItem i = new ActiveItem(ip.Begin, ip.Category, ip.Function, domain, ip.Constituent, ip.Position + 1);
                         this.agenda.Push(i);
@@ -260,7 +273,7 @@ namespace CSPGF.Parse
                     HashSet<ActiveItem> items = this.GetActiveSet(cat, this.active[this.position]);
                     foreach (ActiveItem ai in items) 
                     {
-                        int r = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;  // Cons?
+                        int r = ((ArgConstSymbol)ai.CurrentSymbol()).Cons;  // Cons?
                         ActiveItem i = new ActiveItem(this.position, cat, f, b, r, 0);
                         this.agenda.Push(i);
                     }

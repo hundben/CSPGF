@@ -71,14 +71,15 @@ namespace CSPGF.Parse
         /// Adds a production to the productionset.
         /// </summary>
         /// <param name="p">The production to add.</param>
-        public void AddProduction(Production p)
+        /// <returns>Returns true if production was added.</returns>
+        public bool AddProduction(Production p)
         {
             HashSet<Production> prodSet;
             if (this.productionSets.TryGetValue(p.FId, out prodSet))
             {
                 if (prodSet.Contains(p)) 
                 { 
-                    return; 
+                    return false; 
                 }
 
                 prodSet.Add(p);
@@ -90,7 +91,9 @@ namespace CSPGF.Parse
                 this.productionSets.Add(p.FId, prodSet);
             }
 
-            this.nextCat = Math.Max(this.nextCat, p.FId + 1);
+            TempLog.LogMessageToFile(this.ToString());
+
+            return true;
         }
 
         /// <summary>
@@ -99,9 +102,10 @@ namespace CSPGF.Parse
         /// <param name="cat">Category index.</param>
         /// <param name="fun">The function.</param>
         /// <param name="domain">A list of domains.</param>
-        public void AddProduction(int cat, CncFun fun, List<int> domain)
+        /// <returns>Returns true if production was added.</returns>
+        public bool AddProduction(int cat, CncFun fun, List<int> domain)
         {
-            this.AddProduction(new ApplProduction(cat, fun, domain));
+            return this.AddProduction(new ApplProduction(cat, fun, domain));
         }
 
         /// <summary>
@@ -143,9 +147,8 @@ namespace CSPGF.Parse
         /// <returns>New category index.</returns>
         public int GetFreshCategory(int oldCat, int l, int j, int k)
         {
-            //Crappy optimization 
-            string hash = oldCat + " " + l + " " + j + " " + k;
-
+            // Crappy optimization 
+            string hash = this.generateHash(oldCat, l, j, k);
             if (this.categoryBookKeeperHash.ContainsKey(hash))
             {
                 return this.categoryBookKeeperHash[hash];
@@ -166,7 +169,8 @@ namespace CSPGF.Parse
         /// <returns>Returns the category.</returns>
         public int GetCategory(int oldCat, int cons, int begin, int end)
         {
-            string hash = oldCat + " " + cons + " " + begin + " " + end;
+            string hash = this.generateHash(oldCat, cons, begin, end);
+            TempLog.LogMessageToFile("<<<Get category hash:" + hash);
             if (this.categoryBookKeeperHash.ContainsKey(hash))
             {
                 return this.categoryBookKeeperHash[hash];
@@ -178,21 +182,16 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Generate a fresh category.
+        /// Generates a fresh category
         /// </summary>
-        /// <param name="hash">The old category.</param>
-        /// <returns>The new category</returns>
-        private int GenerateFreshCategory(string hash)
-        {
-            int cat = this.nextCat;
-            this.nextCat++;
-            this.categoryBookKeeperHash[hash] = cat;
-            return cat;
-        }
-
+        /// <param name="oldCat">Old category.</param>
+        /// <param name="l"></param>
+        /// <param name="j"></param>
+        /// <param name="k"></param>
+        /// <returns>The new category.</returns>
         public int GenerateFreshCategory(int oldCat, int l, int j, int k)
         {
-            return this.GenerateFreshCategory(oldCat + " " + l + " " + j + " " + k);
+            return this.GenerateFreshCategory(this.generateHash(oldCat,l,j,k));
         }
 
         /// <summary>
@@ -204,7 +203,12 @@ namespace CSPGF.Parse
             string s = "=== Productions: ===\n";
             foreach (int i in this.productionSets.Keys) 
             {
-                s += this.productionSets[i].ToString() + '\n';
+                s += " < PRODUCTION SET :"+ i + " >\n";
+                foreach (Production p in this.productionSets[i])
+                {
+                    s += p.ToString() + "\n";
+                }
+
             }
 
             s += "=== passive items: ===\n";
@@ -215,6 +219,20 @@ namespace CSPGF.Parse
             }
 
             return s;
+        }
+
+        /// <summary>
+        /// Generate a fresh category.
+        /// </summary>
+        /// <param name="hash">The old category.</param>
+        /// <returns>The new category</returns>
+        private int GenerateFreshCategory(string hash)
+        {
+            TempLog.LogMessageToFile(">>>New category hash:" + hash);
+            int cat = this.nextCat;
+            this.nextCat++;
+            this.categoryBookKeeperHash[hash] = cat;
+            return cat;
         }
 
         /// <summary>
@@ -242,6 +260,11 @@ namespace CSPGF.Parse
             }
 
             return prodList;
+        }
+
+        private string generateHash(int oldCat, int cons, int begin, int end)
+        {
+            return oldCat + " " + cons + " " + begin + " " + end;
         }
     }
 }

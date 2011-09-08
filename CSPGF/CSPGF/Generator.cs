@@ -51,12 +51,17 @@ namespace CSPGF
         private Random ran;
 
         /// <summary>
+        /// Concrete to use
+        /// </summary>
+        private Concrete concrete;
+
+        /// <summary>
         /// Initializes a new instance of the Generator class.
         /// </summary>
         /// <param name="grammar">Concrete grammar</param>
         public Generator(Concrete grammar)
         {
-            this.ps = new ParseState(grammar);
+            this.concrete = grammar;
         }
 
         /// <summary>
@@ -65,8 +70,10 @@ namespace CSPGF
         /// <returns>Generated tree</returns>
         public Trees.Absyn.Tree Gen()
         {
+            this.ps = new ParseState(this.concrete);
             this.ran = new Random();
             List<string> pre = this.ps.Predict();
+            string last = string.Empty;
             while (pre.Count != 0)
             {
                 this.ps.Scan(pre[this.ran.Next(pre.Count - 1)]);
