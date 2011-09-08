@@ -90,7 +90,7 @@ namespace CSPGF
         /// <returns>Linearized string</returns>
         public string LinearizeString(CSPGF.Trees.Absyn.Tree absyn)
         {
-            List<string> words = this.RenderLin(this.Linearize(absyn).ElementAt(0));
+            List<string> words = this.LinearizeTokens(absyn);
             string sb = string.Empty;
             foreach (string w in words)
             {
@@ -99,13 +99,6 @@ namespace CSPGF
 
             return sb.Trim();
         }
-
-
-        public Dictionary<string, Dictionary<int, HashSet<Production>>> LProds()
-        {
-            return linProd;
-        }
-
 
         /// <summary>
         /// Constructs the l-productions of the concrete syntax for a given language
@@ -647,7 +640,8 @@ namespace CSPGF
 
                     rez.Add(new AppResult(cncFun, cty, vtype));
                     return rez;
-                } else if (f.Equals("_B"))
+                } 
+                else if (f.Equals("_B"))
                 {
                     vtype.Add(new CncType(cty.CId, args[0]));
                     for (int i = 1; i < args.Count; i++)
@@ -875,7 +869,8 @@ namespace CSPGF
             {
                 return true;
             }
-                return false;
+
+            return false;
         }
     }
 }

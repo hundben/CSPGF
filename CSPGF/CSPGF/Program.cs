@@ -51,9 +51,9 @@ namespace CSPGF
             PGF pgf = pr.ReadPGF();
             fs.Close();
 
-            Generator gen = new Generator(pgf.GetConcrete("PhrasebookEng"));
-            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookSwe"));
-            System.Console.WriteLine(lin.LinearizeString(gen.Gen()));
+            //Generator gen = new Generator(pgf.GetConcrete("PhrasebookEng"));
+            //Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookSwe"));
+            //System.Console.WriteLine(lin.LinearizeString(gen.Gen()));
             /*RecoveryParser rp = new RecoveryParser(pgf, "FoodsEng");
             rp.Scan("this");
             rp.Scan("wine");
@@ -73,11 +73,11 @@ namespace CSPGF
             rp.Scan("please");
             rp.Scan("!");*/
             List<Trees.Absyn.Tree> trees = rp.GetTrees();
-            Linearizer lin2 = new Linearizer(pgf, pgf.GetConcrete("PhrasebookSwe"));
+            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookSwe"));
             //rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
             foreach (Trees.Absyn.Tree tree in trees)
             {
-                System.Console.WriteLine(lin2.LinearizeString(tree));
+                System.Console.WriteLine(lin.LinearizeString(tree));
             }
             //rp.Debug2();
             System.Console.Out.WriteLine("done");
