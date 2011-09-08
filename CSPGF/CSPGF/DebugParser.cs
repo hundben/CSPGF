@@ -39,7 +39,7 @@ namespace CSPGF
     /// TODO: Update summary.
     /// Remove most of this later.
     /// </summary>
-    public class RecoveryParser
+    public class DebugParser
     {
         /// <summary>
         /// The language
@@ -54,20 +54,18 @@ namespace CSPGF
         /// <summary>
         /// Stack with all the states
         /// </summary>
-        private Stack<ParseState> parseStates;
+        private ParseState currentPState;
 
         /// <summary>
         /// Initializes a new instance of the RecoveryParser class.
         /// </summary>
         /// <param name="pgf">The current pgf class.</param>
         /// <param name="language">The language.</param>
-        public RecoveryParser(PGF pgf, Concrete language)
+        public DebugParser(PGF pgf, Concrete language)
         {
             this.language = language;
             this.startcat = pgf.GetAbstract().StartCat();
-            this.parseStates = new Stack<ParseState>();
-            ParseState ps = new ParseState(this.language);
-            this.parseStates.Push(ps);
+            this.currentPState = new ParseState(this.language);
         }
 
         /// <summary>
@@ -75,7 +73,7 @@ namespace CSPGF
         /// </summary>
         /// <param name="pgf">The current pgf instance.</param>
         /// <param name="language">The language as a string.</param>
-        public RecoveryParser(PGF pgf, string language) : this(pgf, pgf.GetConcrete(language))
+        public DebugParser(PGF pgf, string language) : this(pgf, pgf.GetConcrete(language))
         {
         }
 
@@ -86,42 +84,13 @@ namespace CSPGF
         /// <returns>True if scan was successful.</returns>
         public bool Scan(string token)
         {
-            if (this.parseStates.Count == 0)
-            {
-                this.parseStates.Push(new ParseState(this.language));
-            }
+            bool result = this.currentPState.Scan(token);
 
-            ParseState ps = this.parseStates.Peek();
-
-            // TODO change this since it is of course very slow.
-            // Was only here for a test of ObjectCopier.
-            ParseState copy = ObjectCopier.Clone<ParseState>(ps);
-            bool result = copy.Scan(token);
             if (!result)
             {
                 return false;
             }
-
-            // if scan is successful store the copy and return true
-            this.parseStates.Push(copy);
             return true;
-        }
-
-        /// <summary>
-        /// Removes one token
-        /// </summary>
-        /// <returns>True if one is removed.</returns>
-        public bool RemoveOne()
-        {
-            if (this.parseStates.Count > 0)
-            {
-                this.parseStates.Pop();
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
 
         /// <summary>
@@ -130,8 +99,7 @@ namespace CSPGF
         /// <returns>A list of possible tokens</returns>
         public List<string> Predict()
         {
-            ParseState ps = this.parseStates.Peek();
-            return ps.Predict();
+            return this.currentPState.Predict();
         }
 
         /// <summary>
@@ -140,8 +108,7 @@ namespace CSPGF
         /// <returns>Returns the trees.</returns>
         public List<CSPGF.Trees.Absyn.Tree> GetTrees()
         {
-            ParseState ps = this.parseStates.Peek();
-            return ps.GetTrees();
+            return this.currentPState.GetTrees();
         }
 
         /// <summary>
@@ -149,10 +116,10 @@ namespace CSPGF
         /// </summary>
         public void Debug()
         {
-            Console.WriteLine("Prediction");
+            TempLog.LogMessageToFile("--- Prediction ---");
             foreach (string tok in this.Predict())
             {
-                Console.WriteLine(tok);
+                TempLog.LogMessageToFile(tok);
             }
         }
 
@@ -161,8 +128,7 @@ namespace CSPGF
         /// </summary>
         public void Debug2()
         {
-            ParseState ps = this.parseStates.Peek();
-            List<Trees.Absyn.Tree> trees = ps.GetTrees();
+            List<Trees.Absyn.Tree> trees = this.currentPState.GetTrees();
             foreach (Trees.Absyn.Tree tree in trees)
             {
                 TempLog.LogMessageToFile("Tree: " + this.TreeToString(tree));
@@ -171,8 +137,7 @@ namespace CSPGF
 
         public void Debug3(Concrete lang)
         {
-            ParseState ps = this.parseStates.Peek();
-            List<Trees.Absyn.Tree> trees = ps.GetTrees();
+            List<Trees.Absyn.Tree> trees = this.currentPState.GetTrees();
             if (trees.Count > 0)
             {
                 Trees.Absyn.Tree tree = trees[0];

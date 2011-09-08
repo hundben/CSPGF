@@ -56,7 +56,7 @@ namespace CSPGF
             rp.Scan("wine");
             rp.Scan("is");
             rp.Scan("Italian");*/
-            RecoveryParser rp = new RecoveryParser(pgf, "PhrasebookEng");
+            DebugParser rp = new DebugParser(pgf, "PhrasebookEng");
             rp.Scan("Finnish");
             rp.Scan("fish");
             rp.Scan("isn't");
