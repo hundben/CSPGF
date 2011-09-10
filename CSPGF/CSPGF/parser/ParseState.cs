@@ -71,6 +71,11 @@ namespace CSPGF.Parse
         private List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>> active;
 
         /// <summary>
+        /// If true then recovery mode.
+        /// </summary>
+        private bool recovery = false;
+
+        /// <summary>
         /// Initializes a new instance of the ParseState class.
         /// </summary>
         /// <param name="grammar">The concrete grammar we would like to use.</param>
@@ -159,6 +164,27 @@ namespace CSPGF.Parse
         public List<string> Predict()
         {
             return this.trie.Predict();
+        }
+
+        /// <summary>
+        /// Run this to set the parsestate in recovery mode.
+        /// </summary>
+        public void SetRecovery()
+        {
+            this.recovery = true;
+        }
+
+        /// <summary>
+        /// Remove the last scanned token.
+        /// </summary>
+        /// <returns>Return true if removed successful.</returns>
+        public bool RemoveLastToken()
+        {
+            if (this.recovery)
+            {
+                // TODO
+            }
+            return false;
         }
 
         /// <summary>
