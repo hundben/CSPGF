@@ -132,7 +132,8 @@ namespace CSPGF.Parse
             if (newTrie != null) 
             {
                 List<string> empt = new List<string>();
-                //string[] empt = new string[0];
+
+                // string[] empt = new string[0];
                 Stack<ActiveItem> newAgenda = newTrie.Lookup(empt);
                 if (newAgenda != null) 
                 {

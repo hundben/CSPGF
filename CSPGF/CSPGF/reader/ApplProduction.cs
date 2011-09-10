@@ -123,7 +123,6 @@ namespace CSPGF.Reader
             return false;
         }
         
-
         /// <summary>
         /// Returns the hashcode for this object.
         /// </summary>

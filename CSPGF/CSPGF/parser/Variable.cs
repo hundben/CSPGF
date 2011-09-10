@@ -30,7 +30,6 @@
 
 namespace CSPGF.Parse
 {
-
     /// <summary>
     /// A variable for the tree.
     /// </summary>

@@ -45,6 +45,7 @@ namespace CSPGF
         public static void Main(string[] args)
         {
             TempLog.NewLog();
+
             // Tests below.
             FileStream fs = new FileStream("..\\..\\test\\files\\Phrasebook.pgf", FileMode.Open);
             BinaryReader br = new BinaryReader(fs);
@@ -65,11 +66,13 @@ namespace CSPGF
             rp.Scan(".");
             List<Trees.Absyn.Tree> trees = rp.GetTrees();
             Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookSwe"));
-            //rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
+
+            // rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
             foreach (Trees.Absyn.Tree tree in trees)
             {
                 System.Console.WriteLine(lin.LinearizeString(tree));
             }
+
             rp.Debug2();
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();

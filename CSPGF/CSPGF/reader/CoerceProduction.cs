@@ -97,6 +97,5 @@ namespace CSPGF.Reader
         {
             return base.GetHashCode();
         }
-         
     }
 }

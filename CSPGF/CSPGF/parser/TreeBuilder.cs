@@ -161,12 +161,13 @@ namespace CSPGF.Parse
                 return newList;
             }
         }
+
         public void epicCrap(List<List<Tree>> trees)
         {
             foreach (List<Tree> tmp in trees)
             {
                 string tr = "[";
-                foreach(Tree t in tmp)
+                foreach (Tree t in tmp)
                 {
                     tr += "[";
                     if (t is Application)
@@ -176,6 +177,7 @@ namespace CSPGF.Parse
 
                     tr += "]";
                 }
+
                 tr += "]";
                 TempLog.LogMessageToFile(tr);
             }

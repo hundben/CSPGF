@@ -176,7 +176,7 @@ namespace CSPGF
             if (trees.Count > 0)
             {
                 Trees.Absyn.Tree tree = trees[0];
-                Test(lang, tree);
+                this.Test(lang, tree);
             }
         }
 
@@ -259,7 +259,7 @@ namespace CSPGF
 
         public void Test(Concrete lang, Trees.Absyn.Tree tree)
         {
-            TempLog.LogMessageToFile("Test: " + TreeToConc(lang, tree));
+            TempLog.LogMessageToFile("Test: " + this.TreeToConc(lang, tree));
         }
 
         public string TreeToConc(Concrete lang, Trees.Absyn.Tree tree)
@@ -303,6 +303,7 @@ namespace CSPGF
                 return string.Empty;
             }
         }
+
         private string GetToken(Trees.Absyn.Function f, Concrete lang)
         {
             foreach (CncFun name in lang.CncFuns)

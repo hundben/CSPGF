@@ -160,13 +160,18 @@ namespace CSPGF
             return ss;
         }
 
+        /// <summary>
+        /// Returns all the available languages in this PGF grammar.
+        /// </summary>
+        /// <returns>List of languages</returns>
         public List<string> GetLanguages()
         {
             List<string> tmp = new List<string>();
-            foreach (KeyValuePair<string, Concrete> kvp in concretes)
+            foreach (KeyValuePair<string, Concrete> kvp in this.concretes)
             {
                 tmp.Add(kvp.Key);
             }
+
             return tmp;
         }
     }

@@ -32,7 +32,7 @@ namespace CSPGF
 {
     using System;
 
-    /// <summar>
+    /// <summary>
     /// Exception to show that a language does not exist.
     /// </summary>
     [Serializable]
