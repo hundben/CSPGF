@@ -36,7 +36,7 @@ namespace CSPGF
     /// <summary>
     /// Portable Grammar Format
     /// </summary>
-    public class PGF
+    internal class PGF
     {
         /// <summary>
         /// Major version number

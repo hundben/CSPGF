@@ -37,7 +37,7 @@ namespace CSPGF.Reader
     /// Concrete function
     /// </summary>
     [Serializable]
-    public class CncFun
+    internal class CncFun
     {
         /// <summary>
         /// Initializes a new instance of the CncFun class.

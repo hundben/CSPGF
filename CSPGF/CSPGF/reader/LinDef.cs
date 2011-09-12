@@ -35,7 +35,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// LinDef class
     /// </summary>
-    public class LinDef
+    internal class LinDef
     {
         /// <summary>
         /// Initializes a new instance of the LinDef class.

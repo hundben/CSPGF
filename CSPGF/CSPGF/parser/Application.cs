@@ -35,7 +35,7 @@ namespace CSPGF.Parse
     /// <summary>
     /// Application node of the tree.
     /// </summary>
-    public class Application : Tree
+    internal class Application : Tree
     {
         /// <summary>
         /// Initializes a new instance of the Application class.

@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// String Literal
     /// </summary>
-    public class StringLit : RLiteral
+    internal class StringLit : RLiteral
     {
         /// <summary>
         /// Initializes a new instance of the StringLit class.

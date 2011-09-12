@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Lambda Expression
     /// </summary>
-    public class LambdaExp : Expr // EAbs
+    internal class LambdaExp : Expr // EAbs
     {
         /// <summary>
         /// Initializes a new instance of the LambdaExp class.

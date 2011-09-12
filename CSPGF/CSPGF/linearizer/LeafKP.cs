@@ -43,7 +43,7 @@ namespace CSPGF.Linearize
     ///   alternatives = [ (["parce", "qu'"], ["il"])
     ///                  , (["parce", "qu'"], ["on"]) ]
     /// </summary>
-    public class LeafKP : BracketedTokn
+    internal class LeafKP : BracketedTokn
     {
         /// <summary>
         /// Initializes a new instance of the LeafKP class.

@@ -35,7 +35,7 @@ namespace CSPGF.Linearize
     /// <summary>
     /// The RezDesc class.
     /// </summary>
-    public class RezDesc
+    internal class RezDesc
     {
         /// <summary>
         /// Initializes a new instance of the RezDesc class.

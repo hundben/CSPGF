@@ -37,7 +37,7 @@ namespace CSPGF.Reader
     /// Token Symbol class
     /// </summary>
     [Serializable]
-    public class ToksSymbol : Symbol // SymKS
+    internal class ToksSymbol : Symbol // SymKS
     {
         /// <summary>
         /// Initializes a new instance of the ToksSymbol class.

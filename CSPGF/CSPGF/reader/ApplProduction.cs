@@ -37,7 +37,7 @@ namespace CSPGF.Reader
     /// Application production
     /// </summary>
     [Serializable]
-    public class ApplProduction : Production
+    internal class ApplProduction : Production
     {
         /// <summary>
         /// List of domains

@@ -37,7 +37,7 @@ namespace CSPGF.Reader
     /// Alternative class
     /// </summary>
     [Serializable]
-    public class Alternative
+    internal class Alternative
     {
         /// <summary>
         /// Initializes a new instance of the Alternative class.

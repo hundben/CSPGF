@@ -38,7 +38,7 @@ namespace CSPGF.Parse
     /// The parsestate class.
     /// </summary>
     [Serializable]
-    public class ParseState
+    internal class ParseState
     {
         /// <summary>
         /// Start category

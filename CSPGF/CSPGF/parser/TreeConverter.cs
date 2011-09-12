@@ -37,7 +37,7 @@ namespace CSPGF.Parse
     /// <summary>
     /// Converts trees. Add a better description here later.
     /// </summary>
-    public class TreeConverter
+    internal class TreeConverter
     {
         /// <summary>
         /// Initializes a new instance of the TreeConverter class.

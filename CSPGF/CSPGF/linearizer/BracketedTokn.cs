@@ -33,7 +33,7 @@ namespace CSPGF.Linearize
     /// <summary>
     /// Abstract class
     /// </summary>
-    public abstract class BracketedTokn
+    internal abstract class BracketedTokn
     {
     }
 }

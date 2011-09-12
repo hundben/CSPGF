@@ -36,7 +36,7 @@ namespace CSPGF.Parse
     /// <summary>
     /// Lambda node of the tree.
     /// </summary>
-    public class Lambda : Tree
+    internal class Lambda : Tree
     {
         /// <summary>
         /// Initializes a new instance of the Lambda class.

@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Implicit arguments expression class
     /// </summary>
-    public class ImplExp : Expr // EImplArg
+    internal class ImplExp : Expr // EImplArg
     {
         /// <summary>
         /// Initializes a new instance of the ImplExp class.

@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Weighted Ident class
     /// </summary>
-    public class WeightedIdent
+    internal class WeightedIdent
     {
         /// <summary>
         /// Initializes a new instance of the WeightedIdent class.

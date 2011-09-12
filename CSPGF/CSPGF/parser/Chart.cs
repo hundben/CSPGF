@@ -40,7 +40,7 @@ namespace CSPGF.Parse
     /// The chart.
     /// </summary>
     [Serializable]
-    public class Chart
+    internal class Chart
     {
         /// <summary>
         /// The set of productions

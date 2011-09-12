@@ -36,7 +36,7 @@ namespace CSPGF.Linearize
     /// <summary>
     /// Application Result
     /// </summary>
-    public class AppResult
+    internal class AppResult
     {
         /// <summary>
         /// Initializes a new instance of the AppResult class.

@@ -36,7 +36,7 @@ namespace CSPGF.Reader
     /// Argument Constant Symbol?
     /// </summary>
     [Serializable]
-    public class ArgConstSymbol : Symbol
+    internal class ArgConstSymbol : Symbol
     {
         /// <summary>
         /// Initializes a new instance of the ArgConstSymbol class.

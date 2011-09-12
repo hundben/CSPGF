@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Abstract class Pattern
     /// </summary>
-    public abstract class Pattern
+    internal abstract class Pattern
     {
         /// <summary>
         /// Pretty prints the contents of this class

@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Variable pattern
     /// </summary>
-    public class VarPattern : Pattern // PVar
+    internal class VarPattern : Pattern // PVar
     {
         /// <summary>
         /// Initializes a new instance of the VarPattern class.

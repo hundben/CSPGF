@@ -35,7 +35,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Application Pattern
     /// </summary>
-    public class AppPattern : Pattern // PApp
+    internal class AppPattern : Pattern // PApp
     {
         /// <summary>
         /// Initializes a new instance of the AppPattern class.

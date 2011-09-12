@@ -38,7 +38,7 @@ namespace CSPGF.Parse
     /// The ParseTrie class.
     /// </summary>
     [Serializable]
-    public class ParseTrie
+    internal class ParseTrie
     {
         /// <summary>
         /// A stack of active items.

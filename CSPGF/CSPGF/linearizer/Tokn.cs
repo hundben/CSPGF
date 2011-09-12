@@ -33,7 +33,7 @@ namespace CSPGF.Linearize
     /// <summary>
     /// A abstract base used for other classes.
     /// </summary>
-    public abstract class Tokn
+    internal abstract class Tokn
     {
     }
 }

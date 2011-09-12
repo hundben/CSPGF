@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// PrintName class
     /// </summary>
-    public class PrintName
+    internal class PrintName
     {
         /// <summary>
         /// Initializes a new instance of the PrintName class.

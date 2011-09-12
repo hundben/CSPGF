@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Meta Expression
     /// </summary>
-    public class MetaExp : Expr // EMeta
+    internal class MetaExp : Expr // EMeta
     {
         /// <summary>
         /// Initializes a new instance of the MetaExp class.

@@ -35,7 +35,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Concrete grammar
     /// </summary>
-    public class Concrete
+    internal class Concrete
     {
         /// <summary>
         /// Concrete grammar flags

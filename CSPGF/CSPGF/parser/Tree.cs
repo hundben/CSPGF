@@ -33,7 +33,7 @@ namespace CSPGF.Parse
     /// <summary>
     /// An abstract class as base for the trees.
     /// </summary>
-    public abstract class Tree
+    internal abstract class Tree
     {
     }
 }

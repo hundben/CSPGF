@@ -37,7 +37,7 @@ namespace CSPGF.Reader
     /// Coerce Production
     /// </summary>
     [Serializable]
-    public class CoerceProduction : Production
+    internal class CoerceProduction : Production
     {
         /// <summary>
         /// Initializes a new instance of the CoerceProduction class.

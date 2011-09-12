@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Literal Expression class
     /// </summary>
-    public class LiteralExp : Expr // ELit
+    internal class LiteralExp : Expr // ELit
     {
         /// <summary>
         /// Initializes a new instance of the LiteralExp class.

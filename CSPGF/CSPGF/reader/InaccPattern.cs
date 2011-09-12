@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Inaccessible pattern class
     /// </summary>
-    public class InaccPattern : Pattern // PTilde
+    internal class InaccPattern : Pattern // PTilde
     {
         /// <summary>
         /// Initializes a new instance of the InaccPattern class.

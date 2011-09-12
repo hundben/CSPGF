@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LiteralPattern.cs" company="None">
+// <copyright file="CSPGF.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,34 +28,56 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Reader
+namespace CSPGF
 {
+    using System.IO;
+    using System.Collections.Generic;
+    
     /// <summary>
-    /// Literal Pattern
+    /// API for others to use :D
     /// </summary>
-    internal class LiteralPattern : Pattern // PLit
+    public class CSPGFAPI
     {
         /// <summary>
-        /// Initializes a new instance of the LiteralPattern class.
+        /// PGF grammar
         /// </summary>
-        /// <param name="value">RLiteral</param>
-        public LiteralPattern(RLiteral value)
+        private PGF pgf;
+
+        /// <summary>
+        /// Initializes a new instance of the CSPGF class.
+        /// </summary>
+        /// <param name="filename">Filename with path to read</param>
+        public CSPGFAPI(string filename)
         {
-            this.Value = value;
+            PGFReader pgfr = new PGFReader(new BinaryReader(new FileStream(filename, FileMode.Open)));
+            this.pgf = pgfr.ReadPGF();
         }
 
         /// <summary>
-        /// Gets the value
+        /// Returns a list of available languages
         /// </summary>
-        public RLiteral Value { get; private set; }
+        /// <returns>List of languages</returns>
+        public List<string> GetLanguages()
+        {
+            return this.pgf.GetLanguages();
+        }
 
         /// <summary>
-        /// Pretty prints the contents of this class
+        /// Translates a sentence from one language to another. Separates tokens with ' '
         /// </summary>
-        /// <returns>Returns a string containing debuginformation</returns>
-        public override string ToString()
+        /// <param name="from">Language to translate from</param>
+        /// <param name="to">Language to translate to</param>
+        /// <param name="sentence">Sentence to translate</param>
+        /// <returns>Translates sentence</returns>
+        public string Translate(string from, string to, string sentence)
         {
-            return "Literal Pattern : " + this.Value.ToString();
+            Parse.ParseState ps = new Parse.ParseState(this.pgf.GetConcrete(from));
+            foreach (string str in sentence.Split(' '))
+            {
+                ps.Scan(str);
+            }
+            Linearizer lin = new Linearizer(this.pgf, this.pgf.GetConcrete(to));
+            return lin.LinearizeString(ps.GetTrees()[0]);
         }
     }
 }

@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Float literal
     /// </summary>
-    public class FloatLit : RLiteral
+    internal class FloatLit : RLiteral
     {
         /// <summary>
         /// Initializes a new instance of the FloatLit class.

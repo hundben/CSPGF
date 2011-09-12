@@ -39,7 +39,7 @@ namespace CSPGF
     /// TODO: Update summary.
     /// Remove most of this later.
     /// </summary>
-    public class DebugParser
+    internal class DebugParser
     {
         /// <summary>
         /// The language

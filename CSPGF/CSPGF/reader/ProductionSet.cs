@@ -35,7 +35,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Production set class
     /// </summary>
-    public class ProductionSet
+    internal class ProductionSet
     {
         /// <summary>
         /// Initializes a new instance of the ProductionSet class.

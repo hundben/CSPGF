@@ -37,7 +37,7 @@ namespace CSPGF.Reader
     /// Alternative Token Symbol
     /// </summary>
     [Serializable]
-    public class AlternToksSymbol : ToksSymbol // SymKP
+    internal class AlternToksSymbol : ToksSymbol // SymKP
     {
         /// <summary>
         /// Initializes a new instance of the AlternToksSymbol class.

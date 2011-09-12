@@ -38,7 +38,7 @@ namespace CSPGF
     /// <summary>
     /// Reads an PGF object
     /// </summary>
-    public class PGFReader
+    internal class PGFReader
     {
         /// <summary>
         /// True if debuginformation should be written

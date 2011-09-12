@@ -33,7 +33,7 @@ namespace CSPGF.Parse
     /// <summary>
     /// A variable for the tree.
     /// </summary>
-    public class Variable : Tree
+    internal class Variable : Tree
     {
         /// <summary>
         /// Initializes a new instance of the Variable class.

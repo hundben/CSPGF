@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Hypo class
     /// </summary>
-    public class Hypo
+    internal class Hypo
     {
         /// <summary>
         /// Initializes a new instance of the Hypo class.

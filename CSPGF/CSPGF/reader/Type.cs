@@ -35,7 +35,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Type class
     /// </summary>
-    public class Type
+    internal class Type
     {
         /// <summary>
         /// Initializes a new instance of the Type class.

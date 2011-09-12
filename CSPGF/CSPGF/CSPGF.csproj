@@ -49,7 +49,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>CSPGF.Program</StartupObject>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -64,6 +65,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CSPGFAPI.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="Linearizer.cs" />
     <Compile Include="LinearizerException.cs" />
@@ -91,7 +93,6 @@
     <Compile Include="Parser\Lambda.cs" />
     <Compile Include="Parser\Tree.cs" />
     <Compile Include="PGF.cs" />
-    <Compile Include="PGFBuilder.cs" />
     <Compile Include="PGFReader.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
