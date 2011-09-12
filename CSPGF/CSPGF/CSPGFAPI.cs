@@ -30,6 +30,7 @@
 
 namespace CSPGF
 {
+    using System;
     using System.IO;
     using System.Collections.Generic;
     
@@ -42,6 +43,11 @@ namespace CSPGF
         /// PGF grammar
         /// </summary>
         private PGF pgf;
+
+        /// <summary>
+        /// Internal ParseState
+        /// </summary>
+        Parse.ParseState ps;
 
         /// <summary>
         /// Initializes a new instance of the CSPGF class.
@@ -71,13 +77,66 @@ namespace CSPGF
         /// <returns>Translates sentence</returns>
         public string Translate(string from, string to, string sentence)
         {
-            Parse.ParseState ps = new Parse.ParseState(this.pgf.GetConcrete(from));
+            Parse.ParseState ps2 = new Parse.ParseState(this.pgf.GetConcrete(from));
             foreach (string str in sentence.Split(' '))
             {
-                ps.Scan(str);
+                ps2.Scan(str);
             }
             Linearizer lin = new Linearizer(this.pgf, this.pgf.GetConcrete(to));
-            return lin.LinearizeString(ps.GetTrees()[0]);
+            return lin.LinearizeString(ps2.GetTrees()[0]);
+        }
+
+        /// <summary>
+        /// Creates a new Parse state.
+        /// </summary>
+        /// <param name="from">Name of grammar to parse</param>
+        /// <returns>True if language exists</returns>
+        public bool NewParseState(string from)
+        {
+            try
+            {
+                this.ps = new Parse.ParseState(this.pgf.GetConcrete(from));
+            }
+            catch (Exception e)
+            {
+                this.ps = null;
+                return false;
+            }
+            return true;
+        }
+        
+        /// <summary>
+        /// Linearizes the contents of the current parse state if complete, otherwise returns string.Empty.
+        /// </summary>
+        /// <param name="to">Language to linearize to</param>
+        /// <returns>Linearizes string</returns>
+        public string Linearize(string to)
+        {
+            if (this.ps != null && this.ps.Predict().Count == 0)
+            {
+                Linearizer lin = new Linearizer(this.pgf, this.pgf.GetConcrete(to));
+                return lin.LinearizeString(this.ps.GetTrees()[0]);
+            }
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Scans a token and returns a list of available words to continue with.
+        /// Returns null if no parse state is available.
+        /// </summary>
+        /// <param name="token">Token to scan</param>
+        /// <returns>List of strings</returns>
+        public List<string> ParseToken(string token)
+        {
+            if (this.ps != null)
+            {
+                this.ps.Scan(token);
+                return this.ps.Predict();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }
