@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Wildcard Pattern
     /// </summary>
-    public class WildCardPattern : Pattern // PWild
+    internal class WildCardPattern : Pattern // PWild
     {
         /// <summary>
         /// Initializes a new instance of the WildCardPattern class.

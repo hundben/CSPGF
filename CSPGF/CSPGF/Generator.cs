@@ -38,7 +38,7 @@ namespace CSPGF
     /// <summary>
     /// Generates random sentences.
     /// </summary>
-    public class Generator
+    internal class Generator
     {
         /// <summary>
         /// Parsestate to generate sentences with

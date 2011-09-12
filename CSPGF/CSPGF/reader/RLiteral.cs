@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Abstract class RLiteral
     /// </summary>
-    public abstract class RLiteral
+    internal abstract class RLiteral
     {
         /// <summary>
         /// Pretty prints the contents of this class

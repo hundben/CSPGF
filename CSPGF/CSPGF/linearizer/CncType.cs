@@ -33,7 +33,7 @@ namespace CSPGF.Linearize
     /// <summary>
     /// Concrete type
     /// </summary>
-    public class CncType
+    internal class CncType
     {
         /// <summary>
         /// Initializes a new instance of the CncType class.

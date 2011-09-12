@@ -33,7 +33,7 @@ namespace CSPGF.Parse
     /// <summary>
     /// Literal node of the tree.
     /// </summary>
-    public class Literal : Tree
+    internal class Literal : Tree
     {
         /// <summary>
         /// Initializes a new instance of the Literal class.

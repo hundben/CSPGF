@@ -35,7 +35,7 @@ namespace CSPGF.Linearize
     /// <summary>
     /// Dunno actually?
     /// </summary>
-    public class LinTriple
+    internal class LinTriple
     {
         /// <summary>
         /// Initializes a new instance of the LinTriple class.

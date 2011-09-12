@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Integer Literal
     /// </summary>
-    public class IntLit : RLiteral
+    internal class IntLit : RLiteral
     {
         /// <summary>
         /// Initializes a new instance of the IntLit class.

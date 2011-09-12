@@ -40,7 +40,7 @@ namespace CSPGF.Parse
     /// The chart.
     /// </summary>
     [Serializable]
-    public class Chart
+    internal class Chart
     {
         /// <summary>
         /// The set of productions
@@ -194,7 +194,7 @@ namespace CSPGF.Parse
         /// <returns>The new category.</returns>
         public int GenerateFreshCategory(int oldCat, int l, int j, int k)
         {
-            return this.GenerateFreshCategory(this.generateHash(oldCat,l,j,k));
+            return this.GenerateFreshCategory(this.generateHash(oldCat, l, j, k));
         }
 
         /// <summary>
@@ -208,12 +208,11 @@ namespace CSPGF.Parse
             s = "=== Productions: ===\n";
             foreach (int i in this.productionSets.Keys) 
             {
-                s += " < PRODUCTION SET :"+ i + " >\n";
+                s += " < PRODUCTION SET :" + i + " >\n";
                 foreach (Production p in this.productionSets[i])
                 {
                     s += p.ToString() + "\n";
                 }
-
             }
 
             s += "=== passive items: ===\n";

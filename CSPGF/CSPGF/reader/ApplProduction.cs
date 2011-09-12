@@ -37,7 +37,7 @@ namespace CSPGF.Reader
     /// Application production
     /// </summary>
     [Serializable]
-    public class ApplProduction : Production
+    internal class ApplProduction : Production
     {
         /// <summary>
         /// List of domains
@@ -123,7 +123,6 @@ namespace CSPGF.Reader
             return false;
         }
         
-
         /// <summary>
         /// Returns the hashcode for this object.
         /// </summary>

@@ -17,7 +17,7 @@ namespace CSPGF.Parse
     /// Provides a method for performing a deep copy of an object.
     /// Binary Serialization is used to perform the copy.
     /// </summary>
-    public static class ObjectCopier
+    internal static class ObjectCopier
     {
         /// <summary>
         /// Perform a deep Copy of the object.

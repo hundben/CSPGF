@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Literal Pattern
     /// </summary>
-    public class LiteralPattern : Pattern // PLit
+    internal class LiteralPattern : Pattern // PLit
     {
         /// <summary>
         /// Initializes a new instance of the LiteralPattern class.

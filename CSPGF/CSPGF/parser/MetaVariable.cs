@@ -30,8 +30,7 @@
 
 namespace CSPGF.Parse
 {
-
-    public class MetaVariable : Tree
+    internal class MetaVariable : Tree
     {
         public MetaVariable(int id)
         {

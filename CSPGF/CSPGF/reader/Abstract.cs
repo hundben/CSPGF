@@ -35,7 +35,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// The Abstract class
     /// </summary>
-    public class Abstract
+    internal class Abstract
     {
         /// <summary>
         /// Abstract flags

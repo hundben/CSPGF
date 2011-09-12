@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Expression class
     /// </summary>
-    public abstract class Expr
+    internal abstract class Expr
     {
         /// <summary>
         /// Pretty prints the contents of this class

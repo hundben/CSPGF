@@ -39,7 +39,7 @@ namespace CSPGF.Parse
     /// One active item.
     /// </summary>
     [Serializable]
-    public class ActiveItem
+    internal class ActiveItem
     {
         /// <summary>
         /// Initializes a new instance of the ActiveItem class.

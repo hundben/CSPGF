@@ -58,14 +58,19 @@ namespace CSPGF
             rp.Scan("is");
             rp.Scan("Italian");*/
             DebugParser rp = new DebugParser(pgf, "PhrasebookEng");
-            rp.Scan("Finnish");
+            /*rp.Scan("Finnish");
             rp.Scan("fish");
             rp.Scan("isn't");
             rp.Scan("too");
             rp.Scan("warm");
+            rp.Scan(".");*/
+            rp.Scan("this");
+            rp.Scan("wine");
+            rp.Scan("is");
+            rp.Scan("Italian");
             rp.Scan(".");
             List<Trees.Absyn.Tree> trees = rp.GetTrees();
-            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookSwe"));
+            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookGer"));
 
             // rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
             foreach (Trees.Absyn.Tree tree in trees)

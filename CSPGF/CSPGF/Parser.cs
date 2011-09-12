@@ -37,7 +37,7 @@ namespace CSPGF
     /// <summary>
     /// Used for parsing
     /// </summary>
-    public class Parser
+    internal class Parser
     {
         /// <summary>
         /// Concrete grammar

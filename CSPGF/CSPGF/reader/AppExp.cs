@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Application Expression
     /// </summary>
-    public class AppExp : Expr // EApp
+    internal class AppExp : Expr // EApp
     {
         /// <summary>
         /// Initializes a new instance of the AppExp class.

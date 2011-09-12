@@ -44,7 +44,7 @@ namespace CSPGF.Reader
     /// Here we will keep only the indices.
     /// </summary>
     [Serializable]
-    public class CncCat
+    internal class CncCat
     {
         /// <summary>
         /// Initializes a new instance of the CncCat class.

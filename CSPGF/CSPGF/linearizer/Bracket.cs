@@ -35,7 +35,7 @@ namespace CSPGF.Linearize
     /// <summary>
     /// Bracketed tokens?
     /// </summary>
-    public class Bracket : BracketedTokn
+    internal class Bracket : BracketedTokn
     {
         /// <summary>
         /// Initializes a new instance of the Bracket class.

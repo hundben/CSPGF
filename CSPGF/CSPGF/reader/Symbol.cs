@@ -36,7 +36,7 @@ namespace CSPGF.Reader
     /// Abstract symbol class
     /// </summary>
     [Serializable]
-    public abstract class Symbol
+    internal abstract class Symbol
     {
         /// <summary>
         /// Pretty prints the contents of this class

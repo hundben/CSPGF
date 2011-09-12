@@ -35,7 +35,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Eq class
     /// </summary>
-    public class Eq
+    internal class Eq
     {
         /// <summary>
         /// Initializes a new instance of the Eq class.

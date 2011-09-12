@@ -8,14 +8,14 @@ namespace CSPGF
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Text;
-    using System.IO;
 
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
-    public class TempLog
+    internal class TempLog
     {
         private static readonly string LOG_FILENAME = Path.GetTempPath() + "cspgf.txt";
 

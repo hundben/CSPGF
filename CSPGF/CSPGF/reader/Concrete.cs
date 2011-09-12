@@ -35,7 +35,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Concrete grammar
     /// </summary>
-    public class Concrete
+    internal class Concrete
     {
         /// <summary>
         /// Concrete grammar flags
@@ -58,12 +58,10 @@ namespace CSPGF.Reader
         /// <param name="cncCats">Dictionary containing concrete categories</param>
         /// <param name="fId">Function id</param>
         /// <param name="defaultStartCat">Default starting category</param>
-        public Concrete(string name, Dictionary<string, RLiteral> flags, List<List<Symbol>> seqs, List<CncFun> cncFuns, List<ProductionSet> prods, Dictionary<string, CncCat> cncCats, int fId, string defaultStartCat)
+        public Concrete(string name, Dictionary<string, RLiteral> flags, List<ProductionSet> prods, Dictionary<string, CncCat> cncCats, int fId, string defaultStartCat)
         {
             this.Name = name;
             this.flags = flags;
-            this.Seqs = seqs;
-            this.CncFuns = cncFuns;
             this.Prods = prods;
             this.CncCats = cncCats;
             this.FId = fId;
@@ -74,16 +72,6 @@ namespace CSPGF.Reader
         /// Gets the name of the concrete grammar
         /// </summary>
         public string Name { get; private set; }
-
-        /// <summary>
-        /// Gets the list of sequences
-        /// </summary>
-        public List<List<Symbol>> Seqs { get; private set; }
-
-        /// <summary>
-        /// Gets the list of concrete functions
-        /// </summary>
-        public List<CncFun> CncFuns { get; private set; }
 
         /// <summary>
         /// Gets a list of production sets.

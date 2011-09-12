@@ -37,7 +37,7 @@ namespace CSPGF.Reader
     /// Production, abstract class.
     /// </summary>
     [Serializable]
-    public abstract class Production
+    internal abstract class Production
     {
         /// <summary>
         /// Initializes a new instance of the Production class.

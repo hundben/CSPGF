@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Typed Expression
     /// </summary>
-    public class TypedExp : Expr // ETyped
+    internal class TypedExp : Expr // ETyped
     {
         /// <summary>
         /// Initializes a new instance of the TypedExp class.

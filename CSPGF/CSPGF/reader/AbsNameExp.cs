@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Abstract name expression
     /// </summary>
-    public class AbsNameExp : Expr // EFun?????
+    internal class AbsNameExp : Expr // EFun?????
     {
         /// <summary>
         /// Initializes a new instance of the AbsNameExp class.

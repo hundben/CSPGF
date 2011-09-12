@@ -37,7 +37,7 @@ namespace CSPGF.Parse
     /// <summary>
     /// Builds trees.
     /// </summary>
-    public class TreeBuilder
+    internal class TreeBuilder
     {
         /// <summary>
         /// Initializes a new instance of the TreeBuilder class.

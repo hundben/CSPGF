@@ -38,7 +38,7 @@ namespace CSPGF.Parse
     /// The ParseTrie class.
     /// </summary>
     [Serializable]
-    public class ParseTrie
+    internal class ParseTrie
     {
         /// <summary>
         /// A stack of active items.
@@ -185,11 +185,12 @@ namespace CSPGF.Parse
         public override string ToString()
         {
             string temp = "[";
-            foreach (string key in child.Keys)
+            foreach (string key in this.child.Keys)
             {
-                ParseTrie t = child[key];
-                temp += key + "[" + t.ToString()+ "]";
+                ParseTrie t = this.child[key];
+                temp += key + "[" + t.ToString() + "]";
             }
+
             temp += "]";
             return temp;
         }

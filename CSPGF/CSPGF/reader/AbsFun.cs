@@ -35,7 +35,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Abstract Function
     /// </summary>
-    public class AbsFun
+    internal class AbsFun
     {
         /// <summary>
         /// Initializes a new instance of the AbsFun class.

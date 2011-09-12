@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Implicit argument pattern class
     /// </summary>
-    public class ImpArgPattern : Pattern // PImplArg
+    internal class ImpArgPattern : Pattern // PImplArg
     {
         /// <summary>
         /// Initializes a new instance of the ImpArgPattern class.

@@ -35,7 +35,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Abstract Category
     /// </summary>
-    public class AbsCat
+    internal class AbsCat
     {
         /// <summary>
         /// Initializes a new instance of the AbsCat class.

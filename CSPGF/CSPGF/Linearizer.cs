@@ -40,7 +40,7 @@ namespace CSPGF
     /// <summary>
     /// Linearizer for use with the Parser
     /// </summary>
-    public class Linearizer
+    internal class Linearizer
     {
         /// <summary>
         /// The current PGF-file

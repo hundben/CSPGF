@@ -33,7 +33,7 @@ namespace CSPGF.Reader
     /// <summary>
     /// Variable Expression
     /// </summary>
-    public class VarExp : Expr // EVar
+    internal class VarExp : Expr // EVar
     {
         /// <summary>
         /// Initializes a new instance of the VarExp class.
