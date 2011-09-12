@@ -593,7 +593,7 @@ namespace CSPGF
             List<ProductionSet> prods = this.GetListProductionSet(cncFuns);
             Dictionary<string, CncCat> cncCats = this.GetListCncCat();
             int i = this.GetInt();
-            return new Concrete(name, flags, seqs, cncFuns, prods, cncCats, i, startCat);
+            return new Concrete(name, flags, prods, cncCats, i, startCat);
         }
 
         /// <summary>
