@@ -89,7 +89,7 @@ namespace CSPGF.Parse
             this.position = 0;
             this.active = new List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>>();
 
-            // initiate
+            // Initial Predict
             foreach (Production k in grammar.GetProductions()) 
             {
                 this.chart.AddProduction(k);
@@ -225,7 +225,7 @@ namespace CSPGF.Parse
                 List<string> tokens = tok.Tokens;
                 ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
 
-                // scan
+                // SCAN
                 Stack<ActiveItem> newAgenda;
                 Stack<ActiveItem> tempAgenda = this.trie.Lookup(tokens);
                 if (tempAgenda == null || tempAgenda.Count == 0) 
@@ -250,6 +250,7 @@ namespace CSPGF.Parse
                 int bd = item.Domain[d];
 
                 // TODO check if this is correct
+                // PREDICT
                 if (this.active.Count >= this.position) 
                 {
                     // a bit strange, check if we should create an active set first...
@@ -262,8 +263,16 @@ namespace CSPGF.Parse
                         }
                     }
 
+                    // COMBINE
+
                     int cat = this.chart.GetCategory(bd, r, this.position, this.position);
-                    
+                    if (this.position != 0)
+                    {
+                        ;
+                        Console.Write("");
+                    }
+
+
                     if (cat != -1) 
                     {
                         List<int> newDomain = new List<int>(b);

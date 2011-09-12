@@ -75,7 +75,7 @@ namespace CSPGF
 
             rp.Debug2();
             System.Console.Out.WriteLine("done");
-            //System.Console.In.ReadLine();
+            System.Console.In.ReadLine();
         }
     }
 }

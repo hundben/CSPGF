@@ -67,6 +67,11 @@ namespace CSPGF.Parse
             this.nextCat = nextCat;
         }
 
+        public void  RemoveCats()
+        {
+            categoryBookKeeperHash = new Dictionary<string, int>();
+        }
+
         /// <summary>
         /// Adds a production to the productionset.
         /// </summary>
@@ -90,8 +95,6 @@ namespace CSPGF.Parse
                 prodSet.Add(p);
                 this.productionSets.Add(p.FId, prodSet);
             }
-
-            TempLog.LogMessageToFile(this.ToString());
 
             return true;
         }
@@ -267,6 +270,15 @@ namespace CSPGF.Parse
         private string generateHash(int oldCat, int cons, int begin, int end)
         {
             return oldCat + " " + cons + " " + begin + " " + end;
+        }
+
+        public void PrintCategories()
+        {
+            TempLog.LogMessageToFile("CATEGORIES");
+            foreach (string h in this.categoryBookKeeperHash.Keys)
+            {
+                TempLog.LogMessageToFile(h + " -> " + this.categoryBookKeeperHash[h]);
+            }
         }
     }
 }
