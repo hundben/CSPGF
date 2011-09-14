@@ -41,7 +41,7 @@ namespace CSPGF.Linearize
         /// Initializes a new instance of the LeafKS class.
         /// </summary>
         /// <param name="tokens">List of tokens</param>
-        public LeafKS(List<string> tokens)
+        public LeafKS(string[] tokens)
         {
             this.Tokens = tokens;
         }
@@ -49,7 +49,7 @@ namespace CSPGF.Linearize
         /// <summary>
         /// Gets the list of tokens
         /// </summary>
-        public List<string> Tokens { get; private set; }
+        public string[] Tokens { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class

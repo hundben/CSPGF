@@ -43,7 +43,7 @@ namespace CSPGF.Reader
         /// <param name="name">Name of category</param>
         /// <param name="hypos">List of hypos</param>
         /// <param name="functions">List of weightedidents</param>
-        public AbsCat(string name, List<Hypo> hypos, List<WeightedIdent> functions)
+        public AbsCat(string name, Hypo[] hypos, WeightedIdent[] functions)
         {
             this.Name = name;
             this.Hypos = hypos;
@@ -58,12 +58,12 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets a list of hypos.
         /// </summary>
-        public List<Hypo> Hypos { get; private set; }
+        public Hypo[] Hypos { get; private set; }
 
         /// <summary>
         /// Gets a list of WeightedIdents
         /// </summary>
-        public List<WeightedIdent> Functions { get; private set; }
+        public WeightedIdent[] Functions { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class

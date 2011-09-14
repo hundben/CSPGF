@@ -338,9 +338,9 @@ namespace CSPGF
         {
             if (bt is LeafKS)
             {
-                List<string> d = ((LeafKS)bt).Tokens;
+                string[] d = ((LeafKS)bt).Tokens;
                 List<string> rez = new List<string>();
-                for (int i = d.Count - 1; i >= 0; i--)
+                for (int i = d.Length - 1; i >= 0; i--)
                 {
                     rez.Add(d[i]);
                 }
@@ -349,18 +349,18 @@ namespace CSPGF
             }
             else if (bt is LeafKP)
             {
-                List<string> d = ((LeafKP)bt).DefaultTokens;
-                List<Alternative> alts = ((LeafKP)bt).Alternatives;
+                string[] d = ((LeafKP)bt).DefaultTokens;
+                Alternative[] alts = ((LeafKP)bt).Alternatives;
                 List<string> rez = new List<string>();
                 foreach (Alternative alt in alts)
                 {
-                    List<string> ss2 = alt.Alt2;
+                    string[] ss2 = alt.Alt2;
                     foreach (string str in ss2)
                     {
                         if (after.StartsWith(str))
                         {
-                            List<string> ss1 = alt.Alt1;
-                            for (int k = ss1.Count - 1; k >= 0; k--)
+                            string[] ss1 = alt.Alt1;
+                            for (int k = ss1.Length - 1; k >= 0; k--)
                             {
                                 rez.Add(ss1[k]);
                             }
@@ -371,7 +371,7 @@ namespace CSPGF
                     }
                 }
 
-                for (int i = d.Count - 1; i >= 0; i--)
+                for (int i = d.Length - 1; i >= 0; i--)
                 {
                     rez.Add(d[i]);
                 }
@@ -539,7 +539,7 @@ namespace CSPGF
                         throw new LinearizerException("lengths of es and ctys don't match" + es.ToString() + " -- " + ctys.ToString());
                     }
 
-                    List<List<Symbol>> lins = appr.CncFun.Sequences;
+                    List<Symbol[]> lins = appr.CncFun.Sequences;
                     string cat = appr.CncType.CId;
                     List<Tree> copy_expr = new List<Tree>();
                     foreach (Tree tree in es)
@@ -552,7 +552,7 @@ namespace CSPGF
                     {
                         RezDesc intRez = rez2;
                         List<List<BracketedTokn>> linTab = new List<List<BracketedTokn>>();
-                        foreach (List<Symbol> seq in lins)
+                        foreach (Symbol[] seq in lins)
                         {
                             linTab.Add(this.ComputeSeq(seq, intRez.CncTypes, intRez.Bracketedtokn));
                         }
@@ -702,7 +702,7 @@ namespace CSPGF
         {
             List<string> rez = new List<string>();
             rez.Add(t.Name);
-            List<Hypo> hypos = t.Hypos;
+            Hypo[] hypos = t.Hypos;
             foreach (Hypo h in hypos)
             {
                 rez.Add(h.Type.Name);
@@ -720,8 +720,10 @@ namespace CSPGF
         {
             List<List<BracketedTokn>> bt = new List<List<BracketedTokn>>();
             List<BracketedTokn> v = new List<BracketedTokn>();
-            List<string> sts = new List<string>();
-            sts.Add(s);
+            string[] sts = new string[1];
+            sts[0] = s;
+            // List<string> sts = new List<string>();
+            // sts.Add(s);
             v.Add(new LeafKS(sts));
             bt.Add(v);
             return bt;
@@ -744,15 +746,15 @@ namespace CSPGF
             }
             else if (s is AlternToksSymbol)
             {
-                List<string> toks = ((AlternToksSymbol)s).Tokens;
-                List<Alternative> alts = ((AlternToksSymbol)s).Alts;
+                string[] toks = ((AlternToksSymbol)s).Tokens;
+                Alternative[] alts = ((AlternToksSymbol)s).Alts;
                 List<BracketedTokn> v = new List<BracketedTokn>();
                 v.Add(new LeafKP(toks, alts));
                 return v;
             }
             else
             {
-                List<string> toks = ((ToksSymbol)s).Tokens;
+                string[] toks = ((ToksSymbol)s).Tokens;
                 List<BracketedTokn> v = new List<BracketedTokn>();
                 v.Add(new LeafKS(toks));
                 return v;
@@ -797,7 +799,7 @@ namespace CSPGF
         /// <param name="cncTypes">List of Concrete types</param>
         /// <param name="linTables">List of list of list of BracketedTokns</param>
         /// <returns>List of BracketedTokns</returns>
-        private List<BracketedTokn> ComputeSeq(List<Symbol> seqId, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
+        private List<BracketedTokn> ComputeSeq(Symbol[] seqId, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
             List<BracketedTokn> bt = new List<BracketedTokn>();
             foreach (Symbol sym in seqId)

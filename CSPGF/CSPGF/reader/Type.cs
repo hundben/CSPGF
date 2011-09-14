@@ -43,7 +43,7 @@ namespace CSPGF.Reader
         /// <param name="hypos">List of hypos</param>
         /// <param name="str">Name of type</param>
         /// <param name="exprs">List of expressions</param>
-        public Type(List<Hypo> hypos, string str, List<Expr> exprs)
+        public Type(Hypo[] hypos, string str, Expr[] exprs)
         {
             this.Hypos = hypos;
             this.Name = str;
@@ -53,7 +53,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets the list of hypos
         /// </summary>
-        public List<Hypo> Hypos { get; private set; }
+        public Hypo[] Hypos { get; private set; }
 
         /// <summary>
         /// Gets the name of the type
@@ -63,7 +63,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets the list of expressions
         /// </summary>
-        public List<Expr> Exprs { get; private set; }
+        public Expr[] Exprs { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class

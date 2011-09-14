@@ -42,7 +42,7 @@ namespace CSPGF.Reader
         /// </summary>
         /// <param name="name">Name of AppPattern</param>
         /// <param name="patts">List of patterns</param>
-        public AppPattern(string name, List<Pattern> patts)
+        public AppPattern(string name, Pattern[] patts)
         {
             this.Name = name;
             this.Patts = patts;
@@ -56,7 +56,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets the list of patterns.
         /// </summary>
-        public List<Pattern> Patts { get; private set; }
+        public Pattern[] Patts { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class

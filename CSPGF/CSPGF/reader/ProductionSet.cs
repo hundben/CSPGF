@@ -42,7 +42,7 @@ namespace CSPGF.Reader
         /// </summary>
         /// <param name="id">Set id</param>
         /// <param name="prods">List of productions</param>
-        public ProductionSet(int id, List<Production> prods)
+        public ProductionSet(int id, Production[] prods)
         {
             this.ID = id;
             this.Prods = prods;
@@ -56,7 +56,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets the list of productions
         /// </summary>
-        public List<Production> Prods { get; private set; }
+        public Production[] Prods { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class

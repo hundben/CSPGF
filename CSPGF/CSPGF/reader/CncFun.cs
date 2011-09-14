@@ -44,7 +44,7 @@ namespace CSPGF.Reader
         /// </summary>
         /// <param name="name">Name of function</param>
         /// <param name="sequences">List of list of symbols</param>
-        public CncFun(string name, List<List<Symbol>> sequences)
+        public CncFun(string name, List<Symbol[]> sequences)
         {
             this.Name = name;
             this.Sequences = sequences;
@@ -58,7 +58,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets a list of list of symbols
         /// </summary>
-        public List<List<Symbol>> Sequences { get; private set; }
+        public List<Symbol[]> Sequences { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -67,9 +67,12 @@ namespace CSPGF.Reader
         public override string ToString()
         {
             string ss = "Name : " + this.Name + " , Indices : ";
-            foreach (List<Symbol> s in this.Sequences) 
+            foreach (Symbol[] s in this.Sequences) 
             {
-                ss += " " + s;
+                foreach (Symbol sym in s)
+                {
+                    ss += " " + s;
+                }
             }
 
             return ss;

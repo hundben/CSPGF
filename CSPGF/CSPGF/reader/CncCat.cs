@@ -53,7 +53,7 @@ namespace CSPGF.Reader
         /// <param name="firstFId">First id</param>
         /// <param name="lastFId">Last id</param>
         /// <param name="labels">List of labels</param>
-        public CncCat(string name, int firstFId, int lastFId, List<string> labels)
+        public CncCat(string name, int firstFId, int lastFId, string[] labels)
         {
             this.Name = name;
             this.FirstFID = firstFId;
@@ -79,7 +79,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets the list of labels
         /// </summary>
-        public List<string> Labels { get; private set; }
+        public string[] Labels { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class

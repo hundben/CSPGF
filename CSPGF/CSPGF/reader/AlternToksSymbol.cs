@@ -44,7 +44,7 @@ namespace CSPGF.Reader
         /// </summary>
         /// <param name="toks">List of tokens</param>
         /// <param name="alts">List of alternatives</param>
-        public AlternToksSymbol(List<string> toks, List<Alternative> alts)
+        public AlternToksSymbol(string[] toks, Alternative[] alts)
             : base(toks)
         {
             this.Alts = alts;
@@ -53,7 +53,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets the list of Alternatives
         /// </summary>
-        public List<Alternative> Alts { get; private set; }
+        public Alternative[] Alts { get; private set; }
 
         /// <summary>
         /// Returns true if terminal.

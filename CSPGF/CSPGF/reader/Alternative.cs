@@ -44,7 +44,7 @@ namespace CSPGF.Reader
         /// </summary>
         /// <param name="alt1">Normal tokens</param>
         /// <param name="alt2">List of prefixes</param>
-        public Alternative(List<string> alt1, List<string> alt2)
+        public Alternative(string[] alt1, string[] alt2)
         {
             this.Alt1 = alt1;
             this.Alt2 = alt2;
@@ -55,12 +55,12 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets a list of tokens
         /// </summary>
-        public List<string> Alt1 { get; private set; }  // Check: Rename to tokens instead?
+        public string[] Alt1 { get; private set; }  // Check: Rename to tokens instead?
 
         /// <summary>
         /// Gets a list of prefixes
         /// </summary>
-        public List<string> Alt2 { get; private set; }
+        public string[] Alt2 { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class

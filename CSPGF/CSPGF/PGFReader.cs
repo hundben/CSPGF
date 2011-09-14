@@ -223,8 +223,8 @@ namespace CSPGF
             }
 
             Dictionary<string, RLiteral> flags = this.GetListFlag();
-            List<AbsFun> absFuns = this.GetListAbsFun();
-            List<AbsCat> absCats = this.GetListAbsCat();
+            AbsFun[] absFuns = this.GetListAbsFun();
+            AbsCat[] absCats = this.GetListAbsCat();
             return new Abstract(name, flags, absFuns, absCats);
         }
 
@@ -232,16 +232,16 @@ namespace CSPGF
         /// Reads a list of patterns
         /// </summary>
         /// <returns>List of patterns</returns>
-        private List<Pattern> GetListPattern()
+        private Pattern[] GetListPattern()
         {
             int npoz = this.GetInt();
-            List<Pattern> tmp = new List<Pattern>();
+            Pattern[] patts = new Pattern[npoz];
             for (int i = 0; i < npoz; i++) 
             {
-                tmp.Add(this.GetPattern());
+                patts[i] = this.GetPattern();
             }
 
-            return tmp;
+            return patts;
         }
 
         /// <summary>
@@ -250,7 +250,7 @@ namespace CSPGF
         /// <returns>Returns the Eq</returns>
         private Eq GetEq()
         {
-            List<Pattern> patts = this.GetListPattern();
+            Pattern[] patts = this.GetListPattern();
             Expr exp = this.GetExpr();
             return new Eq(patts, exp);
         }
@@ -270,10 +270,10 @@ namespace CSPGF
             CSPGF.Reader.Type t = this.GetType2();
             int i = this.GetInt();
             int has_equations = this.inputstream.ReadByte();
-            List<Eq> equations;
+            Eq[] equations;
             if (has_equations == 0)
             {
-                equations = new List<Eq>();
+                equations = new Eq[0];
             }
             else 
             {
@@ -297,8 +297,8 @@ namespace CSPGF
         private AbsCat GetAbsCat()
         {
             string name = this.GetIdent();
-            List<Hypo> hypos = this.GetListHypo();
-            List<WeightedIdent> functions = this.GetListWeightedIdent();
+            Hypo[] hypos = this.GetListHypo();
+            WeightedIdent[] functions = this.GetListWeightedIdent();
             return new AbsCat(name, hypos, functions);
         }
 
@@ -306,10 +306,10 @@ namespace CSPGF
         /// Reads an list of AbsFun
         /// </summary>
         /// <returns>List of AbsFun</returns>
-        private List<AbsFun> GetListAbsFun()
+        private AbsFun[] GetListAbsFun()
         {
             int npoz = this.GetInt();
-            List<AbsFun> tmp = new List<AbsFun>();
+            AbsFun[] tmp = new AbsFun[npoz];
             if (npoz == 0) 
             {
                 return tmp;
@@ -318,7 +318,7 @@ namespace CSPGF
             {
                 for (int i = 0; i < npoz; i++) 
                 {
-                    tmp.Add(this.GetAbsFun());
+                    tmp[i] = this.GetAbsFun();
                 }
             }
 
@@ -329,10 +329,10 @@ namespace CSPGF
         /// Reads a list of AbsCat
         /// </summary>
         /// <returns>List of AbsCat</returns>
-        private List<AbsCat> GetListAbsCat()
+        private AbsCat[] GetListAbsCat()
         {
             int npoz = this.GetInt();
-            List<AbsCat> tmp = new List<AbsCat>();
+            AbsCat[] tmp = new AbsCat[npoz];
             if (npoz == 0) 
             {
                 return tmp;
@@ -341,7 +341,7 @@ namespace CSPGF
             {
                 for (int i = 0; i < npoz; i++) 
                 {
-                    tmp.Add(this.GetAbsCat());
+                    tmp[i] = this.GetAbsCat();
                 }
             }
 
@@ -354,9 +354,9 @@ namespace CSPGF
         /// <returns>Returns the Type object</returns>
         private CSPGF.Reader.Type GetType2()
         {
-            List<Hypo> hypos = this.GetListHypo();
+            Hypo[] hypos = this.GetListHypo();
             string returnCat = this.GetIdent();
-            List<Expr> exprs = this.GetListExpr();
+            Expr[] exprs = this.GetListExpr();
             CSPGF.Reader.Type t = new CSPGF.Reader.Type(hypos, returnCat, exprs);
             if (debug) 
             {
@@ -383,32 +383,32 @@ namespace CSPGF
         /// Reads a list of Hypos
         /// </summary>
         /// <returns>List of Hypos</returns>
-        private List<Hypo> GetListHypo()
+        private Hypo[] GetListHypo()
         {
             int npoz = this.GetInt();
-            List<Hypo> tmp = new List<Hypo>();
+            Hypo[] hypos = new Hypo[npoz];
             for (int i = 0; i < npoz; i++) 
             {
-                tmp.Add(this.GetHypo());
+                hypos[i] = this.GetHypo();
             }
 
-            return tmp;
+            return hypos;
         }
 
         /// <summary>
         /// Reads a list of Exprs
         /// </summary>
         /// <returns>List of Exprs</returns>
-        private List<Expr> GetListExpr()
+        private Expr[] GetListExpr()
         {
             int npoz = this.GetInt();
-            List<Expr> tmp = new List<Expr>();
+            Expr[] exps = new Expr[npoz];
             for (int i = 0; i < npoz; i++) 
             {
-                tmp.Add(this.GetExpr());
+                exps[i] = this.GetExpr();
             }
 
-            return tmp;
+            return exps;
         }
 
         /// <summary>
@@ -469,16 +469,16 @@ namespace CSPGF
         /// Reads a list of Eqs
         /// </summary>
         /// <returns>List of Eqs</returns>
-        private List<Eq> GetListEq()
+        private Eq[] GetListEq()
         {
             int npoz = this.GetInt();
-            List<Eq> tmp = new List<Eq>();
+            Eq[] eqs = new Eq[npoz];
             for (int i = 0; i < npoz; i++) 
             {
-                tmp.Add(this.GetEq());
+                eqs[i] = this.GetEq();
             }
 
-            return tmp;
+            return eqs;
         }
 
         /// <summary>
@@ -493,7 +493,7 @@ namespace CSPGF
             {
                 case 0: // application pattern
                     string absFun = this.GetIdent();
-                    List<Pattern> patts = this.GetListPattern();
+                    Pattern[] patts = this.GetListPattern();
                     patt = new AppPattern(absFun, patts);
                     break;
                 case 1: // variable pattern
@@ -584,13 +584,13 @@ namespace CSPGF
                 this.dbgwrite.WriteLine("Concrete: Reading sequences");
             }
 
-            List<List<Symbol>> seqs = this.GetListSequence();
-            List<CncFun> cncFuns = this.GetListCncFun(seqs);
+            List<Symbol[]> seqs = this.GetListSequence();
+            CncFun[] cncFuns = this.GetListCncFun(seqs);
 
             // We don't need the lindefs for now but again we need to
             // parse them to skip them
             this.GetListLinDef();
-            List<ProductionSet> prods = this.GetListProductionSet(cncFuns);
+            ProductionSet[] prods = this.GetListProductionSet(cncFuns);
             Dictionary<string, CncCat> cncCats = this.GetListCncCat();
             int i = this.GetInt();
             return new Concrete(name, flags, prods, cncCats, i, startCat);
@@ -611,10 +611,10 @@ namespace CSPGF
         /// Reads a list of PrintNames
         /// </summary>
         /// <returns>List of PrintNames</returns>
-        private List<PrintName> GetListPrintName()
+        private PrintName[] GetListPrintName()
         {
             int npoz = this.GetInt();
-            List<PrintName> tmp = new List<PrintName>();
+            PrintName[] tmp = new PrintName[npoz];
             if (npoz == 0) 
             {
                 return tmp;
@@ -623,7 +623,7 @@ namespace CSPGF
             {
                 for (int i = 0; i < npoz; i++) 
                 {
-                    tmp.Add(this.GetPrintName());
+                    tmp[i] = this.GetPrintName();
                 }
             }
 
@@ -634,9 +634,9 @@ namespace CSPGF
         /// Reads a Sequence
         /// </summary>
         /// <returns>Returns the Sequence</returns>
-        private List<Symbol> GetSequence()
+        private Symbol[] GetSequence()
         {
-            List<Symbol> symbols = this.GetListSymbol();
+            Symbol[] symbols = this.GetListSymbol();
             return symbols;
         }
 
@@ -644,10 +644,10 @@ namespace CSPGF
         /// Reads a list of Sequences
         /// </summary>
         /// <returns>List of Sequences</returns>
-        private List<List<Symbol>> GetListSequence()
+        private List<Symbol[]> GetListSequence()
         {
             int npoz = this.GetInt();
-            List<List<Symbol>> tmp = new List<List<Symbol>>();
+            List<Symbol[]> tmp = new List<Symbol[]>();
             for (int i = 0; i < npoz; i++)
             {
                 tmp.Add(this.GetSequence());
@@ -682,12 +682,12 @@ namespace CSPGF
                     // UnsupportedOperationException -> Exception
                     throw new Exception("Var symbols are not supported yet");
                 case 3: // sequence of tokens
-                    List<string> strs = this.GetListString();
+                    string[] strs = this.GetListString();
                     symb = new ToksSymbol(strs);
                     break;
                 case 4: // alternative tokens
-                    List<string> altstrs = this.GetListString();
-                    List<Alternative> la = this.GetListAlternative();
+                    string[] altstrs = this.GetListString();
+                    Alternative[] la = this.GetListAlternative();
                     symb = new AlternToksSymbol(altstrs, la);
                     break;
 
@@ -708,16 +708,16 @@ namespace CSPGF
         /// Reads a list of Alternatives
         /// </summary>
         /// <returns>List of Alternatives</returns>
-        private List<Alternative> GetListAlternative()
+        private Alternative[] GetListAlternative()
         {
             int npoz = this.GetInt();
-            List<Alternative> tmp = new List<Alternative>();
+            Alternative[] alts = new Alternative[npoz];
             for (int i = 0; i < npoz; i++) 
             {
-                tmp.Add(this.GetAlternative());
+                alts[i] = this.GetAlternative();
             }
 
-            return tmp;
+            return alts;
         }
 
         /// <summary>
@@ -726,8 +726,8 @@ namespace CSPGF
         /// <returns>Returns the Alternative</returns>
         private Alternative GetAlternative()
         {
-            List<string> s1 = this.GetListString();
-            List<string> s2 = this.GetListString();
+            string[] s1 = this.GetListString();
+            string[] s2 = this.GetListString();
             return new Alternative(s1, s2);
         }
 
@@ -735,13 +735,13 @@ namespace CSPGF
         /// Reads a list of Symbols
         /// </summary>
         /// <returns>List of Symbols</returns>
-        private List<Symbol> GetListSymbol()
+        private Symbol[] GetListSymbol()
         {
             int npoz = this.GetInt();
-            List<Symbol> tmp = new List<Symbol>();
+            Symbol[] tmp = new Symbol[npoz];
             for (int i = 0; i < npoz; i++) 
             {
-                tmp.Add(this.GetSymbol());
+                tmp[i] = this.GetSymbol();
             }
 
             return tmp;
@@ -752,11 +752,11 @@ namespace CSPGF
         /// </summary>
         /// <param name="sequences">List of sequences</param>
         /// <returns>Returns the Concrete Function</returns>
-        private CncFun GetCncFun(List<List<Symbol>> sequences)
+        private CncFun GetCncFun(List<Symbol[]> sequences)
         {
             string name = this.GetIdent();
             List<int> seqIndices = this.GetListInt();
-            List<List<Symbol>> seqs = new List<List<Symbol>>();
+            List<Symbol[]> seqs = new List<Symbol[]>();
             foreach (int i in seqIndices) 
             {
                 seqs.Add(sequences[i]);
@@ -770,16 +770,16 @@ namespace CSPGF
         /// </summary>
         /// <param name="sequences">List of Sequences</param>
         /// <returns>List of Concrete Functions</returns>
-        private List<CncFun> GetListCncFun(List<List<Symbol>> sequences)
+        private CncFun[] GetListCncFun(List<Symbol[]> sequences)
         {
             int npoz = this.GetInt();
-            List<CncFun> tmp = new List<CncFun>();
+            CncFun[] cncfuns = new CncFun[npoz];
             for (int i = 0; i < npoz; i++) 
             {
-                tmp.Add(this.GetCncFun(sequences));
+                cncfuns[i] = this.GetCncFun(sequences);
             }
 
-            return tmp;
+            return cncfuns;
         }
 
         /// <summary>
@@ -820,10 +820,10 @@ namespace CSPGF
         /// </summary>
         /// <param name="cncFuns">List of Concrete Functions</param>
         /// <returns>Returns the ProductionSet</returns>
-        private ProductionSet GetProductionSet(List<CncFun> cncFuns)
+        private ProductionSet GetProductionSet(CncFun[] cncFuns)
         {
             int id = this.GetInt();
-            List<Production> prods = this.GetListProduction(id, cncFuns);
+            Production[] prods = this.GetListProduction(id, cncFuns);
             return new ProductionSet(id, prods);
         }
 
@@ -832,13 +832,13 @@ namespace CSPGF
         /// </summary>
         /// <param name="cncFuns">List of Concrete Functions</param>
         /// <returns>List of ProductionSets</returns>
-        private List<ProductionSet> GetListProductionSet(List<CncFun> cncFuns)
+        private ProductionSet[] GetListProductionSet(CncFun[] cncFuns)
         {
             int npoz = this.GetInt();
-            List<ProductionSet> tmp = new List<ProductionSet>();
+            ProductionSet[] tmp = new ProductionSet[npoz];
             for (int i = 0; i < npoz; i++) 
             {
-                tmp.Add(this.GetProductionSet(cncFuns));
+                tmp[i] = this.GetProductionSet(cncFuns);
             }
 
             return tmp;
@@ -850,13 +850,13 @@ namespace CSPGF
         /// <param name="leftCat">Left hand side category</param>
         /// <param name="cncFuns">List of Concrete Functions</param>
         /// <returns>List of Productions</returns>
-        private List<Production> GetListProduction(int leftCat, List<CncFun> cncFuns)
+        private Production[] GetListProduction(int leftCat, CncFun[] cncFuns)
         {
             int npoz = this.GetInt();
-            List<Production> tmp = new List<Production>();
+            Production[] tmp = new Production[npoz];
             for (int i = 0; i < npoz; i++) 
             {
-                tmp.Add(this.GetProduction(leftCat, cncFuns));
+                tmp[i] = this.GetProduction(leftCat, cncFuns);
             }
 
             return tmp;
@@ -868,7 +868,7 @@ namespace CSPGF
         /// <param name="leftCat">Left hand side category</param>
         /// <param name="cncFuns">List of Concrete Functions</param>
         /// <returns>Returns the Production</returns>
-        private Production GetProduction(int leftCat, List<CncFun> cncFuns)
+        private Production GetProduction(int leftCat, CncFun[] cncFuns)
         {
             int sel = this.inputstream.ReadByte();
             if (debug)
@@ -929,7 +929,7 @@ namespace CSPGF
             string sname = this.GetIdent();
             int firstFId = this.GetInt();
             int lastFId = this.GetInt();
-            List<string> ss = this.GetListString();
+            string[] ss = this.GetListString();
             return new CncCat(sname, firstFId, lastFId, ss);
         }
 
@@ -943,7 +943,7 @@ namespace CSPGF
             Dictionary<string, CncCat> cncCats = new Dictionary<string, CncCat>();
             string name;
             int firstFID, lastFID;
-            List<string> ss;
+            string[] ss;
             for (int i = 0; i < npoz; i++) 
             {
                 name = this.GetIdent();
@@ -999,23 +999,23 @@ namespace CSPGF
         /// Reads a list of strings
         /// </summary>
         /// <returns>List of strings</returns>
-        private List<string> GetListString()
+        private string[] GetListString()
         {
             int npoz = this.GetInt();
-            List<string> tmp = new List<string>();
+            string[] strs = new string[npoz];
             if (npoz == 0) 
             {
-                return tmp;
+                return strs;
             }
             else 
             {
                 for (int i = 0; i < npoz; i++) 
                 {
-                    tmp.Add(this.GetString());
+                    strs[i] = this.GetString();
                 }
             }
 
-            return tmp;
+            return strs;
         }
 
         /// <summary>
@@ -1053,18 +1053,18 @@ namespace CSPGF
         /// Reads a list of WeightedIdents
         /// </summary>
         /// <returns>List of WeightedIdents</returns>
-        private List<WeightedIdent> GetListWeightedIdent()
+        private WeightedIdent[] GetListWeightedIdent()
         {
             int nb = this.GetInt();
-            List<WeightedIdent> tmp = new List<WeightedIdent>();
+            WeightedIdent[] wids = new WeightedIdent[nb];
             for (int i = 0; i < nb; i++)
             {
                 double w = this.GetDouble();
                 string s = this.GetIdent();
-                tmp.Add(new WeightedIdent(s, w));
+                wids[i] = new WeightedIdent(s, w);
             }
 
-            return tmp;
+            return wids;
         }
 
         /// <summary>

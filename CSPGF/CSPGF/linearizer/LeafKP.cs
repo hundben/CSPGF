@@ -50,7 +50,7 @@ namespace CSPGF.Linearize
         /// </summary>
         /// <param name="strs">List of strings</param>
         /// <param name="alts">List of Alternatives</param>
-        public LeafKP(List<string> strs, List<Alternative> alts)
+        public LeafKP(string[] strs, Alternative[] alts)
         {
             this.DefaultTokens = strs;
             this.Alternatives = alts;
@@ -59,12 +59,12 @@ namespace CSPGF.Linearize
         /// <summary>
         /// Gets a list of Tokens
         /// </summary>
-        public List<string> DefaultTokens { get; private set; }
+        public string[] DefaultTokens { get; private set; }
 
         /// <summary>
         /// Gets a list of the Alternatives
         /// </summary>
-        public List<Alternative> Alternatives { get; private set; }
+        public Alternative[] Alternatives { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class

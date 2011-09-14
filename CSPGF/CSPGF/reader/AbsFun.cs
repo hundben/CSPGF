@@ -45,7 +45,7 @@ namespace CSPGF.Reader
         /// <param name="arit">Some integer</param>
         /// <param name="eqs">List of Eqs</param>
         /// <param name="weight">Weight of function</param>
-        public AbsFun(string str, Type type, int arit, List<Eq> eqs, double weight)
+        public AbsFun(string str, Type type, int arit, Eq[] eqs, double weight)
         {
             this.Name = str;
             this.Type = type;
@@ -72,7 +72,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets a list of Eqs
         /// </summary>
-        public List<Eq> Eqs { get; private set; }
+        public Eq[] Eqs { get; private set; }
 
         /// <summary>
         /// Gets the weight of the functions

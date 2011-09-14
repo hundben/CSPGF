@@ -43,7 +43,7 @@ namespace CSPGF.Reader
         /// Initializes a new instance of the ToksSymbol class.
         /// </summary>
         /// <param name="toks">List of strings</param>
-        public ToksSymbol(List<string> toks)
+        public ToksSymbol(string[] toks)
         {
             this.Tokens = toks;
         }
@@ -51,7 +51,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets the list of strings
         /// </summary>
-        public List<string> Tokens { get; private set; }
+        public string[] Tokens { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class

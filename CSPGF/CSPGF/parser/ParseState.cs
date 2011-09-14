@@ -223,7 +223,7 @@ namespace CSPGF.Parse
             {
                 TempLog.LogMessageToFile("Case before s in T");
                 ToksSymbol tok = (ToksSymbol)sym;
-                List<string> tokens = tok.Tokens;
+                string[] tokens = tok.Tokens;
                 ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
 
                 // SCAN

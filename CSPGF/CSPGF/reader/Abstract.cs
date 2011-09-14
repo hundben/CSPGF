@@ -49,7 +49,7 @@ namespace CSPGF.Reader
         /// <param name="flags">Abstract flags</param>
         /// <param name="absFuns">Abstract functions</param>
         /// <param name="absCats">Abstract categories</param>
-        public Abstract(string name, Dictionary<string, RLiteral> flags, List<AbsFun> absFuns, List<AbsCat> absCats)
+        public Abstract(string name, Dictionary<string, RLiteral> flags, AbsFun[] absFuns, AbsCat[] absCats)
         {
             this.Name = name;
             this.flags = flags;
@@ -65,12 +65,12 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets a list of abstract functions
         /// </summary>
-        public List<AbsFun> AbsFuns { get; private set; }
+        public AbsFun[] AbsFuns { get; private set; }
 
         /// <summary>
         /// Gets a list of abstract categories
         /// </summary>
-        public List<AbsCat> AbsCats { get; private set; }
+        public AbsCat[] AbsCats { get; private set; }
 
         /// <summary>
         /// Returns the starting category, or "Sentence" if it doesn't exist.

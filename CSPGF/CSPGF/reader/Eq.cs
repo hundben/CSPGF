@@ -42,7 +42,7 @@ namespace CSPGF.Reader
         /// </summary>
         /// <param name="patts">List of patterns</param>
         /// <param name="expr">The expression</param>
-        public Eq(List<Pattern> patts, Expr expr)
+        public Eq(Pattern[] patts, Expr expr)
         {
             this.Patts = patts;
             this.Expr = expr;
@@ -51,7 +51,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets the list of patterns
         /// </summary>
-        public List<Pattern> Patts { get; private set; }
+        public Pattern[] Patts { get; private set; }
 
         /// <summary>
         /// Gets the expression

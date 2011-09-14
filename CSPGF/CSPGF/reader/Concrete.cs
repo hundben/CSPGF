@@ -58,7 +58,7 @@ namespace CSPGF.Reader
         /// <param name="cncCats">Dictionary containing concrete categories</param>
         /// <param name="fId">Function id</param>
         /// <param name="defaultStartCat">Default starting category</param>
-        public Concrete(string name, Dictionary<string, RLiteral> flags, List<ProductionSet> prods, Dictionary<string, CncCat> cncCats, int fId, string defaultStartCat)
+        public Concrete(string name, Dictionary<string, RLiteral> flags, ProductionSet[] prods, Dictionary<string, CncCat> cncCats, int fId, string defaultStartCat)
         {
             this.Name = name;
             this.flags = flags;
@@ -76,7 +76,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets a list of production sets.
         /// </summary>
-        public List<ProductionSet> Prods { get; private set; }
+        public ProductionSet[] Prods { get; private set; }
 
         /// <summary>
         /// Gets the dictionary containing concrete categories
@@ -115,7 +115,7 @@ namespace CSPGF.Reader
             }
             else
             {
-                return new CncCat(this.startCat, 0, 0, new List<string>());
+                return new CncCat(this.startCat, 0, 0, new string[0]);
             }
         }
 
