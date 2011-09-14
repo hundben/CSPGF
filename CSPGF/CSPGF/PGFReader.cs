@@ -584,7 +584,7 @@ namespace CSPGF
                 this.dbgwrite.WriteLine("Concrete: Reading sequences");
             }
 
-            List<Symbol[]> seqs = this.GetListSequence();
+            Symbol[][] seqs = this.GetListSequence();
             CncFun[] cncFuns = this.GetListCncFun(seqs);
 
             // We don't need the lindefs for now but again we need to
@@ -644,13 +644,13 @@ namespace CSPGF
         /// Reads a list of Sequences
         /// </summary>
         /// <returns>List of Sequences</returns>
-        private List<Symbol[]> GetListSequence()
+        private Symbol[][] GetListSequence()
         {
             int npoz = this.GetInt();
-            List<Symbol[]> tmp = new List<Symbol[]>();
+            Symbol[][] tmp = new Symbol[npoz][];
             for (int i = 0; i < npoz; i++)
             {
-                tmp.Add(this.GetSequence());
+                tmp[i] = this.GetSequence();
             }
 
             return tmp;
@@ -752,14 +752,14 @@ namespace CSPGF
         /// </summary>
         /// <param name="sequences">List of sequences</param>
         /// <returns>Returns the Concrete Function</returns>
-        private CncFun GetCncFun(List<Symbol[]> sequences)
+        private CncFun GetCncFun(Symbol[][] sequences)
         {
             string name = this.GetIdent();
             int[] seqIndices = this.GetListInt();
-            List<Symbol[]> seqs = new List<Symbol[]>();
-            foreach (int i in seqIndices) 
+            Symbol[][] seqs = new Symbol[seqIndices.Length][];
+            for (int i = 0; i < seqIndices.Length; i++)
             {
-                seqs.Add(sequences[i]);
+                seqs[i] = sequences[seqIndices[i]];
             }
 
             return new CncFun(name, seqs);
@@ -770,7 +770,7 @@ namespace CSPGF
         /// </summary>
         /// <param name="sequences">List of Sequences</param>
         /// <returns>List of Concrete Functions</returns>
-        private CncFun[] GetListCncFun(List<Symbol[]> sequences)
+        private CncFun[] GetListCncFun(Symbol[][] sequences)
         {
             int npoz = this.GetInt();
             CncFun[] cncfuns = new CncFun[npoz];
@@ -986,13 +986,13 @@ namespace CSPGF
         private string GetString()
         {
             int npoz = this.GetInt();
-            List<char> bytes = new List<char>();
-            foreach (char c in this.inputstream.ReadChars(npoz))
+            char[] bytes = new char[npoz];
+            for (int i = 0; i < npoz; i++)
             {
-                bytes.Add(c);
+                bytes[i] = this.inputstream.ReadChar();
             }
 
-            return new string(bytes.ToArray());
+            return new string(bytes);
         }
 
         /// <summary>
@@ -1037,13 +1037,13 @@ namespace CSPGF
         /// Reads a list of identifiers
         /// </summary>
         /// <returns>List of identifiers</returns>
-        private List<string> GetListIdent()
+        private string[] GetListIdent()
         {
             int nb = this.GetInt();
-            List<string> tmp = new List<string>();
+            string[] tmp = new string[nb];
             for (int i = 0; i < nb; i++)
             {
-                tmp.Add(this.GetIdent());
+                tmp[i] = this.GetIdent();
             }
 
             return tmp;

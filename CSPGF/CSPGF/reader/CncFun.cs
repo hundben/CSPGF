@@ -44,7 +44,7 @@ namespace CSPGF.Reader
         /// </summary>
         /// <param name="name">Name of function</param>
         /// <param name="sequences">List of list of symbols</param>
-        public CncFun(string name, List<Symbol[]> sequences)
+        public CncFun(string name, Symbol[][] sequences)
         {
             this.Name = name;
             this.Sequences = sequences;
@@ -58,7 +58,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets a list of list of symbols
         /// </summary>
-        public List<Symbol[]> Sequences { get; private set; }
+        public Symbol[][] Sequences { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class

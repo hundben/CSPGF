@@ -99,6 +99,7 @@ namespace CSPGF
             }
             catch (Exception e)
             {
+                System.Console.WriteLine(e.ToString());
                 this.ps = null;
                 return false;
             }

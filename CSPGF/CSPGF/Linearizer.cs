@@ -539,7 +539,7 @@ namespace CSPGF
                         throw new LinearizerException("lengths of es and ctys don't match" + es.ToString() + " -- " + ctys.ToString());
                     }
 
-                    List<Symbol[]> lins = appr.CncFun.Sequences;
+                    Symbol[][] lins = appr.CncFun.Sequences;
                     string cat = appr.CncType.CId;
                     List<Tree> copy_expr = new List<Tree>();
                     foreach (Tree tree in es)
