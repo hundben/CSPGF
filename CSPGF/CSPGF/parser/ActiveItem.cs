@@ -50,7 +50,7 @@ namespace CSPGF.Parse
         /// <param name="domain">A list of the domains.</param>
         /// <param name="constituent">Insert a description for constituent.</param>
         /// <param name="position">Insert a description for position.</param>
-        public ActiveItem(int begin, int category, CncFun function, List<int> domain, int constituent, int position)
+        public ActiveItem(int begin, int category, CncFun function, int[] domain, int constituent, int position)
         {
             this.Begin = begin;
             this.Category = category;
@@ -78,7 +78,7 @@ namespace CSPGF.Parse
         /// <summary>
         /// Gets the value of domain.
         /// </summary>
-        public List<int> Domain { get; private set; }
+        public int[] Domain { get; private set; }
 
         /// <summary>
         /// Gets the value of constituent.
@@ -119,9 +119,9 @@ namespace CSPGF.Parse
                 this.Position == ai.Position) 
             {
                 // Since there is no deep method in c# that we know of, use a crappy forloop
-                if (this.Domain.Count == ai.Domain.Count) 
+                if (this.Domain.Length == ai.Domain.Length) 
                 {
-                    for (int i = 0; i < this.Domain.Count; i++) 
+                    for (int i = 0; i < this.Domain.Length; i++) 
                     {
                         if (this.Domain[i] != ai.Domain[i])
                         {

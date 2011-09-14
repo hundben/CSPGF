@@ -42,7 +42,7 @@ namespace CSPGF.Reader
         /// </summary>
         /// <param name="key">Integer key</param>
         /// <param name="funIds">List of function ids</param>
-        public LinDef(int key, List<int> funIds)
+        public LinDef(int key, int[] funIds)
         {
             this.Key = key;
             this.FunIds = funIds;
@@ -56,6 +56,6 @@ namespace CSPGF.Reader
         /// <summary>
         /// Gets the list of function ids
         /// </summary>
-        public List<int> FunIds { get; private set; }
+        public int[] FunIds { get; private set; }
     }
 }

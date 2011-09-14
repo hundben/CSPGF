@@ -42,7 +42,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// List of domains
         /// </summary>
-        private List<int> dom;
+        private int[] dom;
 
         /// <summary>
         /// Initializes a new instance of the ApplProduction class.
@@ -50,7 +50,7 @@ namespace CSPGF.Reader
         /// <param name="fId">Function id</param>
         /// <param name="function">Concrete function</param>
         /// <param name="domain">List of domains</param>
-        public ApplProduction(int fId, CncFun function, List<int> domain) : base(0, fId)
+        public ApplProduction(int fId, CncFun function, int[] domain) : base(0, fId)
         {
             this.Function = function;
             this.dom = domain;
@@ -82,7 +82,7 @@ namespace CSPGF.Reader
         /// Get the list of domains
         /// </summary>
         /// <returns>List of domains</returns>
-        public override List<int> Domain()
+        public override int[] Domain()
         {
             return this.dom;
         }
@@ -104,12 +104,12 @@ namespace CSPGF.Reader
                     return false;
                 }
 
-                if (this.dom.Count != newo.dom.Count) 
+                if (this.dom.Length != newo.dom.Length) 
                 {
                     return false;
                 }
 
-                for (int i = 0; i < this.dom.Count; i++) 
+                for (int i = 0; i < this.dom.Length; i++) 
                 {
                     if (this.dom[i] != newo.dom[i]) 
                     {

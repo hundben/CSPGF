@@ -70,6 +70,6 @@ namespace CSPGF.Reader
         /// Returns the list of domains.
         /// </summary>
         /// <returns>Returns the list of domains</returns>
-        public abstract List<int> Domain();
+        public abstract int[] Domain();
     }
 }

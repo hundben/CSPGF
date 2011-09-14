@@ -97,7 +97,7 @@ namespace CSPGF.Parse
         public List<Tree> MkTreesForProduction(CSPGF.Reader.ApplProduction p, Chart chart)
         {
             List<Tree> temp = new List<Tree>();
-            if (p.Domain().Count == 0)
+            if (p.Domain().Length == 0)
             {
                 temp.Add(new Application(p.Function.Name, new List<Tree>()));
                 return temp;

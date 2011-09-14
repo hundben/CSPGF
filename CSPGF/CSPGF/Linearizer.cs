@@ -628,7 +628,7 @@ namespace CSPGF
             List<AppResult> rez = new List<AppResult>();
             if (p is ApplProduction)
             {
-                List<int> args = ((ApplProduction)p).Domain();
+                int[] args = ((ApplProduction)p).Domain();
                 CncFun cncFun = ((ApplProduction)p).Function;
                 List<CncType> vtype = new List<CncType>();
                 if (f.Equals("_V"))
@@ -644,7 +644,7 @@ namespace CSPGF
                 else if (f.Equals("_B"))
                 {
                     vtype.Add(new CncType(cty.CId, args[0]));
-                    for (int i = 1; i < args.Count; i++)
+                    for (int i = 1; i < args.Length; i++)
                     {
                         vtype.Add(new CncType("__gfVar", args[i]));
                     }
@@ -671,7 +671,7 @@ namespace CSPGF
 
                     List<string> catSkel = this.CatSkeleton(t);
                     string res = catSkel.ElementAt(0);
-                    for (int i = 0; i < args.Count; i++)
+                    for (int i = 0; i < args.Length; i++)
                     {
                         vtype.Add(new CncType(catSkel.ElementAt(i + 1), args[i]));
                     }

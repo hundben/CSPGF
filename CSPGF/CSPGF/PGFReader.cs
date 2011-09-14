@@ -755,7 +755,7 @@ namespace CSPGF
         private CncFun GetCncFun(List<Symbol[]> sequences)
         {
             string name = this.GetIdent();
-            List<int> seqIndices = this.GetListInt();
+            int[] seqIndices = this.GetListInt();
             List<Symbol[]> seqs = new List<Symbol[]>();
             foreach (int i in seqIndices) 
             {
@@ -786,13 +786,13 @@ namespace CSPGF
         /// Reads a list of LinDefs
         /// </summary>
         /// <returns>List of LinDefs</returns>
-        private List<LinDef> GetListLinDef()
+        private LinDef[] GetListLinDef()
         {
             int size = this.GetInt();
-            List<LinDef> tmp = new List<LinDef>();
+            LinDef[] tmp = new LinDef[size];
             for (int i = 0; i < size; i++) 
             {
-                tmp.Add(this.GetLinDef());
+                tmp[i] = this.GetLinDef();
             }
 
             return tmp;
@@ -806,10 +806,10 @@ namespace CSPGF
         {
             int key = this.GetInt();
             int listSize = this.GetInt();
-            List<int> funIds = new List<int>();
+            int[] funIds = new int[listSize];
             for (int i = 0; i < listSize; i++) 
             {
-                funIds.Add(this.GetInt());
+                funIds[i] = this.GetInt();
             }
 
             return new LinDef(key, funIds);
@@ -881,7 +881,7 @@ namespace CSPGF
             {
                 case 0: // application
                     int i = this.GetInt();
-                    List<int> domain = this.GetDomainFromPArgs();
+                    int[] domain = this.GetDomainFromPArgs();
                     prod = new ApplProduction(leftCat, cncFuns[i], domain);
                     break;
                 case 1: // coercion
@@ -906,15 +906,15 @@ namespace CSPGF
         /// Reads a list of PArgs and returns the domain
         /// </summary>
         /// <returns>Returns the domain</returns>
-        private List<int> GetDomainFromPArgs()
+        private int[] GetDomainFromPArgs()
         {
             int size = this.GetInt();
-            List<int> tmp = new List<int>();
+            int[] tmp = new int[size];
             for (int i = 0; i < size; i++)
             {
                 // Skiping the list of integers
                 this.GetListInt();
-                tmp.Add(this.GetInt());
+                tmp[i] = this.GetInt();
             }
 
             return tmp;
@@ -1091,13 +1091,13 @@ namespace CSPGF
         /// Reads a list of integers
         /// </summary>
         /// <returns>List of integers</returns>
-        private List<int> GetListInt()
+        private int[] GetListInt()
         {
             int npoz = this.GetInt();
-            List<int> tmp = new List<int>();
+            int[] tmp = new int[npoz];
             for (int i = 0; i < npoz; i++) 
             {
-                tmp.Add(this.GetInt());
+                tmp[i] = this.GetInt();
             }
 
             return tmp;

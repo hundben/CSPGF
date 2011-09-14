@@ -211,7 +211,7 @@ namespace CSPGF.Parse
             int j = item.Begin;
             int a = item.Category;
             CncFun f = item.Function;
-            List<int> b = item.Domain;
+            int[] b = item.Domain;
             int l = item.Constituent;
             int p = item.Position;
 
@@ -278,7 +278,8 @@ namespace CSPGF.Parse
                     {
                         List<int> newDomain = new List<int>(b);
                         newDomain[d] = cat;
-                        ActiveItem it = new ActiveItem(j, a, f, newDomain, l, p + 1);
+                        // TODO: FIX!
+                        ActiveItem it = new ActiveItem(j, a, f, newDomain.ToArray(), l, p + 1);
                         this.agenda.Push(it);
                         TempLog.LogMessageToFile("Adding to agenda: " + it.ToString());
                     }
@@ -298,7 +299,8 @@ namespace CSPGF.Parse
                         List<int> domain = new List<int>(ip.Domain);
                         TempLog.LogMessageToFile("Combine with " + ip.ToString() + "(" + domain[d] + ")");
                         domain[d] = n;
-                        ActiveItem i = new ActiveItem(ip.Begin, ip.Category, ip.Function, domain, ip.Constituent, ip.Position + 1);
+                        // TODO: FIX!
+                        ActiveItem i = new ActiveItem(ip.Begin, ip.Category, ip.Function, domain.ToArray(), ip.Constituent, ip.Position + 1);
                         this.agenda.Push(i);
                     }
 

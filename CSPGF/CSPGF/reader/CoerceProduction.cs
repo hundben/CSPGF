@@ -58,10 +58,10 @@ namespace CSPGF.Reader
         /// Returns the domains
         /// </summary>
         /// <returns>Returns a list of domains</returns>
-        public override List<int> Domain()
+        public override int[] Domain()
         {
-            List<int> tmp = new List<int>();
-            tmp.Add(this.InitId);
+            int[] tmp = new int[1];
+            tmp[0] = this.InitId;
             return tmp;
         }
 

@@ -106,7 +106,7 @@ namespace CSPGF.Parse
         /// <param name="fun">The function.</param>
         /// <param name="domain">A list of domains.</param>
         /// <returns>Returns true if production was added.</returns>
-        public bool AddProduction(int cat, CncFun fun, List<int> domain)
+        public bool AddProduction(int cat, CncFun fun, int[] domain)
         {
             return this.AddProduction(new ApplProduction(cat, fun, domain));
         }
