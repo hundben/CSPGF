@@ -61,7 +61,9 @@ namespace CSPGF.Parse
                 int cat = chart.GetCategory(catID, 0, 0, length);
                 if (cat != -1) 
                 {
-                    temp.AddRange(this.MkTreesForCat(cat, chart));
+                    List<Tree> tmp = this.MkTreesForCat(cat, chart);
+                    DisplayList(tmp);
+                    temp.AddRange(tmp);
                 }
             }
 
@@ -166,23 +168,48 @@ namespace CSPGF.Parse
         /// This is only for debug. Prints a list of lists of trees to the log.
         /// </summary>
         /// <param name="trees">The tree to display.</param>
-        public void DisplayTree(List<List<Tree>> trees)
+        public string DisplayTree(Tree tree)
         {
-            foreach (List<Tree> tmp in trees)
+            string tmp = string.Empty;
+            if (tree is Application)
             {
-                string tr = "[";
-                foreach(Tree t in tmp)
+                Application ap = (Application)tree;
+                tmp = ap.Fun + "(";
+                foreach (Tree t in ap.Args)
                 {
-                    tr += "[";
-                    if (t is Application)
-                    {
-                        tr += ((Application)t).Fun;
-                    }   
-
-                    tr += "]";
+                    tmp += DisplayTree(t)+","; 
                 }
-                tr += "]";
-                TempLog.LogMessageToFile(tr);
+                tmp += ")";
+            }
+            else if (tree is Variable)
+            {
+                Variable v = (Variable)tree;
+                tmp += v.Cid;
+            }
+            else if (tree is MetaVariable)
+            {
+                MetaVariable mv = (MetaVariable)tree;
+                tmp += mv.ID;
+            }
+            else if (tree is Literal)
+            {
+                Literal lt = (Literal)tree;
+                tmp += lt.Value;
+            }
+            else if (tree is Lambda)
+            {
+                Lambda lb = (Lambda)tree;
+                tmp += "Lambda(" + DisplayTree(lb.Body) + ")";
+            }
+
+            return tmp + " ";
+        }
+
+        private void DisplayList(List<Tree> t)
+        {
+            foreach (Tree tree in t)
+            {
+                TempLog.LogMessageToFile("Tree:  " + this.DisplayTree(tree));
             }
         }
     }

@@ -39,7 +39,6 @@ namespace CSPGF.Parse
     /// <summary>
     /// The chart.
     /// </summary>
-    [Serializable]
     internal class Chart
     {
         /// <summary>
@@ -88,12 +87,14 @@ namespace CSPGF.Parse
                 }
 
                 prodSet.Add(p);
+                TempLog.LogMessageToFile("[ADD PRODUCTION] " + p.ToString());
             }
             else
             {
                 prodSet = new HashSet<Production>();
                 prodSet.Add(p);
                 this.productionSets.Add(p.FId, prodSet);
+                TempLog.LogMessageToFile("[ADD PRODUCTION] " + p.ToString());
             }
 
             return true;
@@ -174,6 +175,7 @@ namespace CSPGF.Parse
         {
             string hash = this.generateHash(oldCat, cons, begin, end);
             TempLog.LogMessageToFile("<<<Get category hash:" + hash);
+
             if (this.categoryBookKeeperHash.ContainsKey(hash))
             {
                 return this.categoryBookKeeperHash[hash];

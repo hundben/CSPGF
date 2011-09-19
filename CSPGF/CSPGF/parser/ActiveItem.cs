@@ -154,13 +154,19 @@ namespace CSPGF.Parse
         /// <returns>The string with the domains.</returns>
         public string DomainToString()
         {
-            string tot = string.Empty;
-            foreach (int d in this.Domain) 
+            if (this.Domain.Length == 0)
             {
-                tot += d.ToString();
+                return string.Empty;
             }
-
-            return tot;
+            else
+            {
+                string tot = string.Empty;
+                foreach (int d in this.Domain)
+                {
+                    tot += d.ToString() + ",";
+                }
+                return tot.Substring(0, tot.Length - 1);
+            } 
         }
     }
 }

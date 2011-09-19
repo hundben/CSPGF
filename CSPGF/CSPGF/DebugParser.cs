@@ -128,6 +128,7 @@ namespace CSPGF
         /// </summary>
         public void Debug2()
         {
+            this.currentPState.PrintChart();    // TODO REMOVE
             List<Trees.Absyn.Tree> trees = this.currentPState.GetTrees();
             foreach (Trees.Absyn.Tree tree in trees)
             {

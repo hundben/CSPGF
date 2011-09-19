@@ -37,7 +37,6 @@ namespace CSPGF.Parse
     /// <summary>
     /// The parsestate class.
     /// </summary>
-    [Serializable]
     internal class ParseState
     {
         /// <summary>
@@ -85,6 +84,7 @@ namespace CSPGF.Parse
             this.trie = new ParseTrie();
 
             this.chart = new Chart(grammar.FId + 1);
+
             this.agenda = new Stack<ActiveItem>();
             this.position = 0;
             this.active = new List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>>();
@@ -188,6 +188,14 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
+        /// Debug, REMOVE
+        /// </summary>
+        public void PrintChart()
+        {
+            TempLog.LogMessageToFile(this.chart.ToString());
+        }
+
+        /// <summary>
         /// Computes the new trees.
         /// </summary>
         private void Compute()
@@ -254,7 +262,6 @@ namespace CSPGF.Parse
                 // PREDICT
                 if (this.active.Count >= this.position) 
                 {
-                    // a bit strange, check if we should create an active set first...
                     if (this.AddActiveSet(bd, r, item, this.active[this.position])) 
                     {
                         foreach (ApplProduction prod in this.chart.GetProductions(bd)) 
@@ -267,12 +274,6 @@ namespace CSPGF.Parse
                     // COMBINE
 
                     int cat = this.chart.GetCategory(bd, r, this.position, this.position);
-                    if (this.position != 0)
-                    {
-                        ;
-                        Console.Write("");
-                    }
-
 
                     if (cat != -1) 
                     {
@@ -292,7 +293,7 @@ namespace CSPGF.Parse
                 if (cat == -1) 
                 {
                     int n = this.chart.GenerateFreshCategory(a, l, j, this.position);
-                    foreach (ActiveItem ai in this.GetActiveSet(a, this.active[j]))
+                    foreach (ActiveItem ai in this.GetActiveSet(a, this.active[j])) // in scala .Get(a,l)?????
                     {
                         ActiveItem ip = ai;
                         int d = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;
@@ -346,7 +347,6 @@ namespace CSPGF.Parse
                     }
 
                     activeItems.Add(item);
-                    return true;
                 }
                 else
                 {
