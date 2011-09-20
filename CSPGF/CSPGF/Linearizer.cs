@@ -106,11 +106,7 @@ namespace CSPGF
         /// <returns>Dictionary containing the l-productions</returns>
         private Dictionary<string, Dictionary<int, HashSet<Production>>> GetLProductions()
         {
-            Dictionary<int, HashSet<Production>> emptyMap = new Dictionary<int, HashSet<Production>>();
-            Dictionary<int, HashSet<Production>> tmp3 = this.cnc.GetSetOfProductions();
-            Dictionary<int, HashSet<Production>> tmp2 = this.FilterProductions(emptyMap, tmp3);
-            Dictionary<string, Dictionary<int, HashSet<Production>>> tmp = this.LinIndex(tmp2);
-            return tmp;
+            return this.LinIndex(this.FilterProductions(new Dictionary<int, HashSet<Production>>(), this.cnc.GetSetOfProductions()));
         }
 
         /// <summary>
@@ -557,6 +553,7 @@ namespace CSPGF
                             linTab.Add(this.ComputeSeq(seq, intRez.CncTypes, intRez.Bracketedtokn));
                         }
 
+                        //System.Console.WriteLine(cat+" "+nextfid);
                         rez.Add(new LinTriple(nextfid + 1, new CncType(cat, nextfid), linTab));
                     }
                 }
