@@ -131,13 +131,13 @@ namespace CSPGF.Parse
         /// <returns>Returns true if scan i complete.</returns>
         public bool Scan(string token)
         {
+            // To save memory
+            this.chart.RemoveCats();
+
             ParseTrie newTrie = this.trie.GetSubTrie(token);
             if (newTrie != null) 
             {
-                List<string> empt = new List<string>();
-
-                // string[] empt = new string[0];
-                Stack<ActiveItem> newAgenda = newTrie.Lookup(empt);
+                Stack<ActiveItem> newAgenda = newTrie.Lookup(new List<string>());
                 if (newAgenda != null) 
                 {
                     this.trie = newTrie;
