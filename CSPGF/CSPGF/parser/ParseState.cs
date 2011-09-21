@@ -287,7 +287,7 @@ namespace CSPGF.Parse
                 if (cat == -1) 
                 {
                     int n = this.chart.GenerateFreshCategory(a, l, j, this.position);
-                    foreach (ActiveItem ai in this.GetActiveSet(a, this.active[j])) // in scala .Get(a,l)?????
+                    foreach (ActiveItem ai in this.GetActiveSet(a, l, this.active[j])) // in scala .Get(a,l)?????
                     {
                         ActiveItem ip = ai;
                         int d = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;
@@ -382,6 +382,20 @@ namespace CSPGF.Parse
                 }
             }
 
+            return ai;
+        }
+
+        private HashSet<ActiveItem> GetActiveSet(int cat, int cons, Dictionary<int, Dictionary<int, HashSet<ActiveItem>>> currentActive)
+        {
+            HashSet<ActiveItem> ai = new HashSet<ActiveItem>();
+            Dictionary<int, HashSet<ActiveItem>> map;
+            if (currentActive.TryGetValue(cat, out map))
+            {
+                if (map.ContainsKey(cons))
+                {
+                    return map[cons];
+                }
+            }
             return ai;
         }
     }
