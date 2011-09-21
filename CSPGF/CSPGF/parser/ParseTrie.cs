@@ -141,7 +141,6 @@ namespace CSPGF.Parse
         /// <returns>The subtrie if any.</returns>
         public ParseTrie GetSubTrie(List<string> key)
         {
-            // TODO check if null is necessary
             if (key == null || key.Count == 0)
             {
                 return this;
@@ -181,6 +180,10 @@ namespace CSPGF.Parse
             return this.child.Keys.ToList<string>();
         }
 
+        /// <summary>
+        /// Creates a string reoresentation of the tree.
+        /// </summary>
+        /// <returns>The parsetrie as a string.</returns>
         public override string ToString()
         {
             string temp = "[";

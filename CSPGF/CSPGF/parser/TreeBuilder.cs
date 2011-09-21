@@ -61,9 +61,7 @@ namespace CSPGF.Parse
                 int cat = chart.GetCategory(catID, 0, 0, length);
                 if (cat != -1) 
                 {
-                    List<Tree> tmp = this.MkTreesForCat(cat, chart);
-                    DisplayList(tmp);
-                    temp.AddRange(tmp);
+                    temp.AddRange(this.MkTreesForCat(cat, chart));
                 }
             }
 
@@ -163,79 +161,5 @@ namespace CSPGF.Parse
                 return newList;
             }
         }
-
-        /// <summary>
-        /// This is only for debug. Prints a list of lists of trees to the log.
-        /// </summary>
-        /// <param name="trees">The tree to display.</param>
-        public string DisplayTree(Tree tree)
-        {
-            string tmp = string.Empty;
-            if (tree is Application)
-            {
-                Application ap = (Application)tree;
-                tmp = ap.Fun + "(";
-                foreach (Tree t in ap.Args)
-                {
-                    tmp += DisplayTree(t)+","; 
-                }
-                tmp += ")";
-            }
-            else if (tree is Variable)
-            {
-                Variable v = (Variable)tree;
-                tmp += v.Cid;
-            }
-            else if (tree is MetaVariable)
-            {
-                MetaVariable mv = (MetaVariable)tree;
-                tmp += mv.ID;
-            }
-            else if (tree is Literal)
-            {
-                Literal lt = (Literal)tree;
-                tmp += lt.Value;
-            }
-            else if (tree is Lambda)
-            {
-                Lambda lb = (Lambda)tree;
-                tmp += "Lambda(" + DisplayTree(lb.Body) + ")";
-            }
-
-            return tmp + " ";
-        }
-
-        private void DisplayList(List<Tree> t)
-        {
-            foreach (Tree tree in t)
-            {
-                TempLog.LogMessageToFile("Tree:  " + this.DisplayTree(tree));
-            }
-        }
     }
 }
-
-// object TreeBuilder {
-//  //val log = Logger.getLogger("org.grammaticalframework.parser.TreeBuilder")
-//  def buildTrees( chart:Chart, startCat:CncCat, length:Int ):List[Tree] = {
-//    //log.fine("Building trees with start category " + (0, startCat, 0, length))
-//    (startCat.firstID until startCat.lastID + 1).flatMap( catID =>
-//      chart.getCategory(catID, 0, 0, length) match {
-//        case None => Nil
-//        case Some(cat) => mkTreesForCat(cat, chart)
-//      }).toList
-//  }
-//  def mkTreesForCat(cat : Int, chart:Chart):List[Tree] = {
-//    //log.fine("Making trees for category "+ cat)
-//    for {p <- chart.getProductions(cat).toList;
-//         t <- mkTreesForProduction(p, chart)}
-//    yield t
-//  }
-//  def mkTreesForProduction( p:Production, chart:Chart):List[Tree] = {
-//      if (p.domain.length == 0)
-//         List(new Application(p.function.name, Nil))
-//      else
-//         for (args <- listMixer( p.domain.toList.map(mkTreesForCat(_,chart)) ) )
-//         yield new Application(p.function.name, args)
-//  }
-
