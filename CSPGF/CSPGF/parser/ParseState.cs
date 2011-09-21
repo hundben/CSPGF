@@ -37,7 +37,6 @@ namespace CSPGF.Parse
     /// <summary>
     /// The parsestate class.
     /// </summary>
-    [Serializable]
     internal class ParseState
     {
         /// <summary>
@@ -85,6 +84,7 @@ namespace CSPGF.Parse
             this.trie = new ParseTrie();
 
             this.chart = new Chart(grammar.FId + 1);
+
             this.agenda = new Stack<ActiveItem>();
             this.position = 0;
             this.active = new List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>>();
@@ -131,8 +131,6 @@ namespace CSPGF.Parse
         /// <returns>Returns true if scan i complete.</returns>
         public bool Scan(string token)
         {
-            TempLog.LogMessageToFile("Scan token: " + token);
-
             ParseTrie newTrie = this.trie.GetSubTrie(token);
             if (newTrie != null) 
             {
@@ -146,10 +144,6 @@ namespace CSPGF.Parse
                     this.position++;
                     this.agenda = newAgenda;
                     this.Compute();
-
-                    TempLog.LogMessageToFile("Tree for: " + token);
-                    TempLog.LogMessageToFile(this.trie.ToString());
-
                     return true;
                 }
             }
@@ -184,7 +178,16 @@ namespace CSPGF.Parse
             {
                 // TODO
             }
+
             return false;
+        }
+
+        /// <summary>
+        /// Debug, REMOVE
+        /// </summary>
+        public void PrintChart()
+        {
+            TempLog.LogMessageToFile(this.chart.ToString());
         }
 
         /// <summary>
@@ -250,11 +253,9 @@ namespace CSPGF.Parse
                 int r = arg.Cons;
                 int bd = item.Domain[d];
 
-                // TODO check if this is correct
                 // PREDICT
                 if (this.active.Count >= this.position) 
                 {
-                    // a bit strange, check if we should create an active set first...
                     if (this.AddActiveSet(bd, r, item, this.active[this.position])) 
                     {
                         foreach (ApplProduction prod in this.chart.GetProductions(bd)) 
@@ -265,19 +266,13 @@ namespace CSPGF.Parse
                     }
 
                     // COMBINE
-
                     int cat = this.chart.GetCategory(bd, r, this.position, this.position);
-                    if (this.position != 0)
-                    {
-                        ;
-                        Console.Write("");
-                    }
-
 
                     if (cat != -1) 
                     {
                         List<int> newDomain = new List<int>(b);
                         newDomain[d] = cat;
+
                         // TODO: FIX!
                         ActiveItem it = new ActiveItem(j, a, f, newDomain.ToArray(), l, p + 1);
                         this.agenda.Push(it);
@@ -292,13 +287,14 @@ namespace CSPGF.Parse
                 if (cat == -1) 
                 {
                     int n = this.chart.GenerateFreshCategory(a, l, j, this.position);
-                    foreach (ActiveItem ai in this.GetActiveSet(a, this.active[j]))
+                    foreach (ActiveItem ai in this.GetActiveSet(a, l, this.active[j]))
                     {
                         ActiveItem ip = ai;
                         int d = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;
                         List<int> domain = new List<int>(ip.Domain);
                         TempLog.LogMessageToFile("Combine with " + ip.ToString() + "(" + domain[d] + ")");
                         domain[d] = n;
+
                         // TODO: FIX!
                         ActiveItem i = new ActiveItem(ip.Begin, ip.Category, ip.Function, domain.ToArray(), ip.Constituent, ip.Position + 1);
                         this.agenda.Push(i);
@@ -346,7 +342,6 @@ namespace CSPGF.Parse
                     }
 
                     activeItems.Add(item);
-                    return true;
                 }
                 else
                 {
@@ -385,6 +380,28 @@ namespace CSPGF.Parse
                     {
                         ai.Add(i);
                     }
+                }
+            }
+
+            return ai;
+        }
+
+        /// <summary>
+        /// Gets an active set.
+        /// </summary>
+        /// <param name="cat">The category.</param>
+        /// <param name="cons">The constituent.</param>
+        /// <param name="currentActive">The dictionary with the sets.</param>
+        /// <returns>A hashset with the active items.</returns>
+        private HashSet<ActiveItem> GetActiveSet(int cat, int cons, Dictionary<int, Dictionary<int, HashSet<ActiveItem>>> currentActive)
+        {
+            HashSet<ActiveItem> ai = new HashSet<ActiveItem>();
+            Dictionary<int, HashSet<ActiveItem>> map;
+            if (currentActive.TryGetValue(cat, out map))
+            {
+                if (map.ContainsKey(cons))
+                {
+                    return map[cons];
                 }
             }
 

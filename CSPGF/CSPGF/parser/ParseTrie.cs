@@ -84,7 +84,6 @@ namespace CSPGF.Parse
         /// <param name="value">A stack of active items.</param>
         public void Add(List<string> keys, Stack<ActiveItem> value)
         {
-            // TODO: Might be correct, but check.
             if (keys == null || keys.Count == 0) 
             {
                 this.value = value;
@@ -142,7 +141,6 @@ namespace CSPGF.Parse
         /// <returns>The subtrie if any.</returns>
         public ParseTrie GetSubTrie(List<string> key)
         {
-            // TODO check if null is necessary
             if (key == null || key.Count == 0)
             {
                 return this;
@@ -182,6 +180,10 @@ namespace CSPGF.Parse
             return this.child.Keys.ToList<string>();
         }
 
+        /// <summary>
+        /// Creates a string reoresentation of the tree.
+        /// </summary>
+        /// <returns>The parsetrie as a string.</returns>
         public override string ToString()
         {
             string temp = "[";

@@ -39,7 +39,6 @@ namespace CSPGF.Parse
     /// <summary>
     /// The chart.
     /// </summary>
-    [Serializable]
     internal class Chart
     {
         /// <summary>
@@ -67,9 +66,12 @@ namespace CSPGF.Parse
             this.nextCat = nextCat;
         }
 
-        public void  RemoveCats()
+        /// <summary>
+        /// Removes categories (this is a test).
+        /// </summary>
+        public void RemoveCats()
         {
-            categoryBookKeeperHash = new Dictionary<string, int>();
+            this.categoryBookKeeperHash = new Dictionary<string, int>();
         }
 
         /// <summary>
@@ -151,7 +153,7 @@ namespace CSPGF.Parse
         public int GetFreshCategory(int oldCat, int l, int j, int k)
         {
             // Crappy optimization 
-            string hash = this.generateHash(oldCat, l, j, k);
+            string hash = this.GenerateHash(oldCat, l, j, k);
             if (this.categoryBookKeeperHash.ContainsKey(hash))
             {
                 return this.categoryBookKeeperHash[hash];
@@ -172,8 +174,8 @@ namespace CSPGF.Parse
         /// <returns>Returns the category.</returns>
         public int GetCategory(int oldCat, int cons, int begin, int end)
         {
-            string hash = this.generateHash(oldCat, cons, begin, end);
-            TempLog.LogMessageToFile("<<<Get category hash:" + hash);
+            string hash = this.GenerateHash(oldCat, cons, begin, end);
+
             if (this.categoryBookKeeperHash.ContainsKey(hash))
             {
                 return this.categoryBookKeeperHash[hash];
@@ -188,13 +190,13 @@ namespace CSPGF.Parse
         /// Generates a fresh category
         /// </summary>
         /// <param name="oldCat">Old category.</param>
-        /// <param name="l"></param>
-        /// <param name="j"></param>
-        /// <param name="k"></param>
+        /// <param name="l">Where to begin.</param>
+        /// <param name="j">Where to end.</param>
+        /// <param name="k">The position.</param>
         /// <returns>The new category.</returns>
         public int GenerateFreshCategory(int oldCat, int l, int j, int k)
         {
-            return this.GenerateFreshCategory(this.generateHash(oldCat, l, j, k));
+            return this.GenerateFreshCategory(this.GenerateHash(oldCat, l, j, k));
         }
 
         /// <summary>
@@ -232,7 +234,6 @@ namespace CSPGF.Parse
         /// <returns>The new category</returns>
         private int GenerateFreshCategory(string hash)
         {
-            TempLog.LogMessageToFile(">>>New category hash:" + hash);
             int cat = this.nextCat;
             this.nextCat++;
             this.categoryBookKeeperHash[hash] = cat;
@@ -266,18 +267,17 @@ namespace CSPGF.Parse
             return prodList;
         }
 
-        private string generateHash(int oldCat, int cons, int begin, int end)
+        /// <summary>
+        /// Generates a hash for the dictionary.
+        /// </summary>
+        /// <param name="oldCat">The old category.</param>
+        /// <param name="cons">The constituent.</param>
+        /// <param name="begin">Where it begins.</param>
+        /// <param name="end">Where it ends.</param>
+        /// <returns>The hash as a string.</returns>
+        private string GenerateHash(int oldCat, int cons, int begin, int end)
         {
             return oldCat + " " + cons + " " + begin + " " + end;
-        }
-
-        public void PrintCategories()
-        {
-            TempLog.LogMessageToFile("CATEGORIES");
-            foreach (string h in this.categoryBookKeeperHash.Keys)
-            {
-                TempLog.LogMessageToFile(h + " -> " + this.categoryBookKeeperHash[h]);
-            }
         }
     }
 }
