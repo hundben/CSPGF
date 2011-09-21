@@ -131,8 +131,6 @@ namespace CSPGF.Parse
         /// <returns>Returns true if scan i complete.</returns>
         public bool Scan(string token)
         {
-            TempLog.LogMessageToFile("Scan token: " + token);
-
             ParseTrie newTrie = this.trie.GetSubTrie(token);
             if (newTrie != null) 
             {
@@ -146,10 +144,6 @@ namespace CSPGF.Parse
                     this.position++;
                     this.agenda = newAgenda;
                     this.Compute();
-
-                    TempLog.LogMessageToFile("Tree for: " + token);
-                    TempLog.LogMessageToFile(this.trie.ToString());
-
                     return true;
                 }
             }

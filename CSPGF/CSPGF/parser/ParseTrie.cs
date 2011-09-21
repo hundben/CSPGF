@@ -84,7 +84,6 @@ namespace CSPGF.Parse
         /// <param name="value">A stack of active items.</param>
         public void Add(List<string> keys, Stack<ActiveItem> value)
         {
-            // TODO: Might be correct, but check.
             if (keys == null || keys.Count == 0) 
             {
                 this.value = value;

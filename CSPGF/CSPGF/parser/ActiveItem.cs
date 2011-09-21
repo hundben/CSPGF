@@ -48,8 +48,8 @@ namespace CSPGF.Parse
         /// <param name="category">The category.</param>
         /// <param name="function">The function.</param>
         /// <param name="domain">A list of the domains.</param>
-        /// <param name="constituent">Insert a description for constituent.</param>
-        /// <param name="position">Insert a description for position.</param>
+        /// <param name="constituent">The constituent to use.</param>
+        /// <param name="position">The position (the </param>
         public ActiveItem(int begin, int category, CncFun function, int[] domain, int constituent, int position)
         {
             this.Begin = begin;
@@ -165,6 +165,7 @@ namespace CSPGF.Parse
                 {
                     tot += d.ToString() + ",";
                 }
+
                 return tot.Substring(0, tot.Length - 1);
             } 
         }
