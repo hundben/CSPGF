@@ -399,9 +399,10 @@ namespace CSPGF.Parse
             Dictionary<int, HashSet<ActiveItem>> map;
             if (currentActive.TryGetValue(cat, out map))
             {
-                if (map.ContainsKey(cons))
+                HashSet<ActiveItem> aiTmp;
+                if (map.TryGetValue(cons, out aiTmp))
                 {
-                    return map[cons];
+                    return aiTmp;
                 }
             }
 
