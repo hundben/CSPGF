@@ -71,5 +71,23 @@ namespace CSPGF.Reader
         /// </summary>
         /// <returns>Returns the list of domains</returns>
         public abstract int[] Domain();
+
+        /*public override bool Equals(object obj)
+        {
+            if (obj is Production)
+            {
+                Production p = (Production)obj;
+                if (this.FId == p.FId && this.Sel == p.Sel)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }*/
     }
 }

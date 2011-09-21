@@ -47,47 +47,51 @@ namespace CSPGF
             TempLog.NewLog();
 
             // Tests below.
-            FileStream fs = new FileStream("..\\..\\test\\files\\Phrasebook.pgf", FileMode.Open);
+            // FileStream fs = new FileStream("..\\..\\test\\files\\Phrasebook.pgf", FileMode.Open);
+            FileStream fs = new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open);
             BinaryReader br = new BinaryReader(fs);
             PGFReader pr = new PGFReader(br);
             PGF pgf = pr.ReadPGF();
             fs.Close();
-            /*RecoveryParser rp = new RecoveryParser(pgf, "FoodsEng");
+            DebugParser rp = new DebugParser(pgf, "FoodsEng");
             rp.Scan("this");
             rp.Scan("wine");
             rp.Scan("is");
-            rp.Scan("Italian");*/
-            DebugParser rp = new DebugParser(pgf, "PhrasebookEng");
+            rp.Scan("Italian");
+            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
+            /*DebugParser rp = new DebugParser(pgf, "PhrasebookEng");
             rp.Scan("Finnish");
             rp.Scan("fish");
             rp.Scan("isn't");
             rp.Scan("too");
             rp.Scan("warm");
-            rp.Scan(".");
+            rp.Scan(".");*/
 
-            DebugParser rp2 = new DebugParser(pgf, "PhrasebookEng");
+            /*DebugParser rp2 = new DebugParser(pgf, "PhrasebookEng");
             rp2.Scan("this");
             rp2.Scan("wine");
             rp2.Scan("is");
             rp2.Scan("Italian");
             rp2.Scan(".");
-            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookGer"));
-            Linearizer lin2 = new Linearizer(pgf, pgf.GetConcrete("PhrasebookIta"));
+            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookGer"));*/
+
+            // Linearizer lin2 = new Linearizer(pgf, pgf.GetConcrete("PhrasebookIta"));
 
             foreach (Trees.Absyn.Tree tree in rp.GetTrees())
             {
                 System.Console.WriteLine(lin.LinearizeString(tree));
+                //System.Console.WriteLine(lin2.LinearizeString(tree));
             }
 
-            foreach (Trees.Absyn.Tree tree in rp2.GetTrees())
+            /*foreach (Trees.Absyn.Tree tree in rp2.GetTrees())
             {
                 System.Console.WriteLine(lin.LinearizeString(tree));
                 System.Console.WriteLine(lin2.LinearizeString(tree));
-            }
+            }*/
 
             // rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
 
-            rp.Debug2();
+            //rp.Debug2();
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();
         }

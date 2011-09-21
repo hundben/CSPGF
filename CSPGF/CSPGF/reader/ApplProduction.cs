@@ -92,7 +92,7 @@ namespace CSPGF.Reader
         /// </summary>
         /// <param name="o">Object to compare to</param>
         /// <returns>True if equal</returns>
-        public override bool Equals(object o)
+        /*public override bool Equals(object o)
         {
             // TODO: Fix? 
             if (o is ApplProduction) 
@@ -121,15 +121,15 @@ namespace CSPGF.Reader
             }
 
             return false;
-        }
+        }*/
         
         /// <summary>
         /// Returns the hashcode for this object.
         /// </summary>
         /// <returns>Returns the hashcode for this object</returns>
-        public override int GetHashCode()
+        /*public override int GetHashCode()
         {
             return base.GetHashCode();
-        }
+        }*/
     }
 }

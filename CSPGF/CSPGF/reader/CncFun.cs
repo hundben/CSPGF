@@ -77,5 +77,20 @@ namespace CSPGF.Reader
 
             return ss;
         }
+
+        /*public override bool Equals(object obj)
+        {
+            if (obj is CncFun)
+            {
+                CncFun fun = (CncFun)obj;
+                return this.Name.Equals(fun.Name) && this.Sequences.Equals(fun.Sequences);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }*/
     }
 }

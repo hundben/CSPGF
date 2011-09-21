@@ -97,7 +97,7 @@ namespace CSPGF
             {
                 this.ps = new Parse.ParseState(this.pgf.GetConcrete(from));
             }
-            catch (Exception e)
+            catch (UnknownLanguageException e)
             {
                 System.Console.WriteLine(e.ToString());
                 this.ps = null;

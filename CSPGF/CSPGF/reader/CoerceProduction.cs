@@ -79,7 +79,7 @@ namespace CSPGF.Reader
         /// </summary>
         /// <param name="o">Production to compare to</param>
         /// <returns>True if equal</returns>
-        public override bool Equals(object o)
+        /*public override bool Equals(object o)
         {
             if (o is CoerceProduction) 
             {
@@ -96,6 +96,6 @@ namespace CSPGF.Reader
         public override int GetHashCode()
         {
             return base.GetHashCode();
-        }
+        }*/
     }
 }

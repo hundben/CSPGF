@@ -83,6 +83,18 @@ namespace CSPGF
             return this.RenderLin(this.Linearize(absyn).ElementAt(0));
         }
 
+        public List<string> LinearizeAll(CSPGF.Trees.Absyn.Tree absyn)
+        {
+            List<List<string>> tmp = this.RenderAllLins(this.Linearize(absyn));
+            List<string> tmp2 = new List<string>();
+            foreach (List<string> lstr in tmp)
+            {
+                tmp2.AddRange(lstr);
+                tmp2.Add("\n");
+            }
+            return tmp2;
+        }
+
         /// <summary>
         /// Linearize a tree to a string.
         /// </summary>
@@ -106,11 +118,7 @@ namespace CSPGF
         /// <returns>Dictionary containing the l-productions</returns>
         private Dictionary<string, Dictionary<int, HashSet<Production>>> GetLProductions()
         {
-            Dictionary<int, HashSet<Production>> emptyMap = new Dictionary<int, HashSet<Production>>();
-            Dictionary<int, HashSet<Production>> tmp3 = this.cnc.GetSetOfProductions();
-            Dictionary<int, HashSet<Production>> tmp2 = this.FilterProductions(emptyMap, tmp3);
-            Dictionary<string, Dictionary<int, HashSet<Production>>> tmp = this.LinIndex(tmp2);
-            return tmp;
+            return this.LinIndex(this.FilterProductions(new Dictionary<int, HashSet<Production>>(), this.cnc.GetSetOfProductions()));
         }
 
         /// <summary>
@@ -201,7 +209,6 @@ namespace CSPGF
                     }
                 }
             }
-
             return rez;
         }
 
@@ -325,7 +332,7 @@ namespace CSPGF
                 return this.ConditionProd(((CoerceProduction)p).InitId, prods);
             }
 
-            throw new LinearizerException("Filter-fail");
+            throw new LinearizerException("The production wasn't either an ApplProduction or a CoerceProduction");
         }
 
         /// <summary>
@@ -344,7 +351,6 @@ namespace CSPGF
                 {
                     rez.Add(d[i]);
                 }
-
                 return rez;
             }
             else if (bt is LeafKP)
@@ -375,20 +381,17 @@ namespace CSPGF
                 {
                     rez.Add(d[i]);
                 }
-
                 return rez;
             }
             else
             {
                 List<string> rez = new List<string>();
                 List<BracketedTokn> bs = ((Bracket)bt).Bracketedtoks;
-
                 for (int i = bs.Count - 1; i >= 0; i--)
                 {
                     rez.AddRange(this.Untokn(bs.ElementAt(i), after));
                     after = rez.Last();
                 }
-
                 return rez;
             }
         }
@@ -439,7 +442,7 @@ namespace CSPGF
         /// </summary>
         /// <param name="e">Tree to linearize</param>
         /// <returns>List of LinTriples</returns>
-        private List<LinTriple> Linearize(CSPGF.Trees.Absyn.Tree e)
+        private List<LinTriple> Linearize(Tree e)
         {
             return this.Lin0(new List<string>(), new List<string>(), null, 0, e);
         }
@@ -457,23 +460,23 @@ namespace CSPGF
         {
             // if tree is a lambda, we add the variable to the list of bound
             // variables and we linearize the subtree.
-            if (tree is CSPGF.Trees.Absyn.Lambda)
+            if (tree is Lambda)
             {
-                xs.Add(((CSPGF.Trees.Absyn.Lambda)tree).Ident_);
-                List<LinTriple> tmp = this.Lin0(xs, ys, mbcty, mbfid, ((CSPGF.Trees.Absyn.Lambda)tree).Tree_);
+                xs.Add(((Lambda)tree).Ident_);
+                List<LinTriple> tmp = this.Lin0(xs, ys, mbcty, mbfid, ((Lambda)tree).Tree_);
                 return tmp;
             }
             else if (xs.Count == 0)
             {
-                List<CSPGF.Trees.Absyn.Tree> es = new List<CSPGF.Trees.Absyn.Tree>();
-                if (tree is CSPGF.Trees.Absyn.Application)
+                List<Tree> es = new List<Tree>();
+                if (tree is Application)
                 {
                     do
                     {
-                        es.Add(((CSPGF.Trees.Absyn.Application)tree).Tree_2);
-                        tree = ((CSPGF.Trees.Absyn.Application)tree).Tree_1;
+                        es.Add(((Application)tree).Tree_2);
+                        tree = ((Application)tree).Tree_1;
                     }
-                    while (tree is CSPGF.Trees.Absyn.Application);
+                    while (tree is Application);
                 }
 
                 if (tree is Function)
@@ -489,11 +492,11 @@ namespace CSPGF
             else
             {
                 xs.AddRange(ys);
-                List<CSPGF.Trees.Absyn.Tree> exprs = new List<CSPGF.Trees.Absyn.Tree>();
+                List<Tree> exprs = new List<Tree>();
                 exprs.Add(tree);
                 foreach (string str in xs)
                 {
-                    exprs.Add(new CSPGF.Trees.Absyn.Literal(new CSPGF.Trees.Absyn.StringLiteral(str)));
+                    exprs.Add(new Literal(new StringLiteral(str)));
                 }
 
                 return this.Apply(xs, mbcty, mbfid, "_B", exprs);
@@ -541,20 +544,14 @@ namespace CSPGF
 
                     Symbol[][] lins = appr.CncFun.Sequences;
                     string cat = appr.CncType.CId;
-                    List<Tree> copy_expr = new List<Tree>();
-                    foreach (Tree tree in es)
-                    {
-                        copy_expr.Add(tree);
-                    }
-
+                    List<Tree> copy_expr = new List<Tree>(es);
                     List<RezDesc> rezDesc = this.Descend(nextfid, ctys, copy_expr, xs);
                     foreach (RezDesc rez2 in rezDesc)
                     {
-                        RezDesc intRez = rez2;
                         List<List<BracketedTokn>> linTab = new List<List<BracketedTokn>>();
                         foreach (Symbol[] seq in lins)
                         {
-                            linTab.Add(this.ComputeSeq(seq, intRez.CncTypes, intRez.Bracketedtokn));
+                            linTab.Add(this.ComputeSeq(seq, rez2.CncTypes, rez2.Bracketedtokn));
                         }
 
                         rez.Add(new LinTriple(nextfid + 1, new CncType(cat, nextfid), linTab));
@@ -722,8 +719,6 @@ namespace CSPGF
             List<BracketedTokn> v = new List<BracketedTokn>();
             string[] sts = new string[1];
             sts[0] = s;
-            // List<string> sts = new List<string>();
-            // sts.Add(s);
             v.Add(new LeafKS(sts));
             bt.Add(v);
             return bt;
@@ -738,6 +733,12 @@ namespace CSPGF
         /// <returns>List of BracketedTokn</returns>
         private List<BracketedTokn> Compute(Symbol s, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
+            //cncTypes = new List<CncType>(cncTypes.Distinct());
+            if (cncTypes.Count != 0)
+            {
+                System.Console.WriteLine(this.PrintListCncType(cncTypes));
+            }
+
             if (s is ArgConstSymbol)
             {
                 int arg = ((ArgConstSymbol)s).Arg;
@@ -873,6 +874,131 @@ namespace CSPGF
             }
 
             return false;
+        }
+
+
+        /****************************************DEBUG ONLY*************************************************/
+        private string PrintProduction(Production prod)
+        {
+            string tmp = string.Empty;
+            if (prod is ApplProduction)
+            {
+                ApplProduction pro = (ApplProduction)prod;
+                tmp += "FID: " + pro.FId + " CncFun: " + pro.Function.Name + " Sel: " + pro.Sel;
+            }
+            else if (prod is CoerceProduction)
+            {
+                CoerceProduction pro = (CoerceProduction)prod;
+                tmp += "FID: " + pro.FId + " InitID: " + pro.InitId + " Sel:" + pro.Sel;
+            }
+
+            return tmp;
+        }
+
+        private string PrintProductionSet(HashSet<Production> prods)
+        {
+            string tmp = string.Empty;
+            foreach (Production prod in prods)
+            {
+                tmp += this.PrintProduction(prod)+" ";
+            }
+
+            return tmp;
+        }
+
+        private string PrintListString(List<string> strs)
+        {
+            string tmp = string.Empty; 
+            foreach (string str in strs)
+            {
+                tmp += str;
+            }
+
+            return tmp;
+        }
+
+        private string PrintListString(string[] strs)
+        {
+            string tmp = string.Empty;
+            foreach (string str in strs)
+            {
+                tmp += str;
+            }
+
+            return tmp;
+        }
+
+        private string PrintBracketedTokn(BracketedTokn tokn)
+        {
+            if (tokn is Bracket)
+            {
+                Bracket tok = (Bracket)tokn;
+                return "CID: " + tok.CId + " FID: " + tok.FId + " LIndex: " + tok.LIndex + " (" + this.PrintListBracketedTokn(tok.Bracketedtoks) + " ) ";
+            }
+            else if (tokn is LeafKP)
+            {
+                LeafKP leaf = (LeafKP)tokn;
+                return "Tokens: " + this.PrintListString(leaf.DefaultTokens) + " Alts: " + this.PrintAlternatives(leaf.Alternatives);
+            }
+            else if (tokn is LeafKS)
+            {
+                LeafKS leaf = (LeafKS)tokn;
+                return "Tokens: " + this.PrintListString(leaf.Tokens);
+            }
+
+            throw new Exception("Failade att skriva ut bracketed tokn: "+tokn.ToString());
+        }
+
+        private string PrintListBracketedTokn(List<BracketedTokn> toks)
+        {
+            string tmp = string.Empty;
+            foreach (BracketedTokn tok in toks)
+            {
+                tmp += this.PrintBracketedTokn(tok);
+            }
+
+            return tmp;
+        }
+
+        private string PrintAlternatives(Alternative[] alts)
+        {
+            string tmp = string.Empty;
+            foreach (Alternative alt in alts)
+            {
+                tmp += "Alt1: " + this.PrintListString(alt.Alt1) + " Alt2: " + this.PrintListString(alt.Alt2)+" ";
+            }
+
+            return tmp;
+        }
+
+        private string PrintLinTriple(LinTriple lintri)
+        {
+            string tmp = "FID: " + lintri.FId + " Cnctype cid: " + lintri.CncType.CId + " Cnctype fid: " + lintri.FId;
+            foreach (List<BracketedTokn> list in lintri.LinTable)
+            {
+                foreach (BracketedTokn tokn in list)
+                {
+                    tmp += this.PrintBracketedTokn(tokn) + " ";
+                }
+            }
+
+            return tmp;
+        }
+
+        private string PrintCncType(CncType type)
+        {
+            return "CID: " + type.CId + " FID: " + type.FId;
+        }
+
+        private string PrintListCncType(List<CncType> cnctypes)
+        {
+            string tmp = string.Empty;
+            foreach (CncType type in cnctypes)
+            {
+                tmp += this.PrintCncType(type) + "\n";
+            }
+
+            return tmp;
         }
     }
 }
