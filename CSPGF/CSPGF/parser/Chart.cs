@@ -81,6 +81,9 @@ namespace CSPGF.Parse
         /// <returns>Returns true if production was added.</returns>
         public bool AddProduction(Production p)
         {
+
+            TempLog.LogMessageToFile("Count: "+p.FId);
+
             HashSet<Production> prodSet;
             if (this.productionSets.TryGetValue(p.FId, out prodSet))
             {
