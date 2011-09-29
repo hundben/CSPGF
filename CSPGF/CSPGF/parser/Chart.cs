@@ -58,20 +58,49 @@ namespace CSPGF.Parse
         private int nextCat;
 
         /// <summary>
+        /// Last production
+        /// </summary>
+        private int currentProd;
+
+        /// <summary>
+        /// Handles productions, used to remove newer productions.
+        /// </summary>
+        private Stack<int> lastProduction = new Stack<int>();
+
+        /// <summary>
         /// Initializes a new instance of the Chart class.
         /// </summary>
         /// <param name="nextCat">The next category index to use.</param>
         public Chart(int nextCat)
         {
             this.nextCat = nextCat;
+            this.currentProd = 0;
         }
 
         /// <summary>
         /// Removes categories (this is a test).
         /// </summary>
-        public void RemoveCats()
+        public void NextToken()
         {
             this.categoryBookKeeperHash = new Dictionary<string, int>();
+            this.lastProduction.Push(currentProd);
+
+        }
+
+        /// <summary>
+        /// Removes all productions associated with last production
+        /// </summary>
+        public void RemoveToken()
+        {
+            int remove = lastProduction.Pop();
+
+            foreach (int key in this.productionSets.Keys)
+            {
+                if (key > remove)
+                {
+                    this.productionSets.Remove(key);
+                }
+            }
         }
 
         /// <summary>
@@ -98,6 +127,7 @@ namespace CSPGF.Parse
                 this.productionSets.Add(p.FId, prodSet);
             }
 
+            currentProd = p.FId;
             return true;
         }
 
