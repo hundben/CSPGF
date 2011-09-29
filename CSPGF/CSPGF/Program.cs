@@ -88,11 +88,8 @@ namespace CSPGF
                 System.Console.WriteLine(lin.LinearizeString(tree));
                 System.Console.WriteLine(lin2.LinearizeString(tree));
             }
-             * */
+             */
 
-            // rp.Debug3(pgf.GetConcrete("PhrasebookSwe"));
-
-            //rp.Debug2();
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();
         }

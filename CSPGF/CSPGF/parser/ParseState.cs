@@ -74,6 +74,8 @@ namespace CSPGF.Parse
         /// </summary>
         private bool recovery = false;
 
+        public ParseTrie temp; // TODO REMOVE*******************
+
         /// <summary>
         /// Initializes a new instance of the ParseState class.
         /// </summary>
@@ -82,6 +84,8 @@ namespace CSPGF.Parse
         {
             this.startCat = grammar.GetStartCat();
             this.trie = new ParseTrie();
+
+            this.temp = trie;       // TODO REMOVE*********************************
 
             this.chart = new Chart(grammar.FId + 1);
 
@@ -131,8 +135,7 @@ namespace CSPGF.Parse
         /// <returns>Returns true if scan i complete.</returns>
         public bool Scan(string token)
         {
-            // To save memory
-            this.chart.RemoveCats();
+            TempLog.LogMessageToFile("before: "+token + " : " + this.temp.ToString());   // TODO REMOVE 
 
             ParseTrie newTrie = this.trie.GetSubTrie(token);
             if (newTrie != null) 
@@ -140,10 +143,14 @@ namespace CSPGF.Parse
                 Stack<ActiveItem> newAgenda = newTrie.Lookup(new List<string>());
                 if (newAgenda != null) 
                 {
+                    this.chart.NextToken();
                     this.trie = newTrie;
                     this.position++;
                     this.agenda = newAgenda;
                     this.Compute();
+
+                    TempLog.LogMessageToFile(token+" : "+this.temp.ToString());   // TODO REMOVE 
+
                     return true;
                 }
             }
@@ -176,7 +183,8 @@ namespace CSPGF.Parse
         {
             if (this.recovery)
             {
-                // TODO
+                this.chart.RemoveToken();
+                // TODO fix more here later
             }
 
             return false;
