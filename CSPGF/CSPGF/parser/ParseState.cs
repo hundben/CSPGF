@@ -64,17 +64,16 @@ namespace CSPGF.Parse
         /// </summary>
         private int position;
 
+
+        /// <summary>
+        /// List of position in the parsetrie (new for each new token).
+        /// </summary>
+        private Stack<ParseTrie> listOfTries;
+
         /// <summary>
         /// List with sets of acctive items.
         /// </summary>
         private List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>> active;
-
-        /// <summary>
-        /// If true then recovery mode.
-        /// </summary>
-        private bool recovery = false;
-
-        public ParseTrie temp; // TODO REMOVE*******************
 
         /// <summary>
         /// Initializes a new instance of the ParseState class.
@@ -85,7 +84,8 @@ namespace CSPGF.Parse
             this.startCat = grammar.GetStartCat();
             this.trie = new ParseTrie();
 
-            this.temp = trie;       // TODO REMOVE*********************************
+            this.listOfTries = new Stack<ParseTrie>();
+            this.listOfTries.Push(this.trie);
 
             this.chart = new Chart(grammar.FId + 1);
 
@@ -135,11 +135,11 @@ namespace CSPGF.Parse
         /// <returns>Returns true if scan i complete.</returns>
         public bool Scan(string token)
         {
-            TempLog.LogMessageToFile("before: "+token + " : " + this.temp.ToString());   // TODO REMOVE 
-
             ParseTrie newTrie = this.trie.GetSubTrie(token);
+
             if (newTrie != null) 
             {
+                this.listOfTries.Push(newTrie);
                 Stack<ActiveItem> newAgenda = newTrie.Lookup(new List<string>());
                 if (newAgenda != null) 
                 {
@@ -148,8 +148,6 @@ namespace CSPGF.Parse
                     this.position++;
                     this.agenda = newAgenda;
                     this.Compute();
-
-                    TempLog.LogMessageToFile(token+" : "+this.temp.ToString());   // TODO REMOVE 
 
                     return true;
                 }
@@ -167,27 +165,30 @@ namespace CSPGF.Parse
             return this.trie.Predict();
         }
 
-        /// <summary>
-        /// Run this to set the parsestate in recovery mode.
-        /// </summary>
-        public void SetRecovery()
-        {
-            this.recovery = true;
-        }
 
         /// <summary>
         /// Remove the last scanned token.
         /// </summary>
         /// <returns>Return true if removed successful.</returns>
-        public bool RemoveLastToken()
+        public bool RemoveToken()
         {
-            if (this.recovery)
+            if (this.position != 0)
             {
                 this.chart.RemoveToken();
-                // TODO fix more here later
-            }
+                // TODO check if this is correct, might need a peek also 
+                ParseTrie t = this.listOfTries.Pop();
+                t = null;
 
-            return false;
+                this.active.RemoveAt(this.position);
+
+                // TODO fix more here later
+                this.position--;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         /// <summary>
@@ -226,13 +227,13 @@ namespace CSPGF.Parse
             int l = item.Constituent;
             int p = item.Position;
 
-            TempLog.LogMessageToFile("Processing active item: " + item + " ");
+            // TempLog.LogMessageToFile("Processing active item: " + item + " ");
 
             Symbol sym = item.CurrentSymbol();
 
             if (sym is ToksSymbol)
             {
-                TempLog.LogMessageToFile("Case before s in T");
+                // TempLog.LogMessageToFile("Case before s in T");
                 ToksSymbol tok = (ToksSymbol)sym;
                 string[] tokens = tok.Tokens;
                 ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
@@ -255,7 +256,7 @@ namespace CSPGF.Parse
             }
             else if (sym is ArgConstSymbol) 
             {
-                TempLog.LogMessageToFile("Case before <d,r>");
+                // TempLog.LogMessageToFile("Case before <d,r>");
                 ArgConstSymbol arg = (ArgConstSymbol)sym;
                 int d = arg.Arg;
                 int r = arg.Cons;
@@ -284,23 +285,23 @@ namespace CSPGF.Parse
                         // TODO: FIX!
                         ActiveItem it = new ActiveItem(j, a, f, newDomain.ToArray(), l, p + 1);
                         this.agenda.Push(it);
-                        TempLog.LogMessageToFile("Adding to agenda: " + it.ToString());
+                        // TempLog.LogMessageToFile("Adding to agenda: " + it.ToString());
                     }
                 }
             }
             else 
             {
-                TempLog.LogMessageToFile("Case at the end");
+                // TempLog.LogMessageToFile("Case at the end");
                 int cat = this.chart.GetCategory(a, l, j, this.position);
                 if (cat == -1) 
                 {
                     int n = this.chart.GenerateFreshCategory(a, l, j, this.position);
-                    foreach (ActiveItem ai in this.GetActiveSet(a, l, this.active[j]))
+                    foreach (ActiveItem ai in this.GetActiveSet(a, l, this.active[j]))  
                     {
                         ActiveItem ip = ai;
                         int d = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;
                         List<int> domain = new List<int>(ip.Domain);
-                        TempLog.LogMessageToFile("Combine with " + ip.ToString() + "(" + domain[d] + ")");
+                        // TempLog.LogMessageToFile("Combine with " + ip.ToString() + "(" + domain[d] + ")");
                         domain[d] = n;
 
                         // TODO: FIX!

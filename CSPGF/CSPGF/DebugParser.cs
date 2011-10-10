@@ -112,6 +112,16 @@ namespace CSPGF
         }
 
         /// <summary>
+        /// Removes last token.
+        /// </summary>
+        /// <returns>True if successful.</returns>
+        public bool RemoveToken()
+        {
+            return this.currentPState.RemoveToken();
+        }
+
+
+        /// <summary>
         /// Prints out the first tree.
         /// </summary>
         public void Debug2()
