@@ -74,6 +74,8 @@ namespace CSPGF.Parse
         /// </summary>
         private bool recovery = false;
 
+        public ParseTrie temp; // TODO REMOVE*******************
+
         /// <summary>
         /// Initializes a new instance of the ParseState class.
         /// </summary>
@@ -82,6 +84,8 @@ namespace CSPGF.Parse
         {
             this.startCat = grammar.GetStartCat();
             this.trie = new ParseTrie();
+
+            this.temp = trie;       // TODO REMOVE*********************************
 
             this.chart = new Chart(grammar.FId + 1);
 
@@ -131,19 +135,22 @@ namespace CSPGF.Parse
         /// <returns>Returns true if scan i complete.</returns>
         public bool Scan(string token)
         {
+            TempLog.LogMessageToFile("before: "+token + " : " + this.temp.ToString());   // TODO REMOVE 
+
             ParseTrie newTrie = this.trie.GetSubTrie(token);
             if (newTrie != null) 
             {
-                List<string> empt = new List<string>();
-
-                // string[] empt = new string[0];
-                Stack<ActiveItem> newAgenda = newTrie.Lookup(empt);
+                Stack<ActiveItem> newAgenda = newTrie.Lookup(new List<string>());
                 if (newAgenda != null) 
                 {
+                    this.chart.NextToken();
                     this.trie = newTrie;
                     this.position++;
                     this.agenda = newAgenda;
                     this.Compute();
+
+                    TempLog.LogMessageToFile(token+" : "+this.temp.ToString());   // TODO REMOVE 
+
                     return true;
                 }
             }
@@ -176,7 +183,8 @@ namespace CSPGF.Parse
         {
             if (this.recovery)
             {
-                // TODO
+                this.chart.RemoveToken();
+                // TODO fix more here later
             }
 
             return false;
@@ -399,9 +407,10 @@ namespace CSPGF.Parse
             Dictionary<int, HashSet<ActiveItem>> map;
             if (currentActive.TryGetValue(cat, out map))
             {
-                if (map.ContainsKey(cons))
+                HashSet<ActiveItem> aiTmp;
+                if (map.TryGetValue(cons, out aiTmp))
                 {
-                    return map[cons];
+                    return aiTmp;
                 }
             }
 

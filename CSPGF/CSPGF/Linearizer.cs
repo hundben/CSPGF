@@ -631,7 +631,7 @@ namespace CSPGF
                 List<CncType> vtype = new List<CncType>();
                 if (f.Equals("_V"))
                 {
-                    foreach (int i in args)
+                    for (int i = 0; i < args.Length; i++)
                     {
                         vtype.Add(new CncType("__gfVar", args[i]));
                     }
@@ -734,10 +734,9 @@ namespace CSPGF
         /// <returns>List of BracketedTokn</returns>
         private List<BracketedTokn> Compute(Symbol s, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
-            //cncTypes = new List<CncType>(cncTypes.Distinct());
             if (cncTypes.Count != 0)
             {
-                System.Console.WriteLine(this.PrintListCncType(cncTypes));
+                //System.Console.WriteLine(this.PrintListCncType(cncTypes));
             }
 
             if (s is ArgConstSymbol)
@@ -836,7 +835,7 @@ namespace CSPGF
             {
                 CncType cncType = cncTypes.First();
                 cncTypes.RemoveAt(0);
-                CSPGF.Trees.Absyn.Tree exp = exps.First();
+                Tree exp = exps.First();
                 exps.RemoveAt(0);
                 List<LinTriple> rezLin = this.Lin0(new List<string>(), xs, cncType, nextfid, exp);
                 List<RezDesc> rezDesc = this.Descend(nextfid, cncTypes, exps, xs);

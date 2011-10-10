@@ -112,18 +112,6 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// Prints the current predictions.
-        /// </summary>
-        public void Debug()
-        {
-            TempLog.LogMessageToFile("--- Prediction ---");
-            foreach (string tok in this.Predict())
-            {
-                TempLog.LogMessageToFile(tok);
-            }
-        }
-
-        /// <summary>
         /// Prints out the first tree.
         /// </summary>
         public void Debug2()
