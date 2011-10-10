@@ -48,8 +48,8 @@ namespace CSPGF.Parse
         /// <param name="category">The category.</param>
         /// <param name="function">The function.</param>
         /// <param name="domain">A list of the domains.</param>
-        /// <param name="constituent">Insert a description for constituent.</param>
-        /// <param name="position">Insert a description for position.</param>
+        /// <param name="constituent">The constituent to use.</param>
+        /// <param name="position">The position (the </param>
         public ActiveItem(int begin, int category, CncFun function, int[] domain, int constituent, int position)
         {
             this.Begin = begin;
@@ -98,11 +98,10 @@ namespace CSPGF.Parse
         {
             if (this.Position < this.Function.Sequences[this.Constituent].Length) 
             {
-                Symbol sym = this.Function.Sequences[this.Constituent][this.Position];
-                return sym;
+                return this.Function.Sequences[this.Constituent][this.Position];
             }
 
-            return null;    // this might be dangerous
+            return null;
         }
 
         /// <summary>
@@ -116,24 +115,30 @@ namespace CSPGF.Parse
                 this.Category == ai.Category &&
                 this.Function == ai.Function &&
                 this.Constituent == ai.Constituent &&
-                this.Position == ai.Position) 
+                this.Position == ai.Position &&
+                this.Domain.Length == ai.Domain.Length) 
             {
-                // Since there is no deep method in c# that we know of, use a crappy forloop
-                if (this.Domain.Length == ai.Domain.Length) 
-                {
-                    for (int i = 0; i < this.Domain.Length; i++) 
-                    {
-                        if (this.Domain[i] != ai.Domain[i])
-                        {
-                            return false;
-                        }
-                    }
-
-                    return true;
-                }
+                return DeepCheck(ai);
             }
 
             return false;
+        }
+
+        /// <summary>
+        /// Since there is no deep method in c# that we know of we have to use for-loops.
+        /// </summary>
+        /// <param name="ai">The active item.</param>
+        /// <returns>True if equal.</returns>
+        private bool DeepCheck(ActiveItem ai)
+        {
+            for (int i = 0; i < this.Domain.Length; i++)
+            {
+                if (this.Domain[i] != ai.Domain[i])
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         /// <summary>
@@ -165,6 +170,7 @@ namespace CSPGF.Parse
                 {
                     tot += d.ToString() + ",";
                 }
+
                 return tot.Substring(0, tot.Length - 1);
             } 
         }
