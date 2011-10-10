@@ -59,6 +59,11 @@ namespace CSPGF
             DebugParser rp = new DebugParser(pgf, "FoodsEng");
             rp.Scan("this");
             rp.Scan("wine");
+            if (!rp.RemoveToken())
+            {
+                System.Console.WriteLine("error");
+            }
+            rp.Scan("fish");
             rp.Scan("is");
             rp.Scan("Italian");
             Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));

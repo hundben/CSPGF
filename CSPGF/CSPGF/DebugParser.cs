@@ -120,7 +120,6 @@ namespace CSPGF
             return this.currentPState.RemoveToken();
         }
 
-
         /// <summary>
         /// Prints out the first tree.
         /// </summary>

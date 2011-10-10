@@ -94,7 +94,9 @@ namespace CSPGF.Parse
         {
             int remove = lastProduction.Pop();
 
-            foreach (int key in this.productionSets.Keys)
+            HashSet<int> temp = new HashSet<int>(this.productionSets.Keys);
+
+            foreach (int key in temp)
             {
                 if (key > remove)
                 {

@@ -179,6 +179,8 @@ namespace CSPGF.Parse
                 ParseTrie t = this.listOfTries.Pop();
                 t = null;
 
+                this.trie = this.listOfTries.Peek();
+
                 this.active.RemoveAt(this.position);
 
                 // TODO fix more here later
