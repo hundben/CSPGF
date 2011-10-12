@@ -64,7 +64,6 @@ namespace CSPGF.Parse
         /// </summary>
         private int position;
 
-
         /// <summary>
         /// List of position in the parsetrie (new for each new token).
         /// </summary>
@@ -165,6 +164,15 @@ namespace CSPGF.Parse
             return this.trie.Predict();
         }
 
+        /// <summary>
+        /// Removes all tokens but keeps initial state.
+        /// </summary>
+        public void Reset()
+        {
+            while (this.RemoveToken())
+            {
+            }
+        }
 
         /// <summary>
         /// Remove the last scanned token.
@@ -175,15 +183,14 @@ namespace CSPGF.Parse
             if (this.position != 0)
             {
                 this.chart.RemoveToken();
+
                 // TODO check if this is correct, might need a peek also 
                 ParseTrie t = this.listOfTries.Pop();
                 t = null;
 
                 this.trie = this.listOfTries.Peek();
-
                 this.active.RemoveAt(this.position);
 
-                // TODO fix more here later
                 this.position--;
                 return true;
             }
@@ -230,7 +237,6 @@ namespace CSPGF.Parse
             int p = item.Position;
 
             // TempLog.LogMessageToFile("Processing active item: " + item + " ");
-
             Symbol sym = item.CurrentSymbol();
 
             if (sym is ToksSymbol)
@@ -287,6 +293,7 @@ namespace CSPGF.Parse
                         // TODO: FIX!
                         ActiveItem it = new ActiveItem(j, a, f, newDomain.ToArray(), l, p + 1);
                         this.agenda.Push(it);
+
                         // TempLog.LogMessageToFile("Adding to agenda: " + it.ToString());
                     }
                 }
@@ -303,6 +310,7 @@ namespace CSPGF.Parse
                         ActiveItem ip = ai;
                         int d = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;
                         List<int> domain = new List<int>(ip.Domain);
+
                         // TempLog.LogMessageToFile("Combine with " + ip.ToString() + "(" + domain[d] + ")");
                         domain[d] = n;
 
