@@ -46,19 +46,19 @@ namespace CSPGF
         {
             TempLog.NewLog();
             // Tests below.
-            //FileStream fs2 = new FileStream("..\\..\\test\\files\\Phrasebook.pgf", FileMode.Open);
+            FileStream fs2 = new FileStream("..\\..\\test\\files\\Phrasebook.pgf", FileMode.Open);
             FileStream fs = new FileStream("..\\..\\test\\files\\Foods.pgf", FileMode.Open);
             BinaryReader br = new BinaryReader(fs);
             PGFReader pr = new PGFReader(br);
             PGF pgf = pr.ReadPGF();
             fs.Close();
-            //BinaryReader br2 = new BinaryReader(fs2);
-            //PGFReader pr2 = new PGFReader(br2);
-            //PGF pgf2 = pr2.ReadPGF();
-            //fs2.Close();
+            BinaryReader br2 = new BinaryReader(fs2);
+            PGFReader pr2 = new PGFReader(br2);
+            PGF pgf2 = pr2.ReadPGF();
+            fs2.Close();
             DebugParser rp = new DebugParser(pgf, "FoodsEng");
             rp.Scan("this");
-            rp.Scan("pizza");
+            rp.Scan("wine");
             rp.Scan("is");
             rp.Scan("Italian");
             Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
@@ -70,14 +70,14 @@ namespace CSPGF
             rp.Scan("warm");
             rp.Scan(".");*/
 
-            /*DebugParser rp2 = new DebugParser(pgf2, "PhrasebookEng");
+            DebugParser rp2 = new DebugParser(pgf2, "PhrasebookEng");
             rp2.Scan("this");
             rp2.Scan("wine");
             rp2.Scan("is");
             rp2.Scan("Italian");
-            rp2.Scan(".");*/
+            rp2.Scan(".");
             // Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookGer"));
-            // Linearizer lin2 = new Linearizer(pgf2, pgf2.GetConcrete("PhrasebookGer"));
+             Linearizer lin2 = new Linearizer(pgf2, pgf2.GetConcrete("PhrasebookGer"));
 
             foreach (Trees.Absyn.Tree tree in rp.GetTrees())
             {
@@ -85,11 +85,11 @@ namespace CSPGF
                 //System.Console.WriteLine(lin2.LinearizeString(tree));
             }
 
-            /*foreach (Trees.Absyn.Tree tree in rp2.GetTrees())
+            foreach (Trees.Absyn.Tree tree in rp2.GetTrees())
             {
                 //System.Console.WriteLine(lin.LinearizeString(tree));
                 System.Console.WriteLine(lin2.LinearizeString(tree));
-            }*/
+            }
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();
         }
