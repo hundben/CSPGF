@@ -68,11 +68,19 @@ namespace CSPGF.Parse
         /// List of position in the parsetrie (new for each new token).
         /// </summary>
         private Stack<ParseTrie> listOfTries;
+        private Stack<string> tokens;
+
 
         /// <summary>
         /// List with sets of acctive items.
         /// </summary>
         private List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>> active;
+
+
+        /// <summary>
+        /// The top of the tree
+        /// </summary>
+        private ParseTrie topTrie;
 
         /// <summary>
         /// Initializes a new instance of the ParseState class.
@@ -85,6 +93,9 @@ namespace CSPGF.Parse
 
             this.listOfTries = new Stack<ParseTrie>();
             this.listOfTries.Push(this.trie);
+            this.tokens = new Stack<string>();
+
+            this.topTrie = this.trie;
 
             this.chart = new Chart(grammar.FId + 1);
 
@@ -142,6 +153,8 @@ namespace CSPGF.Parse
                 Stack<ActiveItem> newAgenda = newTrie.Lookup(new List<string>());
                 if (newAgenda != null) 
                 {
+                    this.tokens.Push(token);
+                    
                     this.chart.NextToken();
                     this.trie = newTrie;
                     this.position++;
@@ -177,20 +190,18 @@ namespace CSPGF.Parse
         /// <summary>
         /// Remove the last scanned token.
         /// </summary>
-        /// <returns>Return true if removed successful.</returns>
+        /// <returns>Return true if removed successfully.</returns>
         public bool RemoveToken()
         {
-            if (this.position != 0)
+            if (this.position > 0)
             {
                 this.chart.RemoveToken();
-
-                // TODO check if this is correct, might need a peek also 
                 ParseTrie t = this.listOfTries.Pop();
-                t = null;
-
                 this.trie = this.listOfTries.Peek();
+                string token = this.tokens.Pop();
+                this.trie.ResetChild(token);
+                
                 this.active.RemoveAt(this.position);
-
                 this.position--;
                 return true;
             }
@@ -247,17 +258,12 @@ namespace CSPGF.Parse
                 ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
 
                 // SCAN
-                Stack<ActiveItem> newAgenda;
-                Stack<ActiveItem> tempAgenda = this.trie.Lookup(tokens);
-                if (tempAgenda == null || tempAgenda.Count == 0) 
+                Stack<ActiveItem> newAgenda = this.trie.Lookup(tokens);
+                if (newAgenda == null) 
                 {
                     Stack<ActiveItem> sai = new Stack<ActiveItem>();
                     this.trie.Add(tokens, sai);
-                    newAgenda = sai;
-                }
-                else 
-                {
-                    newAgenda = tempAgenda;
+                    newAgenda = sai;    // <- arg
                 }
 
                 newAgenda.Push(i);
@@ -426,6 +432,12 @@ namespace CSPGF.Parse
             }
 
             return ai;
+        }
+
+
+        public void Print()
+        {
+            TempLog.LogMessageToFile("BEFORE: " + this.topTrie.ToString());
         }
     }
 }

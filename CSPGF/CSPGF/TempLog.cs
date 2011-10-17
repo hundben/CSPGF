@@ -40,6 +40,22 @@ namespace CSPGF
             System.IO.StreamWriter sw = System.IO.File.AppendText(GetTempPath() + "cspgf.txt");
             try
             {
+                sw.WriteLine(msg);
+            }
+            finally
+            {
+                sw.Close();
+            }
+#endif
+        }
+
+        public static void LogWithTimeStamp(string msg)
+        {
+#if (DEBUG)
+
+            System.IO.StreamWriter sw = System.IO.File.AppendText(GetTempPath() + "cspgf.txt");
+            try
+            {
                 string logLine = System.String.Format(
                     "{0:G}: {1}.", System.DateTime.Now, msg);
                 sw.WriteLine(logLine);

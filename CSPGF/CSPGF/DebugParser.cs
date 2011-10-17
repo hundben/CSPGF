@@ -121,6 +121,19 @@ namespace CSPGF
         }
 
         /// <summary>
+        /// Removes all tokens.
+        /// </summary>
+        public void Reset()
+        {
+            this.currentPState.Reset();
+        }
+
+        public void Print()
+        {
+            this.currentPState.Print();
+        }
+
+        /// <summary>
         /// Prints out the first tree.
         /// </summary>
         public void Debug2()

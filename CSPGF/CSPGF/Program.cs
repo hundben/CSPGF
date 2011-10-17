@@ -57,15 +57,25 @@ namespace CSPGF
             PGF pgf2 = pr2.ReadPGF();
             fs2.Close();
             DebugParser rp = new DebugParser(pgf, "FoodsEng");
+
+            rp.Print();
             rp.Scan("this");
+            rp.Print();
             rp.Scan("wine");
-            if (!rp.RemoveToken())
-            {
-                System.Console.WriteLine("error");
-            }
-            rp.Scan("fish");
+            rp.Print();
             rp.Scan("is");
+            rp.Print();
+            rp.RemoveToken();
+            rp.Print();
+            rp.RemoveToken();
+            rp.Print();
+            rp.Scan("fish");
+            rp.Print();
+            rp.Scan("is");
+            rp.Print();
             rp.Scan("Italian");
+            rp.Print();
+
             Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
             /*DebugParser rp = new DebugParser(pgf, "PhrasebookEng");
             rp.Scan("Finnish");
@@ -77,6 +87,8 @@ namespace CSPGF
 
             DebugParser rp2 = new DebugParser(pgf2, "PhrasebookEng");
             rp2.Scan("this");
+            rp2.Scan("wine");
+            rp2.RemoveToken();
             rp2.Scan("wine");
             rp2.Scan("is");
             rp2.Scan("Italian");

@@ -37,13 +37,12 @@ namespace CSPGF.Parse
     /// <summary>
     /// The ParseTrie class.
     /// </summary>
-    [Serializable]
     internal class ParseTrie
     {
         /// <summary>
         /// A stack of active items.
         /// </summary>
-        private Stack<ActiveItem> value;
+        private Stack<Stack<ActiveItem>> value;
 
         /// <summary>
         /// All the childs
@@ -55,7 +54,7 @@ namespace CSPGF.Parse
         /// </summary>
         public ParseTrie()
         {
-            this.value = new Stack<ActiveItem>();
+            this.value = new Stack<Stack<ActiveItem>>();
         }
 
         /// <summary>
@@ -64,7 +63,8 @@ namespace CSPGF.Parse
         /// <param name="value">A stack of active items.</param>
         public ParseTrie(Stack<ActiveItem> value)
         {
-            this.value = value;
+            this.value = new Stack<Stack<ActiveItem>>();
+            this.value.Push(value);
         }
 
         /// <summary>
@@ -86,7 +86,8 @@ namespace CSPGF.Parse
         {
             if (keys == null || keys.Count == 0) 
             {
-                this.value = value;
+                this.value.Push(value);
+                // this.value = value;
             }
             else
             {
@@ -126,12 +127,17 @@ namespace CSPGF.Parse
         {
             if (this.GetSubTrie(key) != null) 
             {
-                return this.GetSubTrie(key).value;
+                ParseTrie temp = this.GetSubTrie(key);
+                if (temp.value.Count > 0)
+                {
+                    Stack<ActiveItem> ai = new Stack<ActiveItem>(temp.value.Peek());
+
+                    temp.value.Push(ai);
+
+                    return temp.value.Peek();
+                }
             }
-            else 
-            {
-                return null;
-            }
+            return null;
         }
         
         /// <summary>
@@ -181,12 +187,27 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Creates a string reoresentation of the tree.
+        /// Creates a string representation of the tree.
         /// </summary>
         /// <returns>The parsetrie as a string.</returns>
         public override string ToString()
         {
-            string temp = "[";
+            string temp = "("+this.value.Count+")";
+
+            if (this.value.Count > 0)
+            {
+                temp += "{";
+
+                foreach (ActiveItem ai in this.value.Peek().ToList())
+                {
+                    temp += ai;
+                }
+
+                temp += "} ";
+            }
+
+            temp += "[";
+
             foreach (string key in this.child.Keys)
             {
                 ParseTrie t = this.child[key];
@@ -195,6 +216,33 @@ namespace CSPGF.Parse
 
             temp += "]";
             return temp;
+        }
+
+        /// <summary>
+        /// Restores the child with token token as key to an earlier version.
+        /// </summary>
+        /// <param name="token">The last token we parsed.</param>
+        public void ResetChild(string token)
+        {
+            foreach (string key in this.child.Keys)
+            {
+                if (key == token)
+                {
+                    this.child[key].PopOne();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Removes one stored value on the stack.
+        /// </summary>
+        public void PopOne()
+        {
+            if (this.value.Count > 1)
+            {
+                this.value.Pop();
+            }
+            this.child = new Dictionary<string, ParseTrie>();
         }
     }
 }
