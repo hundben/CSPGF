@@ -102,7 +102,7 @@ namespace CSPGF
                 System.Console.WriteLine(lin2.LinearizeString(tree));
             }
             System.Console.Out.WriteLine("done");
-            //System.Console.In.ReadLine();
+            System.Console.In.ReadLine();
         }
     }
 }
