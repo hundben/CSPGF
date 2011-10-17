@@ -709,6 +709,7 @@ namespace CSPGF
         /// <returns>List of BracketedTokn</returns>
         private List<BracketedTokn> Compute(Symbol s, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
+            System.Console.WriteLine(cncTypes.Count);
             if (s is ArgConstSymbol)
             {
                 int arg = ((ArgConstSymbol)s).Arg;
