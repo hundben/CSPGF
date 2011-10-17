@@ -55,7 +55,7 @@ namespace CSPGF
         /// <param name="filename">Filename with path to read</param>
         public CSPGFAPI(string filename)
         {
-            PGFReader pgfr = new PGFReader(new BinaryReader(new FileStream(filename, FileMode.Open)));
+            PGFReader pgfr = new PGFReader(filename);
             this.pgf = pgfr.ReadPGF();
         }
 

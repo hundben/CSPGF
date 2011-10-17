@@ -38,7 +38,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Initializes a new instance of the LiteralPattern class.
         /// </summary>
-        /// <param name="value">RLiteral</param>
+        /// <param name="value">The RLiteral</param>
         public LiteralPattern(RLiteral value)
         {
             this.Value = value;

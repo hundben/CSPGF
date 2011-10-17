@@ -118,27 +118,10 @@ namespace CSPGF.Parse
                 this.Position == ai.Position &&
                 this.Domain.Length == ai.Domain.Length) 
             {
-                return DeepCheck(ai);
+                return this.DeepCheck(ai);
             }
 
             return false;
-        }
-
-        /// <summary>
-        /// Since there is no deep method in c# that we know of we have to use for-loops.
-        /// </summary>
-        /// <param name="ai">The active item.</param>
-        /// <returns>True if equal.</returns>
-        private bool DeepCheck(ActiveItem ai)
-        {
-            for (int i = 0; i < this.Domain.Length; i++)
-            {
-                if (this.Domain[i] != ai.Domain[i])
-                {
-                    return false;
-                }
-            }
-            return true;
         }
 
         /// <summary>
@@ -173,6 +156,24 @@ namespace CSPGF.Parse
 
                 return tot.Substring(0, tot.Length - 1);
             } 
+        }
+
+        /// <summary>
+        /// Since there is no deep method in c# that we know of we have to use for-loops.
+        /// </summary>
+        /// <param name="ai">The active item.</param>
+        /// <returns>True if equal.</returns>
+        private bool DeepCheck(ActiveItem ai)
+        {
+            for (int i = 0; i < this.Domain.Length; i++)
+            {
+                if (this.Domain[i] != ai.Domain[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
     }
 }

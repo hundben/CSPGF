@@ -38,7 +38,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Initializes a new instance of the LiteralExp class.
         /// </summary>
-        /// <param name="literal">RLiteral</param>
+        /// <param name="literal">The RLiteral</param>
         public LiteralExp(RLiteral literal)
         {
             this.Literal = literal;

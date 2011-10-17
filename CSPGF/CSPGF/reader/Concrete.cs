@@ -52,8 +52,6 @@ namespace CSPGF.Reader
         /// </summary>
         /// <param name="name">Name of concrete grammar</param>
         /// <param name="flags">Grammar flags</param>
-        /// <param name="seqs">List of sequences</param>
-        /// <param name="cncFuns">List of concrete functions</param>
         /// <param name="prods">List of production sets</param>
         /// <param name="cncCats">Dictionary containing concrete categories</param>
         /// <param name="fId">Function id</param>

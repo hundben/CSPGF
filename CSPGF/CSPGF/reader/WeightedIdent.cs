@@ -38,8 +38,8 @@ namespace CSPGF.Reader
         /// <summary>
         /// Initializes a new instance of the WeightedIdent class.
         /// </summary>
-        /// <param name="ident">Identifier</param>
-        /// <param name="weight">Weight</param>
+        /// <param name="ident">The identifier</param>
+        /// <param name="weight">The weight</param>
         public WeightedIdent(string ident, double weight)
         {
             this.Ident = ident;

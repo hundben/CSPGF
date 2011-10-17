@@ -39,7 +39,7 @@ namespace CSPGF.Reader
         /// Initializes a new instance of the VarAsPattern class.
         /// </summary>
         /// <param name="name">Name of pattern</param>
-        /// <param name="patt">Pattern</param>
+        /// <param name="patt">The Pattern</param>
         public VarAsPattern(string name, Pattern patt)
         {
             this.Name = name;

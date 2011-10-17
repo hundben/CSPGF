@@ -68,14 +68,16 @@ namespace CSPGF.Parse
         /// List of position in the parsetrie (new for each new token).
         /// </summary>
         private Stack<ParseTrie> listOfTries;
-        private Stack<string> tokens;
 
+        /// <summary>
+        /// Stack of tokens.
+        /// </summary>
+        private Stack<string> tokens;
 
         /// <summary>
         /// List with sets of acctive items.
         /// </summary>
         private List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>> active;
-
 
         /// <summary>
         /// The top of the tree
@@ -217,6 +219,14 @@ namespace CSPGF.Parse
         public void PrintChart()
         {
             TempLog.LogMessageToFile(this.chart.ToString());
+        }
+
+        /// <summary>
+        /// Prints debug information
+        /// </summary>
+        public void Print()
+        {
+            TempLog.LogMessageToFile("BEFORE: " + this.topTrie.ToString());
         }
 
         /// <summary>
@@ -424,20 +434,14 @@ namespace CSPGF.Parse
             Dictionary<int, HashSet<ActiveItem>> map;
             if (currentActive.TryGetValue(cat, out map))
             {
-                HashSet<ActiveItem> aiTmp;
-                if (map.TryGetValue(cons, out aiTmp))
+                HashSet<ActiveItem> aitmp;
+                if (map.TryGetValue(cons, out aitmp))
                 {
-                    return aiTmp;
+                    return aitmp;
                 }
             }
 
             return ai;
-        }
-
-
-        public void Print()
-        {
-            TempLog.LogMessageToFile("BEFORE: " + this.topTrie.ToString());
         }
     }
 }

@@ -87,6 +87,7 @@ namespace CSPGF.Parse
             if (keys == null || keys.Count == 0) 
             {
                 this.value.Push(value);
+
                 // this.value = value;
             }
             else
@@ -137,6 +138,7 @@ namespace CSPGF.Parse
                     return temp.value.Peek();
                 }
             }
+
             return null;
         }
         
@@ -192,7 +194,7 @@ namespace CSPGF.Parse
         /// <returns>The parsetrie as a string.</returns>
         public override string ToString()
         {
-            string temp = "("+this.value.Count+")";
+            string temp = "(" + this.value.Count + ")";
 
             if (this.value.Count > 0)
             {
@@ -242,6 +244,7 @@ namespace CSPGF.Parse
             {
                 this.value.Pop();
             }
+
             this.child = new Dictionary<string, ParseTrie>();
         }
     }

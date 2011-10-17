@@ -53,7 +53,9 @@ namespace CSPGF
         /// <summary>
         /// Stream to read from
         /// </summary>
-        private BinaryReader inputstream;
+        private MemoryStream inputstream;
+
+        private BinaryReader binreader;
 
         /// <summary>
         /// Desired languages
@@ -64,9 +66,10 @@ namespace CSPGF
         /// Initializes a new instance of the PGFReader class.
         /// </summary>
         /// <param name="inputstream">Stream to read from</param>
-        public PGFReader(BinaryReader inputstream)
+        public PGFReader(string filename)
         {
-            this.inputstream = inputstream;
+            this.inputstream = new MemoryStream(File.ReadAllBytes(filename));
+            this.binreader = new BinaryReader(this.inputstream);
         }
 
         /// <summary>
@@ -74,9 +77,10 @@ namespace CSPGF
         /// </summary>
         /// <param name="inputstream">Stream to read from</param>
         /// <param name="languages">Desired languages</param>
-        public PGFReader(BinaryReader inputstream, List<string> languages)
+        public PGFReader(string filename, List<string> languages)
         {
-            this.inputstream = inputstream;
+            this.inputstream = new MemoryStream(File.ReadAllBytes(filename));
+            this.binreader = new BinaryReader(this.inputstream);
             this.languages = languages;
         }
 
@@ -90,6 +94,8 @@ namespace CSPGF
             {
                 this.dbgwrite = new StreamWriter("./dbg.txt", false);
             }
+
+            
 
             Dictionary<string, int> index = null;
             int[] ii = new int[2];
@@ -145,7 +151,7 @@ namespace CSPGF
                     if (index != null) 
                     {
                         // TODO: CHECK! Maybe this will work?
-                        this.inputstream.BaseStream.Seek(index[name], SeekOrigin.Current);
+                        this.inputstream.Seek(index[name], SeekOrigin.Current);
                         if (debug) 
                         {
                             this.dbgwrite.WriteLine("Skipping " + name);
@@ -989,7 +995,7 @@ namespace CSPGF
             char[] bytes = new char[npoz];
             for (int i = 0; i < npoz; i++)
             {
-                bytes[i] = this.inputstream.ReadChar();
+                bytes[i] = this.binreader.ReadChar();
             }
 
             return new string(bytes);
@@ -1109,7 +1115,7 @@ namespace CSPGF
         /// <returns>Returns the double</returns>
         private double GetDouble()
         {
-            return this.inputstream.ReadDouble();
+            return this.binreader.ReadDouble();
         }
     }
 }

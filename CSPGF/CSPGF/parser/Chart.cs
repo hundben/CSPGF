@@ -83,8 +83,7 @@ namespace CSPGF.Parse
         public void NextToken()
         {
             this.categoryBookKeeperHash = new Dictionary<string, int>();
-            this.lastProduction.Push(currentProd);
-
+            this.lastProduction.Push(this.currentProd);
         }
 
         /// <summary>
@@ -92,7 +91,7 @@ namespace CSPGF.Parse
         /// </summary>
         public void RemoveToken()
         {
-            int remove = lastProduction.Pop();
+            int remove = this.lastProduction.Pop();
 
             HashSet<int> temp = new HashSet<int>(this.productionSets.Keys);
 
@@ -129,7 +128,7 @@ namespace CSPGF.Parse
                 this.productionSets.Add(p.FId, prodSet);
             }
 
-            currentProd = p.FId;
+            this.currentProd = p.FId;
             return true;
         }
 

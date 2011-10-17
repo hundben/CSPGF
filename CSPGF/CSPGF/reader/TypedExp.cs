@@ -38,8 +38,8 @@ namespace CSPGF.Reader
         /// <summary>
         /// Initializes a new instance of the TypedExp class.
         /// </summary>
-        /// <param name="exp">Expression</param>
-        /// <param name="t">Type</param>
+        /// <param name="exp">The Expression</param>
+        /// <param name="t">The Type</param>
         public TypedExp(Expr exp, Type t)
         {
             this.Exp = exp;

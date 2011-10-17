@@ -30,13 +30,23 @@
 
 namespace CSPGF.Parse
 {
+    /// <summary>
+    /// The MetaVariable class.
+    /// </summary>
     internal class MetaVariable : Tree
     {
+        /// <summary>
+        /// Initializes a new instance of the MetaVariable class.
+        /// </summary>
+        /// <param name="id">The ID</param>
         public MetaVariable(int id)
         {
             this.ID = id;
         }
 
+        /// <summary>
+        /// Gets the ID
+        /// </summary>
         public int ID { get; private set; }
     }
 }

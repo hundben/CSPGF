@@ -42,7 +42,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Initializes a new instance of the Production class.
         /// </summary>
-        /// <param name="sel">Selection</param>
+        /// <param name="sel">Selection id</param>
         /// <param name="fId">Function id</param>
         public Production(int sel, int fId)
         {

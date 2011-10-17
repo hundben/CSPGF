@@ -38,7 +38,7 @@ namespace CSPGF.Reader
         /// <summary>
         /// Initializes a new instance of the VarExp class.
         /// </summary>
-        /// <param name="ind">Index</param>
+        /// <param name="ind">The index</param>
         public VarExp(int ind)
         {
             this.Ind = ind;
