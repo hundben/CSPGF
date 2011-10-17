@@ -94,7 +94,7 @@ namespace CSPGF
             rp2.Scan("Italian");
             rp2.Scan(".");
             // Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookGer"));
-            Linearizer lin2 = new Linearizer(pgf2, pgf2.GetConcrete("PhrasebookGer"));
+             Linearizer lin2 = new Linearizer(pgf2, pgf2.GetConcrete("PhrasebookGer"));
 
             foreach (Trees.Absyn.Tree tree in rp.GetTrees())
             {
@@ -102,7 +102,6 @@ namespace CSPGF
                 //System.Console.WriteLine(lin2.LinearizeString(tree));
             }
 
-            
             foreach (Trees.Absyn.Tree tree in rp2.GetTrees())
             {
                 //System.Console.WriteLine(lin.LinearizeString(tree));

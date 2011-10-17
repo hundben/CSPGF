@@ -743,6 +743,10 @@ namespace CSPGF
         /// <returns>List of BracketedTokns</returns>
         private List<BracketedTokn> GetArg(int d, int r, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
+            if (d != 0)
+            {
+                d = d * (cncTypes.Count / 2);
+            }
             if (cncTypes.Count <= d)
             {
                 return new List<BracketedTokn>();
