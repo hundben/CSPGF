@@ -87,8 +87,6 @@ namespace CSPGF.Parse
             if (keys == null || keys.Count == 0) 
             {
                 this.value.Push(value);
-
-                // this.value = value;
             }
             else
             {
@@ -132,9 +130,7 @@ namespace CSPGF.Parse
                 if (temp.value.Count > 0)
                 {
                     Stack<ActiveItem> ai = new Stack<ActiveItem>(temp.value.Peek());
-
                     temp.value.Push(ai);
-
                     return temp.value.Peek();
                 }
             }
