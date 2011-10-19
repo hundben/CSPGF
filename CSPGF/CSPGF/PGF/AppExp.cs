@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="AppExp.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,41 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
-    using System.Collections.Generic;
-    using CSPGF.PGF;
-
     /// <summary>
-    /// Application Result
+    /// Application Expression
     /// </summary>
-    internal class AppResult
+    internal class AppExp : Expr // EApp
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the AppExp class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="leftExp">Left expression</param>
+        /// <param name="rightExp">Right expression</param>
+        public AppExp(Expr leftExp, Expr rightExp)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.LExp = leftExp;
+            this.RExp = rightExp;
         }
 
         /// <summary>
-        /// Gets the Concrete Function
+        /// Gets the left expression
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public Expr LExp { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Gets the right expression
         /// </summary>
-        public CncType CncType { get; private set; }
+        public Expr RExp { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Types
+        /// Pretty prints the contents of this class
         /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override string ToString()
+        {
+            return "Expression application [Left-hand side : ( " + this.LExp.ToString() + "), Right-hand side : (" + this.RExp.ToString() + ")]";
+        }
     }
 }

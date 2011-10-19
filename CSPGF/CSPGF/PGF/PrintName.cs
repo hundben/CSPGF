@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="PrintName.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,41 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
-    using System.Collections.Generic;
-    using CSPGF.PGF;
-
     /// <summary>
-    /// Application Result
+    /// PrintName class
     /// </summary>
-    internal class AppResult
+    internal class PrintName
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the PrintName class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="absName">Abstract name</param>
+        /// <param name="printName">Print name</param>
+        public PrintName(string absName, string printName)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.AbsName = absName;
+            this.PName = printName;
         }
 
         /// <summary>
-        /// Gets the Concrete Function
+        /// Gets the name of the abstract
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public string AbsName { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Gets the print name
         /// </summary>
-        public CncType CncType { get; private set; }
+        public string PName { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Types
+        /// Pretty prints the contents of this class
         /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override string ToString()
+        {
+            return "Abstract Name : " + this.AbsName + " , Print Name : " + this.PName;
+        }
     }
 }

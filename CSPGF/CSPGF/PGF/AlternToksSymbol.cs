@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="AlternToksSymbol.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,62 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
+    using System;
     using System.Collections.Generic;
-    using CSPGF.PGF;
 
     /// <summary>
-    /// Application Result
+    /// Alternative Token Symbol
     /// </summary>
-    internal class AppResult
+    [Serializable]
+    internal class AlternToksSymbol : ToksSymbol // SymKP
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the AlternToksSymbol class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="toks">List of tokens</param>
+        /// <param name="alts">List of alternatives</param>
+        public AlternToksSymbol(string[] toks, Alternative[] alts)
+            : base(toks)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.Alts = alts;
         }
 
         /// <summary>
-        /// Gets the Concrete Function
+        /// Gets the list of Alternatives
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public Alternative[] Alts { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Returns true if terminal.
         /// </summary>
-        public CncType CncType { get; private set; }
+        /// <returns>Returns true if terminal</returns>
+        public bool IsTerminal()
+        {
+            return true;
+        }
 
         /// <summary>
-        /// Gets the Concrete Types
+        /// Pretty prints the contents of this class
         /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override string ToString()
+        {
+            string sb = "pre { ";
+            foreach (string s in this.Tokens) 
+            {
+                sb += s + " ";
+            }
+
+            sb += "; ";
+            foreach (Alternative a in this.Alts) 
+            {
+                sb += a + "; ";
+            }
+
+            sb += "}";
+            return sb;
+        }
     }
 }

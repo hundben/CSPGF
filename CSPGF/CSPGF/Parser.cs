@@ -32,7 +32,7 @@ namespace CSPGF
 {
     using System.Collections.Generic;
     using CSPGF.Parse;
-    using CSPGF.Reader;
+    using CSPGF.PGF;
 
     /// <summary>
     /// Used for parsing
@@ -54,7 +54,7 @@ namespace CSPGF
         /// </summary>
         /// <param name="pgf">PGF object</param>
         /// <param name="language">Concrete language</param>
-        public Parser(PGF pgf, Concrete language)
+        public Parser(PGFile pgf, Concrete language)
         {
             this.language = language;
             this.startcat = pgf.GetAbstract().StartCat();
@@ -65,7 +65,7 @@ namespace CSPGF
         /// </summary>
         /// <param name="pgf">PGF object</param>
         /// <param name="language">Concrete language</param>
-        public Parser(PGF pgf, string language) : this(pgf, pgf.GetConcrete(language))
+        public Parser(PGFile pgf, string language) : this(pgf, pgf.GetConcrete(language))
         {
         }
 

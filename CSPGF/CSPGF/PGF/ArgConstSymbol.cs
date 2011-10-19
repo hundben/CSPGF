@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="ArgConstSymbol.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,44 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
-    using System.Collections.Generic;
-    using CSPGF.PGF;
+    using System;
 
     /// <summary>
-    /// Application Result
+    /// Argument Constant Symbol?
     /// </summary>
-    internal class AppResult
+    [Serializable]
+    internal class ArgConstSymbol : Symbol
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the ArgConstSymbol class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="arg">Argument int</param>
+        /// <param name="cons">Constant int</param>
+        public ArgConstSymbol(int arg, int cons)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.Arg = arg;
+            this.Cons = cons;
         }
 
         /// <summary>
-        /// Gets the Concrete Function
+        /// Gets the argument
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public int Arg { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Gets the constant
         /// </summary>
-        public CncType CncType { get; private set; }
+        public int Cons { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Types
+        /// Pretty prints the contents of this class
         /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override string ToString()
+        {
+            return "Argument : " + this.Arg + " Constituent : " + this.Cons;
+        }
     }
 }

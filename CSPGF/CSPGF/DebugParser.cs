@@ -33,7 +33,7 @@ namespace CSPGF
     using System;
     using System.Collections.Generic;
     using CSPGF.Parse;
-    using CSPGF.Reader;
+    using CSPGF.PGF;
 
     /// <summary>
     /// TODO: Update summary.
@@ -61,7 +61,7 @@ namespace CSPGF
         /// </summary>
         /// <param name="pgf">The current pgf class.</param>
         /// <param name="language">The language.</param>
-        public DebugParser(PGF pgf, Concrete language)
+        public DebugParser(PGFile pgf, Concrete language)
         {
             this.language = language;
             this.startcat = pgf.GetAbstract().StartCat();
@@ -73,7 +73,7 @@ namespace CSPGF
         /// </summary>
         /// <param name="pgf">The current pgf instance.</param>
         /// <param name="language">The language as a string.</param>
-        public DebugParser(PGF pgf, string language) : this(pgf, pgf.GetConcrete(language))
+        public DebugParser(PGFile pgf, string language) : this(pgf, pgf.GetConcrete(language))
         {
         }
 

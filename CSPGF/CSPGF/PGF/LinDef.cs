@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="LinDef.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,34 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
     using System.Collections.Generic;
-    using CSPGF.PGF;
 
     /// <summary>
-    /// Application Result
+    /// LinDef class
     /// </summary>
-    internal class AppResult
+    internal class LinDef
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the LinDef class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="key">Integer key</param>
+        /// <param name="funIds">List of function ids</param>
+        public LinDef(int key, int[] funIds)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.Key = key;
+            this.FunIds = funIds;
         }
 
         /// <summary>
-        /// Gets the Concrete Function
+        /// Gets the key
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public int Key { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Gets the list of function ids
         /// </summary>
-        public CncType CncType { get; private set; }
-
-        /// <summary>
-        /// Gets the Concrete Types
-        /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        public int[] FunIds { get; private set; }
     }
 }

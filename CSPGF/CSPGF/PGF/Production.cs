@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="Production.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,66 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
+    using System;
     using System.Collections.Generic;
-    using CSPGF.PGF;
 
     /// <summary>
-    /// Application Result
+    /// Production, abstract class.
     /// </summary>
-    internal class AppResult
+    [Serializable]
+    internal abstract class Production
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the Production class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="sel">Selection id</param>
+        /// <param name="fId">Function id</param>
+        public Production(int sel, int fId)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.Sel = sel;
+            this.FId = fId;
         }
 
         /// <summary>
-        /// Gets the Concrete Function
+        /// Gets the selection
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public int Sel { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Gets the function id
         /// </summary>
-        public CncType CncType { get; private set; }
+        public int FId { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Types
+        /// Pretty prints the contents of this class
         /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override abstract string ToString();
+
+        /// <summary>
+        /// Returns the list of domains.
+        /// </summary>
+        /// <returns>Returns the list of domains</returns>
+        public abstract int[] Domain();
+
+        /*public override bool Equals(object obj)
+        {
+            if (obj is Production)
+            {
+                Production p = (Production)obj;
+                if (this.FId == p.FId && this.Sel == p.Sel)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }*/
     }
 }

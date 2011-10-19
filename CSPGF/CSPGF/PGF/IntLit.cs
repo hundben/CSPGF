@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="IntLit.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,34 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
-    using System.Collections.Generic;
-    using CSPGF.PGF;
-
     /// <summary>
-    /// Application Result
+    /// Integer Literal
     /// </summary>
-    internal class AppResult
+    internal class IntLit : RLiteral
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the IntLit class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="value">Integer value</param>
+        public IntLit(int value)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.Value = value;
         }
 
         /// <summary>
-        /// Gets the Concrete Function
+        /// Gets the value
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public int Value { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Pretty prints the contents of this class
         /// </summary>
-        public CncType CncType { get; private set; }
-
-        /// <summary>
-        /// Gets the Concrete Types
-        /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override string ToString()
+        {
+            return "Integer Literal : " + this.Value;
+        }
     }
 }

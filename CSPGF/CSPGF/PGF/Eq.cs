@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="Eq.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,50 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
     using System.Collections.Generic;
-    using CSPGF.PGF;
 
     /// <summary>
-    /// Application Result
+    /// Eq class
     /// </summary>
-    internal class AppResult
+    internal class Eq
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the Eq class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="patts">List of patterns</param>
+        /// <param name="expr">The expression</param>
+        public Eq(Pattern[] patts, Expr expr)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.Patts = patts;
+            this.Expr = expr;
         }
 
         /// <summary>
-        /// Gets the Concrete Function
+        /// Gets the list of patterns
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public Pattern[] Patts { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Gets the expression
         /// </summary>
-        public CncType CncType { get; private set; }
+        public Expr Expr { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Types
+        /// Pretty prints the contents of this class
         /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override string ToString()
+        {
+            string ss = "Patterns : (";
+            foreach (Pattern p in this.Patts)
+            {
+                ss += " " + p.ToString();
+            }
+
+            ss += ") , Expression : " + Expr.ToString();
+            return ss;
+        }
     }
 }

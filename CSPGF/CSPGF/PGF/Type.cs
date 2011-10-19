@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="Type.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,63 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
     using System.Collections.Generic;
-    using CSPGF.PGF;
 
     /// <summary>
-    /// Application Result
+    /// Type class
     /// </summary>
-    internal class AppResult
+    internal class Type
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the Type class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="hypos">List of hypos</param>
+        /// <param name="str">Name of type</param>
+        /// <param name="exprs">List of expressions</param>
+        public Type(Hypo[] hypos, string str, Expr[] exprs)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.Hypos = hypos;
+            this.Name = str;
+            this.Exprs = exprs;
         }
 
         /// <summary>
-        /// Gets the Concrete Function
+        /// Gets the list of hypos
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public Hypo[] Hypos { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Gets the name of the type
         /// </summary>
-        public CncType CncType { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Types
+        /// Gets the list of expressions
         /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        public Expr[] Exprs { get; private set; }
+
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override string ToString()
+        {
+            string ss = "Hypotheses : (";
+            foreach (Hypo h in this.Hypos)
+            {
+                ss += " " + h.ToString();
+            }
+
+            ss += ") , Name : " + this.Name + " , Expressions : (";
+            foreach (Expr e in this.Exprs)
+            {
+                ss += " " + e.ToString();
+            }
+
+            ss += ")";
+            return ss;
+        }
     }
 }

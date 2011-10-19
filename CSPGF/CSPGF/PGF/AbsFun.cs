@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="AbsFun.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,71 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
     using System.Collections.Generic;
-    using CSPGF.PGF;
 
     /// <summary>
-    /// Application Result
+    /// Abstract Function
     /// </summary>
-    internal class AppResult
+    internal class AbsFun
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the AbsFun class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="str">Name of the function</param>
+        /// <param name="type">Type of function</param>
+        /// <param name="arit">Some integer</param>
+        /// <param name="eqs">List of Eqs</param>
+        /// <param name="weight">Weight of function</param>
+        public AbsFun(string str, Type type, int arit, Eq[] eqs, double weight)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.Name = str;
+            this.Type = type;
+            this.Arit = arit;
+            this.Eqs = eqs;
+            this.Weight = weight;
         }
 
         /// <summary>
-        /// Gets the Concrete Function
+        /// Gets the name of the functions
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Gets the type of the function
         /// </summary>
-        public CncType CncType { get; private set; }
+        public Type Type { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Types
+        /// Gets some integer
         /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        public int Arit { get; private set; }
+
+        /// <summary>
+        /// Gets a list of Eqs
+        /// </summary>
+        public Eq[] Eqs { get; private set; }
+
+        /// <summary>
+        /// Gets the weight of the functions
+        /// </summary>
+        public double Weight { get; private set; }
+
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override string ToString()
+        {
+            string sb = "<function name = " + this.Name + " type = " + this.Type + " arity = " + this.Arit + " equations = [";
+            foreach (Eq e in this.Eqs) 
+            {
+                sb += e + ", ";
+            }
+
+            sb += "] weight = " + this.Weight + " > ";
+            return sb;
+        }
     }
 }

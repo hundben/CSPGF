@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="VarAsPattern.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,41 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
-    using System.Collections.Generic;
-    using CSPGF.PGF;
-
     /// <summary>
-    /// Application Result
+    /// Variable as Pattern class
     /// </summary>
-    internal class AppResult
+    internal class VarAsPattern : Pattern  // PAs
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the VarAsPattern class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="name">Name of pattern</param>
+        /// <param name="patt">The Pattern</param>
+        public VarAsPattern(string name, Pattern patt)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.Name = name;
+            this.Patt = patt;
         }
 
         /// <summary>
-        /// Gets the Concrete Function
+        /// Gets name of pattern
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Gets pattern
         /// </summary>
-        public CncType CncType { get; private set; }
+        public Pattern Patt { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Types
+        /// Pretty prints the contents of this class
         /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override string ToString()
+        {
+            return "Variable as Pattern : [ Variable Name : " + this.Name + " , Pattern : " + this.Patt + "]";
+        }
     }
 }

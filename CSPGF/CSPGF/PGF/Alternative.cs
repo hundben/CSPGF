@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="Alternative.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,59 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
+    using System;
     using System.Collections.Generic;
-    using CSPGF.PGF;
 
     /// <summary>
-    /// Application Result
+    /// Alternative class
     /// </summary>
-    internal class AppResult
+    [Serializable]
+    internal class Alternative
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the Alternative class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="alt1">Normal tokens</param>
+        /// <param name="alt2">List of prefixes</param>
+        public Alternative(string[] alt1, string[] alt2)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.Alt1 = alt1;
+            this.Alt2 = alt2;
         }
 
-        /// <summary>
-        /// Gets the Concrete Function
-        /// </summary>
-        public CncFun CncFun { get; private set; }
+        // tokens = alt1, prefix = alt2
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Gets a list of tokens
         /// </summary>
-        public CncType CncType { get; private set; }
+        public string[] Alt1 { get; private set; }  // Check: Rename to tokens instead?
 
         /// <summary>
-        /// Gets the Concrete Types
+        /// Gets a list of prefixes
         /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        public string[] Alt2 { get; private set; }
+
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override string ToString()
+        {
+            string sb = string.Empty;
+            foreach (string t in this.Alt1)
+            {
+                sb += t + " ";
+            }
+
+            sb += "/ ";
+            foreach (string t in this.Alt2)
+            {
+                sb += t + " ";
+            }
+
+            return sb;
+        }
     }
 }

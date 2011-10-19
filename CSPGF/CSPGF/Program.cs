@@ -47,9 +47,9 @@ namespace CSPGF
             TempLog.NewLog();
             // Tests below.
             PGFReader pr = new PGFReader("..\\..\\test\\files\\Foods.pgf");
-            PGF pgf = pr.ReadPGF();
+            PGFile pgf = pr.ReadPGF();
             PGFReader pr2 = new PGFReader("..\\..\\test\\files\\Phrasebook.pgf");
-            PGF pgf2 = pr2.ReadPGF();
+            PGFile pgf2 = pr2.ReadPGF();
             DebugParser rp = new DebugParser(pgf, "FoodsEng");
 
             rp.Print();
@@ -102,7 +102,7 @@ namespace CSPGF
                 System.Console.WriteLine(lin2.LinearizeString(tree));
             }
             System.Console.Out.WriteLine("done");
-            //System.Console.In.ReadLine();
+            System.Console.In.ReadLine();
         }
     }
 }

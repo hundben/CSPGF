@@ -32,7 +32,7 @@ namespace CSPGF.Parse
 {
     using System;
     using System.Collections.Generic;
-    using CSPGF.Reader;
+    using CSPGF.PGF;
 
     /// <summary>
     /// The parsestate class.

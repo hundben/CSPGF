@@ -32,7 +32,7 @@ namespace CSPGF.Parse
 {
     using System.Collections.Generic;
     using System.Linq;
-    using CSPGF.Reader;
+    using CSPGF.PGF;
 
     /// <summary>
     /// Builds trees.
@@ -94,7 +94,7 @@ namespace CSPGF.Parse
         /// <param name="p">An application production.</param>
         /// <param name="chart">The current chart.</param>
         /// <returns>A list of trees.</returns>
-        public List<Tree> MkTreesForProduction(CSPGF.Reader.ApplProduction p, Chart chart)
+        public List<Tree> MkTreesForProduction(CSPGF.PGF.ApplProduction p, Chart chart)
         {
             List<Tree> temp = new List<Tree>();
             if (p.Domain().Length == 0)

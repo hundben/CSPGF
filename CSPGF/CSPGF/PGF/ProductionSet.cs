@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="ProductionSet.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,59 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
     using System.Collections.Generic;
-    using CSPGF.PGF;
 
     /// <summary>
-    /// Application Result
+    /// Production set class
     /// </summary>
-    internal class AppResult
+    internal class ProductionSet
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the ProductionSet class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="id">Set id</param>
+        /// <param name="prods">List of productions</param>
+        public ProductionSet(int id, Production[] prods)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.ID = id;
+            this.Prods = prods;
         }
 
         /// <summary>
-        /// Gets the Concrete Function
+        /// Gets the id
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public int ID { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Gets the list of productions
         /// </summary>
-        public CncType CncType { get; private set; }
+        public Production[] Prods { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Types
+        /// Pretty prints the contents of this class
         /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override string ToString()
+        {
+            string ss = "Id : " + this.ID + " , Productions : [";
+            foreach (Production p in this.Prods)
+            {
+                ss += " " + p.ToString();
+            }
+
+            ss += "]";
+            return ss;
+        }
+
+        /// <summary>
+        /// Returns a HashSet with productions in the set.
+        /// </summary>
+        /// <returns>HashSet of productions</returns>
+        public HashSet<Production> GetSetOfProductions()
+        {
+            return new HashSet<Production>(this.Prods);
+        }
     }
 }

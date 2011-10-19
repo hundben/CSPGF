@@ -33,7 +33,7 @@ namespace CSPGF
     using System;
     using System.Collections.Generic;
     using CSPGF.Parse;
-    using CSPGF.Reader;
+    using CSPGF.PGF;
 
     /// <summary>
     /// Generates random sentences.

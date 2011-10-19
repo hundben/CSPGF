@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="CncCat.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,66 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
+    using System;
     using System.Collections.Generic;
-    using CSPGF.PGF;
 
     /// <summary>
-    /// Application Result
+    /// Concrete category are a maping from category names (abstract-categories)
+    /// to multiple, conjoint, concrete categories.
+    /// They are represented in the pgf binary by :
+    ///  - the name of the abstract category (ex: Adj)
+    ///  - the first concrete categoy (ex : C18)
+    ///  - the last corresponding concrete category (ex : C21)
+    ///  - a list of labels (names of fields in the pmcfg tuples)
+    /// Here we will keep only the indices.
     /// </summary>
-    internal class AppResult
+    [Serializable]
+    internal class CncCat
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the CncCat class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="name">Name of category</param>
+        /// <param name="firstFId">First id</param>
+        /// <param name="lastFId">Last id</param>
+        /// <param name="labels">List of labels</param>
+        public CncCat(string name, int firstFId, int lastFId, string[] labels)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.Name = name;
+            this.FirstFID = firstFId;
+            this.LastFID = lastFId;
+            this.Labels = labels; // was also commented out.
         }
 
         /// <summary>
-        /// Gets the Concrete Function
+        /// Gets the name of the category
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Gets the first id
         /// </summary>
-        public CncType CncType { get; private set; }
+        public int FirstFID { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Types
+        /// Gets the last id
         /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        public int LastFID { get; private set; }
+
+        /// <summary>
+        /// Gets the list of labels
+        /// </summary>
+        public string[] Labels { get; private set; }
+
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override string ToString()
+        {
+            return this.Name + " [C" + this.FirstFID + " ... C" + this.LastFID + "]";
+        }
     }
 }

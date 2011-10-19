@@ -31,7 +31,7 @@
 namespace CSPGF.Linearize
 {
     using System.Collections.Generic;
-    using CSPGF.Reader;
+    using CSPGF.PGF;
 
     /// <summary>
     /// This class represent a 'pre' object.

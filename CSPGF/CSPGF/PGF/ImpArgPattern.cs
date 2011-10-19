@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppResult.cs" company="None">
+// <copyright file="ImpArgPattern.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,42 +28,34 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.PGF
 {
-    using System.Collections.Generic;
-    using CSPGF.PGF;
-
     /// <summary>
-    /// Application Result
+    /// Implicit argument pattern class
     /// </summary>
-    internal class AppResult
+    internal class ImpArgPattern : Pattern // PImplArg
     {
         /// <summary>
-        /// Initializes a new instance of the AppResult class.
+        /// Initializes a new instance of the ImpArgPattern class.
         /// </summary>
-        /// <param name="cncFun">Concrete Function</param>
-        /// <param name="cncType">Concrete Type</param>
-        /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, CncType cncType, List<CncType> cncTypes)
+        /// <param name="patt">Implicit argument pattern</param>
+        public ImpArgPattern(Pattern patt)
         {
-            this.CncFun = cncFun;
-            this.CncType = cncType;
-            this.CncTypes = cncTypes;
+            this.Patt = patt;
         }
 
         /// <summary>
-        /// Gets the Concrete Function
+        /// Gets the pattern
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public Pattern Patt { get; private set; }
 
         /// <summary>
-        /// Gets the Concrete Type
+        /// Pretty prints the contents of this class
         /// </summary>
-        public CncType CncType { get; private set; }
-
-        /// <summary>
-        /// Gets the Concrete Types
-        /// </summary>
-        public List<CncType> CncTypes { get; private set; }
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override string ToString()
+        {
+            return "Implicit Argument Pattern : " + this.Patt.ToString();
+        }
     }
 }
