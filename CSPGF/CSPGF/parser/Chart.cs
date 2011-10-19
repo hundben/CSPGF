@@ -78,7 +78,7 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Removes categories (this is a test).
+        /// Removes categories.
         /// </summary>
         public void NextToken()
         {
@@ -92,7 +92,6 @@ namespace CSPGF.Parse
         public void RemoveToken()
         {
             int remove = this.lastProduction.Pop();
-
             HashSet<int> temp = new HashSet<int>(this.productionSets.Keys);
 
             foreach (int key in temp)
@@ -183,7 +182,6 @@ namespace CSPGF.Parse
         /// <returns>New category index.</returns>
         public int GetFreshCategory(int oldCat, int l, int j, int k)
         {
-            // Crappy optimization 
             string hash = this.GenerateHash(oldCat, l, j, k);
             if (this.categoryBookKeeperHash.ContainsKey(hash))
             {
