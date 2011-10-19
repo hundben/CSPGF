@@ -80,11 +80,6 @@ namespace CSPGF.Parse
         private List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>> active;
 
         /// <summary>
-        /// The top of the tree
-        /// </summary>
-        private ParseTrie topTrie;
-
-        /// <summary>
         /// Initializes a new instance of the ParseState class.
         /// </summary>
         /// <param name="grammar">The concrete grammar we would like to use.</param>
@@ -96,8 +91,6 @@ namespace CSPGF.Parse
             this.listOfTries = new Stack<ParseTrie>();
             this.listOfTries.Push(this.trie);
             this.tokens = new Stack<string>();
-
-            this.topTrie = this.trie;
 
             this.chart = new Chart(grammar.FId + 1);
 
@@ -214,22 +207,6 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Debug, REMOVE
-        /// </summary>
-        public void PrintChart()
-        {
-            TempLog.LogMessageToFile(this.chart.ToString());
-        }
-
-        /// <summary>
-        /// Prints debug information
-        /// </summary>
-        public void Print()
-        {
-            TempLog.LogMessageToFile("BEFORE: " + this.topTrie.ToString());
-        }
-
-        /// <summary>
         /// Computes the new trees.
         /// </summary>
         private void Compute()
@@ -273,7 +250,7 @@ namespace CSPGF.Parse
                 {
                     Stack<ActiveItem> sai = new Stack<ActiveItem>();
                     this.trie.Add(tokens, sai);
-                    newAgenda = sai;    // <- arg
+                    newAgenda = sai;
                 }
 
                 newAgenda.Push(i);

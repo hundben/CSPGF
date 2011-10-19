@@ -52,23 +52,12 @@ namespace CSPGF
             PGF pgf2 = pr2.ReadPGF();
             DebugParser rp = new DebugParser(pgf, "FoodsEng");
 
-            rp.Print();
             rp.Scan("this");
-            rp.Print();
             rp.Scan("wine");
-            rp.Print();
             rp.Scan("is");
-            rp.Print();
-            rp.RemoveToken();
-            rp.Print();
-            rp.RemoveToken();
-            rp.Print();
             rp.Scan("fish");
-            rp.Print();
             rp.Scan("is");
-            rp.Print();
             rp.Scan("Italian");
-            rp.Print();
 
             Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
             /*DebugParser rp = new DebugParser(pgf, "PhrasebookEng");
