@@ -85,7 +85,6 @@
     <Compile Include="Parser\Chart.cs" />
     <Compile Include="Parser\Literal.cs" />
     <Compile Include="Parser\MetaVariable.cs" />
-    <Compile Include="Parser\ObjectCopier.cs" />
     <Compile Include="Parser\ParseState.cs" />
     <Compile Include="Parser\ParseTrie.cs" />
     <Compile Include="Parser\TreeBuilder.cs" />

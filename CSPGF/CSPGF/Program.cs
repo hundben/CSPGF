@@ -52,25 +52,29 @@ namespace CSPGF
             PGFile pgf2 = pr2.ReadPGF();
             DebugParser rp = new DebugParser(pgf, "FoodsEng");
 
-            rp.Print();
             rp.Scan("this");
-            rp.Print();
             rp.Scan("wine");
-            rp.Print();
             rp.Scan("is");
-            rp.Print();
-            rp.RemoveToken();
-            rp.Print();
-            rp.RemoveToken();
-            rp.Print();
-            rp.Scan("fish");
-            rp.Print();
-            rp.Scan("is");
-            rp.Print();
             rp.Scan("Italian");
-            rp.Print();
 
             Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
+            foreach (Trees.Absyn.Tree tree in rp.GetTrees())
+            {
+                System.Console.WriteLine(lin.LinearizeString(tree));
+            }
+
+            rp.Reset();
+            rp.Scan("this");
+            rp.Scan("fish");
+            rp.Scan("is");
+            rp.Scan("Italian");
+
+            foreach (Trees.Absyn.Tree tree in rp.GetTrees())
+            {
+                System.Console.WriteLine(lin.LinearizeString(tree));
+            }
+
+
             /*DebugParser rp = new DebugParser(pgf, "PhrasebookEng");
             rp.Scan("Finnish");
             rp.Scan("fish");
@@ -87,18 +91,10 @@ namespace CSPGF
             rp2.Scan("is");
             rp2.Scan("Italian");
             rp2.Scan(".");
-            // Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("PhrasebookGer"));
-             Linearizer lin2 = new Linearizer(pgf2, pgf2.GetConcrete("PhrasebookGer"));
-
-            foreach (Trees.Absyn.Tree tree in rp.GetTrees())
-            {
-                System.Console.WriteLine(lin.LinearizeString(tree));
-                //System.Console.WriteLine(lin2.LinearizeString(tree));
-            }
+            Linearizer lin2 = new Linearizer(pgf2, pgf2.GetConcrete("PhrasebookGer"));
 
             foreach (Trees.Absyn.Tree tree in rp2.GetTrees())
             {
-                //System.Console.WriteLine(lin.LinearizeString(tree));
                 System.Console.WriteLine(lin2.LinearizeString(tree));
             }
             System.Console.Out.WriteLine("done");
