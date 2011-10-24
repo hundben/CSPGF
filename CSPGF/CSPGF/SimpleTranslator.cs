@@ -100,6 +100,10 @@ namespace CSPGF
                 this.ps = new Parse.ParseState(this.pgf.GetConcrete(from));
                 this.from = from;
             }
+            else
+            {
+                this.ps.Reset();
+            }
 
             foreach (string str in sentence.Split(' '))
             {
