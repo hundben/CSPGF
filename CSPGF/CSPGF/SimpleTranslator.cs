@@ -112,7 +112,15 @@ namespace CSPGF
                 this.to = to;
             }
 
-            return this.lin.LinearizeString(this.ps.GetTrees()[0]);
+            List<CSPGF.Trees.Absyn.Tree> trees = this.ps.GetTrees();
+            if (trees.Count != 0)
+            {
+                return this.lin.LinearizeString(trees[0]);
+            }
+            else
+            {
+                return string.Empty;
+            }
         }
 
         /// <summary>
