@@ -42,11 +42,6 @@ namespace CSPGF
     internal class AdvancedTranslator
     {
         /// <summary>
-        /// The language
-        /// </summary>
-        private Concrete language;
-
-        /// <summary>
         /// The start category
         /// </summary>
         private string startcat;
@@ -57,24 +52,75 @@ namespace CSPGF
         private ParseState currentPState;
 
         /// <summary>
-        /// Initializes a new instance of the RecoveryParser class.
+        /// Current linearizer
         /// </summary>
-        /// <param name="pgf">The current pgf class.</param>
-        /// <param name="language">The language.</param>
-        public AdvancedTranslator(PGFile pgf, Concrete language)
-        {
-            this.language = language;
-            this.startcat = pgf.GetAbstract().StartCat();
-            this.currentPState = new ParseState(this.language);
-        }
+        private Linearizer currentLin;
+
+        /// <summary>
+        /// The pgf file, only one per instance of the translator.
+        /// </summary>
+        private PGFile pgf;
+
+        /// <summary>
+        /// The language last used to parse
+        /// </summary>
+        private string fromLanguage = string.Empty;
+
+        /// <summary>
+        /// The language last used to linearize to
+        /// </summary>
+        private string toLanguage = string.Empty;
 
         /// <summary>
         /// Initializes a new instance of the RecoveryParser class.
         /// </summary>
-        /// <param name="pgf">The current pgf instance.</param>
-        /// <param name="language">The language as a string.</param>
-        public AdvancedTranslator(PGFile pgf, string language) : this(pgf, pgf.GetConcrete(language))
+        /// <param name="pgf">The current pgf class.</param>
+        /// <param name="language">The language.</param>
+        public AdvancedTranslator(string filename)
         {
+            PGFReader pr = new PGFReader(filename);
+            this.pgf = pr.ReadPGF();
+        }
+
+        /// <summary>
+        /// Sets the input language, creates a new parsestate if needed.
+        /// </summary>
+        /// <param name="language"></param>
+        public void setInputLanguage(string language)
+        {
+            if (language != this.fromLanguage)
+            {
+                this.fromLanguage = language;
+                Concrete language2 = this.pgf.GetConcrete(this.fromLanguage);
+                this.startcat = this.pgf.GetAbstract().StartCat();
+                this.currentPState = new ParseState(language2);
+            }
+            else
+            {
+                this.Reset();
+            }
+        }
+
+        /// <summary>
+        /// Set the output language
+        /// </summary>
+        /// <param name="language">The language as a string.</param>
+        public void setOutputLanguage(string language)
+        {
+            if (language != this.toLanguage)
+            {
+                this.toLanguage = language;
+                currentLin = new Linearizer(this.pgf, this.pgf.GetConcrete(this.toLanguage));
+            }
+        }
+
+        /// <summary>
+        /// Returns a list of supported languages
+        /// </summary>
+        /// <returns>List of languages.</returns>
+        public List<string> GetLanguages()
+        {
+            return this.pgf.GetLanguages();
         }
 
         /// <summary>
@@ -84,13 +130,47 @@ namespace CSPGF
         /// <returns>True if scan was successful.</returns>
         public bool Scan(string token)
         {
-            bool result = this.currentPState.Scan(token);
-
-            if (!result)
+            if (this.fromLanguage != string.Empty)
             {
-                return false;
+                return this.currentPState.Scan(token);
             }
-            return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Scan a few tokens at a time
+        /// </summary>
+        /// <param name="tokens">A string with tokens.</param>
+        /// <returns>True if scan was successful</returns>
+        public bool ScanTokens(string tokens)
+        {
+            if (this.fromLanguage != string.Empty)
+            {
+                foreach (string tok in tokens.Split())
+                {
+                    if (!this.currentPState.Scan(tok))
+                    {
+                        return false;
+                    }
+                }
+                return true;
+            }
+
+            return false;
+        }
+
+        public string Translate()
+        {
+            if (this.toLanguage != string.Empty)
+            {
+                List<Trees.Absyn.Tree> lt = this.GetTrees();
+                if (lt.Count > 0)
+                {
+                    Trees.Absyn.Tree t = lt[0];
+                    return this.currentLin.LinearizeString(t);
+                }
+            }
+            return string.Empty;
         }
 
         /// <summary>
