@@ -46,44 +46,24 @@ namespace CSPGF
         {
             TempLog.NewLog();
             // Tests below.
-            PGFReader pr = new PGFReader("..\\..\\test\\files\\Foods.pgf");
-            PGFile pgf = pr.ReadPGF();
-            PGFReader pr2 = new PGFReader("..\\..\\test\\files\\Phrasebook.pgf");
-            PGFile pgf2 = pr2.ReadPGF();
-            AdvancedTranslator rp = new AdvancedTranslator(pgf, "FoodsEng");
-
+            AdvancedTranslator rp = new AdvancedTranslator("..\\..\\test\\files\\Foods.pgf");
+            rp.setInputLanguage("FoodsEng");
             rp.Scan("this");
             rp.Scan("wine");
             rp.Scan("is");
             rp.Scan("Italian");
-
-            Linearizer lin = new Linearizer(pgf, pgf.GetConcrete("FoodsGer"));
-            foreach (Trees.Absyn.Tree tree in rp.GetTrees())
-            {
-                System.Console.WriteLine(lin.LinearizeString(tree));
-            }
+            rp.setOutputLanguage("FoodsGer");
+            System.Console.WriteLine(rp.Translate());
 
             rp.Reset();
             rp.Scan("this");
             rp.Scan("fish");
             rp.Scan("is");
             rp.Scan("Italian");
+            System.Console.WriteLine(rp.Translate());
 
-            foreach (Trees.Absyn.Tree tree in rp.GetTrees())
-            {
-                System.Console.WriteLine(lin.LinearizeString(tree));
-            }
-
-
-            /*DebugParser rp = new DebugParser(pgf, "PhrasebookEng");
-            rp.Scan("Finnish");
-            rp.Scan("fish");
-            rp.Scan("isn't");
-            rp.Scan("too");
-            rp.Scan("warm");
-            rp.Scan(".");*/
-
-            AdvancedTranslator rp2 = new AdvancedTranslator(pgf2, "PhrasebookEng");
+            AdvancedTranslator rp2 = new AdvancedTranslator("..\\..\\test\\files\\Phrasebook.pgf");
+            rp2.setInputLanguage("PhrasebookEng");
             rp2.Scan("this");
             rp2.Scan("wine");
             rp2.RemoveToken();
@@ -91,12 +71,9 @@ namespace CSPGF
             rp2.Scan("is");
             rp2.Scan("Italian");
             rp2.Scan(".");
-            Linearizer lin2 = new Linearizer(pgf2, pgf2.GetConcrete("PhrasebookGer"));
+            rp2.setOutputLanguage("PhrasebookIta");
+            System.Console.WriteLine(rp2.Translate());
 
-            foreach (Trees.Absyn.Tree tree in rp2.GetTrees())
-            {
-                System.Console.WriteLine(lin2.LinearizeString(tree));
-            }
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();
         }

@@ -28,12 +28,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF
+namespace CSPGF.Linearize
 {
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using CSPGF.Linearize;
     using CSPGF.PGF;
     using CSPGF.Trees.Absyn;
 
@@ -668,7 +667,6 @@ namespace CSPGF
                 HashSet<Production> setProds;
                 if (prods.TryGetValue(((CoerceProduction)p).InitId, out setProds))
                 {
-
                     foreach (Production prod in setProds)
                     {
                         rez.AddRange(this.ToApp(cty, prod, f, prods));
@@ -747,6 +745,7 @@ namespace CSPGF
             {
                 d = d * (cncTypes.Count / 2);
             }
+
             if (cncTypes.Count <= d)
             {
                 return new List<BracketedTokn>();
