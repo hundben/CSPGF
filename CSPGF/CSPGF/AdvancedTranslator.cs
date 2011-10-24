@@ -54,7 +54,7 @@ namespace CSPGF
         /// <summary>
         /// Current linearizer
         /// </summary>
-        private Linearizer currentLin;
+        private Linearize.Linearizer currentLin;
 
         /// <summary>
         /// The pgf file, only one per instance of the translator.
@@ -110,7 +110,7 @@ namespace CSPGF
             if (language != this.toLanguage)
             {
                 this.toLanguage = language;
-                currentLin = new Linearizer(this.pgf, this.pgf.GetConcrete(this.toLanguage));
+                currentLin = new Linearize.Linearizer(this.pgf, this.pgf.GetConcrete(this.toLanguage));
             }
         }
 
