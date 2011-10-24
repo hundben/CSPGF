@@ -50,7 +50,7 @@ namespace CSPGF
             PGFile pgf = pr.ReadPGF();
             PGFReader pr2 = new PGFReader("..\\..\\test\\files\\Phrasebook.pgf");
             PGFile pgf2 = pr2.ReadPGF();
-            DebugParser rp = new DebugParser(pgf, "FoodsEng");
+            AdvancedTranslator rp = new AdvancedTranslator(pgf, "FoodsEng");
 
             rp.Scan("this");
             rp.Scan("wine");
@@ -83,7 +83,7 @@ namespace CSPGF
             rp.Scan("warm");
             rp.Scan(".");*/
 
-            DebugParser rp2 = new DebugParser(pgf2, "PhrasebookEng");
+            AdvancedTranslator rp2 = new AdvancedTranslator(pgf2, "PhrasebookEng");
             rp2.Scan("this");
             rp2.Scan("wine");
             rp2.RemoveToken();

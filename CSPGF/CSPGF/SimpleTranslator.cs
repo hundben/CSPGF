@@ -37,7 +37,7 @@ namespace CSPGF
     /// <summary>
     /// API for others to use :D
     /// </summary>
-    public class CSPGFAPI
+    public class SimpleTranslator
     {
         /// <summary>
         /// PGF grammar
@@ -53,7 +53,7 @@ namespace CSPGF
         /// Initializes a new instance of the CSPGF class.
         /// </summary>
         /// <param name="filename">Filename with path to read</param>
-        public CSPGFAPI(string filename)
+        public SimpleTranslator(string filename)
         {
             PGFReader pgfr = new PGFReader(filename);
             this.pgf = pgfr.ReadPGF();

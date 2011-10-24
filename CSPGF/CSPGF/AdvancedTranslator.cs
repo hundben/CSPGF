@@ -39,7 +39,7 @@ namespace CSPGF
     /// TODO: Update summary.
     /// Remove most of this later.
     /// </summary>
-    internal class DebugParser
+    internal class AdvancedTranslator
     {
         /// <summary>
         /// The language
@@ -61,7 +61,7 @@ namespace CSPGF
         /// </summary>
         /// <param name="pgf">The current pgf class.</param>
         /// <param name="language">The language.</param>
-        public DebugParser(PGFile pgf, Concrete language)
+        public AdvancedTranslator(PGFile pgf, Concrete language)
         {
             this.language = language;
             this.startcat = pgf.GetAbstract().StartCat();
@@ -73,7 +73,7 @@ namespace CSPGF
         /// </summary>
         /// <param name="pgf">The current pgf instance.</param>
         /// <param name="language">The language as a string.</param>
-        public DebugParser(PGFile pgf, string language) : this(pgf, pgf.GetConcrete(language))
+        public AdvancedTranslator(PGFile pgf, string language) : this(pgf, pgf.GetConcrete(language))
         {
         }
 
