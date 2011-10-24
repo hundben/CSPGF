@@ -159,6 +159,10 @@ namespace CSPGF
             return false;
         }
 
+        /// <summary>
+        /// Translates the scaned sentence to the language set as output language.
+        /// </summary>
+        /// <returns>A string with the translated sentence.</returns>
         public string Translate()
         {
             if (this.toLanguage != string.Empty)
