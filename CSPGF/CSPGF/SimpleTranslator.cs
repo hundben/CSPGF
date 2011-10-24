@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CSPGF.cs" company="None">
+// <copyright file="SimpleTranslator.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -30,8 +30,6 @@
 
 namespace CSPGF
 {
-    using System;
-    using System.IO;
     using System.Collections.Generic;
     
     /// <summary>
@@ -40,6 +38,11 @@ namespace CSPGF
     public class SimpleTranslator
     {
         /// <summary>
+        /// Version of the API
+        /// </summary>
+        private int version = 1;
+
+        /// <summary>
         /// PGF grammar
         /// </summary>
         private PGFile pgf;
@@ -47,12 +50,27 @@ namespace CSPGF
         /// <summary>
         /// Internal ParseState
         /// </summary>
-        Parse.ParseState ps;
+        private Parse.ParseState ps;
 
         /// <summary>
-        /// Initializes a new instance of the CSPGF class.
+        /// Internal Linearizer
         /// </summary>
-        /// <param name="filename">Filename with path to read</param>
+        private Linearize.Linearizer lin;
+
+        /// <summary>
+        /// Language to translate to
+        /// </summary>
+        private string to = string.Empty;
+
+        /// <summary>
+        /// Language to translate from
+        /// </summary>
+        private string from = string.Empty;
+
+        /// <summary>
+        /// Initializes a new instance of the SimpleTranslator class.
+        /// </summary>
+        /// <param name="filename">PGF-file to read from</param>
         public SimpleTranslator(string filename)
         {
             PGFReader pgfr = new PGFReader(filename);
@@ -77,67 +95,33 @@ namespace CSPGF
         /// <returns>Translates sentence</returns>
         public string Translate(string from, string to, string sentence)
         {
-            Parse.ParseState ps2 = new Parse.ParseState(this.pgf.GetConcrete(from));
-            foreach (string str in sentence.Split(' '))
-            {
-                ps2.Scan(str);
-            }
-            Linearizer lin = new Linearizer(this.pgf, this.pgf.GetConcrete(to));
-            return lin.LinearizeString(ps2.GetTrees()[0]);
-        }
-
-        /// <summary>
-        /// Creates a new Parse state.
-        /// </summary>
-        /// <param name="from">Name of grammar to parse</param>
-        /// <returns>True if language exists</returns>
-        public bool NewParseState(string from)
-        {
-            try
+            if (!this.from.Equals(from))
             {
                 this.ps = new Parse.ParseState(this.pgf.GetConcrete(from));
+                this.from = from;
             }
-            catch (UnknownLanguageException e)
+
+            foreach (string str in sentence.Split(' '))
             {
-                System.Console.WriteLine(e.ToString());
-                this.ps = null;
-                return false;
+                this.ps.Scan(str);
             }
-            return true;
-        }
-        
-        /// <summary>
-        /// Linearizes the contents of the current parse state if complete, otherwise returns string.Empty.
-        /// </summary>
-        /// <param name="to">Language to linearize to</param>
-        /// <returns>Linearizes string</returns>
-        public string Linearize(string to)
-        {
-            if (this.ps != null && this.ps.Predict().Count == 0)
+
+            if (!this.to.Equals(to))
             {
-                Linearizer lin = new Linearizer(this.pgf, this.pgf.GetConcrete(to));
-                return lin.LinearizeString(this.ps.GetTrees()[0]);
+                this.lin = new Linearize.Linearizer(this.pgf, this.pgf.GetConcrete(to));
+                this.to = to;
             }
-            return string.Empty;
+
+            return this.lin.LinearizeString(this.ps.GetTrees()[0]);
         }
 
         /// <summary>
-        /// Scans a token and returns a list of available words to continue with.
-        /// Returns null if no parse state is available.
+        /// Returns the version of the API
         /// </summary>
-        /// <param name="token">Token to scan</param>
-        /// <returns>List of strings</returns>
-        public List<string> ParseToken(string token)
+        /// <returns>Integer containing the version number</returns>
+        public int GetVersion()
         {
-            if (this.ps != null)
-            {
-                this.ps.Scan(token);
-                return this.ps.Predict();
-            }
-            else
-            {
-                return null;
-            }
+            return this.version;
         }
     }
 }

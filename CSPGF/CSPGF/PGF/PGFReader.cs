@@ -51,10 +51,13 @@ namespace CSPGF
         private StreamWriter dbgwrite;
 
         /// <summary>
-        /// Stream to read from
+        /// Main inputstream to read from
         /// </summary>
         private MemoryStream inputstream;
 
+        /// <summary>
+        /// Binarystream used by this class
+        /// </summary>
         private BinaryReader binreader;
 
         /// <summary>
@@ -65,7 +68,7 @@ namespace CSPGF
         /// <summary>
         /// Initializes a new instance of the PGFReader class.
         /// </summary>
-        /// <param name="inputstream">Stream to read from</param>
+        /// <param name="filename">File to read from</param>
         public PGFReader(string filename)
         {
             this.inputstream = new MemoryStream(File.ReadAllBytes(filename));
@@ -75,7 +78,7 @@ namespace CSPGF
         /// <summary>
         /// Initializes a new instance of the PGFReader class with the desired languages.
         /// </summary>
-        /// <param name="inputstream">Stream to read from</param>
+        /// <param name="filename">File to read from</param>
         /// <param name="languages">Desired languages</param>
         public PGFReader(string filename, List<string> languages)
         {
@@ -94,8 +97,6 @@ namespace CSPGF
             {
                 this.dbgwrite = new StreamWriter("./dbg.txt", false);
             }
-
-            
 
             Dictionary<string, int> index = null;
             int[] ii = new int[2];

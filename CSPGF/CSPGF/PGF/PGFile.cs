@@ -64,7 +64,7 @@ namespace CSPGF
         private Dictionary<string, Concrete> concretes;
 
         /// <summary>
-        /// Initializes a new instance of the PGF class.
+        /// Initializes a new instance of the PGFile class.
         /// </summary>
         /// <param name="majorVersion">Major version number</param>
         /// <param name="minorVersion">Minor version number</param>
