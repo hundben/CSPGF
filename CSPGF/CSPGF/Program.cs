@@ -32,6 +32,11 @@ namespace CSPGF
 {
     using System.Collections.Generic;
     using System.IO;
+    using System.Speech.Recognition.SrgsGrammar;
+    using System.Speech;
+    using System.Speech.Recognition;
+    using System;
+    using System.Globalization;
 
     /// <summary>
     /// The mainclass that runs the program
@@ -44,9 +49,42 @@ namespace CSPGF
         /// <param name="args">Commandline arguments</param>
         public static void Main(string[] args)
         {
+
+            /*SrgsDocument sd = new SrgsDocument("..\\..\\test\\files\\FoodsEng.grxml");
+            Grammar g = new Grammar(sd);
+            CultureInfo test = new CultureInfo("en-US");
+            SpeechRecognitionEngine sre = new SpeechRecognitionEngine(test);
+            sre.SetInputToDefaultAudioDevice();
+            sre.LoadGrammar(g);
+            System.Console.WriteLine("Start speaking D: :"); 
+            RecognitionResult rr = sre.Recognize(new TimeSpan(0, 0, 10));
+            if (rr.Text == null || rr.Text == string.Empty)
+            {
+                System.Console.WriteLine("Failed");
+            }
+            else
+            {
+                System.Console.WriteLine(rr.Text);
+            }*/
+
             TempLog.NewLog();
             // Tests below.
-            AdvancedTranslator rp = new AdvancedTranslator("..\\..\\test\\files\\Foods.pgf");
+
+            AdvancedTranslator rp = new AdvancedTranslator("..\\..\\test\\files\\Bronzeage.pgf");
+            rp.setInputLanguage("BronzeageEng");
+            rp.Scan("I");
+            rp.Scan("bite");
+            //rp.Scan("him");
+            rp.Scan("on");
+            rp.Scan("a");
+            rp.Scan("fingernail");
+            rp.setOutputLanguage("BronzeageGer");
+            System.Console.WriteLine(rp.Translate());
+            /*foreach (string str in rp.Predict())
+            {
+                System.Console.WriteLine(str);
+            }*/
+            /*AdvancedTranslator rp = new AdvancedTranslator("..\\..\\test\\files\\Foods.pgf");
             rp.setInputLanguage("FoodsEng");
             rp.Scan("this");
             rp.Scan("wine");
@@ -60,9 +98,9 @@ namespace CSPGF
             rp.Scan("fish");
             rp.Scan("is");
             rp.Scan("Italian");
-            System.Console.WriteLine(rp.Translate());
+            System.Console.WriteLine(rp.Translate());*/
 
-            AdvancedTranslator rp2 = new AdvancedTranslator("..\\..\\test\\files\\Phrasebook.pgf");
+            /*AdvancedTranslator rp2 = new AdvancedTranslator("..\\..\\test\\files\\Phrasebook.pgf");
             rp2.setInputLanguage("PhrasebookEng");
             rp2.Scan("this");
             rp2.Scan("wine");
@@ -73,7 +111,7 @@ namespace CSPGF
             rp2.Scan(".");
             rp2.setOutputLanguage("PhrasebookIta");
             System.Console.WriteLine(rp2.Translate());
-
+            */
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();
         }
