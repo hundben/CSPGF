@@ -211,5 +211,22 @@ namespace CSPGF
         {
             this.currentPState.Reset();
         }
+
+        /// <summary>
+        /// Linearizes a tree using previously set language.
+        /// </summary>
+        /// <param name="tree">Tree to linearize</param>
+        /// <returns>Linearized string</returns>
+        public string LinearizeTree(CSPGF.Trees.Absyn.Tree tree)
+        {
+            if (this.toLanguage != string.Empty)
+            {
+                if (tree != null)
+                {
+                    return this.currentLin.LinearizeString(tree);
+                }
+            }
+            return string.Empty;
+        }
     }
 }

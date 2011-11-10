@@ -81,7 +81,15 @@ namespace CSPGF
             }
 
             List<Trees.Absyn.Tree> list = this.ps.GetTrees();
-            return list[this.ran.Next(list.Count - 1)];
+            if (list.Count == 0)
+            {
+                return Gen();
+
+            }
+            else
+            {
+                return list[0];
+            }
         }
     }
 }
