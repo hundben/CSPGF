@@ -37,6 +37,7 @@ namespace CSPGF
     using System.Speech.Recognition;
     using System;
     using System.Globalization;
+    using System.Diagnostics;
 
     /// <summary>
     /// The mainclass that runs the program
@@ -49,8 +50,9 @@ namespace CSPGF
         /// <param name="args">Commandline arguments</param>
         public static void Main(string[] args)
         {
-
-            /*SrgsDocument sd = new SrgsDocument("..\\..\\test\\files\\FoodsEng.grxml");
+            #region SpeechRecog
+            // For speech recognition using xml-grammar
+            /*SrgsDocument sd = new SrgsDocument("..//..//test//files//FoodsEng.grxml");
             Grammar g = new Grammar(sd);
             CultureInfo test = new CultureInfo("en-US");
             SpeechRecognitionEngine sre = new SpeechRecognitionEngine(test);
@@ -58,49 +60,56 @@ namespace CSPGF
             sre.LoadGrammar(g);
             System.Console.WriteLine("Start speaking D: :"); 
             RecognitionResult rr = sre.Recognize(new TimeSpan(0, 0, 10));
-            if (rr.Text == null || rr.Text == string.Empty)
-            {
-                System.Console.WriteLine("Failed");
-            }
-            else
+            try
             {
                 System.Console.WriteLine(rr.Text);
+            }
+            catch (NullReferenceException e)
+            {
+                System.Console.WriteLine(e.ToString());
             }*/
+            #endregion
 
-            TempLog.NewLog();
+            #region SpeechSynth
+            // For speech synthesis using languages OTHER than engligh
+            /*ProcessStartInfo startInfo = new ProcessStartInfo();
+            startInfo.CreateNoWindow = true;
+            startInfo.UseShellExecute = false;
+            startInfo.FileName = "..//..//test//files//espeak.exe";
+            startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+            startInfo.Arguments = "-v en \"Hello\"";
+            Process.Start(startInfo);*/
+            #endregion
+
             // Tests below.
 
-            AdvancedTranslator rp = new AdvancedTranslator("..\\..\\test\\files\\Bronzeage.pgf");
+            AdvancedTranslator rp = new AdvancedTranslator("..//..//test//files//Bronzeage.pgf");
             rp.setInputLanguage("BronzeageEng");
             rp.Scan("I");
             rp.Scan("bite");
-            //rp.Scan("him");
             rp.Scan("on");
             rp.Scan("a");
             rp.Scan("fingernail");
             rp.setOutputLanguage("BronzeageGer");
             System.Console.WriteLine(rp.Translate());
-            /*foreach (string str in rp.Predict())
-            {
-                System.Console.WriteLine(str);
-            }*/
-            /*AdvancedTranslator rp = new AdvancedTranslator("..\\..\\test\\files\\Foods.pgf");
-            rp.setInputLanguage("FoodsEng");
-            rp.Scan("this");
-            rp.Scan("wine");
-            rp.Scan("is");
-            rp.Scan("Italian");
-            rp.setOutputLanguage("FoodsGer");
-            System.Console.WriteLine(rp.Translate());
 
-            rp.Reset();
-            rp.Scan("this");
-            rp.Scan("fish");
-            rp.Scan("is");
-            rp.Scan("Italian");
-            System.Console.WriteLine(rp.Translate());*/
+            AdvancedTranslator rp3 = new AdvancedTranslator("..//..//test//files//Foods.pgf");
+            rp3.setInputLanguage("FoodsEng");
+            rp3.Scan("this");
+            rp3.Scan("wine");
+            rp3.Scan("is");
+            rp3.Scan("Italian");
+            rp3.setOutputLanguage("FoodsIta");
+            System.Console.WriteLine(rp3.Translate());
 
-            /*AdvancedTranslator rp2 = new AdvancedTranslator("..\\..\\test\\files\\Phrasebook.pgf");
+            rp3.Reset();
+            rp3.Scan("this");
+            rp3.Scan("fish");
+            rp3.Scan("is");
+            rp3.Scan("Italian");
+            System.Console.WriteLine(rp3.Translate());
+
+            /*AdvancedTranslator rp2 = new AdvancedTranslator("..//..//test//files//Phrasebook.pgf");
             rp2.setInputLanguage("PhrasebookEng");
             rp2.Scan("this");
             rp2.Scan("wine");
@@ -110,8 +119,8 @@ namespace CSPGF
             rp2.Scan("Italian");
             rp2.Scan(".");
             rp2.setOutputLanguage("PhrasebookIta");
-            System.Console.WriteLine(rp2.Translate());
-            */
+            System.Console.WriteLine(rp2.Translate());*/
+
             System.Console.Out.WriteLine("done");
             System.Console.In.ReadLine();
         }
