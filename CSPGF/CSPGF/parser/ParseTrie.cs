@@ -68,7 +68,7 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Insert description.
+        /// Adds an active item to the tree with the corresponding keys.
         /// </summary>
         /// <param name="key">A list of keys.</param>
         /// <param name="value">A stack of active items.</param>
@@ -78,7 +78,7 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Insert description.
+        /// Adds an active item to the tree with the corresponding keys.
         /// </summary>
         /// <param name="keys">A list of keys.</param>
         /// <param name="value">A stack of active items.</param>
@@ -139,7 +139,7 @@ namespace CSPGF.Parse
         }
         
         /// <summary>
-        /// Returns the subtrie.
+        /// Returns the subtrie for a list of keys.
         /// </summary>
         /// <param name="key">The key.</param>
         /// <returns>The subtrie if any.</returns>
