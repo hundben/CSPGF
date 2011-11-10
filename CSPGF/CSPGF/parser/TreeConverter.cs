@@ -79,19 +79,13 @@ namespace CSPGF.Parse
                     tmp2.Add(tup.Item2);
                 }
 
-                // lvars.map(_._2).reverse
                 tmp2.Reverse();
-
-                // lvars.map(_._2).reverse ++ vars
                 foreach (string s in vars) 
                 {
                     tmp2.Add(s);
                 }
 
-                // tree = c2a(body, lvars.map(_._2).reverse ++ vars)
                 CSPGF.Trees.Absyn.Tree tree = this.C2a(body, tmp2);
-
-                // tree.foldRight(tree)(MkELambda)
                 lvars.Reverse();
                 foreach (Tuple<bool, string> tup in lvars) 
                 {

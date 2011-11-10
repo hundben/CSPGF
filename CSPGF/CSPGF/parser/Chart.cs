@@ -37,7 +37,7 @@ namespace CSPGF.Parse
     using CSPGF.PGF;
 
     /// <summary>
-    /// The chart.
+    /// The chart. Stores production sets and new categories.
     /// </summary>
     internal class Chart
     {
@@ -78,7 +78,7 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Removes categories.
+        /// Removes categories to save some memory.
         /// </summary>
         public void NextToken()
         {
@@ -87,7 +87,7 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Removes all productions associated with last production
+        /// Removes all productions associated with the last production
         /// </summary>
         public void RemoveToken()
         {
@@ -176,7 +176,7 @@ namespace CSPGF.Parse
         /// Creates a new category.
         /// </summary>
         /// <param name="oldCat">Old category index</param>
-        /// <param name="l">The Cons value.</param>
+        /// <param name="l">The constituent value.</param>
         /// <param name="j">Start index</param>
         /// <param name="k">End index</param>
         /// <returns>New category index.</returns>

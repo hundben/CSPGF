@@ -47,7 +47,7 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Builds trees.
+        /// Builds the trees.
         /// </summary>
         /// <param name="chart">The current chart.</param>
         /// <param name="startCat">The start category.</param>
@@ -123,7 +123,7 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Mixes a list of lists.
+        /// Mixes a list of lists. Takes the first list and mixes it with the rest of the lists in the list.
         /// </summary>
         /// <param name="l">A list of lists of trees.</param>
         /// <returns>A new list of lists of trees.</returns>

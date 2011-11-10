@@ -137,7 +137,7 @@ namespace CSPGF.Parse
         /// Scans a new token.
         /// </summary>
         /// <param name="token">The token to scan.</param>
-        /// <returns>Returns true if scan i complete.</returns>
+        /// <returns>Returns true if scan is successful.</returns>
         public bool Scan(string token)
         {
             ParseTrie newTrie = this.trie.GetSubTrie(token);
@@ -399,7 +399,7 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Gets an active set.
+        /// Gets an active set from the list of current active sets..
         /// </summary>
         /// <param name="cat">The category.</param>
         /// <param name="cons">The constituent.</param>

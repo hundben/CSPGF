@@ -38,13 +38,12 @@ namespace CSPGF.Parse
     /// <summary>
     /// One active item.
     /// </summary>
-    [Serializable]
     internal class ActiveItem
     {
         /// <summary>
         /// Initializes a new instance of the ActiveItem class.
         /// </summary>
-        /// <param name="begin">Insert a description for begin.</param>
+        /// <param name="begin">Where the item begins.</param>
         /// <param name="category">The category.</param>
         /// <param name="function">The function.</param>
         /// <param name="domain">A list of the domains.</param>
@@ -91,9 +90,9 @@ namespace CSPGF.Parse
         public int Position { get; private set; }
 
         /// <summary>
-        /// Gets the next symbol.
+        /// Gets the current symbol.
         /// </summary>
-        /// <returns>The next symbol.</returns>
+        /// <returns>The current symbol.</returns>
         public Symbol CurrentSymbol()
         {
             if (this.Position < this.Function.Sequences[this.Constituent].Length) 
@@ -159,6 +158,7 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
+        /// DeepCheck of an active item.
         /// Since there is no deep method in c# that we know of we have to use for-loops.
         /// </summary>
         /// <param name="ai">The active item.</param>
