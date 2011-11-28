@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="RecoveryParser.cs" company="None">
+// <copyright file="AdvancedTranslator.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -72,10 +72,9 @@ namespace CSPGF
         private string toLanguage = string.Empty;
 
         /// <summary>
-        /// Initializes a new instance of the RecoveryParser class.
+        /// Initializes a new instance of the AdvancedTranslator class.
         /// </summary>
-        /// <param name="pgf">The current pgf class.</param>
-        /// <param name="language">The language.</param>
+        /// <param name="filename">The name and path of the pgf file.</param>
         public AdvancedTranslator(string filename)
         {
             PGFReader pr = new PGFReader(filename);
@@ -85,8 +84,8 @@ namespace CSPGF
         /// <summary>
         /// Sets the input language, creates a new parsestate if needed.
         /// </summary>
-        /// <param name="language"></param>
-        public void setInputLanguage(string language)
+        /// <param name="language">The name of the input language.</param>
+        public void SetInputLanguage(string language)
         {
             if (language != this.fromLanguage)
             {
@@ -105,12 +104,12 @@ namespace CSPGF
         /// Set the output language
         /// </summary>
         /// <param name="language">The language as a string.</param>
-        public void setOutputLanguage(string language)
+        public void SetOutputLanguage(string language)
         {
             if (language != this.toLanguage)
             {
                 this.toLanguage = language;
-                currentLin = new Linearize.Linearizer(this.pgf, this.pgf.GetConcrete(this.toLanguage));
+                this.currentLin = new Linearize.Linearizer(this.pgf, this.pgf.GetConcrete(this.toLanguage));
             }
         }
 
@@ -134,6 +133,7 @@ namespace CSPGF
             {
                 return this.currentPState.Scan(token);
             }
+
             return false;
         }
 
@@ -153,6 +153,7 @@ namespace CSPGF
                         return false;
                     }
                 }
+
                 return true;
             }
 
@@ -174,6 +175,7 @@ namespace CSPGF
                     return this.currentLin.LinearizeString(t);
                 }
             }
+
             return string.Empty;
         }
 
@@ -226,6 +228,7 @@ namespace CSPGF
                     return this.currentLin.LinearizeString(tree);
                 }
             }
+
             return string.Empty;
         }
     }
