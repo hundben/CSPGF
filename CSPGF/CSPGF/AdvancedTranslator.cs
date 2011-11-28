@@ -39,7 +39,7 @@ namespace CSPGF
     /// TODO: Update summary.
     /// Remove most of this later.
     /// </summary>
-    class AdvancedTranslator
+    public class AdvancedTranslator
     {
         /// <summary>
         /// The start category
