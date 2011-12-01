@@ -7,7 +7,7 @@ CSPGF is an implementation of the [Grammatical Framework][1] runtime i C#.
 Features
 --------
 * All the features from [JPGF][2].
-* Ability to remove tokens without parsing the hole sentence again.
+* Ability to remove tokens without parsing the whole sentence again.
 * Works in both mono and .NET.
 
 How to build
