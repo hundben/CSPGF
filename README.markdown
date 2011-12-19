@@ -10,6 +10,13 @@ Features
 * Ability to remove tokens without parsing the whole sentence again.
 * Works in both mono and .NET.
 
+Missing features
+----------------
+* High-order syntax
+* Literal categories
+* Dependent types
+* Immutable parse state
+
 How to build
 ------------
 Open the project file in Visual Studio 2010 or in Mono Develop 2.6 and build it there.
