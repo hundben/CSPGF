@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="CncCat.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,66 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
+    using System;
     using System.Collections.Generic;
-    using CSPGF.Grammar;
 
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Concrete category are a maping from category names (abstract-categories)
+    /// to multiple, conjoint, concrete categories.
+    /// They are represented in the pgf binary by :
+    ///  - the name of the abstract category (ex: Adj)
+    ///  - the first concrete categoy (ex : C18)
+    ///  - the last corresponding concrete category (ex : C21)
+    ///  - a list of labels (names of fields in the pmcfg tuples)
+    /// Here we will keep only the indices.
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    [Serializable]
+    internal class CncCat
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the CncCat class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="name">Name of category</param>
+        /// <param name="firstFId">First id</param>
+        /// <param name="lastFId">Last id</param>
+        /// <param name="labels">List of labels</param>
+        public CncCat(string name, int firstFId, int lastFId, string[] labels)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
+            this.Name = name;
+            this.FirstFID = firstFId;
+            this.LastFID = lastFId;
+            this.Labels = labels; // was also commented out.
         }
 
         /// <summary>
-        /// Gets a list of Tokens
+        /// Gets the name of the category
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets a list of the Alternatives
+        /// Gets the first id
         /// </summary>
-        public Alternative[] Alternatives { get; private set; }
+        public int FirstFID { get; private set; }
+
+        /// <summary>
+        /// Gets the last id
+        /// </summary>
+        public int LastFID { get; private set; }
+
+        /// <summary>
+        /// Gets the list of labels
+        /// </summary>
+        public string[] Labels { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
-            {
-                rez += " " + str;
-            }
-
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
-            {
-                rez += " " + a.ToString();
-            }
-
-            rez += "]";
-            return rez;
+            return this.Name + " [C" + this.FirstFID + " ... C" + this.LastFID + "]";
         }
     }
 }

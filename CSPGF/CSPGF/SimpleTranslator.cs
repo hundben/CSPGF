@@ -45,7 +45,7 @@ namespace CSPGF
         /// <summary>
         /// PGF grammar
         /// </summary>
-        private PGFile pgf;
+        private PGF pgf;
 
         /// <summary>
         /// Internal ParseState

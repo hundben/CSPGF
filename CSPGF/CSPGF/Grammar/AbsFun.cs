@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="AbsFun.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,71 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
     using System.Collections.Generic;
-    using CSPGF.Grammar;
 
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Abstract Function
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    internal class AbsFun
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the AbsFun class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="str">Name of the function</param>
+        /// <param name="type">Type of function</param>
+        /// <param name="arit">Some integer</param>
+        /// <param name="eqs">List of Eqs</param>
+        /// <param name="weight">Weight of function</param>
+        public AbsFun(string str, Type type, int arit, Eq[] eqs, double weight)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
+            this.Name = str;
+            this.Type = type;
+            this.Arit = arit;
+            this.Eqs = eqs;
+            this.Weight = weight;
         }
 
         /// <summary>
-        /// Gets a list of Tokens
+        /// Gets the name of the functions
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets a list of the Alternatives
+        /// Gets the type of the function
         /// </summary>
-        public Alternative[] Alternatives { get; private set; }
+        public Type Type { get; private set; }
+
+        /// <summary>
+        /// Gets some integer
+        /// </summary>
+        public int Arit { get; private set; }
+
+        /// <summary>
+        /// Gets a list of Eqs
+        /// </summary>
+        public Eq[] Eqs { get; private set; }
+
+        /// <summary>
+        /// Gets the weight of the functions
+        /// </summary>
+        public double Weight { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
+            string sb = "<function name = " + this.Name + " type = " + this.Type + " arity = " + this.Arit + " equations = [";
+            foreach (Eq e in this.Eqs) 
             {
-                rez += " " + str;
+                sb += e + ", ";
             }
 
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
-            {
-                rez += " " + a.ToString();
-            }
-
-            rez += "]";
-            return rez;
+            sb += "] weight = " + this.Weight + " > ";
+            return sb;
         }
     }
 }

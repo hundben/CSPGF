@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="ProductionSet.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,59 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
     using System.Collections.Generic;
-    using CSPGF.Grammar;
 
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Production set class
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    internal class ProductionSet
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the ProductionSet class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="id">Set id</param>
+        /// <param name="prods">List of productions</param>
+        public ProductionSet(int id, Production[] prods)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
+            this.ID = id;
+            this.Prods = prods;
         }
 
         /// <summary>
-        /// Gets a list of Tokens
+        /// Gets the id
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        public int ID { get; private set; }
 
         /// <summary>
-        /// Gets a list of the Alternatives
+        /// Gets the list of productions
         /// </summary>
-        public Alternative[] Alternatives { get; private set; }
+        public Production[] Prods { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
+            string ss = "Id : " + this.ID + " , Productions : [";
+            foreach (Production p in this.Prods)
             {
-                rez += " " + str;
+                ss += " " + p.ToString();
             }
 
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
-            {
-                rez += " " + a.ToString();
-            }
+            ss += "]";
+            return ss;
+        }
 
-            rez += "]";
-            return rez;
+        /// <summary>
+        /// Returns a HashSet with productions in the set.
+        /// </summary>
+        /// <returns>HashSet of productions</returns>
+        public HashSet<Production> GetSetOfProductions()
+        {
+            return new HashSet<Production>(this.Prods);
         }
     }
 }

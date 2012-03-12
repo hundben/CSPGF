@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="WeightedIdent.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,32 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
-    using System.Collections.Generic;
-    using CSPGF.Grammar;
-
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Weighted Ident class
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    internal class WeightedIdent
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the WeightedIdent class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="ident">The identifier</param>
+        /// <param name="weight">The weight</param>
+        public WeightedIdent(string ident, double weight)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
+            this.Ident = ident;
+            this.Weight = weight;
         }
 
         /// <summary>
-        /// Gets a list of Tokens
+        /// Gets the weight
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        public double Weight { get; private set; }
 
         /// <summary>
-        /// Gets a list of the Alternatives
+        /// Gets the ident
         /// </summary>
-        public Alternative[] Alternatives { get; private set; }
-
-        /// <summary>
-        /// Pretty prints the contents of this class
-        /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
-        public override string ToString()
-        {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
-            {
-                rez += " " + str;
-            }
-
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
-            {
-                rez += " " + a.ToString();
-            }
-
-            rez += "]";
-            return rez;
-        }
+        public string Ident { get; private set; }
     }
 }

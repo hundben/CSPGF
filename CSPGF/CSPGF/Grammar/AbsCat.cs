@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="AbsCat.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,63 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
     using System.Collections.Generic;
-    using CSPGF.Grammar;
 
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Abstract Category
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    internal class AbsCat
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the AbsCat class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="name">Name of category</param>
+        /// <param name="hypos">List of hypos</param>
+        /// <param name="functions">List of weightedidents</param>
+        public AbsCat(string name, Hypo[] hypos, WeightedIdent[] functions)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
+            this.Name = name;
+            this.Hypos = hypos;
+            this.Functions = functions;
         }
 
         /// <summary>
-        /// Gets a list of Tokens
+        /// Gets the name of the abstract category
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets a list of the Alternatives
+        /// Gets a list of hypos.
         /// </summary>
-        public Alternative[] Alternatives { get; private set; }
+        public Hypo[] Hypos { get; private set; }
+
+        /// <summary>
+        /// Gets a list of WeightedIdents
+        /// </summary>
+        public WeightedIdent[] Functions { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
+            string ss = "Name : " + this.Name + " , Hypotheses : (";
+            foreach (Hypo h in this.Hypos) 
             {
-                rez += " " + str;
+                ss += " " + h.ToString();
             }
 
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
+            ss += ") , String Names : (";
+            foreach (WeightedIdent w in this.Functions) 
             {
-                rez += " " + a.ToString();
+                ss += " " + w.ToString();
             }
 
-            rez += "]";
-            return rez;
+            ss += ")";
+            return ss;
         }
     }
 }

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="Hypo.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,48 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
-    using System.Collections.Generic;
-    using CSPGF.Grammar;
-
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Hypo class
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    internal class Hypo
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the Hypo class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="bind">Bind type</param>
+        /// <param name="str">Name of hypo</param>
+        /// <param name="type">Typ of hypo</param>
+        public Hypo(bool bind, string str, Type type)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
+            this.Bind = bind;
+            this.Name = str;
+            this.Type = type;
         }
 
         /// <summary>
-        /// Gets a list of Tokens
+        /// Gets a value indicating whether it binds or not
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        public bool Bind { get; private set; }
 
         /// <summary>
-        /// Gets a list of the Alternatives
+        /// Gets the name of the hypo
         /// </summary>
-        public Alternative[] Alternatives { get; private set; }
+        public string Name { get; private set; }
+
+        /// <summary>
+        /// Gets the type of the hypo
+        /// </summary>
+        public Type Type { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
-            {
-                rez += " " + str;
-            }
-
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
-            {
-                rez += " " + a.ToString();
-            }
-
-            rez += "]";
-            return rez;
+            return "Bound Type : " + this.Bind + " , Name : " + this.Name + " , Type : (" + Type + ")";
         }
     }
 }

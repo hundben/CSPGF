@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="ArgConstSymbol.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,44 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
-    using System.Collections.Generic;
-    using CSPGF.Grammar;
+    using System;
 
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Argument Constant Symbol?
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    [Serializable]
+    internal class ArgConstSymbol : Symbol
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the ArgConstSymbol class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="arg">Argument int</param>
+        /// <param name="cons">Constant int</param>
+        public ArgConstSymbol(int arg, int cons)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
+            this.Arg = arg;
+            this.Cons = cons;
         }
 
         /// <summary>
-        /// Gets a list of Tokens
+        /// Gets the argument
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        public int Arg { get; private set; }
 
         /// <summary>
-        /// Gets a list of the Alternatives
+        /// Gets the constant
         /// </summary>
-        public Alternative[] Alternatives { get; private set; }
+        public int Cons { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
-            {
-                rez += " " + str;
-            }
-
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
-            {
-                rez += " " + a.ToString();
-            }
-
-            rez += "]";
-            return rez;
+            return "Argument : " + this.Arg + " Constituent : " + this.Cons;
         }
     }
 }

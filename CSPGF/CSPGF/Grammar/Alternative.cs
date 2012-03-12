@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="Alternative.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,59 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
+    using System;
     using System.Collections.Generic;
-    using CSPGF.Grammar;
 
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Alternative class
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    [Serializable]
+    internal class Alternative
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the Alternative class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="alt1">Normal tokens</param>
+        /// <param name="alt2">List of prefixes</param>
+        public Alternative(string[] alt1, string[] alt2)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
+            this.Alt1 = alt1;
+            this.Alt2 = alt2;
         }
 
-        /// <summary>
-        /// Gets a list of Tokens
-        /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        // tokens = alt1, prefix = alt2
 
         /// <summary>
-        /// Gets a list of the Alternatives
+        /// Gets a list of tokens
         /// </summary>
-        public Alternative[] Alternatives { get; private set; }
+        public string[] Alt1 { get; private set; }  // Check: Rename to tokens instead?
+
+        /// <summary>
+        /// Gets a list of prefixes
+        /// </summary>
+        public string[] Alt2 { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
+            string sb = string.Empty;
+            foreach (string t in this.Alt1)
             {
-                rez += " " + str;
+                sb += t + " ";
             }
 
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
+            sb += "/ ";
+            foreach (string t in this.Alt2)
             {
-                rez += " " + a.ToString();
+                sb += t + " ";
             }
 
-            rez += "]";
-            return rez;
+            return sb;
         }
     }
 }

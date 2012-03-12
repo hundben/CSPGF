@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="Type.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,63 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
     using System.Collections.Generic;
-    using CSPGF.Grammar;
 
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Type class
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    internal class Type
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the Type class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="hypos">List of hypos</param>
+        /// <param name="str">Name of type</param>
+        /// <param name="exprs">List of expressions</param>
+        public Type(Hypo[] hypos, string str, Expr[] exprs)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
+            this.Hypos = hypos;
+            this.Name = str;
+            this.Exprs = exprs;
         }
 
         /// <summary>
-        /// Gets a list of Tokens
+        /// Gets the list of hypos
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        public Hypo[] Hypos { get; private set; }
 
         /// <summary>
-        /// Gets a list of the Alternatives
+        /// Gets the name of the type
         /// </summary>
-        public Alternative[] Alternatives { get; private set; }
+        public string Name { get; private set; }
+
+        /// <summary>
+        /// Gets the list of expressions
+        /// </summary>
+        public Expr[] Exprs { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
+            string ss = "Hypotheses : (";
+            foreach (Hypo h in this.Hypos)
             {
-                rez += " " + str;
+                ss += " " + h.ToString();
             }
 
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
+            ss += ") , Name : " + this.Name + " , Expressions : (";
+            foreach (Expr e in this.Exprs)
             {
-                rez += " " + a.ToString();
+                ss += " " + e.ToString();
             }
 
-            rez += "]";
-            return rez;
+            ss += ")";
+            return ss;
         }
     }
 }

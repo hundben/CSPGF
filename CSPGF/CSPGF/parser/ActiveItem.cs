@@ -32,8 +32,8 @@ namespace CSPGF.Parse
 {
     using System;
     using System.Collections.Generic;
-    using CncFun = CSPGF.PGF.CncFun;
-    using Symbol = CSPGF.PGF.Symbol;
+    using CncFun = CSPGF.Grammar.CncFun;
+    using Symbol = CSPGF.Grammar.Symbol;
 
     /// <summary>
     /// One active item.

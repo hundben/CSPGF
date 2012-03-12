@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="AppPattern.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,50 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
     using System.Collections.Generic;
-    using CSPGF.Grammar;
 
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Application Pattern
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    internal class AppPattern : Pattern // PApp
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the AppPattern class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="name">Name of AppPattern</param>
+        /// <param name="patts">List of patterns</param>
+        public AppPattern(string name, Pattern[] patts)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
+            this.Name = name;
+            this.Patts = patts;
         }
 
         /// <summary>
-        /// Gets a list of Tokens
+        /// Gets the name of the AppPattern
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets a list of the Alternatives
+        /// Gets the list of patterns.
         /// </summary>
-        public Alternative[] Alternatives { get; private set; }
+        public Pattern[] Patts { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
+            string ss = "Application pattern [ Name : " + this.Name + " , Patterns : (";
+            foreach (Pattern p in this.Patts) 
             {
-                rez += " " + str;
+                ss += " " + p.ToString();
             }
 
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
-            {
-                rez += " " + a.ToString();
-            }
-
-            rez += "]";
-            return rez;
+            ss += ")]";
+            return ss;
         }
     }
 }

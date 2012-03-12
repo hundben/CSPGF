@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="PGFException.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,32 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF
 {
-    using System.Collections.Generic;
-    using CSPGF.Grammar;
+    using System;
 
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Exception used to show that the linearizing process failed somehow.
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    [Serializable]
+    public class PGFException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the LinearizerException class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="str">The error</param>
+        public PGFException(string str)
+            : base(str)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
         }
 
         /// <summary>
-        /// Gets a list of Tokens
+        /// Returns a string with the error.
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
-
-        /// <summary>
-        /// Gets a list of the Alternatives
-        /// </summary>
-        public Alternative[] Alternatives { get; private set; }
-
-        /// <summary>
-        /// Pretty prints the contents of this class
-        /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
+        /// <returns>String with error</returns>
         public override string ToString()
         {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
-            {
-                rez += " " + str;
-            }
-
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
-            {
-                rez += " " + a.ToString();
-            }
-
-            rez += "]";
-            return rez;
+            return "PGFException: " + base.ToString();
         }
     }
 }

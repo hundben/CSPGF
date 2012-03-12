@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="Production.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,66 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
+    using System;
     using System.Collections.Generic;
-    using CSPGF.Grammar;
 
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Production, abstract class.
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    [Serializable]
+    internal abstract class Production
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the Production class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="sel">Selection id</param>
+        /// <param name="fId">Function id</param>
+        public Production(int sel, int fId)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
+            this.Sel = sel;
+            this.FId = fId;
         }
 
         /// <summary>
-        /// Gets a list of Tokens
+        /// Gets the selection
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        public int Sel { get; private set; }
 
         /// <summary>
-        /// Gets a list of the Alternatives
+        /// Gets the function id
         /// </summary>
-        public Alternative[] Alternatives { get; private set; }
+        public int FId { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
-        public override string ToString()
+        /// <returns>Returns a string containing debuginformation</returns>
+        public override abstract string ToString();
+
+        /// <summary>
+        /// Returns the list of domains.
+        /// </summary>
+        /// <returns>Returns the list of domains</returns>
+        public abstract int[] Domain();
+
+        /*public override bool Equals(object obj)
         {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
+            if (obj is Production)
             {
-                rez += " " + str;
+                Production p = (Production)obj;
+                if (this.FId == p.FId && this.Sel == p.Sel)
+                {
+                    return true;
+                }
             }
-
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
-            {
-                rez += " " + a.ToString();
-            }
-
-            rez += "]";
-            return rez;
+            return false;
         }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }*/
     }
 }

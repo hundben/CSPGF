@@ -33,7 +33,7 @@ namespace CSPGF.Linearize
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using CSPGF.PGF;
+    using CSPGF.Grammar;
     using CSPGF.Trees.Absyn;
 
     /// <summary>
@@ -44,7 +44,7 @@ namespace CSPGF.Linearize
         /// <summary>
         /// The current PGF-file
         /// </summary>
-        private PGFile pgf;
+        private PGF pgf;
 
         /// <summary>
         /// The current Concrete grammar
@@ -65,7 +65,7 @@ namespace CSPGF.Linearize
         /// </summary>
         /// <param name="pgf">PGF-file containing the concrete grammar</param>
         /// <param name="concrete">Concrete grammar</param>
-        public Linearizer(PGFile pgf, Concrete concrete)
+        public Linearizer(PGF pgf, Concrete concrete)
         {
             this.pgf = pgf;
             this.cnc = concrete;
@@ -636,7 +636,7 @@ namespace CSPGF.Linearize
                 }
                 else
                 {
-                    CSPGF.PGF.Type t = null;
+                    CSPGF.Grammar.Type t = null;
                     foreach (AbsFun abs in this.pgf.GetAbstract().AbsFuns)
                     {
                         if (f.Equals(abs.Name))
@@ -686,7 +686,7 @@ namespace CSPGF.Linearize
         /// </summary>
         /// <param name="t">Type to use</param>
         /// <returns>List of strings</returns>
-        private List<string> CatSkeleton(CSPGF.PGF.Type t)
+        private List<string> CatSkeleton(CSPGF.Grammar.Type t)
         {
             List<string> rez = new List<string>();
             rez.Add(t.Name);

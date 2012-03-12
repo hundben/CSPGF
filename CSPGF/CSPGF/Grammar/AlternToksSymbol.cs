@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="AlternToksSymbol.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,62 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
+    using System;
     using System.Collections.Generic;
-    using CSPGF.Grammar;
 
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Alternative Token Symbol
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    [Serializable]
+    internal class AlternToksSymbol : ToksSymbol // SymKP
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the AlternToksSymbol class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="toks">List of tokens</param>
+        /// <param name="alts">List of alternatives</param>
+        public AlternToksSymbol(string[] toks, Alternative[] alts)
+            : base(toks)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
+            this.Alts = alts;
         }
 
         /// <summary>
-        /// Gets a list of Tokens
+        /// Gets the list of Alternatives
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        public Alternative[] Alts { get; private set; }
 
         /// <summary>
-        /// Gets a list of the Alternatives
+        /// Returns true if terminal.
         /// </summary>
-        public Alternative[] Alternatives { get; private set; }
+        /// <returns>Returns true if terminal</returns>
+        public bool IsTerminal()
+        {
+            return true;
+        }
 
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
+            string sb = "pre { ";
+            foreach (string s in this.Tokens) 
             {
-                rez += " " + str;
+                sb += s + " ";
             }
 
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
+            sb += "; ";
+            foreach (Alternative a in this.Alts) 
             {
-                rez += " " + a.ToString();
+                sb += a + "; ";
             }
 
-            rez += "]";
-            return rez;
+            sb += "}";
+            return sb;
         }
     }
 }

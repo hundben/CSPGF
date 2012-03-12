@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="LambdaExp.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,48 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
-    using System.Collections.Generic;
-    using CSPGF.Grammar;
-
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Lambda Expression
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    internal class LambdaExp : Expr // EAbs
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the LambdaExp class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="type">Bind type</param>
+        /// <param name="varName">Variable name</param>
+        /// <param name="body">Lambda expression</param>
+        public LambdaExp(bool type, string varName, Expr body)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
+            this.BType = type;
+            this.VName = varName;
+            this.Body = body;
         }
 
         /// <summary>
-        /// Gets a list of Tokens
+        /// Gets a value indicating whether it binds or not
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        public bool BType { get; private set; }
 
         /// <summary>
-        /// Gets a list of the Alternatives
+        /// Gets the variable name
         /// </summary>
-        public Alternative[] Alternatives { get; private set; }
+        public string VName { get; private set; }
+
+        /// <summary>
+        /// Gets the expression
+        /// </summary>
+        public Expr Body { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
-            {
-                rez += " " + str;
-            }
-
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
-            {
-                rez += " " + a.ToString();
-            }
-
-            rez += "]";
-            return rez;
+            return "Lambda Expression : [Bound Type : " + this.BType + " , Name : " + this.VName + " , Body : " + this.Body.ToString() + "]";
         }
     }
 }

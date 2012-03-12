@@ -33,7 +33,7 @@ namespace CSPGF
     using System;
     using System.Collections.Generic;
     using CSPGF.Parse;
-    using CSPGF.PGF;
+    using CSPGF.Grammar;
 
     /// <summary>
     /// TODO: Update summary.
@@ -59,7 +59,7 @@ namespace CSPGF
         /// <summary>
         /// The pgf file, only one per instance of the translator.
         /// </summary>
-        private PGFile pgf;
+        private PGF pgf;
 
         /// <summary>
         /// The language last used to parse

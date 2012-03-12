@@ -34,7 +34,7 @@ namespace CSPGF.Parse
     using System.Collections.Generic;
     using System.Linq;
     using System.Text;
-    using CSPGF.PGF;
+    using CSPGF.Grammar;
 
     /// <summary>
     /// The chart. Stores production sets and new categories.

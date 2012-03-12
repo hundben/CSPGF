@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LeafKP.cs" company="None">
+// <copyright file="CncFun.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,64 +28,69 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
+    using System;
     using System.Collections.Generic;
-    using CSPGF.Grammar;
 
     /// <summary>
-    /// This class represent a 'pre' object.
-    /// That is either an alternative between multiple lists of tokens
-    /// with condition on the following words and a default alternative.
-    /// Example: pre( "parce que", "parce qu'"/"il", "parce qu'"/"on")
-    ///  will be represented by a LeafKP with
-    ///   defaultTokens = ["parce","que"]
-    ///   alternatives = [ (["parce", "qu'"], ["il"])
-    ///                  , (["parce", "qu'"], ["on"]) ]
+    /// Concrete function
     /// </summary>
-    internal class LeafKP : BracketedTokn
+    [Serializable]
+    internal class CncFun
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKP class.
+        /// Initializes a new instance of the CncFun class.
         /// </summary>
-        /// <param name="strs">List of strings</param>
-        /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        /// <param name="name">Name of function</param>
+        /// <param name="sequences">List of list of symbols</param>
+        public CncFun(string name, Symbol[][] sequences)
         {
-            this.DefaultTokens = strs;
-            this.Alternatives = alts;
+            this.Name = name;
+            this.Sequences = sequences;
         }
 
         /// <summary>
-        /// Gets a list of Tokens
+        /// Gets the name of the concrete function
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        public string Name { get; private set; } // TODO: This might not be needed. Isn't used in the haskell-version?
 
         /// <summary>
-        /// Gets a list of the Alternatives
+        /// Gets a list of list of symbols
         /// </summary>
-        public Alternative[] Alternatives { get; private set; }
+        public Symbol[][] Sequences { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
+        /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
+            string ss = "Name : " + this.Name + " , Indices : ";
+            foreach (Symbol[] s in this.Sequences) 
             {
-                rez += " " + str;
+                foreach (Symbol sym in s)
+                {
+                    ss += " " + s;
+                }
             }
 
-            rez += "] , Alternatives : [";
-            foreach (Alternative a in this.Alternatives) 
-            {
-                rez += " " + a.ToString();
-            }
-
-            rez += "]";
-            return rez;
+            return ss;
         }
+
+        /*public override bool Equals(object obj)
+        {
+            if (obj is CncFun)
+            {
+                CncFun fun = (CncFun)obj;
+                return this.Name.Equals(fun.Name) && this.Sequences.Equals(fun.Sequences);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }*/
     }
 }
