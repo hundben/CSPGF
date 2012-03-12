@@ -466,7 +466,7 @@ namespace CSPGF
                     expr = new ImplExp(ee);
                     break;
                 default:
-                    throw new Exception("Invalid tag for expressions : " + sel);
+                    throw new PGFException("Invalid tag for expressions : " + sel);
             }
 
             return expr;
@@ -528,7 +528,7 @@ namespace CSPGF
                     patt = new InaccPattern(e);
                     break;
                 default:
-                    throw new Exception("Invalid tag for patterns : " + sel);
+                    throw new PGFException("Invalid tag for patterns : " + sel);
             }
 
             return patt;
@@ -557,7 +557,7 @@ namespace CSPGF
                     ss = new FloatLit(d);
                     break;
                 default:
-                    throw new Exception("Incorrect literal tag " + sel);
+                    throw new PGFException("Incorrect literal tag " + sel);
             }
 
             return ss;
@@ -705,7 +705,7 @@ namespace CSPGF
 
                 // IOException -> Exception
                 default:
-                    throw new Exception("Invalid tag for symbols : " + sel);
+                    throw new PGFException("Invalid tag for symbols : " + sel);
             }
 
             if (debug) 
@@ -903,7 +903,7 @@ namespace CSPGF
 
                 // IOException -> Exception
                 default:
-                    throw new Exception("Invalid tag for productions : " + sel);
+                    throw new PGFException("Invalid tag for productions : " + sel);
             }
 
             if (debug) 

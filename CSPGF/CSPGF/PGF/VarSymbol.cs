@@ -27,7 +27,7 @@ namespace CSPGF.PGF
 
         public override string ToString() 
         {
-            return "";
+            return "Arg: " + this.arg + " Var: " + this.var;
         }
     }
 }

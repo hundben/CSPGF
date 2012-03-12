@@ -104,6 +104,7 @@
     <Compile Include="Parser\Variable.cs" />
     <Compile Include="Parser\Lambda.cs" />
     <Compile Include="Parser\Tree.cs" />
+    <Compile Include="PGF\PGFException.cs" />
     <Compile Include="PGF\PGFile.cs" />
     <Compile Include="PGF\PGFReader.cs" />
     <Compile Include="PGF\VarSymbol.cs" />
