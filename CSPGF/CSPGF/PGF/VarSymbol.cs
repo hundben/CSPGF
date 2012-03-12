@@ -14,10 +14,10 @@ namespace CSPGF.PGF
     /// <summary>
     /// TODO: Update summary.
     /// </summary>
-    public class VarSymbol : Symbol
+    internal class VarSymbol : Symbol
     {
-        int arg { get; private set; }     // Int argument index
-        int var { get; private set; }     // Int variable number
+        public int arg { get; private set; }     // Int argument index
+        public int var { get; private set; }     // Int variable number
 
         public VarSymbol(int arg, int var)
         {
@@ -25,7 +25,7 @@ namespace CSPGF.PGF
             this.var = var;
         }
 
-        public string ToString() 
+        public override string ToString() 
         {
             return "";
         }

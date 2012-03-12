@@ -106,6 +106,7 @@
     <Compile Include="Parser\Tree.cs" />
     <Compile Include="PGF\PGFile.cs" />
     <Compile Include="PGF\PGFReader.cs" />
+    <Compile Include="PGF\VarSymbol.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PGF\AbsCat.cs" />
     <Compile Include="PGF\AbsFun.cs" />
