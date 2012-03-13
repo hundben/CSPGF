@@ -231,5 +231,20 @@ namespace CSPGF
 
             return string.Empty;
         }
+
+
+        
+        /// <summary>
+        /// Checks if the current OS is *NIX 
+        /// </summary>
+        public bool IsLinux
+        {
+            get
+            {
+                int p = (int)Environment.OSVersion.Platform;
+                return (p == 4) || (p == 6) || (p == 128);
+            }
+        }
+
     }
 }
