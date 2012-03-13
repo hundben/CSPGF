@@ -36,7 +36,7 @@ namespace CSPGF
     /// <summary>
     /// Portable Grammar Format
     /// </summary>
-    internal class PGF
+    public class PGF
     {
         /// <summary>
         /// Major version number
@@ -71,7 +71,7 @@ namespace CSPGF
         /// <param name="flags">Flags for the PGF object</param>
         /// <param name="abstr">Abstract grammar</param>
         /// <param name="concretes">Concrete grammars</param>
-        public PGF(int majorVersion, int minorVersion, Dictionary<string, RLiteral> flags, Abstract abstr, Dictionary<string, Concrete> concretes)
+        internal PGF(int majorVersion, int minorVersion, Dictionary<string, RLiteral> flags, Abstract abstr, Dictionary<string, Concrete> concretes)
         {
             this.majorVersion = majorVersion;
             this.minorVersion = minorVersion;
@@ -173,6 +173,16 @@ namespace CSPGF
             }
 
             return tmp;
+        }
+        
+        /// <summary>
+        /// Reads a PGF-file and returns a PGF-object.
+        /// </summary>
+        /// <param name="filename">Name of PGF-file</param>
+        /// <returns></returns>
+        public PGF Load(string filename)
+        {
+            return new PGFReader(filename).ReadPGF();
         }
     }
 }
