@@ -44,7 +44,7 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="sel">Selection id</param>
         /// <param name="fId">Function id</param>
-        public Production(int sel, int fId)
+        protected Production(int sel, int fId)
         {
             this.Sel = sel;
             this.FId = fId;

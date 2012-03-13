@@ -32,8 +32,8 @@ namespace CSPGF
 {
     using System;
     using System.Collections.Generic;
-    using CSPGF.Parse;
     using CSPGF.Grammar;
+    using CSPGF.Parse;
 
     /// <summary>
     /// TODO: Update summary.
@@ -41,6 +41,11 @@ namespace CSPGF
     /// </summary>
     public class AdvancedTranslator
     {
+        /// <summary>
+        /// The pgf file, only one per instance of the translator.
+        /// </summary>
+        private readonly PGF pgf;
+
         /// <summary>
         /// The start category
         /// </summary>
@@ -55,11 +60,6 @@ namespace CSPGF
         /// Current linearizer
         /// </summary>
         private Linearize.Linearizer currentLin;
-
-        /// <summary>
-        /// The pgf file, only one per instance of the translator.
-        /// </summary>
-        private PGF pgf;
 
         /// <summary>
         /// The language last used to parse
@@ -231,20 +231,15 @@ namespace CSPGF
 
             return string.Empty;
         }
-
-
         
         /// <summary>
-        /// Checks if the current OS is *NIX 
+        /// Checks if the current OS is *NIX
         /// </summary>
-        public bool IsLinux
+        /// <returns>True if *NIX</returns>
+        public bool IsLinux()
         {
-            get
-            {
                 int p = (int)Environment.OSVersion.Platform;
                 return (p == 4) || (p == 6) || (p == 128);
-            }
         }
-
     }
 }

@@ -41,16 +41,6 @@ namespace CSPGF
     internal class PGFReader
     {
         /// <summary>
-        /// True if debuginformation should be written
-        /// </summary>
-        private static bool debug = false;
-
-        /// <summary>
-        /// Stream to write debuginformation to
-        /// </summary>
-        private StreamWriter dbgwrite;
-
-        /// <summary>
         /// Main inputstream to read from
         /// </summary>
         private MemoryStream inputstream;
@@ -93,11 +83,6 @@ namespace CSPGF
         /// <returns>PGF object</returns>
         public PGF ReadPGF()
         {
-            if (debug)
-            {
-                this.dbgwrite = new StreamWriter("./dbg.txt", false);
-            }
-
             Dictionary<string, int> index = null;
             int[] ii = new int[2];
             for (int i = 0; i < 2; i++) 
@@ -108,23 +93,11 @@ namespace CSPGF
                 ii[i] = tmp;
             }
 
-            if (debug) 
-            {
-                this.dbgwrite.WriteLine("PGF version : " + ii[0] + "." + ii[1]);
-            }
-
             // Reading the global flags
             Dictionary<string, RLiteral> flags = this.GetListFlag();
             if (flags.ContainsKey("index")) 
             {
                 index = this.ReadIndex(((StringLit)flags["index"]).Value);
-                if (debug) 
-                {
-                    foreach (KeyValuePair<string, int> kp in index) 
-                    {
-                        this.dbgwrite.WriteLine(kp.Key + ", " + kp.Value);
-                    }
-                }
             }
 
             // Reading the abstract
@@ -137,11 +110,6 @@ namespace CSPGF
             for (int i = 0; i < numConcretes; i++) 
             {
                 string name = this.GetIdent();
-                if (debug) 
-                {
-                    this.dbgwrite.WriteLine("Language " + name);
-                }
-
                 if (this.languages == null || this.languages.Remove(name)) 
                 {
                     Concrete tmp = this.GetConcrete(name, startCat);
@@ -153,10 +121,6 @@ namespace CSPGF
                     {
                         // TODO: CHECK! Maybe this will work?
                         this.inputstream.Seek(index[name], SeekOrigin.Current);
-                        if (debug) 
-                        {
-                            this.dbgwrite.WriteLine("Skipping " + name);
-                        }
                     }
                     else 
                     {
@@ -224,11 +188,6 @@ namespace CSPGF
         private Abstract GetAbstract()
         {
             string name = this.GetIdent();
-            if (debug) 
-            {
-                this.dbgwrite.WriteLine("Abstract syntax [" + name + "]");
-            }
-
             Dictionary<string, RLiteral> flags = this.GetListFlag();
             AbsFun[] absFuns = this.GetListAbsFun();
             AbsCat[] absCats = this.GetListAbsCat();
@@ -269,11 +228,6 @@ namespace CSPGF
         private AbsFun GetAbsFun()
         {
             string name = this.GetIdent();
-            if (debug)
-            {
-                this.dbgwrite.WriteLine("AbsFun: '" + name + "'");
-            }
-
             CSPGF.Grammar.Type t = this.GetType2();
             int i = this.GetInt();
             int has_equations = this.inputstream.ReadByte();
@@ -289,11 +243,6 @@ namespace CSPGF
 
             double weight = this.GetDouble();
             AbsFun f = new AbsFun(name, t, i, equations, weight);
-            if (debug) 
-            {
-                this.dbgwrite.WriteLine("/AbsFun: " + f);
-            }
-
             return f;
         }
 
@@ -365,11 +314,6 @@ namespace CSPGF
             string returnCat = this.GetIdent();
             Expr[] exprs = this.GetListExpr();
             CSPGF.Grammar.Type t = new CSPGF.Grammar.Type(hypos, returnCat, exprs);
-            if (debug) 
-            {
-                this.dbgwrite.WriteLine("Type: " + t);
-            }
-
             return t;
         }
 
@@ -380,7 +324,7 @@ namespace CSPGF
         private Hypo GetHypo()
         {
             int btype = this.inputstream.ReadByte();
-            bool b = btype == 0 ? false : true;
+            bool b = btype != 0;
             string varName = this.GetIdent();
             CSPGF.Grammar.Type t = this.GetType2();
             return new Hypo(b, varName, t);
@@ -430,7 +374,7 @@ namespace CSPGF
             {
                 case 0: // lambda abstraction
                     int bt = this.inputstream.ReadByte();
-                    bool btype = bt == 0 ? false : true;
+                    bool btype = bt != 0;
                     string varName = this.GetIdent();
                     Expr e1 = this.GetExpr();
                     expr = new LambdaExp(btype, varName, e1);
@@ -571,26 +515,10 @@ namespace CSPGF
         /// <returns>The concrete grammar</returns>
         private Concrete GetConcrete(string name, string startCat)
         {
-            if (debug)
-            {
-                this.dbgwrite.WriteLine("Concrete: " + name);
-                this.dbgwrite.WriteLine("Concrete: Reading flags");
-            }
-
             Dictionary<string, RLiteral> flags = this.GetListFlag();
 
             // We don't use the print names, but we need to read them to skip them
-            if (debug) 
-            {
-                this.dbgwrite.WriteLine("Concrete: Skiping print names");
-            }
-
             this.GetListPrintName();
-            if (debug) 
-            {
-                this.dbgwrite.WriteLine("Concrete: Reading sequences");
-            }
-
             Symbol[][] seqs = this.GetListSequence();
             CncFun[] cncFuns = this.GetListCncFun(seqs);
 
@@ -670,11 +598,6 @@ namespace CSPGF
         private Symbol GetSymbol()
         {
             int sel = this.inputstream.ReadByte();
-            if (debug) 
-            {
-                this.dbgwrite.WriteLine("Symbol: type=" + sel);
-            }
-
             Symbol symb = null;
             switch (sel) 
             {
@@ -703,11 +626,6 @@ namespace CSPGF
                 // IOException -> Exception
                 default:
                     throw new PGFException("Invalid tag for symbols : " + sel);
-            }
-
-            if (debug) 
-            {
-                this.dbgwrite.WriteLine("/Symbol: " + symb);
             }
 
             return symb;
@@ -880,11 +798,6 @@ namespace CSPGF
         private Production GetProduction(int leftCat, CncFun[] cncFuns)
         {
             int sel = this.inputstream.ReadByte();
-            if (debug)
-            {
-                this.dbgwrite.WriteLine("Production: type=" + sel);
-            }
-
             Production prod = null;
             switch (sel) 
             {
@@ -897,15 +810,8 @@ namespace CSPGF
                     int id = this.GetInt();
                     prod = new CoerceProduction(leftCat, id);
                     break;
-
-                // IOException -> Exception
                 default:
                     throw new PGFException("Invalid tag for productions : " + sel);
-            }
-
-            if (debug) 
-            {
-                this.dbgwrite.WriteLine("/Production: " + prod);
             }
 
             return prod;
@@ -950,15 +856,12 @@ namespace CSPGF
         {
             int npoz = this.GetInt();
             Dictionary<string, CncCat> cncCats = new Dictionary<string, CncCat>();
-            string name;
-            int firstFID, lastFID;
-            string[] ss;
             for (int i = 0; i < npoz; i++) 
             {
-                name = this.GetIdent();
-                firstFID = this.GetInt();
-                lastFID = this.GetInt();
-                ss = this.GetListString();
+                string name = this.GetIdent();
+                int firstFID = this.GetInt();
+                int lastFID = this.GetInt();
+                string[] ss = this.GetListString();
                 cncCats.Add(name, new CncCat(name, firstFID, lastFID, ss));
             }
 
@@ -1036,8 +939,6 @@ namespace CSPGF
             int numChar = this.GetInt();
             byte[] bytes = new byte[numChar];
             this.inputstream.Read(bytes, 0, numChar);
-
-            // TODO: check if we have to change encoding or let String fix it instead!
             System.Text.Encoding enc = System.Text.Encoding.ASCII;
             return enc.GetString(bytes);
         }
