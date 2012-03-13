@@ -85,7 +85,7 @@ namespace CSPGF
         /// </summary>
         /// <param name="name">Name of grammar</param>
         /// <returns>Concrete grammar</returns>
-        public Concrete GetConcrete(string name)
+        internal Concrete GetConcrete(string name)
         {
             Concrete conc;
             if (!this.concretes.TryGetValue(name, out conc)) 
@@ -118,7 +118,7 @@ namespace CSPGF
         /// Returns the abstract grammar.
         /// </summary>
         /// <returns>Abstract grammar</returns>
-        public Abstract GetAbstract()
+        internal Abstract GetAbstract()
         {
             return this.abstr;
         }
