@@ -685,14 +685,11 @@ namespace CSPGF
                     int i2 = this.GetInt();
                     symb = new ArgConstSymbol(i1, i2);
                     break;
-                case 2: // Variable (Not implemented)
+                case 2: // Variable
                     int arg = this.GetInt();
                     int var = this.GetInt();        
                     symb = new VarSymbol(arg, var);
                     break;
-                    // TODO 
-                    // UnsupportedOperationException -> Exception
-                    // throw new Exception("Var symbols are not supported yet");
                 case 3: // sequence of tokens
                     string[] strs = this.GetListString();
                     symb = new ToksSymbol(strs);
