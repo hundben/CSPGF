@@ -73,29 +73,5 @@ namespace CSPGF.Grammar
         {
             return "Coercion(" + this.FId + " -> " + this.InitId + ")";
         }
-
-        /// <summary>
-        /// Checks if the contents of two CoerceProductions is equal.
-        /// </summary>
-        /// <param name="o">Production to compare to</param>
-        /// <returns>True if equal</returns>
-        /*public override bool Equals(object o)
-        {
-            if (o is CoerceProduction) 
-            {
-                return ((CoerceProduction)o).InitId == this.InitId;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Returns the hashcode for this object.
-        /// </summary>
-        /// <returns>Returns the hashcode for this object</returns>
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }*/
     }
 }

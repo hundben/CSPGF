@@ -42,12 +42,12 @@ namespace Speech
         /// <summary>
         /// Private SpeechRecognitionEngine
         /// </summary>
-        private SpeechRecognitionEngine sre;
+        private readonly SpeechRecognitionEngine sre;
 
         /// <summary>
         /// Private SpeechSynthesizer
         /// </summary>
-        private SpeechSynthesizer ss;
+        private readonly SpeechSynthesizer ss;
 
         /// <summary>
         /// Initializes a new instance of the Speech class.

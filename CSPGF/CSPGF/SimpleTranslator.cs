@@ -40,12 +40,12 @@ namespace CSPGF
         /// <summary>
         /// Version of the API
         /// </summary>
-        private int version = 1;
+        private const int version = 1;
 
         /// <summary>
         /// PGF grammar
         /// </summary>
-        private PGF pgf;
+        private readonly PGF pgf;
 
         /// <summary>
         /// Internal ParseState
@@ -133,7 +133,7 @@ namespace CSPGF
         /// <returns>Integer containing the version number</returns>
         public int GetVersion()
         {
-            return this.version;
+            return version;
         }
     }
 }

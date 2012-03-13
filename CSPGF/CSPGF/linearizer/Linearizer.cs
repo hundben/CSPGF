@@ -44,12 +44,12 @@ namespace CSPGF.Linearize
         /// <summary>
         /// The current PGF-file
         /// </summary>
-        private PGF pgf;
+        private readonly PGF pgf;
 
         /// <summary>
         /// The current Concrete grammar
         /// </summary>
-        private Concrete cnc;
+        private readonly Concrete cnc;
 
         /// <summary>
         /// Linearization productions

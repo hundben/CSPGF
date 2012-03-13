@@ -30,8 +30,6 @@
 
 namespace CSPGF.Grammar
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Application Pattern
     /// </summary>
@@ -67,7 +65,7 @@ namespace CSPGF.Grammar
             string ss = "Application pattern [ Name : " + this.Name + " , Patterns : (";
             foreach (Pattern p in this.Patts) 
             {
-                ss += " " + p.ToString();
+                ss += " " + p;
             }
 
             ss += ")]";

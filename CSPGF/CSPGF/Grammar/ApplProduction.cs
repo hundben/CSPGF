@@ -31,7 +31,6 @@
 namespace CSPGF.Grammar
 {
     using System;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Application production
@@ -86,50 +85,5 @@ namespace CSPGF.Grammar
         {
             return this.dom;
         }
-
-        /// <summary>
-        /// Checks if the contents of two ApplProductions are equal.
-        /// </summary>
-        /// <param name="o">Object to compare to</param>
-        /// <returns>True if equal</returns>
-        /*public override bool Equals(object o)
-        {
-            // TODO: Fix? 
-            if (o is ApplProduction) 
-            {
-                ApplProduction newo = (ApplProduction)o;
-
-                if (!newo.Function.Equals(this.Function)) 
-                {
-                    return false;
-                }
-
-                if (this.dom.Length != newo.dom.Length) 
-                {
-                    return false;
-                }
-
-                for (int i = 0; i < this.dom.Length; i++) 
-                {
-                    if (this.dom[i] != newo.dom[i]) 
-                    {
-                        return false;
-                    }
-                }
-
-                return true;
-            }
-
-            return false;
-        }*/
-        
-        /// <summary>
-        /// Returns the hashcode for this object.
-        /// </summary>
-        /// <returns>Returns the hashcode for this object</returns>
-        /*public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }*/
     }
 }

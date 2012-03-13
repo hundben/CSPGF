@@ -62,7 +62,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            return "Expression application [Left-hand side : ( " + this.LExp.ToString() + "), Right-hand side : (" + this.RExp.ToString() + ")]";
+            return "Expression application [Left-hand side : ( " + this.LExp + "), Right-hand side : (" + this.RExp + ")]";
         }
     }
 }

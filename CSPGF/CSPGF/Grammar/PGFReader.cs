@@ -43,12 +43,12 @@ namespace CSPGF
         /// <summary>
         /// Main inputstream to read from
         /// </summary>
-        private MemoryStream inputstream;
+        private readonly MemoryStream inputstream;
 
         /// <summary>
         /// Binarystream used by this class
         /// </summary>
-        private BinaryReader binreader;
+        private readonly BinaryReader binreader;
 
         /// <summary>
         /// Desired languages

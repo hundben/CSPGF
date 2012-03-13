@@ -812,7 +812,6 @@ namespace CSPGF.Trees
                             break;
                         case 2: // In <YYINITIAL> Recognized '[ \t\r\n\f]',	Shortest string "\t"
                             /* ignore white space. */
-                            ;
                             break;
                         case 3: // In <YYINITIAL> Recognized '"\""',	Shortest string "\""
                             BEGIN(STRING);

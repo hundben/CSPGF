@@ -31,7 +31,6 @@
 namespace CSPGF.Grammar
 {
     using System;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Concrete category are a maping from category names (abstract-categories)
