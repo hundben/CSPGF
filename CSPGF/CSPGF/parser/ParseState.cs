@@ -296,9 +296,10 @@ namespace CSPGF.Parse
                 int cat = this.chart.GetCategory(a, l, j, this.position);
                 if (cat == -1) 
                 {
-                    //COMPLETE
+                    // COMPLETE
                     int n = this.chart.GenerateFreshCategory(a, l, j, this.position);
-                    //COMBINE
+
+                    // COMBINE
                     foreach (ActiveItem ai in this.GetActiveSet(a, l, this.active[j]))  
                     {
                         ActiveItem ip = ai;
@@ -317,7 +318,7 @@ namespace CSPGF.Parse
                 }
                 else 
                 {
-                    //PREDICT
+                    // PREDICT
                     HashSet<ActiveItem> items = this.GetActiveSet(cat, this.active[this.position]);
                     foreach (ActiveItem ai in items) 
                     {

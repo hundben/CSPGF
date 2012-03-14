@@ -502,7 +502,7 @@ namespace CSPGF.Linearize
             Dictionary<int, HashSet<Production>> prods;
             if (!this.linProd.TryGetValue(f, out prods))
             {
-                List<Tree> newes = new List<Tree> {new Literal(new StringLiteral(f))};
+                List<Tree> newes = new List<Tree> { new Literal(new StringLiteral(f)) };
                 Console.WriteLine("Function " + f + " does not have a linearization !");
                 return this.Apply(xs, mbcty, nextfid, "_V", newes);
             }
@@ -713,13 +713,13 @@ namespace CSPGF.Linearize
             {
                 string[] toks = ((AlternToksSymbol)s).Tokens;
                 Alternative[] alts = ((AlternToksSymbol)s).Alts;
-                List<BracketedTokn> v = new List<BracketedTokn> {new LeafKP(toks, alts)};
+                List<BracketedTokn> v = new List<BracketedTokn> { new LeafKP(toks, alts) };
                 return v;
             }
             else
             {
                 string[] toks = ((ToksSymbol)s).Tokens;
-                List<BracketedTokn> v = new List<BracketedTokn> {new LeafKS(toks)};
+                List<BracketedTokn> v = new List<BracketedTokn> { new LeafKS(toks) };
                 return v;
             }
         }
@@ -754,7 +754,7 @@ namespace CSPGF.Linearize
                 return argLin;
             }
 
-            List<BracketedTokn> bt = new List<BracketedTokn> {new Bracket(cat, fid, r, argLin)};
+            List<BracketedTokn> bt = new List<BracketedTokn> { new Bracket(cat, fid, r, argLin) };
             return bt;
         }
 

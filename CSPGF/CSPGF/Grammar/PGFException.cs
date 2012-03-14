@@ -28,10 +28,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System;
-
 namespace CSPGF.Grammar
 {
+    using System;
+
     /// <summary>
     /// Exception used to show that the linearizing process failed somehow.
     /// </summary>
@@ -39,7 +39,7 @@ namespace CSPGF.Grammar
     public class PGFException : Exception
     {
         /// <summary>
-        /// Initializes a new instance of the LinearizerException class.
+        /// Initializes a new instance of the PGFException class.
         /// </summary>
         /// <param name="str">The error</param>
         public PGFException(string str)

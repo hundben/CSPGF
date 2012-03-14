@@ -64,7 +64,7 @@ namespace CSPGF
         private readonly Dictionary<string, Concrete> concretes;
 
         /// <summary>
-        /// Initializes a new instance of the PGFile class.
+        /// Initializes a new instance of the PGF class.
         /// </summary>
         /// <param name="majorVersion">Major version number</param>
         /// <param name="minorVersion">Minor version number</param>
@@ -179,7 +179,7 @@ namespace CSPGF
         /// Reads a PGF-file and returns a PGF-object.
         /// </summary>
         /// <param name="filename">Name of PGF-file</param>
-        /// <returns></returns>
+        /// <returns>PGF object</returns>
         public PGF Load(string filename)
         {
             return new PGFReader(filename).ReadPGF();

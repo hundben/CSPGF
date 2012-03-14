@@ -28,11 +28,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using CSPGF.Grammar;
-
 namespace CSPGF
 {
     using System.Collections.Generic;
+    using Grammar;
     
     /// <summary>
     /// API for others to use :D
@@ -42,7 +41,7 @@ namespace CSPGF
         /// <summary>
         /// Version of the API
         /// </summary>
-        private const int version = 1;
+        private const int Version = 1;
 
         /// <summary>
         /// PGF grammar
@@ -135,7 +134,7 @@ namespace CSPGF
         /// <returns>Integer containing the version number</returns>
         public int GetVersion()
         {
-            return version;
+            return Version;
         }
     }
 }

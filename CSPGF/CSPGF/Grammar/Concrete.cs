@@ -38,14 +38,14 @@ namespace CSPGF.Grammar
     internal class Concrete
     {
         /// <summary>
-        /// Concrete grammar flags
-        /// </summary>
-        private Dictionary<string, RLiteral> flags;
-
-        /// <summary>
         /// Starting category
         /// </summary>
         private readonly string startCat;
+
+        /// <summary>
+        /// Concrete grammar flags
+        /// </summary>
+        private Dictionary<string, RLiteral> flags;
 
         /// <summary>
         /// Initializes a new instance of the Concrete class.

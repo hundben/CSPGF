@@ -32,14 +32,19 @@ namespace CSPGF
 {
     using System;
     using System.Collections.Generic;
-    using Parse;
     using Grammar;
+    using Parse;
 
     /// <summary>
     /// Generates random sentences.
     /// </summary>
     internal class Generator
     {
+        /// <summary>
+        /// Concrete to use
+        /// </summary>
+        private readonly Concrete concrete;
+
         /// <summary>
         /// Parsestate to generate sentences with
         /// </summary>
@@ -49,11 +54,6 @@ namespace CSPGF
         /// Random number generator
         /// </summary>
         private Random ran;
-
-        /// <summary>
-        /// Concrete to use
-        /// </summary>
-        private readonly Concrete concrete;
 
         /// <summary>
         /// Initializes a new instance of the Generator class.
@@ -83,8 +83,7 @@ namespace CSPGF
             List<Trees.Absyn.Tree> list = this.ps.GetTrees();
             if (list.Count == 0)
             {
-                return Gen();
-
+                return this.Gen();
             }
             else
             {

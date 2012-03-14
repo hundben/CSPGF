@@ -28,11 +28,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System.Collections.Generic;
-using System.IO;
-
 namespace CSPGF.Grammar
 {
+    using System.Collections.Generic;
+    using System.IO;
+
     /// <summary>
     /// Reads an PGF object
     /// </summary>
