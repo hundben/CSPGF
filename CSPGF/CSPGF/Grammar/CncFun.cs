@@ -70,7 +70,7 @@ namespace CSPGF.Grammar
             {
                 foreach (Symbol sym in s)
                 {
-                    ss += " " + s;
+                    ss += " " + sym;
                 }
             }
 

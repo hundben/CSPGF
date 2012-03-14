@@ -820,6 +820,7 @@ namespace CSPGF.Grammar
             return tmp;
         }
 
+        // TODO: Never actually used!
         /// <summary>
         /// Reads a Concrete Category
         /// </summary>

@@ -2,12 +2,10 @@
  
 namespace CSPGF.Trees
 {
-    using System;
     using System.Text; // for StringBuilder
-    using CSPGF.Trees.Absyn;
 
-  #region Pretty-printer class
-  public class PrettyPrinter
+    #region Pretty-printer class
+    public class PrettyPrinter
   {
     #region Misc rendering functions
     // You may wish to change these:
