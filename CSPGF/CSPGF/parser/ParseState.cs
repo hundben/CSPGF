@@ -30,9 +30,8 @@
 
 namespace CSPGF.Parse
 {
-    using System;
     using System.Collections.Generic;
-    using CSPGF.Grammar;
+    using Grammar;
 
     /// <summary>
     /// The parsestate class.
@@ -120,11 +119,11 @@ namespace CSPGF.Parse
         /// Get the trees.
         /// </summary>
         /// <returns>A list of the trees.</returns>
-        public List<CSPGF.Trees.Absyn.Tree> GetTrees()
+        public List<Trees.Absyn.Tree> GetTrees()
         {
             TreeBuilder tb = new TreeBuilder();
             TreeConverter tc = new TreeConverter();
-            List<CSPGF.Trees.Absyn.Tree> trees = new List<CSPGF.Trees.Absyn.Tree>();
+            List<Trees.Absyn.Tree> trees = new List<Trees.Absyn.Tree>();
             foreach (Tree t in tb.BuildTrees(this.chart, this.startCat, this.position)) 
             {
                 trees.Add(tc.Intermediate2Abstract(t));

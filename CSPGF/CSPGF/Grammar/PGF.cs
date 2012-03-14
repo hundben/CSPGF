@@ -31,7 +31,7 @@
 namespace CSPGF
 {
     using System.Collections.Generic;
-    using CSPGF.Grammar;
+    using Grammar;
 
     /// <summary>
     /// Portable Grammar Format
@@ -41,27 +41,27 @@ namespace CSPGF
         /// <summary>
         /// Major version number
         /// </summary>
-        private int majorVersion;
+        private readonly int majorVersion;
 
         /// <summary>
         /// Minor version number
         /// </summary>
-        private int minorVersion;
+        private readonly int minorVersion;
 
         /// <summary>
         /// Flags for the PGF-object
         /// </summary>
-        private Dictionary<string, RLiteral> flags;
+        private readonly Dictionary<string, RLiteral> flags;
 
         /// <summary>
         /// Abstract grammar
         /// </summary>
-        private Abstract abstr;
+        private readonly Abstract abstr;
 
         /// <summary>
         /// Dictionary containing concrete grammars and their names.
         /// </summary>
-        private Dictionary<string, Concrete> concretes;
+        private readonly Dictionary<string, Concrete> concretes;
 
         /// <summary>
         /// Initializes a new instance of the PGFile class.
@@ -147,10 +147,10 @@ namespace CSPGF
             string ss = "PGF : \nMajor version : " + this.majorVersion + ", Minor version : " + this.minorVersion + "\n" + "Flags : (";
             foreach (string flagName in this.flags.Keys) 
             {
-                ss += flagName + ": " + this.flags[flagName].ToString() + "\n";
+                ss += flagName + ": " + this.flags[flagName] + "\n";
             }
 
-            ss += ")\nAbstract : (" + this.abstr.ToString() + ")\nConcretes : (";
+            ss += ")\nAbstract : (" + this.abstr + ")\nConcretes : (";
             foreach (string name in this.concretes.Keys) 
             {
                 ss += name + ", ";

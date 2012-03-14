@@ -69,7 +69,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            return "Lambda Expression : [Bound Type : " + this.BType + " , Name : " + this.VName + " , Body : " + this.Body.ToString() + "]";
+            return "Lambda Expression : [Bound Type : " + this.BType + " , Name : " + this.VName + " , Body : " + this.Body + "]";
         }
     }
 }

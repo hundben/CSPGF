@@ -28,10 +28,10 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF
-{
-    using System;
+using System;
 
+namespace CSPGF.Grammar
+{
     /// <summary>
     /// Exception used to show that the linearizing process failed somehow.
     /// </summary>

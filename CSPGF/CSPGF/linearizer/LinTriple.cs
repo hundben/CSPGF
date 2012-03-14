@@ -71,7 +71,7 @@ namespace CSPGF.Linearize
         /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            string rez = "id : " + this.FId + " cncType : (" + this.CncType.ToString() + ") bracketedToken :[" + this.LinTable.ToString() + "]";
+            string rez = "id : " + this.FId + " cncType : (" + this.CncType + ") bracketedToken :[" + this.LinTable + "]";
             return rez;
         }
     }

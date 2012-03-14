@@ -30,7 +30,6 @@
 
 namespace CSPGF.Parse
 {
-    using System;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -209,7 +208,7 @@ namespace CSPGF.Parse
             foreach (string key in this.child.Keys)
             {
                 ParseTrie t = this.child[key];
-                temp += key + "[" + t.ToString() + "]";
+                temp += key + "[" + t + "]";
             }
 
             temp += "]";

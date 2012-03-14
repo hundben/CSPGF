@@ -30,11 +30,8 @@
 
 namespace CSPGF.Parse
 {
-    using System;
     using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
-    using CSPGF.Grammar;
+    using Grammar;
 
     /// <summary>
     /// The chart. Stores production sets and new categories.
@@ -242,7 +239,7 @@ namespace CSPGF.Parse
                 s += " < PRODUCTION SET :" + i + " >\n";
                 foreach (Production p in this.productionSets[i])
                 {
-                    s += p.ToString() + "\n";
+                    s += p + "\n";
                 }
             }
 
@@ -250,7 +247,7 @@ namespace CSPGF.Parse
             foreach (KeyValuePair<string, int> ints in this.categoryBookKeeperHash) 
             {
                 // TODO add ToString on Category I guess? :D
-                s += ints.Key.ToString() + " -> " + ints.Value + '\n';
+                s += ints.Key + " -> " + ints.Value + '\n';
             }
 #endif
             return s;

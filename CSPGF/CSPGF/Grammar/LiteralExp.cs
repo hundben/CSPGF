@@ -55,7 +55,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            return "Literal Expression : " + this.Literal.ToString();
+            return "Literal Expression : " + this.Literal;
         }
     }
 }

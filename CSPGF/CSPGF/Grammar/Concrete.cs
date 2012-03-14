@@ -45,7 +45,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Starting category
         /// </summary>
-        private string startCat;
+        private readonly string startCat;
 
         /// <summary>
         /// Initializes a new instance of the Concrete class.

@@ -31,7 +31,7 @@
 namespace CSPGF.Linearize
 {
     using System.Collections.Generic;
-    using CSPGF.Grammar;
+    using Grammar;
 
     /// <summary>
     /// Application Result

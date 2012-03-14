@@ -28,6 +28,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using CSPGF.Grammar;
+
 namespace CSPGF
 {
     using System.Collections.Generic;
@@ -116,7 +118,7 @@ namespace CSPGF
                 this.to = to;
             }
 
-            List<CSPGF.Trees.Absyn.Tree> trees = this.ps.GetTrees();
+            List<Trees.Absyn.Tree> trees = this.ps.GetTrees();
             if (trees.Count != 0)
             {
                 return this.lin.LinearizeString(trees[0]);

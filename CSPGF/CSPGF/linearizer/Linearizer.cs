@@ -33,8 +33,8 @@ namespace CSPGF.Linearize
     using System;
     using System.Collections.Generic;
     using System.Linq;
-    using CSPGF.Grammar;
-    using CSPGF.Trees.Absyn;
+    using Grammar;
+    using Trees.Absyn;
 
     /// <summary>
     /// Linearizer for use with the Parser
@@ -54,7 +54,7 @@ namespace CSPGF.Linearize
         /// <summary>
         /// Linearization productions
         /// </summary>
-        private Dictionary<string, Dictionary<int, HashSet<Production>>> linProd;
+        private readonly Dictionary<string, Dictionary<int, HashSet<Production>>> linProd;
 
         /// <summary>
         /// Initializes a new instance of the Linearizer class.
@@ -144,8 +144,7 @@ namespace CSPGF.Linearize
                         foreach (string str in vs)
                         {
                             Dictionary<int, HashSet<Production>> htemp = new Dictionary<int, HashSet<Production>>();
-                            HashSet<Production> singleton = new HashSet<Production>();
-                            singleton.Add(prod);
+                            HashSet<Production> singleton = new HashSet<Production> {prod};
                             htemp.Add(res, singleton);
                             if (vtemp.ContainsKey(str))
                             {
@@ -477,8 +476,7 @@ namespace CSPGF.Linearize
             else
             {
                 xs.AddRange(ys);
-                List<Tree> exprs = new List<Tree>();
-                exprs.Add(tree);
+                List<Tree> exprs = new List<Tree> {tree};
                 foreach (string str in xs)
                 {
                     exprs.Add(new Literal(new StringLiteral(str)));
@@ -504,9 +502,8 @@ namespace CSPGF.Linearize
             Dictionary<int, HashSet<Production>> prods;
             if (!this.linProd.TryGetValue(f, out prods))
             {
-                List<Tree> newes = new List<Tree>();
-                newes.Add(new Literal(new StringLiteral(f)));
-                System.Console.WriteLine("Function " + f + " does not have a linearization !");
+                List<Tree> newes = new List<Tree> {new Literal(new StringLiteral(f))};
+                Console.WriteLine("Function " + f + " does not have a linearization !");
                 return this.Apply(xs, mbcty, nextfid, "_V", newes);
             }
             else
@@ -524,7 +521,7 @@ namespace CSPGF.Linearize
 
                     if (es.Count != ctys.Count)
                     {
-                        throw new LinearizerException("Lengths of es and ctys don't match" + es.ToString() + " -- " + ctys.ToString());
+                        throw new LinearizerException("Lengths of es and ctys don't match" + es + " -- " + ctys);
                     }
 
                     Symbol[][] lins = appr.CncFun.Sequences;
@@ -636,7 +633,7 @@ namespace CSPGF.Linearize
                 }
                 else
                 {
-                    CSPGF.Grammar.Type t = null;
+                    Grammar.Type t = null;
                     foreach (AbsFun abs in this.pgf.GetAbstract().AbsFuns)
                     {
                         if (f.Equals(abs.Name))
@@ -686,10 +683,9 @@ namespace CSPGF.Linearize
         /// </summary>
         /// <param name="t">Type to use</param>
         /// <returns>List of strings</returns>
-        private List<string> CatSkeleton(CSPGF.Grammar.Type t)
+        private List<string> CatSkeleton(Grammar.Type t)
         {
-            List<string> rez = new List<string>();
-            rez.Add(t.Name);
+            List<string> rez = new List<string> {t.Name};
             foreach (Hypo h in t.Hypos)
             {
                 rez.Add(h.Type.Name);
@@ -717,15 +713,13 @@ namespace CSPGF.Linearize
             {
                 string[] toks = ((AlternToksSymbol)s).Tokens;
                 Alternative[] alts = ((AlternToksSymbol)s).Alts;
-                List<BracketedTokn> v = new List<BracketedTokn>();
-                v.Add(new LeafKP(toks, alts));
+                List<BracketedTokn> v = new List<BracketedTokn> {new LeafKP(toks, alts)};
                 return v;
             }
             else
             {
                 string[] toks = ((ToksSymbol)s).Tokens;
-                List<BracketedTokn> v = new List<BracketedTokn>();
-                v.Add(new LeafKS(toks));
+                List<BracketedTokn> v = new List<BracketedTokn> {new LeafKS(toks)};
                 return v;
             }
         }
@@ -754,14 +748,13 @@ namespace CSPGF.Linearize
             CncType cncType = cncTypes.ElementAt(d);
             string cat = cncType.CId;
             int fid = cncType.FId;
-            List<BracketedTokn> arg_lin = linTables.ElementAt(d).ElementAt(r);
-            if (arg_lin.Count == 0)
+            List<BracketedTokn> argLin = linTables.ElementAt(d).ElementAt(r);
+            if (argLin.Count == 0)
             {
-                return arg_lin;
+                return argLin;
             }
 
-            List<BracketedTokn> bt = new List<BracketedTokn>();
-            bt.Add(new Bracket(cat, fid, r, arg_lin));
+            List<BracketedTokn> bt = new List<BracketedTokn> {new Bracket(cat, fid, r, argLin)};
             return bt;
         }
 

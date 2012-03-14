@@ -30,8 +30,7 @@
 
 namespace CSPGF.Linearize
 {
-    using System.Collections.Generic;
-    using CSPGF.Grammar;
+    using Grammar;
 
     /// <summary>
     /// This class represent a 'pre' object.
@@ -81,7 +80,7 @@ namespace CSPGF.Linearize
             rez += "] , Alternatives : [";
             foreach (Alternative a in this.Alternatives) 
             {
-                rez += " " + a.ToString();
+                rez += " " + a;
             }
 
             rez += "]";

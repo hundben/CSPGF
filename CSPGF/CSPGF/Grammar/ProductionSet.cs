@@ -67,7 +67,7 @@ namespace CSPGF.Grammar
             string ss = "Id : " + this.ID + " , Productions : [";
             foreach (Production p in this.Prods)
             {
-                ss += " " + p.ToString();
+                ss += " " + p;
             }
 
             ss += "]";

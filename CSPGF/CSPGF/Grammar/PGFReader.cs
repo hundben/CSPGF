@@ -28,13 +28,11 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF
-{
-    using System;
-    using System.Collections.Generic;
-    using System.IO;
-    using CSPGF.Grammar;
+using System.Collections.Generic;
+using System.IO;
 
+namespace CSPGF.Grammar
+{
     /// <summary>
     /// Reads an PGF object
     /// </summary>
@@ -53,7 +51,7 @@ namespace CSPGF
         /// <summary>
         /// Desired languages
         /// </summary>
-        private List<string> languages = null;
+        private readonly List<string> languages;
 
         /// <summary>
         /// Initializes a new instance of the PGFReader class.
@@ -228,19 +226,11 @@ namespace CSPGF
         private AbsFun GetAbsFun()
         {
             string name = this.GetIdent();
-            CSPGF.Grammar.Type t = this.GetType2();
+            Grammar.Type t = this.GetType2();
             int i = this.GetInt();
             int has_equations = this.inputstream.ReadByte();
             Eq[] equations;
-            if (has_equations == 0)
-            {
-                equations = new Eq[0];
-            }
-            else 
-            {
-                equations = this.GetListEq();
-            }
-
+            equations = has_equations == 0 ? new Eq[0] : this.GetListEq();
             double weight = this.GetDouble();
             AbsFun f = new AbsFun(name, t, i, equations, weight);
             return f;
@@ -308,12 +298,12 @@ namespace CSPGF
         /// Reads a Type object
         /// </summary>
         /// <returns>Returns the Type object</returns>
-        private CSPGF.Grammar.Type GetType2()
+        private Grammar.Type GetType2()
         {
             Hypo[] hypos = this.GetListHypo();
             string returnCat = this.GetIdent();
             Expr[] exprs = this.GetListExpr();
-            CSPGF.Grammar.Type t = new CSPGF.Grammar.Type(hypos, returnCat, exprs);
+            Grammar.Type t = new Grammar.Type(hypos, returnCat, exprs);
             return t;
         }
 
@@ -326,7 +316,7 @@ namespace CSPGF
             int btype = this.inputstream.ReadByte();
             bool b = btype != 0;
             string varName = this.GetIdent();
-            CSPGF.Grammar.Type t = this.GetType2();
+            Grammar.Type t = this.GetType2();
             return new Hypo(b, varName, t);
         }
 
@@ -369,7 +359,7 @@ namespace CSPGF
         private Expr GetExpr()
         {
             int sel = this.inputstream.ReadByte();
-            Expr expr = null;
+            Expr expr;
             switch (sel)
             {
                 case 0: // lambda abstraction
@@ -402,7 +392,7 @@ namespace CSPGF
                     break;
                 case 6: // type annotated expression
                     Expr e = this.GetExpr();
-                    CSPGF.Grammar.Type t = this.GetType2();
+                    Grammar.Type t = this.GetType2();
                     expr = new TypedExp(e, t);
                     break;
                 case 7: // implicit argument
@@ -439,7 +429,7 @@ namespace CSPGF
         private Pattern GetPattern()
         {
             int sel = this.inputstream.ReadByte();
-            Pattern patt = null;
+            Pattern patt;
             switch (sel) 
             {
                 case 0: // application pattern
@@ -485,7 +475,7 @@ namespace CSPGF
         private RLiteral GetLiteral()
         {
             int sel = this.inputstream.ReadByte();
-            RLiteral ss = null;
+            RLiteral ss;
             switch (sel) 
             {
                 case 0:
@@ -598,7 +588,7 @@ namespace CSPGF
         private Symbol GetSymbol()
         {
             int sel = this.inputstream.ReadByte();
-            Symbol symb = null;
+            Symbol symb;
             switch (sel) 
             {
                 case 0: // category (non terminal symbol)
@@ -798,7 +788,7 @@ namespace CSPGF
         private Production GetProduction(int leftCat, CncFun[] cncFuns)
         {
             int sel = this.inputstream.ReadByte();
-            Production prod = null;
+            Production prod;
             switch (sel) 
             {
                 case 0: // application
@@ -993,7 +983,7 @@ namespace CSPGF
             {
                 int ii = this.GetInt();
                 rez = (ii << 7) | (rez & 0x7f);
-                return (int)rez;
+                return rez;
             }
         }
 

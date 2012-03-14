@@ -32,8 +32,8 @@ namespace CSPGF
 {
     using System;
     using System.Collections.Generic;
-    using CSPGF.Parse;
-    using CSPGF.Grammar;
+    using Parse;
+    using Grammar;
 
     /// <summary>
     /// Generates random sentences.
@@ -53,7 +53,7 @@ namespace CSPGF
         /// <summary>
         /// Concrete to use
         /// </summary>
-        private Concrete concrete;
+        private readonly Concrete concrete;
 
         /// <summary>
         /// Initializes a new instance of the Generator class.

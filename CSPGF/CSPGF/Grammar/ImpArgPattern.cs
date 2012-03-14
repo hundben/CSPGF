@@ -55,7 +55,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            return "Implicit Argument Pattern : " + this.Patt.ToString();
+            return "Implicit Argument Pattern : " + this.Patt;
         }
     }
 }

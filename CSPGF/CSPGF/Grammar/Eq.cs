@@ -30,8 +30,6 @@
 
 namespace CSPGF.Grammar
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Eq class
     /// </summary>
@@ -67,10 +65,10 @@ namespace CSPGF.Grammar
             string ss = "Patterns : (";
             foreach (Pattern p in this.Patts)
             {
-                ss += " " + p.ToString();
+                ss += " " + p;
             }
 
-            ss += ") , Expression : " + Expr.ToString();
+            ss += ") , Expression : " + Expr;
             return ss;
         }
     }

@@ -40,7 +40,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Abstract flags
         /// </summary>
-        private Dictionary<string, RLiteral> flags;
+        private readonly Dictionary<string, RLiteral> flags;
         
         /// <summary>
         /// Initializes a new instance of the Abstract class.
@@ -78,7 +78,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the starting category</returns>
         public string StartCat()
         {
-            RLiteral cat = null;
+            RLiteral cat;
             if (this.flags.TryGetValue("startcat", out cat)) 
             {
                 return ((StringLit)cat).Value;
@@ -102,19 +102,19 @@ namespace CSPGF.Grammar
             // ss+=(" "+flags[i].toString());
             foreach (KeyValuePair<string, RLiteral> kvp in this.flags) 
             {
-                ss += "String: " + kvp.Key + "RLiteral: " + kvp.Value.ToString();
+                ss += "String: " + kvp.Key + "RLiteral: " + kvp.Value;
             }
 
             ss += ") , Abstract Functions : (";
             foreach (AbsFun a in this.AbsFuns) 
             {
-                ss += " " + a.ToString();
+                ss += " " + a;
             }
 
             ss += ") , Abstract Categories : (";
             foreach (AbsCat a in this.AbsCats) 
             {
-                ss += " " + a.ToString();
+                ss += " " + a;
             }
 
             ss += ")";

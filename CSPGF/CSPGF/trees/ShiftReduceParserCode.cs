@@ -354,7 +354,7 @@ namespace QUT.Gppg
 
             DoAction(ruleNumber);
 
-            for (int i = 0; i < rule.RightHandSide.Length; i++)
+            foreach (int t in rule.RightHandSide)
             {
                 StateStack.Pop();
                 valueStack.Pop();

@@ -31,7 +31,6 @@
 namespace CSPGF.Grammar
 {
     using System;
-    using System.Collections.Generic;
 
     /// <summary>
     /// Token Symbol class

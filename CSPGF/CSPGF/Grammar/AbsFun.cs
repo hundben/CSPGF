@@ -30,8 +30,6 @@
 
 namespace CSPGF.Grammar
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Abstract Function
     /// </summary>

@@ -30,8 +30,6 @@
 
 namespace CSPGF.Grammar
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Abstract Category
     /// </summary>
@@ -74,13 +72,13 @@ namespace CSPGF.Grammar
             string ss = "Name : " + this.Name + " , Hypotheses : (";
             foreach (Hypo h in this.Hypos) 
             {
-                ss += " " + h.ToString();
+                ss += " " + h;
             }
 
             ss += ") , String Names : (";
             foreach (WeightedIdent w in this.Functions) 
             {
-                ss += " " + w.ToString();
+                ss += " " + w;
             }
 
             ss += ")";

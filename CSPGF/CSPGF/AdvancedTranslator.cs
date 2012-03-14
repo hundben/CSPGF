@@ -32,8 +32,8 @@ namespace CSPGF
 {
     using System;
     using System.Collections.Generic;
-    using CSPGF.Grammar;
-    using CSPGF.Parse;
+    using Grammar;
+    using Parse;
 
     /// <summary>
     /// TODO: Update summary.
@@ -192,7 +192,7 @@ namespace CSPGF
         /// Get the trees
         /// </summary>
         /// <returns>Returns the trees.</returns>
-        public List<CSPGF.Trees.Absyn.Tree> GetTrees()
+        public List<Trees.Absyn.Tree> GetTrees()
         {
             return this.currentPState.GetTrees();
         }
@@ -219,7 +219,7 @@ namespace CSPGF
         /// </summary>
         /// <param name="tree">Tree to linearize</param>
         /// <returns>Linearized string</returns>
-        public string LinearizeTree(CSPGF.Trees.Absyn.Tree tree)
+        public string LinearizeTree(Trees.Absyn.Tree tree)
         {
             if (this.toLanguage != string.Empty)
             {

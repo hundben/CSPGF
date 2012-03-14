@@ -78,7 +78,7 @@ namespace CSPGF.Linearize
         /// <returns>String containing debuginformation</returns>
         public override string ToString()
         {
-            string rez = "name : " + this.CId + ", linIndex : " + this.LIndex + ", fId : " + this.FId + ", bracketed tokens : " + this.Bracketedtoks.ToString();
+            string rez = "name : " + this.CId + ", linIndex : " + this.LIndex + ", fId : " + this.FId + ", bracketed tokens : " + this.Bracketedtoks;
 
             // for(int i=0;i<bss.length;i++)
             //   rez+=(" "+bss[i].toString());

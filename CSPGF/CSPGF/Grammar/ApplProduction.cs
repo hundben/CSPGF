@@ -41,7 +41,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// List of domains
         /// </summary>
-        private int[] dom;
+        private readonly int[] dom;
 
         /// <summary>
         /// Initializes a new instance of the ApplProduction class.

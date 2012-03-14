@@ -62,7 +62,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debuginformation</returns>
         public override string ToString()
         {
-            return "Typed Expression : [Expr : " + this.Exp.ToString() + " , Type : " + this.Type.ToString() + "]";
+            return "Typed Expression : [Expr : " + this.Exp + " , Type : " + this.Type + "]";
         }
     }
 }

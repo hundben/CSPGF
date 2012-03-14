@@ -30,8 +30,6 @@
 
 namespace CSPGF.Grammar
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// Type class
     /// </summary>
@@ -74,13 +72,13 @@ namespace CSPGF.Grammar
             string ss = "Hypotheses : (";
             foreach (Hypo h in this.Hypos)
             {
-                ss += " " + h.ToString();
+                ss += " " + h;
             }
 
             ss += ") , Name : " + this.Name + " , Expressions : (";
             foreach (Expr e in this.Exprs)
             {
-                ss += " " + e.ToString();
+                ss += " " + e;
             }
 
             ss += ")";

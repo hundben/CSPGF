@@ -30,8 +30,6 @@
 
 namespace CSPGF.Linearize
 {
-    using System.Collections.Generic;
-
     /// <summary>
     /// This class represents a standard token
     /// </summary>

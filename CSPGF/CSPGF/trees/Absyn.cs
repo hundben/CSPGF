@@ -57,42 +57,17 @@ namespace CSPGF.Trees.Absyn
   
   public class Lambda : CSPGF.Trees.Absyn.Tree
   {
-    private string ident_;
-    private CSPGF.Trees.Absyn.Tree tree_;
-
-    public Lambda(string p1, CSPGF.Trees.Absyn.Tree p2)
+      public Lambda(string p1, CSPGF.Trees.Absyn.Tree p2)
     {
-      ident_ = p1;
-      tree_ = p2;
-    }
-    
-    public string Ident_
-    {
-      get
-      {
-        return this.ident_;
-      }
-
-      set
-      {
-        this.ident_ = value;
-      }
+      Ident_ = p1;
+      Tree_ = p2;
     }
 
-    public CSPGF.Trees.Absyn.Tree Tree_
-    {
-        get
-        {
-            return this.tree_;
-        }
+      public string Ident_ { get; set; }
 
-        set
-        {
-            this.tree_ = value;
-        }
-    }
-    
-    public override bool Equals(object obj)
+      public Tree Tree_ { get; set; }
+
+      public override bool Equals(object obj)
     {
       if (this == obj)
       {
@@ -130,27 +105,14 @@ namespace CSPGF.Trees.Absyn
  
   public class Variable : CSPGF.Trees.Absyn.Tree
   {
-    private int integer_;
-
-    public Variable(int p1)
+      public Variable(int p1)
     {
-      integer_ = p1;
+      Integer_ = p1;
     }
-    
-    public int Integer_
-    {
-      get
-      {
-        return this.integer_;
-      }
 
-      set
-      {
-        this.integer_ = value;
-      }
-    }
-    
-    public override bool Equals(object obj)
+      public int Integer_ { get; set; }
+
+      public override bool Equals(object obj)
     {
       if (this == obj)
       {
@@ -188,42 +150,17 @@ namespace CSPGF.Trees.Absyn
  
   public class Application : CSPGF.Trees.Absyn.Tree
   {
-    private CSPGF.Trees.Absyn.Tree tree_1;
-    private CSPGF.Trees.Absyn.Tree tree_2;
-
-    public Application(CSPGF.Trees.Absyn.Tree p1, CSPGF.Trees.Absyn.Tree p2)
+      public Application(CSPGF.Trees.Absyn.Tree p1, CSPGF.Trees.Absyn.Tree p2)
     {
-      tree_1 = p1;
-      tree_2 = p2;
+      Tree_1 = p1;
+      Tree_2 = p2;
     }
-    
-    public CSPGF.Trees.Absyn.Tree Tree_1
-    {
-      get
-      {
-        return this.tree_1;
-      }
 
-      set
-      {
-        this.tree_1 = value;
-      }
-    }
-    
-    public CSPGF.Trees.Absyn.Tree Tree_2
-    {
-      get
-      {
-        return this.tree_2;
-      }
+      public Tree Tree_1 { get; set; }
 
-      set
-      {
-        this.tree_2 = value;
-      }
-    }
-    
-    public override bool Equals(object obj)
+      public Tree Tree_2 { get; set; }
+
+      public override bool Equals(object obj)
     {
       if (this == obj)
       {
@@ -260,27 +197,14 @@ namespace CSPGF.Trees.Absyn
  
   public class Literal : CSPGF.Trees.Absyn.Tree
   {
-    private CSPGF.Trees.Absyn.Lit lit_;
-
-    public Literal(CSPGF.Trees.Absyn.Lit p1)
+      public Literal(CSPGF.Trees.Absyn.Lit p1)
     {
-      lit_ = p1;
+      Lit_ = p1;
     }
-    
-    public CSPGF.Trees.Absyn.Lit Lit_
-    {
-      get
-      {
-        return this.lit_;
-      }
 
-      set
-      {
-        this.lit_ = value;
-      }
-    }
-    
-    public override bool Equals(object obj)
+      public Lit Lit_ { get; set; }
+
+      public override bool Equals(object obj)
     {
       if (this == obj)
       {
@@ -317,27 +241,14 @@ namespace CSPGF.Trees.Absyn
  
   public class MetaVariable : CSPGF.Trees.Absyn.Tree
   {
-    private int integer_;
-
-    public MetaVariable(int p1)
+      public MetaVariable(int p1)
     {
-      integer_ = p1;
+      Integer_ = p1;
     }
-    
-    public int Integer_
-    {
-      get
-      {
-        return this.integer_;
-      }
 
-      set
-      {
-        this.integer_ = value;
-      }
-    }
-    
-    public override bool Equals(object obj)
+      public int Integer_ { get; set; }
+
+      public override bool Equals(object obj)
     {
       if (this == obj)
       {
@@ -375,27 +286,14 @@ namespace CSPGF.Trees.Absyn
  
   public class Function : CSPGF.Trees.Absyn.Tree
   {
-    private string ident_;
-
-    public Function(string p1)
+      public Function(string p1)
     {
-      ident_ = p1;
+      Ident_ = p1;
     }
-    
-    public string Ident_
-    {
-      get
-      {
-        return this.ident_;
-      }
 
-      set
-      {
-        this.ident_ = value;
-      }
-    }
-    
-    public override bool Equals(object obj)
+      public string Ident_ { get; set; }
+
+      public override bool Equals(object obj)
     {
       if (this == obj)
       {
@@ -433,27 +331,14 @@ namespace CSPGF.Trees.Absyn
  
   public class IntLiteral : CSPGF.Trees.Absyn.Lit
   {
-    private int integer_;
-
-    public IntLiteral(int p1)
+      public IntLiteral(int p1)
     {
-      integer_ = p1;
+      Integer_ = p1;
     }
-    
-    public int Integer_
-    {
-      get
-      {
-        return this.integer_;
-      }
 
-      set
-      {
-        this.integer_ = value;
-      }
-    }
-    
-    public override bool Equals(object obj)
+      public int Integer_ { get; set; }
+
+      public override bool Equals(object obj)
     {
       if (this == obj)
       {
@@ -491,27 +376,14 @@ namespace CSPGF.Trees.Absyn
  
   public class FloatLiteral : CSPGF.Trees.Absyn.Lit
   {
-    private double double_;
-
-    public FloatLiteral(double p1)
+      public FloatLiteral(double p1)
     {
-      double_ = p1;
+      Double_ = p1;
     }
-    
-    public double Double_
-    {
-      get
-      {
-        return this.double_;
-      }
 
-      set
-      {
-        this.double_ = value;
-      }
-    }
-    
-    public override bool Equals(object obj)
+      public double Double_ { get; set; }
+
+      public override bool Equals(object obj)
     {
       if (this == obj)
       {
@@ -549,27 +421,14 @@ namespace CSPGF.Trees.Absyn
  
   public class StringLiteral : CSPGF.Trees.Absyn.Lit
   {
-    private string string_;
-
-    public StringLiteral(string p1)
+      public StringLiteral(string p1)
     {
-      string_ = p1;
+      String_ = p1;
     }
-    
-    public string String_
-    {
-      get
-      {
-        return this.string_;
-      }
 
-      set
-      {
-        this.string_ = value;
-      }
-    }
-    
-    public override bool Equals(object obj)
+      public string String_ { get; set; }
+
+      public override bool Equals(object obj)
     {
       if (this == obj)
       {
