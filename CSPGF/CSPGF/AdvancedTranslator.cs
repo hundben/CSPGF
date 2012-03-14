@@ -243,6 +243,11 @@ namespace CSPGF
                 return (p == 4) || (p == 6) || (p == 128);
         }
 
+        /// <summary>
+        /// Use .NET speech recognition to recognise words.
+        /// </summary>
+        /// <param name="time">How long to listen</param>
+        /// <returns>Recognised words</returns>
         public string Listen(TimeSpan time)
         {
             if(!IsLinux())
@@ -257,6 +262,10 @@ namespace CSPGF
             throw new Exception("Voice recognition doesn't work with mono.");
         }
 
+        /// <summary>
+        /// Uses the .NET speech synthesiser to speak a sentence.
+        /// </summary>
+        /// <param name="sentence">Sentence to speak</param>
         public void Say(string sentence)
         {
             if (!IsLinux())
@@ -269,6 +278,67 @@ namespace CSPGF
             } else
             {
                 throw new Exception("Voice synthesis doesn't work with mono.");
+            }
+        }
+
+        /// <summary>
+        /// Returns a string representing the tree.
+        /// </summary>
+        /// <param name="tree">Tree to print</param>
+        /// <returns>String representing the tree</returns>
+        public string PrintTree(Trees.Absyn.Tree tree)
+        {
+            if (tree is Trees.Absyn.Lambda)
+            {
+                var t = (Trees.Absyn.Lambda)tree;
+                return "Lambda " + t.Ident_ + "(" + PrintTree(t.Tree_) + ")";
+            }
+            else if (tree is Trees.Absyn.Variable)
+            {
+                var t = (Trees.Absyn.Variable)tree;
+                return "Variable " + t.Integer_;
+            }
+            else if (tree is Trees.Absyn.Application)
+            {
+                var t = (Trees.Absyn.Application)tree;
+                return "Application (" + PrintTree(t.Tree_1) + ") (" + PrintTree(t.Tree_2) + ")";
+            }
+            else if (tree is Trees.Absyn.Literal)
+            {
+                var t = (Trees.Absyn.Literal)tree;
+                if (t.Lit_ is Trees.Absyn.IntLiteral)
+                {
+                    var t2 = (Trees.Absyn.IntLiteral)t.Lit_;
+                    return "IntLiteral " + t2.Integer_;
+                }
+                else if (t.Lit_ is Trees.Absyn.FloatLiteral)
+                {
+                    var t2 = (Trees.Absyn.FloatLiteral)t.Lit_;
+                    return "FloatLiteral " + t2.Double_;
+                }
+                else if (t.Lit_ is Trees.Absyn.StringLiteral)
+                {
+                    var t2 = (Trees.Absyn.StringLiteral)t.Lit_;
+                    return "FloatLiteral " + t2.String_;
+                }
+                else
+                {
+                    throw new Exception("Unknown literal");
+                }
+            }
+            else if (tree is Trees.Absyn.MetaVariable)
+            {
+                var t = (Trees.Absyn.MetaVariable)tree;
+                return "MetaVariable " + t.Integer_;
+            }
+            else if (tree is Trees.Absyn.Function)
+            {
+                var t = (Trees.Absyn.Function)tree;
+                return "Function " + t.Ident_;
+            }
+            else
+            {
+                throw new Exception("Fail");
             }
         }
     }
