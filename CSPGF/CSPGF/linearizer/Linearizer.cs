@@ -144,7 +144,7 @@ namespace CSPGF.Linearize
                         foreach (string str in vs)
                         {
                             Dictionary<int, HashSet<Production>> htemp = new Dictionary<int, HashSet<Production>>();
-                            HashSet<Production> singleton = new HashSet<Production> {prod};
+                            HashSet<Production> singleton = new HashSet<Production> { prod };
                             htemp.Add(res, singleton);
                             if (vtemp.ContainsKey(str))
                             {
@@ -248,7 +248,7 @@ namespace CSPGF.Linearize
         private Dictionary<int, HashSet<Production>> FilterProductions(Dictionary<int, HashSet<Production>> prods0, Dictionary<int, HashSet<Production>> prods)
         {
             Dictionary<int, HashSet<Production>> tempRez = new Dictionary<int, HashSet<Production>>();
-            bool are_diff = false;
+            bool areDiff = false;
 
             foreach (KeyValuePair<int, HashSet<Production>> kvp in prods)
             {
@@ -276,24 +276,17 @@ namespace CSPGF.Linearize
                         }
 
                         prods1[index] = hp;
-                        are_diff = true;
+                        areDiff = true;
                     }
                 }
                 else
                 {
                     prods1[index] = hp;
-                    are_diff = true;
+                    areDiff = true;
                 }
             }
 
-            if (are_diff)
-            {
-                return this.FilterProductions(prods1, prods);
-            }
-            else
-            {
-                return prods0;
-            }
+            return areDiff ? this.FilterProductions(prods1, prods) : prods0;
         }
 
         /// <summary>
@@ -304,9 +297,9 @@ namespace CSPGF.Linearize
         /// <returns>True if true</returns>
         private bool FilterRule(Dictionary<int, HashSet<Production>> prods, Production p)
         {
-            if (p is ApplProduction)
+            ApplProduction ap = p as ApplProduction;
+            if (ap != null)
             {
-                ApplProduction ap = (ApplProduction)p;
                 foreach (int i in ap.Domain())
                 {
                     if (!this.ConditionProd(i, prods))
@@ -476,7 +469,7 @@ namespace CSPGF.Linearize
             else
             {
                 xs.AddRange(ys);
-                List<Tree> exprs = new List<Tree> {tree};
+                List<Tree> exprs = new List<Tree> { tree };
                 foreach (string str in xs)
                 {
                     exprs.Add(new Literal(new StringLiteral(str)));
@@ -607,7 +600,7 @@ namespace CSPGF.Linearize
             List<AppResult> rez = new List<AppResult>();
             if (p is ApplProduction)
             {
-                int[] args = ((ApplProduction)p).Domain();
+                int[] args = p.Domain();
                 CncFun cncFun = ((ApplProduction)p).Function;
                 List<CncType> vtype = new List<CncType>();
                 if (f.Equals("_V"))
@@ -671,10 +664,8 @@ namespace CSPGF.Linearize
 
                     return rez;
                 }
-                else
-                {
-                    throw new LinearizerException("Couldn't find the production with InitId: " + ((CoerceProduction)p).InitId);
-                }
+
+                throw new LinearizerException("Couldn't find the production with InitId: " + ((CoerceProduction)p).InitId);
             }
         }
 
@@ -685,7 +676,7 @@ namespace CSPGF.Linearize
         /// <returns>List of strings</returns>
         private List<string> CatSkeleton(Grammar.Type t)
         {
-            List<string> rez = new List<string> {t.Name};
+            List<string> rez = new List<string> { t.Name };
             foreach (Hypo h in t.Hypos)
             {
                 rez.Add(h.Type.Name);
@@ -796,22 +787,20 @@ namespace CSPGF.Linearize
                 rez.Add(new RezDesc(nextfid, new List<CncType>(), new List<List<List<BracketedTokn>>>()));
                 return rez;
             }
-            else
+
+            CncType cncType = cncTypes.First();
+            cncTypes.RemoveAt(0);
+            Tree exp = exps.First();
+            exps.RemoveAt(0);
+            List<LinTriple> rezLin = this.Lin0(new List<string>(), xs, cncType, nextfid, exp);
+            List<RezDesc> rezDesc = this.Descend(nextfid, cncTypes, exps, xs);
+            foreach (LinTriple lin in rezLin)
             {
-                CncType cncType = cncTypes.First();
-                cncTypes.RemoveAt(0);
-                Tree exp = exps.First();
-                exps.RemoveAt(0);
-                List<LinTriple> rezLin = this.Lin0(new List<string>(), xs, cncType, nextfid, exp);
-                List<RezDesc> rezDesc = this.Descend(nextfid, cncTypes, exps, xs);
-                foreach (LinTriple lin in rezLin)
+                foreach (RezDesc res in rezDesc)
                 {
-                    foreach (RezDesc res in rezDesc)
-                    {
-                        res.CncTypes.Add(lin.CncType);
-                        res.Bracketedtokn.Add(lin.LinTable);
-                        rez.Add(new RezDesc(nextfid, res.CncTypes, res.Bracketedtokn));
-                    }
+                    res.CncTypes.Add(lin.CncType);
+                    res.Bracketedtokn.Add(lin.LinTable);
+                    rez.Add(new RezDesc(nextfid, res.CncTypes, res.Bracketedtokn));
                 }
             }
 
@@ -829,12 +818,7 @@ namespace CSPGF.Linearize
             // LiteralFloat = -3
             // LiteralInt = -2
             // LiteralString = -1
-            if (i >= -4 && i <= -1)
-            {
-                return true;
-            }
-
-            return false;
+            return i >= -4 && i <= -1;
         }
     }
 }

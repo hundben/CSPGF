@@ -13,7 +13,6 @@
 using System;
 using System.Collections.Generic;
 using System.Globalization;
-using System.Text;
 using QUT.Gppg;
 
 namespace CSPGF.Trees
@@ -36,9 +35,9 @@ namespace CSPGF.Trees
 #line 39 "CSPGF.trees.y"
         public string string_;
 #line 40 "CSPGF.trees.y"
-        public CSPGF.Trees.Absyn.Tree tree_;
+        public Absyn.Tree tree_;
 #line 41 "CSPGF.trees.y"
-        public CSPGF.Trees.Absyn.Lit lit_;
+        public Absyn.Lit lit_;
 #line 42 "CSPGF.trees.y"
     }
     // Abstract base class for GPLEX scanners
@@ -62,9 +61,9 @@ namespace CSPGF.Trees
 #line 5 "CSPGF.trees.y"
 
 #line 6 "CSPGF.trees.y"
-        CSPGF.Trees.Absyn.Tree YY_RESULT_Tree_ = null;
+        Absyn.Tree YY_RESULT_Tree_ = null;
 #line 7 "CSPGF.trees.y"
-        public CSPGF.Trees.Absyn.Tree ParseTree()
+        public Absyn.Tree ParseTree()
 #line 8 "CSPGF.trees.y"
         {
 #line 9 "CSPGF.trees.y"
@@ -88,9 +87,9 @@ namespace CSPGF.Trees
 #line 18 "CSPGF.trees.y"
 
 #line 19 "CSPGF.trees.y"
-        CSPGF.Trees.Absyn.Lit YY_RESULT_Lit_ = null;
+        Absyn.Lit YY_RESULT_Lit_ = null;
 #line 20 "CSPGF.trees.y"
-        public CSPGF.Trees.Absyn.Lit ParseLit()
+        public Absyn.Lit ParseLit()
 #line 21 "CSPGF.trees.y"
         {
 #line 22 "CSPGF.trees.y"
@@ -121,7 +120,7 @@ namespace CSPGF.Trees
         private static Rule[] rules = new Rule[11];
         private static State[] states = new State[20];
         private static string[] nonTerms = new string[] {
-      "Tree", "Lit", "$accept", };
+      "Tree", "Lit", "$accept" };
 
         static Parser()
         {

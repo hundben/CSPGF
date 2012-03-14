@@ -111,10 +111,8 @@ namespace CSPGF.Grammar
             {
                 return this.CncCats[this.startCat];
             }
-            else
-            {
-                return new CncCat(this.startCat, 0, 0, new string[0]);
-            }
+            
+            return new CncCat(this.startCat, 0, 0, new string[0]);
         }
 
         /// <summary>

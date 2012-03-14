@@ -85,10 +85,8 @@ namespace CSPGF
             {
                 return this.Gen();
             }
-            else
-            {
-                return list[0];
-            }
+            
+            return list[0];
         }
     }
 }

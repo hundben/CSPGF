@@ -155,10 +155,8 @@ namespace CSPGF.Grammar
             {
                 return "Sentence";
             }
-            else
-            {
-                return ((StringLit)cat).Value;
-            }
+            
+            return ((StringLit)cat).Value;
         }
 
         /// <summary>
@@ -229,8 +227,7 @@ namespace CSPGF.Grammar
             Grammar.Type t = this.GetType2();
             int i = this.GetInt();
             int has_equations = this.inputstream.ReadByte();
-            Eq[] equations;
-            equations = has_equations == 0 ? new Eq[0] : this.GetListEq();
+            Eq[] equations = has_equations == 0 ? new Eq[0] : this.GetListEq();
             double weight = this.GetDouble();
             AbsFun f = new AbsFun(name, t, i, equations, weight);
             return f;
@@ -540,16 +537,14 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             PrintName[] tmp = new PrintName[npoz];
-            if (npoz == 0) 
+            if (npoz == 0)
             {
                 return tmp;
             }
-            else
+
+            for (int i = 0; i < npoz; i++)
             {
-                for (int i = 0; i < npoz; i++) 
-                {
-                    tmp[i] = this.GetPrintName();
-                }
+                tmp[i] = this.GetPrintName();
             }
 
             return tmp;
@@ -905,16 +900,14 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             string[] strs = new string[npoz];
-            if (npoz == 0) 
+            if (npoz == 0)
             {
                 return strs;
             }
-            else 
+            
+            for (int i = 0; i < npoz; i++)
             {
-                for (int i = 0; i < npoz; i++) 
-                {
-                    strs[i] = this.GetString();
-                }
+                strs[i] = this.GetString();
             }
 
             return strs;
@@ -975,16 +968,14 @@ namespace CSPGF.Grammar
         {
             // long -> int
             int rez = this.inputstream.ReadByte();
-            if (rez <= 0x7f) 
+            if (rez <= 0x7f)
             {
                 return rez;
             }
-            else 
-            {
-                int ii = this.GetInt();
-                rez = (ii << 7) | (rez & 0x7f);
-                return rez;
-            }
+
+            int ii = this.GetInt();
+            rez = (ii << 7) | (rez & 0x7f);
+            return rez;
         }
 
         /// <summary>

@@ -83,10 +83,8 @@ namespace CSPGF.Grammar
             {
                 return ((StringLit)cat).Value;
             }
-            else 
-            {
-                return "Sentence";
-            }
+            
+            return "Sentence";
         }
 
         /// <summary>
