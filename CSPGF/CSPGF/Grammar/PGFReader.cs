@@ -117,7 +117,6 @@ namespace CSPGF.Grammar
                 {
                     if (index != null) 
                     {
-                        // TODO: CHECK! Maybe this will work?
                         this.inputstream.Seek(index[name], SeekOrigin.Current);
                     }
                     else 
@@ -145,6 +144,7 @@ namespace CSPGF.Grammar
         /// This function guess the default start category from the
         /// PGF flags: if the startcat flag is set then it is taken as default cat.
         /// otherwise "Sentence" is taken as default category.
+        /// TODO: Isn't used at the moment!
         /// </summary>
         /// <param name="flags">Flags to use</param>
         /// <returns>Returns the startingcategory</returns>
@@ -818,20 +818,6 @@ namespace CSPGF.Grammar
             }
 
             return tmp;
-        }
-
-        // TODO: Never actually used!
-        /// <summary>
-        /// Reads a Concrete Category
-        /// </summary>
-        /// <returns>Returns the Concrete Category</returns>
-        private CncCat GetCncCat()
-        {
-            string sname = this.GetIdent();
-            int firstFId = this.GetInt();
-            int lastFId = this.GetInt();
-            string[] ss = this.GetListString();
-            return new CncCat(sname, firstFId, lastFId, ss);
         }
 
         /// <summary>

@@ -32,6 +32,7 @@ namespace CSPGF
 {
     using System;
     using System.Collections.Generic;
+    using System.Reflection;
     using Grammar;
     using Parse;
 
@@ -240,6 +241,35 @@ namespace CSPGF
         {
                 int p = (int)Environment.OSVersion.Platform;
                 return (p == 4) || (p == 6) || (p == 128);
+        }
+
+        public string Listen(TimeSpan time)
+        {
+            if(!IsLinux())
+            {
+                Assembly assembly = Assembly.LoadFrom("Speech.dll");
+                System.Type speech = assembly.GetType("Speech.Speech");
+                object speechobj = Activator.CreateInstance(speech);
+                return (string)speech.InvokeMember("Listen", BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance,
+                                    null, speechobj, new object[] {time});
+            }
+
+            throw new Exception("Voice recognition doesn't work with mono.");
+        }
+
+        public void Say(string sentence)
+        {
+            if (!IsLinux())
+            {
+                Assembly assembly = Assembly.LoadFrom("Speech.dll");
+                System.Type speech = assembly.GetType("Speech.Speech");
+                object speechobj = Activator.CreateInstance(speech);
+                speech.InvokeMember("Say", BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance,
+                                    null, speechobj, new object[] { sentence, 1, 100 });
+            } else
+            {
+                throw new Exception("Voice synthesis doesn't work with mono.");
+            }
         }
     }
 }
