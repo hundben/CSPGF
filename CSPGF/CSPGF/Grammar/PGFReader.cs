@@ -28,6 +28,8 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System;
+
 namespace CSPGF.Grammar
 {
     using System.Collections.Generic;
@@ -587,11 +589,14 @@ namespace CSPGF.Grammar
             switch (sel) 
             {
                 case 0: // category (non terminal symbol)
-
-                case 1: // Lit (Not implemented properly)
                     int i1 = this.GetInt();
                     int i2 = this.GetInt();
                     symb = new ArgConstSymbol(i1, i2);
+                    break;
+                case 1: // Lit (Not implemented properly)
+                    int i3 = this.GetInt();
+                    int i4 = this.GetInt();
+                    symb = new LitSymbol(i3, i4);
                     break;
                 case 2: // Variable
                     int arg = this.GetInt();
