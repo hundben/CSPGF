@@ -290,17 +290,54 @@ namespace CSPGF.Parse
                     }
                 }
             }
-            else 
+            else if (sym is LitSymbol)
+            {
+                //TODO replace this with the real implementation of Literal categories
+                // TempLog.LogMessageToFile("Case before {d,r}");
+                LitSymbol arg = (LitSymbol)sym;
+                int d = arg.Arg;
+                int r = arg.Cons;
+                int bd = item.Domain[d];
+
+                // PREDICT
+                if (this.active.Count >= this.position)
+                {
+                    if (this.AddActiveSet(bd, r, item, this.active[this.position]))
+                    {
+                        foreach (ApplProduction prod in this.chart.GetProductions(bd))
+                        {
+                            ActiveItem it = new ActiveItem(this.position, bd, prod.Function, prod.Domain(), r, 0);
+                            this.agenda.Push(it);
+                        }
+                    }
+
+                    // COMBINE
+                    int cat = this.chart.GetCategory(bd, r, this.position, this.position);
+
+                    if (cat != -1)
+                    {
+                        List<int> newDomain = new List<int>(b);
+                        newDomain[d] = cat;
+
+                        // TODO: FIX!
+                        ActiveItem it = new ActiveItem(j, a, f, newDomain.ToArray(), l, p + 1);
+                        this.agenda.Push(it);
+
+                        // TempLog.LogMessageToFile("Adding to agenda: " + it.ToString());
+                    }
+                }
+            }
+            else
             {
                 // TempLog.LogMessageToFile("Case at the end");
                 int cat = this.chart.GetCategory(a, l, j, this.position);
-                if (cat == -1) 
+                if (cat == -1)
                 {
                     // COMPLETE
                     int n = this.chart.GenerateFreshCategory(a, l, j, this.position);
 
                     // COMBINE
-                    foreach (ActiveItem ai in this.GetActiveSet(a, l, this.active[j]))  
+                    foreach (ActiveItem ai in this.GetActiveSet(a, l, this.active[j]))
                     {
                         ActiveItem ip = ai;
                         int d = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;
@@ -316,11 +353,11 @@ namespace CSPGF.Parse
 
                     this.chart.AddProduction(n, f, b);
                 }
-                else 
+                else
                 {
                     // PREDICT
                     HashSet<ActiveItem> items = this.GetActiveSet(cat, this.active[this.position]);
-                    foreach (ActiveItem ai in items) 
+                    foreach (ActiveItem ai in items)
                     {
                         int r = ((ArgConstSymbol)ai.CurrentSymbol()).Cons;  // Cons?
                         ActiveItem i = new ActiveItem(this.position, cat, f, b, r, 0);

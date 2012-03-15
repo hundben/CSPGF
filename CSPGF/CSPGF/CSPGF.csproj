@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="AdvancedTranslator.cs" />
     <Compile Include="Generator.cs" />
+    <Compile Include="Grammar\LitSymbol.cs" />
     <Compile Include="Linearizer\Linearizer.cs" />
     <Compile Include="Linearizer\LinearizerException.cs" />
     <Compile Include="Linearizer\AppResult.cs" />
