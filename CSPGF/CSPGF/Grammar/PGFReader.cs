@@ -226,8 +226,8 @@ namespace CSPGF.Grammar
             string name = this.GetIdent();
             Grammar.Type t = this.GetType2();
             int i = this.GetInt();
-            int has_equations = this.inputstream.ReadByte();
-            Eq[] equations = has_equations == 0 ? new Eq[0] : this.GetListEq();
+            int hasEquations = this.inputstream.ReadByte();
+            Eq[] equations = hasEquations == 0 ? new Eq[0] : this.GetListEq();
             double weight = this.GetDouble();
             AbsFun f = new AbsFun(name, t, i, equations, weight);
             return f;

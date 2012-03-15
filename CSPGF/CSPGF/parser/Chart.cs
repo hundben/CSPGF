@@ -283,10 +283,11 @@ namespace CSPGF.Parse
                 CoerceProduction cp = (CoerceProduction)p;
                 foreach (Production prod in this.GetProductions(cp.InitId)) 
                 {
-                    foreach (ApplProduction prod2 in this.Uncoerce(prod)) 
+                    /*foreach (ApplProduction prod2 in this.Uncoerce(prod)) 
                     {
                         prodList.Add(prod2);
-                    }
+                    }*/
+                    prodList.AddRange(this.Uncoerce(prod));
                 }
             }
 

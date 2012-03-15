@@ -502,8 +502,8 @@ namespace CSPGF.Trees
         [SuppressMessage("Microsoft.Performance", "CA1811:AvoidUncalledPrivateCode")]
         int Peek()
         {
-            int rslt, codeSv = code, cColSv = cCol, lNumSv = lNum, bPosSv = buffer.Pos;
-            GetCode(); rslt = code;
+            int codeSv = code, cColSv = cCol, lNumSv = lNum, bPosSv = buffer.Pos;
+            GetCode(); int rslt = code;
             lNum = lNumSv; cCol = cColSv; code = codeSv; buffer.Pos = bPosSv;
             return rslt;
         }

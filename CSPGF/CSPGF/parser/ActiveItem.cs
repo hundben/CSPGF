@@ -127,9 +127,9 @@ namespace CSPGF.Parse
         /// <returns>A string.</returns>
         public override string ToString()
         {
-            string str = "[" + this.Begin.ToString() + ";" + this.Category.ToString() +
+            string str = "[" + this.Begin + ";" + this.Category +
                 "->" + this.Function.Name + "[" + this.DomainToString() + "];" +
-                this.Constituent.ToString() + ";" + this.Position.ToString() + "]";
+                this.Constituent + ";" + this.Position + "]";
             return str;
         }
 
