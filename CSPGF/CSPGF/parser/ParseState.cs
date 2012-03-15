@@ -327,6 +327,12 @@ namespace CSPGF.Parse
                     }
                 }
             }
+            else if (sym is VarSymbol)
+            {
+                // TODO implement
+                // High-order argument
+                // TempLog.LogMessageToFile("Case before <d,$r>");
+            }
             else
             {
                 // TempLog.LogMessageToFile("Case at the end");

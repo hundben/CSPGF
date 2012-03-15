@@ -593,7 +593,7 @@ namespace CSPGF.Grammar
                     int i2 = this.GetInt();
                     symb = new ArgConstSymbol(i1, i2);
                     break;
-                case 1: // Lit (Not implemented properly)
+                case 1: // Literal categorie
                     int i3 = this.GetInt();
                     int i4 = this.GetInt();
                     symb = new LitSymbol(i3, i4);
