@@ -505,11 +505,11 @@ namespace CSPGF.Linearize
                 List<LinTriple> rez = new List<LinTriple>();
                 foreach (AppResult appr in listApp)
                 {
-                    List<CncType> copy_ctys = appr.CncTypes;
+                    List<CncType> copyCtys = appr.CncTypes;
                     List<CncType> ctys = new List<CncType>();
-                    for (int ind = copy_ctys.Count - 1; ind >= 0; ind--)
+                    for (int ind = copyCtys.Count - 1; ind >= 0; ind--)
                     {
-                        ctys.Add(copy_ctys.ElementAt(ind));
+                        ctys.Add(copyCtys.ElementAt(ind));
                     }
 
                     if (es.Count != ctys.Count)
@@ -519,8 +519,8 @@ namespace CSPGF.Linearize
 
                     Symbol[][] lins = appr.CncFun.Sequences;
                     string cat = appr.CncType.CId;
-                    List<Tree> copy_expr = new List<Tree>(es);
-                    List<RezDesc> rezDesc = this.Descend(nextfid, ctys, copy_expr, xs);
+                    List<Tree> copyExpr = new List<Tree>(es);
+                    List<RezDesc> rezDesc = this.Descend(nextfid, ctys, copyExpr, xs);
                     foreach (RezDesc rez2 in rezDesc)
                     {
                         List<List<BracketedTokn>> linTab = new List<List<BracketedTokn>>();
@@ -605,9 +605,9 @@ namespace CSPGF.Linearize
                 List<CncType> vtype = new List<CncType>();
                 if (f.Equals("_V"))
                 {
-                    for (int i = 0; i < args.Length; i++)
+                    foreach (int j in args)
                     {
-                        vtype.Add(new CncType("__gfVar", args[i]));
+                        vtype.Add(new CncType("__gfVar", j));
                     }
 
                     rez.Add(new AppResult(cncFun, cty, vtype));
@@ -761,10 +761,7 @@ namespace CSPGF.Linearize
             List<BracketedTokn> bt = new List<BracketedTokn>();
             foreach (Symbol sym in seqId)
             {
-                foreach (BracketedTokn btn in this.Compute(sym, cncTypes, linTables))
-                {
-                    bt.Add(btn);
-                }
+                bt.AddRange(this.Compute(sym, cncTypes, linTables));
             }
 
             return bt;

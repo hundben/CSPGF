@@ -124,10 +124,7 @@ namespace CSPGF.Grammar
             List<Production> tmp = new List<Production>();
             foreach (ProductionSet ps in this.Prods) 
             {
-                foreach (Production p in ps.Prods) 
-                {
-                    tmp.Add(p);
-                }
+                tmp.AddRange(ps.Prods);
             }
 
             return tmp;

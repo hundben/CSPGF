@@ -119,8 +119,7 @@ namespace CSPGF.Parse
             }
             else
             {
-                prodSet = new HashSet<Production>();
-                prodSet.Add(p);
+                prodSet = new HashSet<Production> { p };
                 this.productionSets.Add(p.FId, prodSet);
             }
 
@@ -155,10 +154,7 @@ namespace CSPGF.Parse
                 List<ApplProduction> applProd = new List<ApplProduction>();
                 foreach (Production p in prod)
                 {
-                    foreach (ApplProduction ap in this.Uncoerce(p)) 
-                    {
-                        applProd.Add(ap);
-                    }
+                    applProd.AddRange(this.Uncoerce(p));
                 }
 
                 return applProd;

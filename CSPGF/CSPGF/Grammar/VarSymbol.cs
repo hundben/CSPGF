@@ -35,18 +35,34 @@ namespace CSPGF.Grammar
     /// </summary>
     internal class VarSymbol : Symbol
     {
-        public int arg { get; private set; }     // Int argument index
-        public int var { get; private set; }     // Int variable number
-
+        /// <summary>
+        /// Initializes a new instance of the VarSymbol class.
+        /// </summary>
+        /// <param name="arg">Argument index</param>
+        /// <param name="var">Variable number</param>
         public VarSymbol(int arg, int var)
         {
-            this.arg = arg;
-            this.var = var;
+            this.Arg = arg;
+            this.Var = var;
         }
 
+        /// <summary>
+        /// Gets the argument index
+        /// </summary>
+        public int Arg { get; private set; }     // Int argument index
+
+        /// <summary>
+        /// Gets the variable number.
+        /// </summary>
+        public int Var { get; private set; }     // Int variable number
+
+        /// <summary>
+        /// Pretty prints the data contained in the class.
+        /// </summary>
+        /// <returns>String with data</returns>
         public override string ToString() 
         {
-            return "Arg: " + this.arg + " Var: " + this.var;
+            return "Arg: " + this.Arg + " Var: " + this.Var;
         }
     }
 }

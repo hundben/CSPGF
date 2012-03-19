@@ -40,13 +40,6 @@ namespace CSPGF.Parse
     internal class TreeBuilder
     {
         /// <summary>
-        /// Initializes a new instance of the TreeBuilder class.
-        /// </summary>
-        public TreeBuilder() 
-        { 
-        }
-
-        /// <summary>
         /// Builds the trees.
         /// </summary>
         /// <param name="chart">The current chart.</param>
@@ -79,10 +72,7 @@ namespace CSPGF.Parse
             List<Tree> temp = new List<Tree>();
             foreach (ApplProduction p in chart.GetProductions(cat)) 
             {
-                foreach (Tree t in this.MkTreesForProduction(p, chart)) 
-                {
-                    temp.Add(t);
-                }
+                temp.AddRange(this.MkTreesForProduction(p, chart));
             }
 
             return temp;
@@ -138,8 +128,7 @@ namespace CSPGF.Parse
             {
                 foreach (Tree lT in l.First<List<Tree>>())
                 {
-                    List<Tree> nT = new List<Tree>();
-                    nT.Add(lT);
+                    List<Tree> nT = new List<Tree> { lT };
                     newList.Add(nT);
                 }
 

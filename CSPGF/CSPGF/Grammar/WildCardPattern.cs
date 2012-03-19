@@ -36,13 +36,6 @@ namespace CSPGF.Grammar
     internal class WildCardPattern : Pattern // PWild
     {
         /// <summary>
-        /// Initializes a new instance of the WildCardPattern class.
-        /// </summary>
-        public WildCardPattern()
-        {
-        }
-
-        /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
         /// <returns>Returns a string containing debuginformation</returns>
