@@ -81,22 +81,6 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// Returns the concrete with the inputname.
-        /// </summary>
-        /// <param name="name">Name of grammar</param>
-        /// <returns>Concrete grammar</returns>
-        internal Concrete GetConcrete(string name)
-        {
-            Concrete conc;
-            if (!this.concretes.TryGetValue(name, out conc)) 
-            {
-                throw new UnknownLanguageException(name);
-            }
-
-            return conc;
-        }
-
-        /// <summary>
         /// Returns major version number
         /// </summary>
         /// <returns>Major version number</returns>
@@ -112,15 +96,6 @@ namespace CSPGF
         public int GetMinorVersion()
         {
             return this.minorVersion;
-        }
-
-        /// <summary>
-        /// Returns the abstract grammar.
-        /// </summary>
-        /// <returns>Abstract grammar</returns>
-        internal Abstract GetAbstract()
-        {
-            return this.abstr;
         }
 
         /**
@@ -183,6 +158,31 @@ namespace CSPGF
         public PGF Load(string filename)
         {
             return new PGFReader(filename).ReadPGF();
+        }
+
+        /// <summary>
+        /// Returns the abstract grammar.
+        /// </summary>
+        /// <returns>Abstract grammar</returns>
+        internal Abstract GetAbstract()
+        {
+            return this.abstr;
+        }
+
+        /// <summary>
+        /// Returns the concrete with the inputname.
+        /// </summary>
+        /// <param name="name">Name of grammar</param>
+        /// <returns>Concrete grammar</returns>
+        internal Concrete GetConcrete(string name)
+        {
+            Concrete conc;
+            if (!this.concretes.TryGetValue(name, out conc))
+            {
+                throw new UnknownLanguageException(name);
+            }
+
+            return conc;
         }
     }
 }

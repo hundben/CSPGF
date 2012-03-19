@@ -28,8 +28,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System;
-
 namespace CSPGF.Grammar
 {
     using System.Collections.Generic;

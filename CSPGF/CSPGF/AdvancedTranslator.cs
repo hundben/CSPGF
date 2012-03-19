@@ -250,7 +250,7 @@ namespace CSPGF
         /// <returns>Recognised words</returns>
         public string Listen(TimeSpan time)
         {
-            if (IsLinux())
+            if (this.IsLinux())
             {
                 throw new Exception("Voice recognition doesn't work with mono.");
             }
@@ -258,8 +258,12 @@ namespace CSPGF
             Assembly assembly = Assembly.LoadFrom("Speech.dll");
             System.Type speech = assembly.GetType("Speech.Speech");
             object speechobj = Activator.CreateInstance(speech);
-            return (string)speech.InvokeMember("Listen", BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance,
-                                               null, speechobj, new object[] {time});
+            return (string)speech.InvokeMember(
+                                               "Listen", 
+                                               BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance,
+                                               null, 
+                                               speechobj, 
+                                               new object[] { time });
         }
 
         /// <summary>
@@ -268,7 +272,7 @@ namespace CSPGF
         /// <param name="sentence">Sentence to speak</param>
         public void Say(string sentence)
         {
-            if (IsLinux())
+            if (this.IsLinux())
             {
                 throw new Exception("Voice synthesis isn't supported by mono.");
             }
@@ -276,8 +280,12 @@ namespace CSPGF
             Assembly assembly = Assembly.LoadFrom("Speech.dll");
             System.Type speech = assembly.GetType("Speech.Speech");
             object speechobj = Activator.CreateInstance(speech);
-            speech.InvokeMember("Say", BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance,
-                                null, speechobj, new object[] {sentence, 1, 100});
+            speech.InvokeMember(
+                                "Say", 
+                                BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance,
+                                null, 
+                                speechobj, 
+                                new object[] { sentence, 1, 100 });
         }
 
         /// <summary>
@@ -288,7 +296,7 @@ namespace CSPGF
         /// <param name="volume">Volume of speech</param>
         public void Say(string sentence, int rate, int volume)
         {
-            if (IsLinux())
+            if (this.IsLinux())
             {
                 throw new Exception("Voice synthesis isn't supported by mono.");
             }
@@ -296,8 +304,12 @@ namespace CSPGF
             Assembly assembly = Assembly.LoadFrom("Speech.dll");
             System.Type speech = assembly.GetType("Speech.Speech");
             object speechobj = Activator.CreateInstance(speech);
-            speech.InvokeMember("Say", BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance,
-                                null, speechobj, new object[] {sentence, rate, volume});
+            speech.InvokeMember(
+                                "Say", 
+                                BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance,
+                                null, 
+                                speechobj, 
+                                new object[] { sentence, rate, volume });
         }
 
         /// <summary>
@@ -310,7 +322,7 @@ namespace CSPGF
             if (tree is Trees.Absyn.Lambda)
             {
                 var t = (Trees.Absyn.Lambda)tree;
-                return "Lambda " + t.Ident_ + "(" + PrintTree(t.Tree_) + ")";
+                return "Lambda " + t.Ident_ + "(" + this.PrintTree(t.Tree_) + ")";
             }
             else if (tree is Trees.Absyn.Variable)
             {
@@ -320,7 +332,7 @@ namespace CSPGF
             else if (tree is Trees.Absyn.Application)
             {
                 var t = (Trees.Absyn.Application)tree;
-                return "Application (" + PrintTree(t.Tree_1) + ") (" + PrintTree(t.Tree_2) + ")";
+                return "Application (" + this.PrintTree(t.Tree_1) + ") (" + this.PrintTree(t.Tree_2) + ")";
             }
             else if (tree is Trees.Absyn.Literal)
             {

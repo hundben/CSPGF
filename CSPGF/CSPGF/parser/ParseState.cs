@@ -292,7 +292,7 @@ namespace CSPGF.Parse
             }
             else if (sym is LitSymbol)
             {
-                //TODO replace this with the real implementation of Literal categories
+                // TODO replace this with the real implementation of Literal categories
                 // TempLog.LogMessageToFile("Case before {d,r}");
                 LitSymbol arg = (LitSymbol)sym;
                 int d = arg.Arg;
