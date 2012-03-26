@@ -153,7 +153,7 @@
     <Compile Include="Grammar\VarAsPattern.cs" />
     <Compile Include="Grammar\VarExp.cs" />
     <Compile Include="Grammar\VarPattern.cs" />
-    <Compile Include="Grammar\WeightedIdent.cs" />
+    <Compile Include="Grammar\CatFun.cs" />
     <Compile Include="Grammar\WildCardPattern.cs" />
     <Compile Include="SimpleTranslator.cs" />
     <Compile Include="Trees\AbstractVisitSkeleton.cs" />

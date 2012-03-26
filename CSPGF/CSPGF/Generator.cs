@@ -73,7 +73,6 @@ namespace CSPGF
             this.ps = new ParseState(this.concrete);
             this.ran = new Random();
             List<string> pre = this.ps.Predict();
-            string last = string.Empty;
             while (pre.Count != 0)
             {
                 this.ps.Scan(pre[this.ran.Next(pre.Count - 1)]);
@@ -81,12 +80,7 @@ namespace CSPGF
             }
 
             List<Trees.Absyn.Tree> list = this.ps.GetTrees();
-            if (list.Count == 0)
-            {
-                return this.Gen();
-            }
-            
-            return list[0];
+            return list.Count == 0 ? this.Gen() : list[0];
         }
     }
 }

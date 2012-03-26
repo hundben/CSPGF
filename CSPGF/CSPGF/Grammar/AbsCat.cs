@@ -41,7 +41,7 @@ namespace CSPGF.Grammar
         /// <param name="name">Name of category</param>
         /// <param name="hypos">List of hypos</param>
         /// <param name="functions">List of weightedidents</param>
-        public AbsCat(string name, Hypo[] hypos, WeightedIdent[] functions)
+        public AbsCat(string name, Hypo[] hypos, CatFun[] functions)
         {
             this.Name = name;
             this.Hypos = hypos;
@@ -61,7 +61,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Gets a list of WeightedIdents
         /// </summary>
-        public WeightedIdent[] Functions { get; private set; }
+        public CatFun[] Functions { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -76,7 +76,7 @@ namespace CSPGF.Grammar
             }
 
             ss += ") , String Names : (";
-            foreach (WeightedIdent w in this.Functions) 
+            foreach (CatFun w in this.Functions) 
             {
                 ss += " " + w;
             }

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="WeightedIdent.cs" company="None">
+// <copyright file="CatFun.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -33,14 +33,14 @@ namespace CSPGF.Grammar
     /// <summary>
     /// Weighted Ident class
     /// </summary>
-    internal class WeightedIdent
+    internal class CatFun
     {
         /// <summary>
-        /// Initializes a new instance of the WeightedIdent class.
+        /// Initializes a new instance of the CatFun class.
         /// </summary>
         /// <param name="ident">The identifier</param>
         /// <param name="weight">The weight</param>
-        public WeightedIdent(string ident, double weight)
+        public CatFun(string ident, double weight)
         {
             this.Ident = ident;
             this.Weight = weight;

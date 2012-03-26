@@ -1,49 +1,35 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Program.cs" company="">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="N/A">
+//   Hej hej
 // </copyright>
-// -----------------------------------------------------------------------
-
-using System;
+// <summary>
+//   Used for debugging.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
 namespace CSPGF
 {
-    class Program
+    using System;
+
+    /// <summary>
+    /// Used for debugging.
+    /// </summary>
+    public class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// Starting class.
+        /// </summary>
+        public static void Main()
         {
-            // Change this path to where your pgf file resides.
-            AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\Phrasebook.pgf");
-
-            Console.WriteLine(" --- Supported languages ---");
-            /*foreach (string lang in at.GetLanguages())
-            {
-                Console.WriteLine(lang);
-            }*/
-
+            var at = new AdvancedTranslator("..\\..\\pgf examples\\Phrasebook.pgf");
             at.SetInputLanguage("PhrasebookEng");
-
             at.Scan("this");
-
-            // Predict valid continuations of the sentence.
-            /*Console.WriteLine(" --- Prediction ---");
-            foreach (String token in at.Predict())
-            {
-                Console.WriteLine(token);
-            }*/
-
             at.Scan("wine");
             at.Scan("is");
             at.Scan("delicious");
-
-            /*Console.WriteLine(" --- Translation ---");
-
-            at.SetOutputLanguage("PhrasebookIta");
-            Console.WriteLine(at.Translate());*/
-
-            System.Console.WriteLine(at.PrintTree(at.GetTrees()[0]));
-
-            // Wait for a keypress.
+            at.SetOutputLanguage("PhrasebookGer");
+            Console.WriteLine(at.Translate());
+            Console.WriteLine(at.PrintTree(at.GetTrees()[0]));
             Console.ReadKey();
         }
     }
