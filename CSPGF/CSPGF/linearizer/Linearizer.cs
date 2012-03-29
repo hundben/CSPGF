@@ -707,6 +707,13 @@ namespace CSPGF.Linearize
                 List<BracketedTokn> v = new List<BracketedTokn> { new LeafKP(toks, alts) };
                 return v;
             }
+            else if (s is LitSymbol)
+            {
+                // TODO: Fix? D:
+                int arg = ((LitSymbol)s).Arg;
+                int cons = ((LitSymbol)s).Cons;
+                return this.GetArg(arg, cons, cncTypes, linTables);
+            }
             else
             {
                 string[] toks = ((ToksSymbol)s).Tokens;

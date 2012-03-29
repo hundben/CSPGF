@@ -462,8 +462,7 @@ namespace CSPGF.Grammar
 
             // We don't need the lindefs for now but again we need to
             // parse them to skip them
-            this.GetListLinDef();
-            return new Concrete(name, flags, this.GetListProductionSet(cncFuns), this.GetListCncCat(), this.GetInt(), startCat);
+            return new Concrete(name, flags, this.GetListLinDef(), this.GetListProductionSet(cncFuns), this.GetListCncCat(), this.GetInt(), startCat);
         }
 
         /// <summary>

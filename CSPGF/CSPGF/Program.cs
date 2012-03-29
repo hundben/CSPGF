@@ -8,7 +8,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 
 
-// TODO: Släng in LinDefs och PrintNames i Concrete.
+// TODO: Släng in LinDefs och PrintNames i Concrete. Eller är det bara slöseri på minne?
 namespace CSPGF
 {
     using System;
