@@ -72,14 +72,14 @@ namespace CSPGF
         {
             this.ps = new ParseState(this.concrete);
             this.ran = new Random();
-            List<string> pre = this.ps.Predict();
+            var pre = this.ps.Predict();
             while (pre.Count != 0)
             {
                 this.ps.Scan(pre[this.ran.Next(pre.Count - 1)]);
                 pre = this.ps.Predict();
             }
 
-            List<Trees.Absyn.Tree> list = this.ps.GetTrees();
+            var list = this.ps.GetTrees();
             return list.Count == 0 ? this.Gen() : list[0];
         }
     }

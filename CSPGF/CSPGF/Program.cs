@@ -7,6 +7,8 @@
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
+
+// TODO: Släng in LinDefs och PrintNames i Concrete.
 namespace CSPGF
 {
     using System;

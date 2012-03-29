@@ -32,6 +32,7 @@ namespace CSPGF.Grammar
 {
     /// <summary>
     /// Abstract class RLiteral
+    /// Used as flags for the Concrete and Abstract grammars.
     /// </summary>
     internal abstract class RLiteral
     {
