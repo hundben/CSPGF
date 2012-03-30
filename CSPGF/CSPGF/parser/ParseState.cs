@@ -139,16 +139,19 @@ namespace CSPGF.Parse
         /// <returns>Returns true if scan is successful.</returns>
         public bool Scan(string token)
         {
+
+            //TODO check for literal
+
             ParseTrie newTrie = this.trie.GetSubTrie(token);
 
-            if (newTrie != null) 
+            if (newTrie != null)
             {
                 this.listOfTries.Push(newTrie);
                 Stack<ActiveItem> newAgenda = newTrie.Lookup(new List<string>());
-                if (newAgenda != null) 
+                if (newAgenda != null)
                 {
                     this.tokens.Push(token);
-                    
+
                     this.chart.NextToken();
                     this.trie = newTrie;
                     this.position++;
@@ -157,6 +160,11 @@ namespace CSPGF.Parse
 
                     return true;
                 }
+            }
+            else
+            {
+                newTrie = new ParseTrie();
+
             }
 
             return false;
@@ -292,39 +300,34 @@ namespace CSPGF.Parse
             }
             else if (sym is LitSymbol)
             {
-                //TODO replace this with the real implementation of Literal categories
                 // TempLog.LogMessageToFile("Case before {d,r}");
                 LitSymbol arg = (LitSymbol)sym;
                 int d = arg.Arg;
                 int r = arg.Cons;
                 int bd = item.Domain[d];
 
-                // PREDICT
-                if (this.active.Count >= this.position)
+                // LITERAL
+                // TODO check if this is even close to correct :D
+
+                // TODO add function (below is just a test)
+                Symbol[][] symb = { };
+                CncFun freshFun = new CncFun("new:" + bd, symb);
+
+                //COMBINE (LIT VERSION)
+                int n = this.chart.GetCategory(bd, r, this.position, this.position);
+
+
+                //COMBINE 
+                if (n == -1)
                 {
-                    if (this.AddActiveSet(bd, r, item, this.active[this.position]))
-                    {
-                        foreach (ApplProduction prod in this.chart.GetProductions(bd))
-                        {
-                            ActiveItem it = new ActiveItem(this.position, bd, prod.Function, prod.Domain(), r, 0);
-                            this.agenda.Push(it);
-                        }
-                    }
+                    n = this.chart.GenerateFreshCategory(bd, r, this.position, this.position); //??
+                    List<int> newDomain = new List<int>(b);
+                    newDomain[d] = n;
 
-                    // COMBINE
-                    int cat = this.chart.GetCategory(bd, r, this.position, this.position);
+                    ActiveItem it = new ActiveItem(j, a, f, newDomain.ToArray(), l, p + 1);
+                    this.agenda.Push(it);
 
-                    if (cat != -1)
-                    {
-                        List<int> newDomain = new List<int>(b);
-                        newDomain[d] = cat;
-
-                        // TODO: FIX!
-                        ActiveItem it = new ActiveItem(j, a, f, newDomain.ToArray(), l, p + 1);
-                        this.agenda.Push(it);
-
-                        // TempLog.LogMessageToFile("Adding to agenda: " + it.ToString());
-                    }
+                    // TempLog.LogMessageToFile("Adding to agenda: " + it.ToString());
                 }
             }
             else if (sym is VarSymbol)

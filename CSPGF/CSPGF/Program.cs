@@ -13,17 +13,18 @@ namespace CSPGF
         static void Main(string[] args)
         {
             // Change this path to where your pgf file resides.
-            AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\Phrasebook.pgf");
+            AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\Test.pgf");
 
             Console.WriteLine(" --- Supported languages ---");
-            /*foreach (string lang in at.GetLanguages())
+            foreach (string lang in at.GetLanguages())
             {
                 Console.WriteLine(lang);
-            }*/
+            }
 
-            at.SetInputLanguage("PhrasebookEng");
+            at.SetInputLanguage("TestCnc");
+            //at.ScanTokens("str ( a )");
 
-            at.Scan("this");
+            at.Scan("1.2");
 
             // Predict valid continuations of the sentence.
             /*Console.WriteLine(" --- Prediction ---");
@@ -32,14 +33,11 @@ namespace CSPGF
                 Console.WriteLine(token);
             }*/
 
-            at.Scan("wine");
-            at.Scan("is");
-            at.Scan("delicious");
 
-            /*Console.WriteLine(" --- Translation ---");
+            Console.WriteLine(" --- Translation ---");
 
-            at.SetOutputLanguage("PhrasebookIta");
-            Console.WriteLine(at.Translate());*/
+            at.SetOutputLanguage("TestCnc");
+            Console.WriteLine(at.Translate());
 
             System.Console.WriteLine(at.PrintTree(at.GetTrees()[0]));
 

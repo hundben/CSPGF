@@ -598,12 +598,12 @@ namespace CSPGF.Grammar
                     int i4 = this.GetInt();
                     symb = new LitSymbol(i3, i4);
                     break;
-                case 2: // Variable
+                case 2: // High-order argument
                     int arg = this.GetInt();
                     int var = this.GetInt();        
                     symb = new VarSymbol(arg, var);
                     break;
-                case 3: // sequence of tokens
+                case 3: // sequence of tokens (terminal symbols)
                     string[] strs = this.GetListString();
                     symb = new ToksSymbol(strs);
                     break;
