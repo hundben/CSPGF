@@ -28,8 +28,6 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System;
-
 namespace CSPGF.Grammar
 {
     using System.Collections.Generic;
@@ -85,12 +83,9 @@ namespace CSPGF.Grammar
         {
             Dictionary<string, int> index = null;
             int[] ii = new int[2];
-            for (int i = 0; i < 2; i++) 
+            for (int i = 0; i < 2; i++)
             {
-                int tmp = this.inputstream.ReadByte();
-                tmp = tmp << 8;
-                tmp = tmp | this.inputstream.ReadByte();
-                ii[i] = tmp;
+                ii[i] = this.binreader.ReadInt16();
             }
 
             // Reading the global flags
@@ -138,10 +133,10 @@ namespace CSPGF.Grammar
             }
 
             // builds and returns the pgf object.
-            PGF pgf = new PGF(ii[0], ii[1], flags, abs, concretes);
-            return pgf;
+            return new PGF(ii[0], ii[1], flags, abs, concretes);
         }
 
+        /*
         /// <summary>
         /// This function guess the default start category from the
         /// PGF flags: if the startcat flag is set then it is taken as default cat.
@@ -159,7 +154,7 @@ namespace CSPGF.Grammar
             }
             
             return ((StringLit)cat).Value;
-        }
+        }*/
 
         /// <summary>
         /// Reads the index
@@ -185,11 +180,7 @@ namespace CSPGF.Grammar
         /// <returns>Abstract grammar</returns>
         private Abstract GetAbstract()
         {
-            string name = this.GetIdent();
-            Dictionary<string, RLiteral> flags = this.GetListFlag();
-            AbsFun[] absFuns = this.GetListAbsFun();
-            AbsCat[] absCats = this.GetListAbsCat();
-            return new Abstract(name, flags, absFuns, absCats);
+            return new Abstract(this.GetIdent(), this.GetListFlag(), this.GetListAbsFun(), this.GetListAbsCat());
         }
 
         /// <summary>
@@ -214,9 +205,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the Eq</returns>
         private Eq GetEq()
         {
-            Pattern[] patts = this.GetListPattern();
-            Expr exp = this.GetExpr();
-            return new Eq(patts, exp);
+            return new Eq(this.GetListPattern(), this.GetExpr());
         }
 
         /// <summary>
@@ -225,14 +214,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the AbsFun</returns>
         private AbsFun GetAbsFun()
         {
-            string name = this.GetIdent();
-            Grammar.Type t = this.GetType2();
-            int i = this.GetInt();
-            int hasEquations = this.inputstream.ReadByte();
-            Eq[] equations = hasEquations == 0 ? new Eq[0] : this.GetListEq();
-            double weight = this.GetDouble();
-            AbsFun f = new AbsFun(name, t, i, equations, weight);
-            return f;
+            return new AbsFun(this.GetIdent(), this.GetType2(), this.GetInt(), this.inputstream.ReadByte() == 0 ? new Eq[0] : this.GetListEq(), this.GetDouble());
         }
 
         /// <summary>
@@ -241,10 +223,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the AbsCat</returns>
         private AbsCat GetAbsCat()
         {
-            string name = this.GetIdent();
-            Hypo[] hypos = this.GetListHypo();
-            WeightedIdent[] functions = this.GetListWeightedIdent();
-            return new AbsCat(name, hypos, functions);
+            return new AbsCat(this.GetIdent(), this.GetListHypo(), this.GetListCatFun());
         }
 
         /// <summary>
@@ -255,16 +234,14 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             AbsFun[] tmp = new AbsFun[npoz];
-            if (npoz == 0) 
+            if (npoz == 0)
             {
                 return tmp;
             }
-            else
+
+            for (int i = 0; i < npoz; i++)
             {
-                for (int i = 0; i < npoz; i++) 
-                {
-                    tmp[i] = this.GetAbsFun();
-                }
+                tmp[i] = this.GetAbsFun();
             }
 
             return tmp;
@@ -278,16 +255,14 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             AbsCat[] tmp = new AbsCat[npoz];
-            if (npoz == 0) 
+            if (npoz == 0)
             {
                 return tmp;
             }
-            else 
+
+            for (int i = 0; i < npoz; i++)
             {
-                for (int i = 0; i < npoz; i++) 
-                {
-                    tmp[i] = this.GetAbsCat();
-                }
+                tmp[i] = this.GetAbsCat();
             }
 
             return tmp;
@@ -297,12 +272,9 @@ namespace CSPGF.Grammar
         /// Reads a Type object
         /// </summary>
         /// <returns>Returns the Type object</returns>
-        private Grammar.Type GetType2()
+        private Type GetType2()
         {
-            Hypo[] hypos = this.GetListHypo();
-            string returnCat = this.GetIdent();
-            Expr[] exprs = this.GetListExpr();
-            Grammar.Type t = new Grammar.Type(hypos, returnCat, exprs);
+            Type t = new Type(this.GetListHypo(), this.GetIdent(), this.GetListExpr());
             return t;
         }
 
@@ -312,11 +284,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the Hypo</returns>
         private Hypo GetHypo()
         {
-            int btype = this.inputstream.ReadByte();
-            bool b = btype != 0;
-            string varName = this.GetIdent();
-            Grammar.Type t = this.GetType2();
-            return new Hypo(b, varName, t);
+            return new Hypo(this.inputstream.ReadByte() != 0, this.GetIdent(), this.GetType2());
         }
 
         /// <summary>
@@ -364,35 +332,25 @@ namespace CSPGF.Grammar
                 case 0: // lambda abstraction
                     int bt = this.inputstream.ReadByte();
                     bool btype = bt != 0;
-                    string varName = this.GetIdent();
-                    Expr e1 = this.GetExpr();
-                    expr = new LambdaExp(btype, varName, e1);
+                    expr = new LambdaExp(btype, this.GetIdent(), this.GetExpr());
                     break;
                 case 1: // expression application
-                    Expr e11 = this.GetExpr();
-                    Expr e2 = this.GetExpr();
-                    expr = new AppExp(e11, e2);
+                    expr = new AppExp(this.GetExpr(), this.GetExpr());
                     break;
                 case 2: // literal expression
-                    RLiteral lit = this.GetLiteral();
-                    expr = new LiteralExp(lit);
+                    expr = new LiteralExp(this.GetLiteral());
                     break;
                 case 3: // meta variable
-                    int id = this.GetInt();
-                    expr = new MetaExp(id);
+                    expr = new MetaExp(this.GetInt());
                     break;
                 case 4: // abstract function name
-                    string absFun = this.GetIdent();
-                    expr = new AbsNameExp(absFun);
+                    expr = new AbsNameExp(this.GetIdent());
                     break;
                 case 5: // variable
-                    int v = this.GetInt();
-                    expr = new VarExp(v);
+                    expr = new VarExp(this.GetInt());
                     break;
                 case 6: // type annotated expression
-                    Expr e = this.GetExpr();
-                    Grammar.Type t = this.GetType2();
-                    expr = new TypedExp(e, t);
+                    expr = new TypedExp(this.GetExpr(), this.GetType2());
                     break;
                 case 7: // implicit argument
                     Expr ee = this.GetExpr();
@@ -437,28 +395,22 @@ namespace CSPGF.Grammar
                     patt = new AppPattern(absFun, patts);
                     break;
                 case 1: // variable pattern
-                    string varName = this.GetIdent();
-                    patt = new VarPattern(varName);
+                    patt = new VarPattern(this.GetIdent());
                     break;
                 case 2: // variable as pattern
-                    string patternVarName = this.GetIdent();
-                    Pattern p = this.GetPattern();
-                    patt = new VarAsPattern(patternVarName, p);
+                    patt = new VarAsPattern(this.GetIdent(), this.GetPattern());
                     break;
                 case 3: // wild card pattern
                     patt = new WildCardPattern();
                     break;
                 case 4: // literal pattern
-                    RLiteral lit = this.GetLiteral();
-                    patt = new LiteralPattern(lit);
+                    patt = new LiteralPattern(this.GetLiteral());
                     break;
                 case 5: // implicit argument
-                    Pattern pp = this.GetPattern();
-                    patt = new ImpArgPattern(pp);
+                    patt = new ImpArgPattern(this.GetPattern());
                     break;
                 case 6: // inaccessible pattern
-                    Expr e = this.GetExpr();
-                    patt = new InaccPattern(e);
+                    patt = new InaccPattern(this.GetExpr());
                     break;
                 default:
                     throw new PGFException("Invalid tag for patterns : " + sel);
@@ -478,16 +430,13 @@ namespace CSPGF.Grammar
             switch (sel) 
             {
                 case 0:
-                    string str = this.GetString();
-                    ss = new StringLit(str);
+                    ss = new StringLit(this.GetString());
                     break;
                 case 1:
-                    int i = this.GetInt();
-                    ss = new IntLit(i);
+                    ss = new IntLit(this.GetInt());
                     break;
                 case 2:
-                    double d = this.GetDouble();
-                    ss = new FloatLit(d);
+                    ss = new FloatLit(this.GetDouble());
                     break;
                 default:
                     throw new PGFException("Incorrect literal tag " + sel);
@@ -513,11 +462,7 @@ namespace CSPGF.Grammar
 
             // We don't need the lindefs for now but again we need to
             // parse them to skip them
-            this.GetListLinDef();
-            ProductionSet[] prods = this.GetListProductionSet(cncFuns);
-            Dictionary<string, CncCat> cncCats = this.GetListCncCat();
-            int i = this.GetInt();
-            return new Concrete(name, flags, prods, cncCats, i, startCat);
+            return new Concrete(name, flags, this.GetListLinDef(), this.GetListProductionSet(cncFuns), this.GetListCncCat(), this.GetInt(), startCat);
         }
 
         /// <summary>
@@ -526,9 +471,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the PrintName</returns>
         private PrintName GetPrintName()
         {
-            string absName = this.GetIdent();
-            string printName = this.GetString();
-            return new PrintName(absName, printName);
+            return new PrintName(this.GetIdent(), this.GetString());
         }
 
         /// <summary>
@@ -558,8 +501,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the Sequence</returns>
         private Symbol[] GetSequence()
         {
-            Symbol[] symbols = this.GetListSymbol();
-            return symbols;
+            return this.GetListSymbol();
         }
 
         /// <summary>
@@ -589,31 +531,20 @@ namespace CSPGF.Grammar
             switch (sel) 
             {
                 case 0: // category (non terminal symbol)
-                    int i1 = this.GetInt();
-                    int i2 = this.GetInt();
-                    symb = new ArgConstSymbol(i1, i2);
+                    symb = new ArgConstSymbol(this.GetInt(), this.GetInt());
                     break;
-                case 1: // Literal categorie
-                    int i3 = this.GetInt();
-                    int i4 = this.GetInt();
-                    symb = new LitSymbol(i3, i4);
+                case 1: // Literal category
+                    symb = new LitSymbol(this.GetInt(), this.GetInt());
                     break;
-                case 2: // High-order argument
-                    int arg = this.GetInt();
-                    int var = this.GetInt();        
-                    symb = new VarSymbol(arg, var);
+                case 2: // Variable
+                    symb = new VarSymbol(this.GetInt(), this.GetInt());
                     break;
-                case 3: // sequence of tokens (terminal symbols)
-                    string[] strs = this.GetListString();
-                    symb = new ToksSymbol(strs);
+                case 3: // sequence of tokens
+                    symb = new ToksSymbol(this.GetListString());
                     break;
                 case 4: // alternative tokens
-                    string[] altstrs = this.GetListString();
-                    Alternative[] la = this.GetListAlternative();
-                    symb = new AlternToksSymbol(altstrs, la);
+                    symb = new AlternToksSymbol(this.GetListString(), this.GetListAlternative());
                     break;
-
-                // IOException -> Exception
                 default:
                     throw new PGFException("Invalid tag for symbols : " + sel);
             }
@@ -643,9 +574,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the Alternative</returns>
         private Alternative GetAlternative()
         {
-            string[] s1 = this.GetListString();
-            string[] s2 = this.GetListString();
-            return new Alternative(s1, s2);
+            return new Alternative(this.GetListString(), this.GetListString());
         }
 
         /// <summary>
@@ -740,8 +669,7 @@ namespace CSPGF.Grammar
         private ProductionSet GetProductionSet(CncFun[] cncFuns)
         {
             int id = this.GetInt();
-            Production[] prods = this.GetListProduction(id, cncFuns);
-            return new ProductionSet(id, prods);
+            return new ProductionSet(id, this.GetListProduction(id, cncFuns));
         }
 
         /// <summary>
@@ -792,13 +720,10 @@ namespace CSPGF.Grammar
             switch (sel) 
             {
                 case 0: // application
-                    int i = this.GetInt();
-                    int[] domain = this.GetDomainFromPArgs();
-                    prod = new ApplProduction(leftCat, cncFuns[i], domain);
+                    prod = new ApplProduction(leftCat, cncFuns[this.GetInt()], this.GetDomainFromPArgs());
                     break;
                 case 1: // coercion
-                    int id = this.GetInt();
-                    prod = new CoerceProduction(leftCat, id);
+                    prod = new CoerceProduction(leftCat, this.GetInt());
                     break;
                 default:
                     throw new PGFException("Invalid tag for productions : " + sel);
@@ -836,10 +761,7 @@ namespace CSPGF.Grammar
             for (int i = 0; i < npoz; i++) 
             {
                 string name = this.GetIdent();
-                int firstFID = this.GetInt();
-                int lastFID = this.GetInt();
-                string[] ss = this.GetListString();
-                cncCats.Add(name, new CncCat(name, firstFID, lastFID, ss));
+                cncCats.Add(name, new CncCat(name, this.GetInt(), this.GetInt(), this.GetListString()));
             }
 
             return cncCats;
@@ -860,9 +782,7 @@ namespace CSPGF.Grammar
 
             for (int i = 0; i < npoz; i++) 
             {
-                string ss = this.GetIdent();
-                RLiteral lit = this.GetLiteral();
-                flags.Add(ss, lit);
+                flags.Add(this.GetIdent(), this.GetLiteral());
             }
 
             return flags;
@@ -918,6 +838,7 @@ namespace CSPGF.Grammar
             return enc.GetString(bytes);
         }
 
+        /*
         /// <summary>
         /// Reads a list of identifiers
         /// </summary>
@@ -932,21 +853,21 @@ namespace CSPGF.Grammar
             }
 
             return tmp;
-        }
+        } */
 
         /// <summary>
-        /// Reads a list of WeightedIdents
+        /// Reads a list of CatFuns
         /// </summary>
-        /// <returns>List of WeightedIdents</returns>
-        private WeightedIdent[] GetListWeightedIdent()
+        /// <returns>List of CatFuns</returns>
+        private CatFun[] GetListCatFun()
         {
             int nb = this.GetInt();
-            WeightedIdent[] wids = new WeightedIdent[nb];
+            CatFun[] wids = new CatFun[nb];
             for (int i = 0; i < nb; i++)
             {
                 double w = this.GetDouble();
                 string s = this.GetIdent();
-                wids[i] = new WeightedIdent(s, w);
+                wids[i] = new CatFun(s, w);
             }
 
             return wids;

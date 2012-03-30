@@ -148,7 +148,7 @@ namespace CSPGF.Parse
                 string tot = string.Empty;
                 foreach (int d in this.Domain)
                 {
-                    tot += d.ToString() + ",";
+                    tot += d + ",";
                 }
 
                 return tot.Substring(0, tot.Length - 1);

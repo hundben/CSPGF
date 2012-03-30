@@ -1,16 +1,27 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="Program.cs" company="">
-// TODO: Update copyright text.
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Program.cs" company="N/A">
+//   Hej hej
 // </copyright>
-// -----------------------------------------------------------------------
+// <summary>
+//   Used for debugging.
+// </summary>
+// --------------------------------------------------------------------------------------------------------------------
 
-using System;
 
+// TODO: Släng in LinDefs och PrintNames i Concrete. Eller är det bara slöseri på minne?
 namespace CSPGF
 {
-    class Program
+    using System;
+
+    /// <summary>
+    /// Used for debugging.
+    /// </summary>
+    public class Program
     {
-        static void Main(string[] args)
+        /// <summary>
+        /// Starting class.
+        /// </summary>
+        public static void Main()
         {
             // Change this path to where your pgf file resides.
             AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\Test.pgf");

@@ -169,8 +169,7 @@ namespace CSPGF.Parse
         /// <returns>The subtrie.</returns>
         public ParseTrie GetSubTrie(string key)
         {
-            List<string> tmp = new List<string>();
-            tmp.Add(key);
+            List<string> tmp = new List<string> { key };
             return this.GetSubTrie(tmp);
         }
         

@@ -38,8 +38,8 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Initializes a new instance of the LinDef class.
         /// </summary>
-        /// <param name="key">Integer key</param>
-        /// <param name="funIds">List of function ids</param>
+        /// <param name="key">Concrete category</param>
+        /// <param name="funIds">List of concrete function ids</param>
         public LinDef(int key, int[] funIds)
         {
             this.Key = key;

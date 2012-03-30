@@ -406,16 +406,14 @@ namespace CSPGF.Parse
                 }
                 else
                 {
-                    activeItems = new HashSet<ActiveItem>();
-                    activeItems.Add(item);
+                    activeItems = new HashSet<ActiveItem> { item };
                     map.Add(cons, activeItems);
                 }
             }
             else
             {
                 map = new Dictionary<int, HashSet<ActiveItem>>();
-                HashSet<ActiveItem> activeItems = new HashSet<ActiveItem>();
-                activeItems.Add(item);
+                HashSet<ActiveItem> activeItems = new HashSet<ActiveItem> { item };
                 map.Add(cons, activeItems);
                 currentActive.Add(cat, map);
             }

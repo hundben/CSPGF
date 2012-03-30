@@ -40,20 +40,13 @@ namespace CSPGF.Parse
     internal class TreeConverter
     {
         /// <summary>
-        /// Initializes a new instance of the TreeConverter class.
-        /// </summary>
-        public TreeConverter()
-        {
-        }
-
-        /// <summary>
         /// Converts a Intermediate tree to an abstract one.
         /// </summary>
         /// <param name="t">A tree.</param>
         /// <returns>The abstract tree.</returns>
         public Trees.Absyn.Tree Intermediate2Abstract(Tree t)
         {
-            return this.C2a(t, new List<string>());
+            return this.C2A(t, new List<string>());
         }
 
         /// <summary>
@@ -62,7 +55,7 @@ namespace CSPGF.Parse
         /// <param name="t">A tree.</param>
         /// <param name="vars">Some variables.</param>
         /// <returns>The abstract tree.</returns>
-        private Trees.Absyn.Tree C2a(Tree t, List<string> vars)
+        private Trees.Absyn.Tree C2A(Tree t, List<string> vars)
         {
             if (t is Lambda) 
             {
@@ -80,12 +73,9 @@ namespace CSPGF.Parse
                 }
 
                 tmp2.Reverse();
-                foreach (string s in vars) 
-                {
-                    tmp2.Add(s);
-                }
+                tmp2.AddRange(vars);
 
-                Trees.Absyn.Tree tree = this.C2a(body, tmp2);
+                Trees.Absyn.Tree tree = this.C2A(body, tmp2);
                 lvars.Reverse();
                 foreach (Tuple<bool, string> tup in lvars) 
                 {
@@ -103,11 +93,10 @@ namespace CSPGF.Parse
             else if (t is Application) 
             {
                 Application app = (Application)t;
-                List<Trees.Absyn.Tree> trees = new List<Trees.Absyn.Tree>();
-                trees.Add(new Trees.Absyn.Function(app.Fun));
+                List<Trees.Absyn.Tree> trees = new List<Trees.Absyn.Tree> { new Trees.Absyn.Function(app.Fun) };
                 foreach (Tree tr in app.Args) 
                 {
-                    trees.Add(this.C2a(tr, vars));
+                    trees.Add(this.C2A(tr, vars));
                 }
 
                 return trees.Aggregate<Trees.Absyn.Tree>(this.MkEApp);

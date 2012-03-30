@@ -52,11 +52,12 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="name">Name of concrete grammar</param>
         /// <param name="flags">Grammar flags</param>
+        /// <param name="linDefs">Default linearization definitions</param>
         /// <param name="prods">List of production sets</param>
         /// <param name="cncCats">Dictionary containing concrete categories</param>
         /// <param name="fId">Function id</param>
         /// <param name="defaultStartCat">Default starting category</param>
-        public Concrete(string name, Dictionary<string, RLiteral> flags, ProductionSet[] prods, Dictionary<string, CncCat> cncCats, int fId, string defaultStartCat)
+        public Concrete(string name, Dictionary<string, RLiteral> flags, LinDef[] linDefs, ProductionSet[] prods, Dictionary<string, CncCat> cncCats, int fId, string defaultStartCat)
         {
             this.Name = name;
             this.flags = flags;
@@ -64,6 +65,7 @@ namespace CSPGF.Grammar
             this.CncCats = cncCats;
             this.FId = fId;
             this.startCat = defaultStartCat;
+            this.LinDefs = linDefs;
         }
 
         /// <summary>
@@ -85,6 +87,11 @@ namespace CSPGF.Grammar
         /// Gets the function id
         /// </summary>
         public int FId { get; private set; }
+
+        /// <summary>
+        /// Gets the default linearization categories
+        /// </summary>
+        public LinDef[] LinDefs { get; private set; }
 
         /// <summary>
         /// Gets a list of concrete categories
@@ -124,10 +131,7 @@ namespace CSPGF.Grammar
             List<Production> tmp = new List<Production>();
             foreach (ProductionSet ps in this.Prods) 
             {
-                foreach (Production p in ps.Prods) 
-                {
-                    tmp.Add(p);
-                }
+                tmp.AddRange(ps.Prods);
             }
 
             return tmp;
