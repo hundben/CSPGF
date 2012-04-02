@@ -51,10 +51,10 @@ namespace CSPGF.Parse
             List<Tree> temp = new List<Tree>();
             for (int catID = startCat.FirstFID; catID < startCat.LastFID + 1; catID++) 
             {
-                int cat = chart.GetCategory(catID, 0, 0, length);
-                if (cat != -1) 
+                int? cat = chart.GetCategory(catID, 0, 0, length);
+                if (cat.HasValue) 
                 {
-                    temp.AddRange(this.MkTreesForCat(cat, chart));
+                    temp.AddRange(this.MkTreesForCat(cat.Value, chart));
                 }
             }
 

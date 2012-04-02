@@ -194,7 +194,7 @@ namespace CSPGF.Parse
         /// <param name="begin">Where it begins.</param>
         /// <param name="end">Where it ends.</param>
         /// <returns>Returns the category.</returns>
-        public int GetCategory(int oldCat, int cons, int begin, int end)
+        public int? GetCategory(int oldCat, int cons, int begin, int end)
         {
             string hash = this.GenerateHash(oldCat, cons, begin, end);
 
@@ -204,7 +204,7 @@ namespace CSPGF.Parse
             }
             else
             {
-                return -1;
+                return null;
             }
         }
 

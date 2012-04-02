@@ -24,7 +24,7 @@ namespace CSPGF
         public static void Main()
         {
             // Change this path to where your pgf file resides.
-            AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\Test.pgf");
+            AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\ABC.pgf");
 
             Console.WriteLine(" --- Supported languages ---");
             foreach (string lang in at.GetLanguages())
@@ -32,10 +32,14 @@ namespace CSPGF
                 Console.WriteLine(lang);
             }
 
-            at.SetInputLanguage("TestCnc");
-            //at.ScanTokens("str ( a )");
+            at.SetInputLanguage("ABCCnc");
+            // at.ScanTokens("str ( a )");
 
-            at.Scan("1.2");
+            //at.Scan("1.2");
+
+            at.Scan("a"); 
+            at.Scan("b");
+            at.Scan("c");
 
             // Predict valid continuations of the sentence.
             /*Console.WriteLine(" --- Prediction ---");
@@ -47,7 +51,7 @@ namespace CSPGF
 
             Console.WriteLine(" --- Translation ---");
 
-            at.SetOutputLanguage("TestCnc");
+            at.SetOutputLanguage("ABCCnc");
             Console.WriteLine(at.Translate());
 
             System.Console.WriteLine(at.PrintTree(at.GetTrees()[0]));
