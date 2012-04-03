@@ -505,11 +505,10 @@ namespace CSPGF.Linearize
                 List<LinTriple> rez = new List<LinTriple>();
                 foreach (AppResult appr in listApp)
                 {
-                    List<CncType> copyCtys = appr.CncTypes;
                     List<CncType> ctys = new List<CncType>();
-                    for (int ind = copyCtys.Count - 1; ind >= 0; ind--)
+                    for (int ind = appr.CncTypes.Count - 1; ind >= 0; ind--)
                     {
-                        ctys.Add(copyCtys.ElementAt(ind));
+                        ctys.Add(appr.CncTypes.ElementAt(ind));
                     }
 
                     if (es.Count != ctys.Count)
@@ -742,18 +741,14 @@ namespace CSPGF.Linearize
             {
                 return new List<BracketedTokn>();
             }
-
-            CncType cncType = cncTypes.ElementAt(d);
-            string cat = cncType.CId;
-            int fid = cncType.FId;
+            
             List<BracketedTokn> argLin = linTables.ElementAt(d).ElementAt(r);
             if (argLin.Count == 0)
             {
                 return argLin;
             }
 
-            List<BracketedTokn> bt = new List<BracketedTokn> { new Bracket(cat, fid, r, argLin) };
-            return bt;
+            return new List<BracketedTokn> { new Bracket(cncTypes.ElementAt(d).CId, cncTypes.ElementAt(d).FId, r, argLin) };
         }
 
         /// <summary>
