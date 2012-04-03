@@ -32,6 +32,7 @@ namespace CSPGF.Parse
 {
     using System.Collections.Generic;
     using Grammar;
+    using System.Globalization;
 
     /// <summary>
     /// The parsestate class.
@@ -139,16 +140,18 @@ namespace CSPGF.Parse
         /// <returns>Returns true if scan is successful.</returns>
         public bool Scan(string token)
         {
+
+            // Try to get the token
             ParseTrie newTrie = this.trie.GetSubTrie(token);
 
-            if (newTrie != null) 
+            if (newTrie != null)
             {
                 this.listOfTries.Push(newTrie);
                 Stack<ActiveItem> newAgenda = newTrie.Lookup(new List<string>());
-                if (newAgenda != null) 
+                if (newAgenda != null)
                 {
                     this.tokens.Push(token);
-                    
+
                     this.chart.NextToken();
                     this.trie = newTrie;
                     this.position++;
@@ -157,6 +160,56 @@ namespace CSPGF.Parse
 
                     return true;
                 }
+            }
+            else
+            {
+                float number;
+                // Check if number
+                bool isNum = false;
+                try
+                {
+                    number = float.Parse(token, CultureInfo.InvariantCulture);
+                    isNum = true;
+                }
+                catch
+                {
+                    isNum = false;
+                }
+
+
+
+                int fId = 0;
+
+                bool test = token.Contains(".");
+
+                // Check what type of literal:
+                if (isNum && test)
+                {
+                    fId = -3;
+                    // float -3
+                }
+                else if (isNum)
+                {
+                    // int -2
+                    fId = -2;
+                }
+                else
+                {
+                    fId = -1;
+                    // string -1/-4
+                }
+
+                // TODO check agenda, create one?
+                List<ApplProduction> al = this.chart.GetProductions(fId);
+
+                System.Console.WriteLine(al.Count);
+
+                // newTrie = this.trie.GetSubTrie("(");
+                // newTrie = new ParseTrie();
+                Stack<ActiveItem> newAgenda = newTrie.Lookup(new List<string>());
+                this.agenda = newAgenda;
+                this.trie = newTrie;
+                
             }
 
             return false;
@@ -275,12 +328,12 @@ namespace CSPGF.Parse
                     }
 
                     // COMBINE
-                    int cat = this.chart.GetCategory(bd, r, this.position, this.position);
+                    int? cat = this.chart.GetCategory(bd, r, this.position, this.position);
 
-                    if (cat != -1) 
+                    if (cat.HasValue) 
                     {
                         List<int> newDomain = new List<int>(b);
-                        newDomain[d] = cat;
+                        newDomain[d] = cat.Value;
 
                         // TODO: FIX!
                         ActiveItem it = new ActiveItem(j, a, f, newDomain.ToArray(), l, p + 1);
@@ -292,39 +345,34 @@ namespace CSPGF.Parse
             }
             else if (sym is LitSymbol)
             {
-                // TODO replace this with the real implementation of Literal categories
                 // TempLog.LogMessageToFile("Case before {d,r}");
                 LitSymbol arg = (LitSymbol)sym;
                 int d = arg.Arg;
                 int r = arg.Cons;
                 int bd = item.Domain[d];
 
-                // PREDICT
-                if (this.active.Count >= this.position)
+                // LITERAL
+                // TODO check if this is even close to correct :D
+
+                // TODO add function (below is just a test)
+                Symbol[][] symb = { };
+                CncFun freshFun = new CncFun("new:" + bd, symb);
+
+                //COMBINE (LIT VERSION)
+                int? n = this.chart.GetCategory(bd, r, this.position, this.position);
+
+
+                //COMBINE 
+                if (!n.HasValue)
                 {
-                    if (this.AddActiveSet(bd, r, item, this.active[this.position]))
-                    {
-                        foreach (ApplProduction prod in this.chart.GetProductions(bd))
-                        {
-                            ActiveItem it = new ActiveItem(this.position, bd, prod.Function, prod.Domain(), r, 0);
-                            this.agenda.Push(it);
-                        }
-                    }
+                    n = this.chart.GenerateFreshCategory(bd, r, this.position, this.position); //??
+                    List<int> newDomain = new List<int>(b);
+                    newDomain[d] = n.Value;
 
-                    // COMBINE
-                    int cat = this.chart.GetCategory(bd, r, this.position, this.position);
+                    ActiveItem it = new ActiveItem(j, a, f, newDomain.ToArray(), l, p + 1);
+                    this.agenda.Push(it);
 
-                    if (cat != -1)
-                    {
-                        List<int> newDomain = new List<int>(b);
-                        newDomain[d] = cat;
-
-                        // TODO: FIX!
-                        ActiveItem it = new ActiveItem(j, a, f, newDomain.ToArray(), l, p + 1);
-                        this.agenda.Push(it);
-
-                        // TempLog.LogMessageToFile("Adding to agenda: " + it.ToString());
-                    }
+                    // TempLog.LogMessageToFile("Adding to agenda: " + it.ToString());
                 }
             }
             else if (sym is VarSymbol)
@@ -336,8 +384,8 @@ namespace CSPGF.Parse
             else
             {
                 // TempLog.LogMessageToFile("Case at the end");
-                int cat = this.chart.GetCategory(a, l, j, this.position);
-                if (cat == -1)
+                int? cat = this.chart.GetCategory(a, l, j, this.position);
+                if (!cat.HasValue)
                 {
                     // COMPLETE
                     int n = this.chart.GenerateFreshCategory(a, l, j, this.position);
@@ -362,15 +410,15 @@ namespace CSPGF.Parse
                 else
                 {
                     // PREDICT
-                    HashSet<ActiveItem> items = this.GetActiveSet(cat, this.active[this.position]);
+                    HashSet<ActiveItem> items = this.GetActiveSet(cat.Value, this.active[this.position]);
                     foreach (ActiveItem ai in items)
                     {
                         int r = ((ArgConstSymbol)ai.CurrentSymbol()).Cons;  // Cons?
-                        ActiveItem i = new ActiveItem(this.position, cat, f, b, r, 0);
+                        ActiveItem i = new ActiveItem(this.position, cat.Value, f, b, r, 0);
                         this.agenda.Push(i);
                     }
 
-                    this.chart.AddProduction(cat, f, b);
+                    this.chart.AddProduction(cat.Value, f, b);
                 }
             }
         }

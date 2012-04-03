@@ -43,7 +43,7 @@ namespace CSPGF.Grammar
         /// {d,r} 
         /// </summary>
         /// <param name="arg">Argument int</param>
-        /// <param name="cons">Constant int</param>
+        /// <param name="cons">Constituent int</param>
         public LitSymbol(int arg, int cons)
         {
             this.Arg = arg;

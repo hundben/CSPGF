@@ -35,7 +35,10 @@ namespace CSPGF
             // at.Scan("delicious");
             at.SetOutputLanguage("ABCCnc");
             Console.WriteLine(at.Translate());
-            Console.WriteLine(at.PrintTree(at.GetTrees()[0]));
+
+            System.Console.WriteLine(at.PrintTree(at.GetTrees()[0]));
+
+            // Wait for a keypress.
             Console.ReadKey();
         }
     }
