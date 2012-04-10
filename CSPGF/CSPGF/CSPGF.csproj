@@ -83,6 +83,8 @@
     <Compile Include="AdvancedTranslator.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="Grammar\LitSymbol.cs" />
+    <Compile Include="Lin\CncHypo.cs" />
+    <Compile Include="Lin\Lin.cs" />
     <Compile Include="Linearizer\Linearizer.cs" />
     <Compile Include="Linearizer\LinearizerException.cs" />
     <Compile Include="Linearizer\AppResult.cs" />

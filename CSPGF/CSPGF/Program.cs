@@ -13,6 +13,8 @@ namespace CSPGF
 {
     using System;
 
+    using CSPGF.Parse;
+
     /// <summary>
     /// Used for debugging.
     /// </summary>
@@ -23,20 +25,25 @@ namespace CSPGF
         /// </summary>
         public static void Main()
         {
-            var at = new AdvancedTranslator("..\\..\\pgf examples\\ABC.pgf");
+            PGF pgf = new Grammar.PGFReader("..\\..\\pgf examples\\ABC.pgf").ReadPGF();
+            ParseState ps = new ParseState(pgf.GetConcrete("ABCCnc"));
+            ps.Scan("a");
+            ps.Scan("b");
+            ps.Scan("c");
+            
+            Lin.Lin lin = new Lin.Lin(pgf, pgf.GetConcrete("ABCCnc"));
+            lin.Linearize(ps.GetTrees()[0]);
+            
+            /*var at = new AdvancedTranslator("..\\..\\pgf examples\\ABC.pgf");
             at.SetInputLanguage("ABCCnc");
             at.Scan("a");
             at.Scan("b");
             at.Scan("c");
 
-            // at.Scan("this");
-            // at.Scan("wine");
-            // at.Scan("is");
-            // at.Scan("delicious");
             at.SetOutputLanguage("ABCCnc");
             Console.WriteLine(at.Translate());
 
-            System.Console.WriteLine(at.PrintTree(at.GetTrees()[0]));
+            System.Console.WriteLine(at.PrintTree(at.GetTrees()[0]));*/
 
             // Wait for a keypress.
             Console.ReadKey();

@@ -431,7 +431,7 @@ namespace CSPGF.Linearize
         /// <param name="xs">list of bound variables (from lambdas)</param>
         /// <param name="ys">list of strings?</param>
         /// <param name="mbcty">Concrete type</param>
-        /// <param name="mbfid">First id</param>
+        /// <param name="mbfid">Function id</param>
         /// <param name="tree">Tree to linearize</param>
         /// <returns>List of all possible linearized tuples</returns>
         private List<LinTriple> Lin0(List<string> xs, List<string> ys, CncType mbcty, int mbfid, Tree tree)
@@ -637,7 +637,7 @@ namespace CSPGF.Linearize
 
                     if (t == null)
                     {
-                        throw new LinearizerException(" f not found in the abstract syntax");
+                        throw new LinearizerException("Abstract function: " + f + " not found in the abstract syntax");
                     }
 
                     List<string> catSkel = this.CatSkeleton(t);
