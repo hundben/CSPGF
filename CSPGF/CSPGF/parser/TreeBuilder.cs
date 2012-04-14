@@ -105,6 +105,7 @@ namespace CSPGF.Parse
 
                 foreach (List<Tree> tree in this.ListMixer(lsmx)) 
                 {
+                    // TODO check if lit??????
                     temp.Add(new Application(p.Function.Name, tree));
                 }
 

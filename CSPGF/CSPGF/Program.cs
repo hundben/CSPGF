@@ -24,7 +24,7 @@ namespace CSPGF
         public static void Main()
         {
             // Change this path to where your pgf file resides.
-            AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\ABC.pgf");
+            AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\Mini.pgf");
 
             Console.WriteLine(" --- Supported languages ---");
             foreach (string lang in at.GetLanguages())
@@ -32,12 +32,23 @@ namespace CSPGF
                 Console.WriteLine(lang);
             }
 
-            at.SetInputLanguage("ABCCnc");
+            at.SetInputLanguage("MiniCnc");
+
+            foreach (string s in at.Predict())
+            {
+                Console.WriteLine(s + " ,");
+            }
+
             // at.ScanTokens("str ( a )");
+            
+            //at.Scan("flt (");
 
+            //at.Scan("flt");
+            //at.Scan("(");
             //at.Scan("1.2");
+            //at.Scan(")");
 
-            at.Scan("a"); 
+            at.Scan("a");
             at.Scan("b");
             at.Scan("c");
 
@@ -51,7 +62,7 @@ namespace CSPGF
 
             Console.WriteLine(" --- Translation ---");
 
-            at.SetOutputLanguage("ABCCnc");
+            at.SetOutputLanguage("MiniCnc");
             Console.WriteLine(at.Translate());
 
             System.Console.WriteLine(at.PrintTree(at.GetTrees()[0]));

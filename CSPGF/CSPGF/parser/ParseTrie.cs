@@ -1,185 +1,128 @@
-﻿//-----------------------------------------------------------------------
-// <copyright file="ParseTrie.cs" company="None">
-//  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
-//   Erik Bergström (erktheorc@gmail.com) 
-//  All rights reserved.
-//
-//  Redistribution and use in source and binary forms, with or without
-//  modification, are permitted provided that the following conditions are met:
-//   * Redistributions of source code must retain the above copyright
-//     notice, this list of conditions and the following disclaimer.
-//   * Redistributions in binary form must reproduce the above copyright
-//     notice, this list of conditions and the following disclaimer in the
-//     documentation and/or other materials provided with the distribution.
-//   * Neither the name of the &lt;organization&gt; nor the
-//     names of its contributors may be used to endorse or promote products
-//     derived from this software without specific prior written permission.
-//
-//  THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND
-//  ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
-//  WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
-//  DISCLAIMED. IN NO EVENT SHALL &lt;COPYRIGHT HOLDER&gt; BE LIABLE FOR ANY
-//  DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
-//  (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
-//  LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
-//  ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
-//  (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
-//  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+﻿// -----------------------------------------------------------------------
+// <copyright file="ParseTrie2.cs" company="">
+// TODO: Update copyright text.
 // </copyright>
-//-----------------------------------------------------------------------
+// -----------------------------------------------------------------------
 
 namespace CSPGF.Parse
 {
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
 
     /// <summary>
-    /// The ParseTrie class.
+    /// TODO: Update summary.
     /// </summary>
     internal class ParseTrie
     {
-        /// <summary>
-        /// A stack of active items.
-        /// </summary>
-        private Stack<Stack<ActiveItem>> value;
 
-        /// <summary>
-        /// All the childs
-        /// </summary>
-        private Dictionary<string, ParseTrie> child = new Dictionary<string, ParseTrie>();
+        private Stack<ActiveItem> value = new Stack<ActiveItem>();
 
-        /// <summary>
-        /// Initializes a new instance of the ParseTrie class.
-        /// </summary>
+        private Dictionary<string, ParseTrie> childs = new Dictionary<string,ParseTrie>();
+
         public ParseTrie()
         {
-            this.value = new Stack<Stack<ActiveItem>>();
+
         }
 
-        /// <summary>
-        /// Initializes a new instance of the ParseTrie class.
-        /// </summary>
-        /// <param name="value">A stack of active items.</param>
-        public ParseTrie(Stack<ActiveItem> value)
-        {
-            this.value = new Stack<Stack<ActiveItem>>();
-            this.value.Push(value);
-        }
-
-        /// <summary>
-        /// Adds an active item to the tree with the corresponding keys.
-        /// </summary>
-        /// <param name="key">A list of keys.</param>
-        /// <param name="value">A stack of active items.</param>
-        public void Add(string[] key, Stack<ActiveItem> value)
-        {
-            this.Add(key.ToList<string>(), value);
-        }
-
-        /// <summary>
-        /// Adds an active item to the tree with the corresponding keys.
-        /// </summary>
-        /// <param name="keys">A list of keys.</param>
-        /// <param name="value">A stack of active items.</param>
         public void Add(List<string> keys, Stack<ActiveItem> value)
         {
-            if (keys == null || keys.Count == 0) 
+            ParseTrie newTrie = this;
+
+            foreach (string k in keys)
             {
-                this.value.Push(value);
-            }
-            else
-            {
-                List<string> l = new List<string>(keys);
-                string x = l.First<string>();
-                l.Remove(x);
-                ParseTrie newTrie;
-                if (!this.child.TryGetValue(x, out newTrie))
+                if (!childs.ContainsKey(k))
                 {
-                    ParseTrie newN = new ParseTrie();
-                    newN.Add(l, value);
-                    this.child[x] = newN;
+                    ParseTrie tt = new ParseTrie();
+                    newTrie.childs[k] = tt;
+                    newTrie = tt;
                 }
                 else
                 {
-                    newTrie.Add(l, value);
+                    newTrie = newTrie.childs[k];
                 }
             }
+
+            // Check if correct
+            newTrie.value = value;
         }
 
-        /// <summary>
-        /// Looks for a stack of active items.
-        /// </summary>
-        /// <param name="key">The keys.</param>
-        /// <returns>The stack of active items.</returns>
-        public Stack<ActiveItem> Lookup(string[] key)
+        public Stack<ActiveItem> Lookup(string key)
         {
-            return this.Lookup(key.ToList<string>());
-        }
-
-        /// <summary>
-        /// Look for a stack of active items.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <returns>The corresponding stack of active items.</returns>
-        public Stack<ActiveItem> Lookup(List<string> key)
-        {
-            if (this.GetSubTrie(key) != null) 
+            ParseTrie trie;
+            if (this.childs.TryGetValue(key, out trie))
             {
-                ParseTrie temp = this.GetSubTrie(key);
-                if (temp.value.Count > 0)
-                {
-                    Stack<ActiveItem> ai = new Stack<ActiveItem>(temp.value.Peek());
-                    temp.value.Push(ai);
-                    return temp.value.Peek();
-                }
+                return trie.value;
+            }
+
+            if (key == string.Empty)
+            {
+                return this.value;
             }
 
             return null;
         }
-        
-        /// <summary>
-        /// Returns the subtrie for a list of keys.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <returns>The subtrie if any.</returns>
-        public ParseTrie GetSubTrie(List<string> key)
+
+        public Stack<ActiveItem> Lookup(List<string> keys)
         {
-            if (key == null || key.Count == 0)
+            if (keys.Count == 0)
             {
-                return this;
+                return this.value;
+            }
+            Stack<ActiveItem> items = new Stack<ActiveItem>();
+            ParseTrie currentTrie = this;
+            foreach (string k in keys)
+            {
+                if (this.childs.ContainsKey(k))
+                {
+                    currentTrie = this.childs[k];
+                }
+                else
+                {
+                    return null;
+                }
             }
 
-            List<string> l = new List<string>(key);
-            string x = l.First<string>();
-            l.Remove(x);
-
-            ParseTrie newTrie;
-            if (this.child.TryGetValue(x, out newTrie))
-            {
-                return newTrie.GetSubTrie(l);
-            }
-
-            return newTrie;
+            return currentTrie.value ;
         }
 
-        /// <summary>
-        /// Returns the subtrie of one key.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <returns>The subtrie.</returns>
+
         public ParseTrie GetSubTrie(string key)
         {
-            List<string> tmp = new List<string> { key };
-            return this.GetSubTrie(tmp);
+            ParseTrie trie;
+            if (this.childs.TryGetValue(key, out trie))
+            {
+                return trie;
+            }
+            return null;
         }
-        
-        /// <summary>
-        /// Predicts the next token.
-        /// </summary>
-        /// <returns>Returns a list of tokens.</returns>
+
+        public ParseTrie GetSubTrie(List<string> keys)
+        {
+            ParseTrie trie = this;
+            foreach (string k in keys)
+            {
+                // TODO optimize to use TryGet
+                if (trie.childs.ContainsKey(k))
+                {
+                    trie = childs[k];
+                }
+                else
+                {
+                    return null;
+                }
+            }
+            return trie;
+        }
+
         public List<string> Predict()
         {
-            return this.child.Keys.ToList<string>();
+            return this.childs.Keys.ToList<string>();
+        }
+
+        public void ResetChild(string token)
+        {
         }
 
         /// <summary>
@@ -194,7 +137,7 @@ namespace CSPGF.Parse
             {
                 temp += "{";
 
-                foreach (ActiveItem ai in this.value.Peek().ToList())
+                foreach (ActiveItem ai in this.value.ToList())
                 {
                     temp += ai;
                 }
@@ -204,42 +147,14 @@ namespace CSPGF.Parse
 
             temp += "[";
 
-            foreach (string key in this.child.Keys)
+            foreach (string key in this.childs.Keys)
             {
-                ParseTrie t = this.child[key];
+                ParseTrie t = this.childs[key];
                 temp += key + "[" + t + "]";
             }
 
             temp += "]";
             return temp;
-        }
-
-        /// <summary>
-        /// Restores the child with token token as key to an earlier version.
-        /// </summary>
-        /// <param name="token">The last token we parsed.</param>
-        public void ResetChild(string token)
-        {
-            foreach (string key in this.child.Keys)
-            {
-                if (key == token)
-                {
-                    this.child[key].PopOne();
-                }
-            }
-        }
-
-        /// <summary>
-        /// Removes one stored value on the stack.
-        /// </summary>
-        public void PopOne()
-        {
-            if (this.value.Count > 1)
-            {
-                this.value.Pop();
-            }
-
-            this.child = new Dictionary<string, ParseTrie>();
         }
     }
 }
