@@ -147,7 +147,7 @@ namespace CSPGF.Parse
             if (newTrie != null)
             {
                 this.listOfTries.Push(newTrie);
-                Stack<ActiveItem> newAgenda = newTrie.Lookup(new List<string>());
+                Stack<ActiveItem> newAgenda = newTrie.Lookup(string.Empty);
                 if (newAgenda != null)
                 {
                     this.tokens.Push(token);
@@ -156,10 +156,9 @@ namespace CSPGF.Parse
                     this.trie = newTrie;
                     this.position++;
                     this.agenda = newAgenda;
-                    this.Compute();
-
-                    return true;
+                    this.Compute();                    
                 }
+                return true;
             }
             else
             {
@@ -175,8 +174,6 @@ namespace CSPGF.Parse
                 {
                     isNum = false;
                 }
-
-
 
                 int fId = 0;
 
@@ -199,16 +196,25 @@ namespace CSPGF.Parse
                     // string -1/-4
                 }
 
-                // TODO check agenda, create one?
-                List<ApplProduction> al = this.chart.GetProductions(fId);
-
-                System.Console.WriteLine(al.Count);
-
                 // newTrie = this.trie.GetSubTrie("(");
                 // newTrie = new ParseTrie();
-                Stack<ActiveItem> newAgenda = newTrie.Lookup(new List<string>());
-                this.agenda = newAgenda;
-                this.trie = newTrie;
+
+                int? cat = this.chart.GetCategory(fId, 0, 0, 0);
+
+                if (cat.HasValue)
+                {
+                    List<ApplProduction> al = this.chart.GetProductions(cat.Value);
+                    System.Console.WriteLine(al.Count);
+                }
+
+                newTrie = this.trie.GetSubTrie(""+fId);
+
+                if (newTrie != null)
+                {
+                    Stack<ActiveItem> newAgenda = newTrie.Lookup(string.Empty);
+                    this.agenda = newAgenda;
+                    this.trie = newTrie;
+                }
                 
             }
 
@@ -297,15 +303,13 @@ namespace CSPGF.Parse
                 ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
 
                 // SCAN
-                Stack<ActiveItem> newAgenda = this.trie.Lookup(tokens);
-                if (newAgenda == null) 
+                Stack<ActiveItem> newAgenda = this.trie.Lookup(new List<string>(tokens));
+                if (newAgenda == null)
                 {
-                    Stack<ActiveItem> sai = new Stack<ActiveItem>();
-                    this.trie.Add(tokens, sai);
-                    newAgenda = sai;
+                    newAgenda = new Stack<ActiveItem>();
+                    newAgenda.Push(i);
+                    this.trie.Add(new List<string>(tokens), newAgenda);
                 }
-
-                newAgenda.Push(i);
             }
             else if (sym is ArgConstSymbol) 
             {
@@ -355,8 +359,15 @@ namespace CSPGF.Parse
                 // TODO check if this is even close to correct :D
 
                 // TODO add function (below is just a test)
-                Symbol[][] symb = { };
-                CncFun freshFun = new CncFun("new:" + bd, symb);
+                
+                //Symbol[][] symb = new Symbol[1][];
+                
+                string[] temp2 = {"" + bd};
+
+                Symbol[] crap = {new ToksSymbol(temp2)};
+                Symbol[][] symb = { crap };
+
+                CncFun freshFun = new CncFun("Const("+bd+")", symb);
 
                 //COMBINE (LIT VERSION)
                 int? n = this.chart.GetCategory(bd, r, this.position, this.position);
@@ -366,13 +377,25 @@ namespace CSPGF.Parse
                 if (!n.HasValue)
                 {
                     n = this.chart.GenerateFreshCategory(bd, r, this.position, this.position); //??
-                    List<int> newDomain = new List<int>(b);
-                    newDomain[d] = n.Value;
+                    //List<int> newDomain = new List<int>();
 
-                    ActiveItem it = new ActiveItem(j, a, f, newDomain.ToArray(), l, p + 1);
-                    this.agenda.Push(it);
+                    Stack<ActiveItem> newAgenda = this.trie.Lookup(new List<string>(temp2));
+                    
+                    ActiveItem it = new ActiveItem(j, n.Value, freshFun, new int[0], l, p + 1);
+        
+
+
+                    if (newAgenda == null)
+                    {
+                        newAgenda = new Stack<ActiveItem>();
+                        newAgenda.Push(it);
+                        this.trie.Add(new List<string>(temp2), newAgenda);
+                    }
 
                     // TempLog.LogMessageToFile("Adding to agenda: " + it.ToString());
+                    this.chart.AddProduction(n.Value, freshFun, new int[0]);
+
+
                 }
             }
             else if (sym is VarSymbol)

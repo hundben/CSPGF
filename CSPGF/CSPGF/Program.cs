@@ -26,38 +26,25 @@ namespace CSPGF
         /// </summary>
         public static void Main()
         {
-            /*PGF pgf = new Grammar.PGFReader("..\\..\\pgf examples\\ABC.pgf").ReadPGF();
-            ParseState ps = new ParseState(pgf.GetConcrete("ABCCnc"));
-            ps.Scan("a");
-            ps.Scan("b");
-            ps.Scan("c");
-            
-            Lin.Lin lin = new Lin.Lin(pgf, pgf.GetConcrete("ABCCnc"));
-            lin.Linearize(ps.GetTrees()[0]);*/
-            /*Stopwatch sw = new Stopwatch();
-            sw.Start();
-            var at = new AdvancedTranslator("..\\..\\pgf examples\\Phrasebook.pgf");
-            at.SetInputLanguage("PhrasebookEng");
-            at.Scan("this");
-            at.Scan("wine");
-            at.Scan("is");
-            at.Scan("delicious");
-            at.SetOutputLanguage("PhrasebookSwe");
-            Console.WriteLine(at.Translate());
-            sw.Stop();*/
+            AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\MiniLit.pgf");
+            at.SetInputLanguage("MiniLitCnc");
 
-            // Console.WriteLine(at.PrintTree(at.GetTrees()[0]));
-            // Console.WriteLine(sw.ElapsedMilliseconds);
-            // Wait for a keypress.
+            foreach (string s in at.Predict())
+            {
+                Console.WriteLine(s + " ,");
+            }
 
-            AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\ABC.pgf");
-            at.SetInputLanguage("ABCCnc");
-            at.Scan("a");
-            at.Scan("b");
-            at.Scan("c");
-            at.SetOutputLanguage("ABCCnc");
-            Console.WriteLine(at.Translate());
-            Console.WriteLine(at.PrintTree(at.GetTrees()[0]));
+            at.Scan("flt");
+            at.Scan("(");
+            at.Scan("1.2");
+            at.Scan(")");
+
+            //at.Scan("a");
+            //at.Scan("b");
+            //at.Scan("c");
+
+            Console.WriteLine(" --- Translation ---");
+            at.SetOutputLanguage("MiniLitCnc");
             Console.ReadKey();
         }
     }
