@@ -24,7 +24,7 @@ namespace CSPGF
         public static void Main()
         {
             // Change this path to where your pgf file resides.
-            AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\Mini.pgf");
+            AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\MiniLit.pgf");
 
             Console.WriteLine(" --- Supported languages ---");
             foreach (string lang in at.GetLanguages())
@@ -32,7 +32,7 @@ namespace CSPGF
                 Console.WriteLine(lang);
             }
 
-            at.SetInputLanguage("MiniCnc");
+            at.SetInputLanguage("MiniLitCnc");
 
             foreach (string s in at.Predict())
             {
@@ -43,14 +43,14 @@ namespace CSPGF
             
             //at.Scan("flt (");
 
-            //at.Scan("flt");
-            //at.Scan("(");
-            //at.Scan("1.2");
-            //at.Scan(")");
+            at.Scan("flt");
+            at.Scan("(");
+            at.Scan("1.2");
+            at.Scan(")");
 
-            at.Scan("a");
-            at.Scan("b");
-            at.Scan("c");
+            //at.Scan("a");
+            //at.Scan("b");
+            //at.Scan("c");
 
             // Predict valid continuations of the sentence.
             /*Console.WriteLine(" --- Prediction ---");
@@ -59,10 +59,9 @@ namespace CSPGF
                 Console.WriteLine(token);
             }*/
 
-
             Console.WriteLine(" --- Translation ---");
 
-            at.SetOutputLanguage("MiniCnc");
+            at.SetOutputLanguage("MiniLitCnc");
             Console.WriteLine(at.Translate());
 
             System.Console.WriteLine(at.PrintTree(at.GetTrees()[0]));

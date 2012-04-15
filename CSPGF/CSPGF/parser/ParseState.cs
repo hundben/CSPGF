@@ -156,9 +156,7 @@ namespace CSPGF.Parse
                     this.trie = newTrie;
                     this.position++;
                     this.agenda = newAgenda;
-                    this.Compute();
-
-                    
+                    this.Compute();                    
                 }
                 return true;
             }
@@ -176,8 +174,6 @@ namespace CSPGF.Parse
                 {
                     isNum = false;
                 }
-
-
 
                 int fId = 0;
 
