@@ -431,7 +431,7 @@ namespace CSPGF.Linearize
         /// <param name="xs">list of bound variables (from lambdas)</param>
         /// <param name="ys">list of strings?</param>
         /// <param name="mbcty">Concrete type</param>
-        /// <param name="mbfid">First id</param>
+        /// <param name="mbfid">Function id</param>
         /// <param name="tree">Tree to linearize</param>
         /// <returns>List of all possible linearized tuples</returns>
         private List<LinTriple> Lin0(List<string> xs, List<string> ys, CncType mbcty, int mbfid, Tree tree)
@@ -505,11 +505,10 @@ namespace CSPGF.Linearize
                 List<LinTriple> rez = new List<LinTriple>();
                 foreach (AppResult appr in listApp)
                 {
-                    List<CncType> copyCtys = appr.CncTypes;
                     List<CncType> ctys = new List<CncType>();
-                    for (int ind = copyCtys.Count - 1; ind >= 0; ind--)
+                    for (int ind = appr.CncTypes.Count - 1; ind >= 0; ind--)
                     {
-                        ctys.Add(copyCtys.ElementAt(ind));
+                        ctys.Add(appr.CncTypes.ElementAt(ind));
                     }
 
                     if (es.Count != ctys.Count)
@@ -638,7 +637,7 @@ namespace CSPGF.Linearize
 
                     if (t == null)
                     {
-                        throw new LinearizerException(" f not found in the abstract syntax");
+                        throw new LinearizerException("Abstract function: " + f + " not found in the abstract syntax");
                     }
 
                     List<string> catSkel = this.CatSkeleton(t);
@@ -742,18 +741,14 @@ namespace CSPGF.Linearize
             {
                 return new List<BracketedTokn>();
             }
-
-            CncType cncType = cncTypes.ElementAt(d);
-            string cat = cncType.CId;
-            int fid = cncType.FId;
+            
             List<BracketedTokn> argLin = linTables.ElementAt(d).ElementAt(r);
             if (argLin.Count == 0)
             {
                 return argLin;
             }
 
-            List<BracketedTokn> bt = new List<BracketedTokn> { new Bracket(cat, fid, r, argLin) };
-            return bt;
+            return new List<BracketedTokn> { new Bracket(cncTypes.ElementAt(d).CId, cncTypes.ElementAt(d).FId, r, argLin) };
         }
 
         /// <summary>

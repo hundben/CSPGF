@@ -13,6 +13,8 @@ namespace CSPGF
 {
     using System;
 
+    using CSPGF.Parse;
+
     /// <summary>
     /// Used for debugging.
     /// </summary>
@@ -39,10 +41,6 @@ namespace CSPGF
                 Console.WriteLine(s + " ,");
             }
 
-            // at.ScanTokens("str ( a )");
-            
-            //at.Scan("flt (");
-
             at.Scan("flt");
             at.Scan("(");
             at.Scan("1.2");
@@ -59,12 +57,12 @@ namespace CSPGF
                 Console.WriteLine(token);
             }*/
 
+            // Lin.Lin lin = new Lin.Lin(pgf, pgf.GetConcrete("ABCCnc"));
+            // lin.Linearize(ps.GetTrees()[0]);
+
             Console.WriteLine(" --- Translation ---");
 
             at.SetOutputLanguage("MiniLitCnc");
-            Console.WriteLine(at.Translate());
-
-            System.Console.WriteLine(at.PrintTree(at.GetTrees()[0]));
 
             // Wait for a keypress.
             Console.ReadKey();
