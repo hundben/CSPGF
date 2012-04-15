@@ -12,6 +12,7 @@
 namespace CSPGF
 {
     using System;
+    using System.Diagnostics;
 
     using CSPGF.Parse;
 
@@ -25,15 +26,7 @@ namespace CSPGF
         /// </summary>
         public static void Main()
         {
-            // Change this path to where your pgf file resides.
             AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\MiniLit.pgf");
-
-            Console.WriteLine(" --- Supported languages ---");
-            foreach (string lang in at.GetLanguages())
-            {
-                Console.WriteLine(lang);
-            }
-
             at.SetInputLanguage("MiniLitCnc");
 
             foreach (string s in at.Predict())
@@ -50,21 +43,8 @@ namespace CSPGF
             //at.Scan("b");
             //at.Scan("c");
 
-            // Predict valid continuations of the sentence.
-            /*Console.WriteLine(" --- Prediction ---");
-            foreach (String token in at.Predict())
-            {
-                Console.WriteLine(token);
-            }*/
-
-            // Lin.Lin lin = new Lin.Lin(pgf, pgf.GetConcrete("ABCCnc"));
-            // lin.Linearize(ps.GetTrees()[0]);
-
             Console.WriteLine(" --- Translation ---");
-
             at.SetOutputLanguage("MiniLitCnc");
-
-            // Wait for a keypress.
             Console.ReadKey();
         }
     }
