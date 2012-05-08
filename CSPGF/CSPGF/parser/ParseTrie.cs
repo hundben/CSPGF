@@ -68,7 +68,7 @@ namespace CSPGF.Parse
 
             foreach (string k in keys)
             {
-                if (!this.childs.ContainsKey(k))
+                if (!newTrie.childs.ContainsKey(k))
                 {
                     ParseTrie tt = new ParseTrie();
                     newTrie.childs[k] = tt;
@@ -121,9 +121,9 @@ namespace CSPGF.Parse
             ParseTrie currentTrie = this;
             foreach (string k in keys)
             {
-                if (this.childs.ContainsKey(k))
+                if (currentTrie.childs.ContainsKey(k))
                 {
-                    currentTrie = this.childs[k];
+                    currentTrie = currentTrie.childs[k];
                 }
                 else
                 {
@@ -163,7 +163,7 @@ namespace CSPGF.Parse
                 // TODO optimize to use TryGet
                 if (trie.childs.ContainsKey(k))
                 {
-                    trie = this.childs[k];
+                    trie = trie.childs[k];
                 }
                 else
                 {

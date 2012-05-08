@@ -113,7 +113,7 @@ namespace CSPGF.Parse
                 }
             }
 
-            this.Compute();
+            this.Compute(string.Empty);
         }
 
         /// <summary>
@@ -150,13 +150,13 @@ namespace CSPGF.Parse
                 Stack<ActiveItem> newAgenda = newTrie.Lookup(string.Empty);
                 if (newAgenda != null)
                 {
-                    this.tokens.Push(token);
+                    //this.tokens.Push(token);
 
                     this.chart.NextToken();
                     this.trie = newTrie;
                     this.position++;
                     this.agenda = newAgenda;
-                    this.Compute();                    
+                    this.Compute(token);                    
                 }
                 return true;
             }
@@ -251,8 +251,7 @@ namespace CSPGF.Parse
                 this.chart.RemoveToken();
                 ParseTrie t = this.listOfTries.Pop();
                 this.trie = this.listOfTries.Peek();
-                string token = this.tokens.Pop();
-                this.trie.ResetChild(token);
+                //this.trie.ResetChild(token);
                 
                 this.active.RemoveAt(this.position);
                 this.position--;
@@ -267,7 +266,7 @@ namespace CSPGF.Parse
         /// <summary>
         /// Computes the new trees.
         /// </summary>
-        private void Compute()
+        private void Compute(string lit)
         {
             this.active.Add(new Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>());
 
@@ -275,7 +274,7 @@ namespace CSPGF.Parse
             while (this.agenda.Count != 0) 
             {
                 ActiveItem e = this.agenda.Pop();
-                this.ProcessActiveItem(e);
+                this.ProcessActiveItem(e, lit);
             }
         }
 
@@ -283,7 +282,7 @@ namespace CSPGF.Parse
         /// Processes an active item.
         /// </summary>
         /// <param name="item">The item to be processed.</param>
-        private void ProcessActiveItem(ActiveItem item)
+        private void ProcessActiveItem(ActiveItem item, string lit)
         {
             int j = item.Begin;
             int a = item.Category;
@@ -300,12 +299,12 @@ namespace CSPGF.Parse
                 // TempLog.LogMessageToFile("Case before s in T");
                 ToksSymbol tok = (ToksSymbol)sym;
                 string[] tokens = tok.Tokens;
-                ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
-
+                
                 // SCAN
                 Stack<ActiveItem> newAgenda = this.trie.Lookup(new List<string>(tokens));
                 if (newAgenda == null)
                 {
+                    ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
                     newAgenda = new Stack<ActiveItem>();
                     newAgenda.Push(i);
                     this.trie.Add(new List<string>(tokens), newAgenda);
@@ -322,7 +321,7 @@ namespace CSPGF.Parse
                 // PREDICT
                 if (this.active.Count >= this.position) 
                 {
-                    if (this.AddActiveSet(bd, r, item, this.active[this.position])) 
+                    if (this.AddActiveSet(bd, r, item, this.active[this.position]))
                     {
                         foreach (ApplProduction prod in this.chart.GetProductions(bd)) 
                         {
@@ -356,46 +355,31 @@ namespace CSPGF.Parse
                 int bd = item.Domain[d];
 
                 // LITERAL
-                // TODO check if this is even close to correct :D
 
-                // TODO add function (below is just a test)
-                
-                //Symbol[][] symb = new Symbol[1][];
-                
-                string[] temp2 = {"" + bd};
+                //check category
+                int? n = this.chart.GetCategory(bd, r, j, this.position);
 
-                Symbol[] crap = {new ToksSymbol(temp2)};
-                Symbol[][] symb = { crap };
-
-                CncFun freshFun = new CncFun("Const("+bd+")", symb);
-
-                //COMBINE (LIT VERSION)
-                int? n = this.chart.GetCategory(bd, r, this.position, this.position);
-
-
-                //COMBINE 
+                //If value is not found use predict
                 if (!n.HasValue)
                 {
-                    n = this.chart.GenerateFreshCategory(bd, r, this.position, this.position); //??
-                    //List<int> newDomain = new List<int>();
-
-                    Stack<ActiveItem> newAgenda = this.trie.Lookup(new List<string>(temp2));
-                    
-                    ActiveItem it = new ActiveItem(j, n.Value, freshFun, new int[0], l, p + 1);
-        
-
-
-                    if (newAgenda == null)
+                    //PREDICT
+                    int newCat = this.chart.GenerateFreshCategory(bd, r, j, this.position);
+                    if (this.active.Count >= this.position) 
                     {
-                        newAgenda = new Stack<ActiveItem>();
-                        newAgenda.Push(it);
-                        this.trie.Add(new List<string>(temp2), newAgenda);
+                        if (this.AddActiveSet(bd, r, item, this.active[this.position]))
+                        {
+                            foreach (ApplProduction prod in this.chart.GetProductions(bd)) // get which productions?
+                            {
+                                ActiveItem it = new ActiveItem(this.position, newCat, prod.Function, prod.Domain(), r, 0);
+                                this.agenda.Push(it);
+                            }
+                        }
                     }
-
-                    // TempLog.LogMessageToFile("Adding to agenda: " + it.ToString());
-                    this.chart.AddProduction(n.Value, freshFun, new int[0]);
-
-
+                }
+                else
+                {
+                    //LITERAL
+                    System.Console.WriteLine("LIT");
                 }
             }
             else if (sym is VarSymbol)
@@ -423,7 +407,6 @@ namespace CSPGF.Parse
                         // TempLog.LogMessageToFile("Combine with " + ip.ToString() + "(" + domain[d] + ")");
                         domain[d] = n;
 
-                        // TODO: FIX!
                         ActiveItem i = new ActiveItem(ip.Begin, ip.Category, ip.Function, domain.ToArray(), ip.Constituent, ip.Position + 1);
                         this.agenda.Push(i);
                     }

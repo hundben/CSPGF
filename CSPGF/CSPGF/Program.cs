@@ -63,6 +63,7 @@ namespace CSPGF
             Console.WriteLine(" --- Translation ---");
 
             at.SetOutputLanguage("MiniLitCnc");
+            Console.WriteLine(at.Translate());
 
             // Wait for a keypress.
             Console.ReadKey();
