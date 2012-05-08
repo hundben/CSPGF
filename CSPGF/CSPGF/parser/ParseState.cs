@@ -70,11 +70,6 @@ namespace CSPGF.Parse
         private Stack<ParseTrie> listOfTries;
 
         /// <summary>
-        /// Stack of tokens.
-        /// </summary>
-        private Stack<string> tokens;
-
-        /// <summary>
         /// List with sets of acctive items.
         /// </summary>
         private List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>> active;
@@ -90,7 +85,6 @@ namespace CSPGF.Parse
 
             this.listOfTries = new Stack<ParseTrie>();
             this.listOfTries.Push(this.trie);
-            this.tokens = new Stack<string>();
 
             this.chart = new Chart(grammar.FId + 1);
 
@@ -150,12 +144,11 @@ namespace CSPGF.Parse
                 Stack<ActiveItem> newAgenda = newTrie.Lookup(string.Empty);
                 if (newAgenda != null)
                 {
-                    //this.tokens.Push(token);
-
                     this.chart.NextToken();
                     this.trie = newTrie;
                     this.position++;
                     this.agenda = newAgenda;
+
                     this.Compute(token);                    
                 }
                 return true;
@@ -196,26 +189,21 @@ namespace CSPGF.Parse
                     // string -1/-4
                 }
 
-                // newTrie = this.trie.GetSubTrie("(");
-                // newTrie = new ParseTrie();
-
-                int? cat = this.chart.GetCategory(fId, 0, 0, 0);
-
-                if (cat.HasValue)
-                {
-                    List<ApplProduction> al = this.chart.GetProductions(cat.Value);
-                    System.Console.WriteLine(al.Count);
-                }
-
                 newTrie = this.trie.GetSubTrie(""+fId);
 
                 if (newTrie != null)
                 {
                     Stack<ActiveItem> newAgenda = newTrie.Lookup(string.Empty);
-                    this.agenda = newAgenda;
-                    this.trie = newTrie;
+                    if (newAgenda != null)
+                    {
+                        this.chart.NextToken();
+                        this.trie = newTrie;
+                        this.position++;
+                        this.agenda = newAgenda;
+                        this.Compute(token);
+                    }
+                    return true;
                 }
-                
             }
 
             return false;
@@ -275,6 +263,7 @@ namespace CSPGF.Parse
             {
                 ActiveItem e = this.agenda.Pop();
                 this.ProcessActiveItem(e, lit);
+
             }
         }
 
@@ -293,6 +282,8 @@ namespace CSPGF.Parse
 
             // TempLog.LogMessageToFile("Processing active item: " + item + " ");
             Symbol sym = item.CurrentSymbol();
+
+            // if (this.active.Count >= this.position) { <- TODO move this here 
 
             if (sym is ToksSymbol)
             {
@@ -348,6 +339,7 @@ namespace CSPGF.Parse
             }
             else if (sym is LitSymbol)
             {
+                // TODO notice a lot of this is just test...
                 // TempLog.LogMessageToFile("Case before {d,r}");
                 LitSymbol arg = (LitSymbol)sym;
                 int d = arg.Arg;
