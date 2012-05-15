@@ -26,25 +26,25 @@ namespace CSPGF
         /// </summary>
         public static void Main()
         {
-            AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\MiniLit.pgf");
-            at.SetInputLanguage("MiniLitCnc");
+            AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\Mini.pgf");
+            at.SetInputLanguage("MiniCnc");
 
             foreach (string s in at.Predict())
             {
                 Console.WriteLine(s + " ,");
             }
 
-            at.Scan("flt");
-            at.Scan("(");
-            at.Scan("1.2");
-            at.Scan(")");
+            //at.Scan("flt");
+            //at.Scan("(");
+            //at.Scan("1.2");
+            //at.Scan(")");
 
-            //at.Scan("a");
-            //at.Scan("b");
-            //at.Scan("c");
+            at.Scan("a");
+            at.Scan("b");
+            at.Scan("c");
 
             Console.WriteLine(" --- Translation ---");
-            at.SetOutputLanguage("MiniLitCnc");
+            at.SetOutputLanguage("MiniCnc");
             Console.WriteLine(at.Translate());
 
             // Wait for a keypress.

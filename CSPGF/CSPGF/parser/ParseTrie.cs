@@ -107,11 +107,15 @@ namespace CSPGF.Parse
 
         /// <summary>
         /// Same as Lookup but searches down the trie.
+        /// TODO this might be wrong, scala version only checks first key
         /// </summary>
         /// <param name="keys">The list of keys.</param>
         /// <returns>The agenda.</returns>
         public Stack<ActiveItem> Lookup(List<string> keys)
         {
+
+            return this.Lookup(keys.First());
+            /*
             if (keys.Count == 0)
             {
                 return this.value;
@@ -132,6 +136,7 @@ namespace CSPGF.Parse
             }
 
             return currentTrie.value;
+             */
         }
 
         /// <summary>
