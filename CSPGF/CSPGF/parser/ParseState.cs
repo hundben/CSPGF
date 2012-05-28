@@ -188,22 +188,6 @@ namespace CSPGF.Parse
                     fId = -1;
                     // string -1/-4
                 }
-
-                newTrie = this.trie.GetSubTrie(""+fId);
-
-                if (newTrie != null)
-                {
-                    Stack<ActiveItem> newAgenda = newTrie.Lookup(string.Empty);
-                    if (newAgenda != null)
-                    {
-                        this.chart.NextToken();
-                        this.trie = newTrie;
-                        this.position++;
-                        this.agenda = newAgenda;
-                        this.Compute(token);
-                    }
-                    return true;
-                }
             }
 
             return false;
@@ -290,16 +274,17 @@ namespace CSPGF.Parse
                 // TempLog.LogMessageToFile("Case before s in T");
                 ToksSymbol tok = (ToksSymbol)sym;
                 string[] tokens = tok.Tokens;
-                
+
+                ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
+
                 // SCAN
                 Stack<ActiveItem> newAgenda = this.trie.Lookup(new List<string>(tokens));
                 if (newAgenda == null)
                 {
-                    ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
                     newAgenda = new Stack<ActiveItem>();
-                    newAgenda.Push(i);
                     this.trie.Add(new List<string>(tokens), newAgenda);
                 }
+                newAgenda.Push(i);
             }
             else if (sym is ArgConstSymbol) 
             {
@@ -341,38 +326,13 @@ namespace CSPGF.Parse
             {
                 // TODO notice a lot of this is just test...
                 // TempLog.LogMessageToFile("Case before {d,r}");
-                LitSymbol arg = (LitSymbol)sym;
-                int d = arg.Arg;
-                int r = arg.Cons;
+                LitSymbol litSym = (LitSymbol)sym;
+                int d = litSym.Arg;
+                int r = litSym.Cons;
                 int bd = item.Domain[d];
 
                 // LITERAL
 
-                //check category
-                int? n = this.chart.GetCategory(bd, r, j, this.position);
-
-                //If value is not found use predict
-                if (!n.HasValue)
-                {
-                    //PREDICT
-                    int newCat = this.chart.GenerateFreshCategory(bd, r, j, this.position);
-                    if (this.active.Count >= this.position) 
-                    {
-                        if (this.AddActiveSet(bd, r, item, this.active[this.position]))
-                        {
-                            foreach (ApplProduction prod in this.chart.GetProductions(bd)) // get which productions?
-                            {
-                                ActiveItem it = new ActiveItem(this.position, newCat, prod.Function, prod.Domain(), r, 0);
-                                this.agenda.Push(it);
-                            }
-                        }
-                    }
-                }
-                else
-                {
-                    //LITERAL
-                    System.Console.WriteLine("LIT");
-                }
             }
             else if (sym is VarSymbol)
             {
