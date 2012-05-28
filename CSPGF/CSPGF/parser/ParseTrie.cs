@@ -148,10 +148,27 @@ namespace CSPGF.Parse
             ParseTrie trie;
             if (this.childs.TryGetValue(key, out trie))
             {
-                return trie;
+                return MakeCopy(trie);
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Returns a copy of the ParseTrie.
+        /// </summary>
+        /// <param name="trie">The trie we want to copy.</param>
+        /// <returns>A copy of the trie</returns>
+        private ParseTrie MakeCopy(ParseTrie trie)
+        {
+            ParseTrie t = new ParseTrie();
+            t.value = new Stack<ActiveItem>(trie.value.Reverse());
+            foreach (string k in trie.childs.Keys)
+            {
+                t.childs[k] = MakeCopy(trie.childs[k]);
+            }
+            
+            return trie;
         }
 
         /// <summary>
