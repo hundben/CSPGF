@@ -113,7 +113,6 @@ namespace CSPGF.Parse
         /// <returns>The agenda.</returns>
         public Stack<ActiveItem> Lookup(List<string> keys)
         {
-
             return this.Lookup(keys.First());
             /*
             if (keys.Count == 0)

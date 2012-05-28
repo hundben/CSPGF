@@ -31,8 +31,8 @@
 namespace CSPGF.Parse
 {
     using System.Collections.Generic;
-    using Grammar;
     using System.Globalization;
+    using Grammar;
 
     /// <summary>
     /// The parsestate class.
@@ -134,7 +134,6 @@ namespace CSPGF.Parse
         /// <returns>Returns true if scan is successful.</returns>
         public bool Scan(string token)
         {
-
             // Try to get the token
             ParseTrie newTrie = this.trie.GetSubTrie(token);
 
@@ -151,11 +150,13 @@ namespace CSPGF.Parse
 
                     this.Compute(token);                    
                 }
+
                 return true;
             }
             else
             {
                 float number;
+
                 // Check if number
                 bool isNum = false;
                 try
@@ -175,8 +176,8 @@ namespace CSPGF.Parse
                 // Check what type of literal:
                 if (isNum && test)
                 {
+                    // float
                     fId = -3;
-                    // float -3
                 }
                 else if (isNum)
                 {
@@ -185,8 +186,8 @@ namespace CSPGF.Parse
                 }
                 else
                 {
-                    fId = -1;
                     // string -1/-4
+                    fId = -1;   
                 }
             }
 
@@ -222,9 +223,6 @@ namespace CSPGF.Parse
             {
                 this.chart.RemoveToken();
                 ParseTrie t = this.listOfTries.Pop();
-                this.trie = this.listOfTries.Peek();
-                //this.trie.ResetChild(token);
-                
                 this.active.RemoveAt(this.position);
                 this.position--;
                 return true;
@@ -238,6 +236,7 @@ namespace CSPGF.Parse
         /// <summary>
         /// Computes the new trees.
         /// </summary>
+        /// <param name="lit">The literal if any.</param>
         private void Compute(string lit)
         {
             this.active.Add(new Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>());
@@ -247,7 +246,6 @@ namespace CSPGF.Parse
             {
                 ActiveItem e = this.agenda.Pop();
                 this.ProcessActiveItem(e, lit);
-
             }
         }
 
@@ -255,6 +253,7 @@ namespace CSPGF.Parse
         /// Processes an active item.
         /// </summary>
         /// <param name="item">The item to be processed.</param>
+        /// <param name="lit">The literal if any.</param>
         private void ProcessActiveItem(ActiveItem item, string lit)
         {
             int j = item.Begin;
@@ -268,7 +267,6 @@ namespace CSPGF.Parse
             Symbol sym = item.CurrentSymbol();
 
             // if (this.active.Count >= this.position) { <- TODO move this here 
-
             if (sym is ToksSymbol)
             {
                 // TempLog.LogMessageToFile("Case before s in T");
@@ -284,6 +282,7 @@ namespace CSPGF.Parse
                     newAgenda = new Stack<ActiveItem>();
                     this.trie.Add(new List<string>(tokens), newAgenda);
                 }
+
                 newAgenda.Push(i);
             }
             else if (sym is ArgConstSymbol) 
@@ -332,7 +331,6 @@ namespace CSPGF.Parse
                 int bd = item.Domain[d];
 
                 // LITERAL
-
             }
             else if (sym is VarSymbol)
             {
