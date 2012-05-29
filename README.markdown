@@ -12,8 +12,9 @@ Features
 
 Missing features
 ----------------
+* Better API
 * High-order syntax
-* Literal categories
+* Literal categories (will be implemented in the future).
 * Dependent types
 * Immutable parse state
 

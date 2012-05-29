@@ -80,7 +80,6 @@ namespace CSPGF.Parse
                 }
             }
 
-            // Check if correct
             newTrie.value = value;
         }
 
@@ -114,28 +113,6 @@ namespace CSPGF.Parse
         public Stack<ActiveItem> Lookup(List<string> keys)
         {
             return this.Lookup(keys.First());
-            /*
-            if (keys.Count == 0)
-            {
-                return this.value;
-            }
-
-            Stack<ActiveItem> items = new Stack<ActiveItem>();
-            ParseTrie currentTrie = this;
-            foreach (string k in keys)
-            {
-                if (currentTrie.childs.ContainsKey(k))
-                {
-                    currentTrie = currentTrie.childs[k];
-                }
-                else
-                {
-                    return null;
-                }
-            }
-
-            return currentTrie.value;
-             */
         }
 
         /// <summary>
@@ -148,27 +125,10 @@ namespace CSPGF.Parse
             ParseTrie trie;
             if (this.childs.TryGetValue(key, out trie))
             {
-                return MakeCopy(trie);
+                return this.MakeCopy(trie);
             }
 
             return null;
-        }
-
-        /// <summary>
-        /// Returns a copy of the ParseTrie.
-        /// </summary>
-        /// <param name="trie">The trie we want to copy.</param>
-        /// <returns>A copy of the trie</returns>
-        private ParseTrie MakeCopy(ParseTrie trie)
-        {
-            ParseTrie t = new ParseTrie();
-            t.value = new Stack<ActiveItem>(trie.value.Reverse());
-            foreach (string k in trie.childs.Keys)
-            {
-                t.childs[k] = MakeCopy(trie.childs[k]);
-            }
-            
-            return trie;
         }
 
         /// <summary>
@@ -205,14 +165,6 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Not implemented yet...
-        /// </summary>
-        /// <param name="token">The current token.</param>
-        public void ResetChild(string token)
-        {
-        }
-
-        /// <summary>
         /// Creates a string representation of the tree.
         /// </summary>
         /// <returns>The parsetrie as a string.</returns>
@@ -242,6 +194,23 @@ namespace CSPGF.Parse
 
             temp += "]";
             return temp;
+        }
+
+        /// <summary>
+        /// Returns a copy of the ParseTrie.
+        /// </summary>
+        /// <param name="trie">The trie we want to copy.</param>
+        /// <returns>A copy of the trie</returns>
+        private ParseTrie MakeCopy(ParseTrie trie)
+        {
+            ParseTrie t = new ParseTrie();
+            t.value = new Stack<ActiveItem>(trie.value.Reverse());
+            foreach (string k in trie.childs.Keys)
+            {
+                t.childs[k] = this.MakeCopy(trie.childs[k]);
+            }
+
+            return trie;
         }
     }
 }
