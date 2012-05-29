@@ -31,7 +31,7 @@ namespace CSPGF
 
             foreach (string s in at.Predict())
             {
-                Console.WriteLine(s + " ,");
+                // Console.WriteLine(s + " ,");
             }
 
             //at.Scan("flt");
@@ -43,6 +43,12 @@ namespace CSPGF
             //at.Scan("b");
             //at.Scan("c");
             at.Scan("this");
+            at.Scan("wine");
+            at.Scan("is");
+            at.Scan("Italian");
+            at.RemoveToken();
+            at.RemoveToken();
+            at.RemoveToken();
             at.Scan("wine");
             at.Scan("is");
             at.Scan("Italian");

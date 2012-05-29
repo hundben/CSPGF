@@ -152,7 +152,7 @@ namespace CSPGF.Parse
                 }
             }
 
-            return trie;
+            return this.MakeCopy(trie);
         }
 
         /// <summary>
@@ -205,12 +205,13 @@ namespace CSPGF.Parse
         {
             ParseTrie t = new ParseTrie();
             t.value = new Stack<ActiveItem>(trie.value.Reverse());
+ 
             foreach (string k in trie.childs.Keys)
             {
                 t.childs[k] = this.MakeCopy(trie.childs[k]);
             }
 
-            return trie;
+            return t;
         }
     }
 }

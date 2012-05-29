@@ -134,6 +134,15 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
+        /// Returns a copy of an active item
+        /// </summary>
+        /// <returns>Copy of an active item</returns>
+        public ActiveItem Clone()
+        {
+            return new ActiveItem(this.Begin, this.Category, this.Function, this.Domain, this.Constituent, this.Position);
+        }
+
+        /// <summary>
         /// Converts the list of domains to a string.
         /// </summary>
         /// <returns>The string with the domains.</returns>

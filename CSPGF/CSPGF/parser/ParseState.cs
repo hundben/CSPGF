@@ -134,12 +134,14 @@ namespace CSPGF.Parse
         /// <returns>Returns true if scan is successful.</returns>
         public bool Scan(string token)
         {
-            // Try to get the token
+            // Store the old trie
+            this.listOfTries.Push(this.trie);
+
+            // Try to get the token and create a copy of the trie
             ParseTrie newTrie = this.trie.GetSubTrie(token);
 
             if (newTrie != null)
             {
-                this.listOfTries.Push(newTrie);
                 Stack<ActiveItem> newAgenda = newTrie.Lookup(string.Empty);
                 if (newAgenda != null)
                 {
@@ -222,7 +224,7 @@ namespace CSPGF.Parse
             if (this.position > 0)
             {
                 this.chart.RemoveToken();
-                ParseTrie t = this.listOfTries.Pop();
+                this.trie = this.listOfTries.Pop();
                 this.active.RemoveAt(this.position);
                 this.position--;
                 return true;
