@@ -41,7 +41,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -66,6 +66,7 @@
   <PropertyGroup>
     <SignManifests>false</SignManifests>
   </PropertyGroup>
+  <PropertyGroup />
   <PropertyGroup />
   <PropertyGroup>
     <NoWin32Manifest>true</NoWin32Manifest>
@@ -158,11 +159,6 @@
     <Compile Include="SimpleTranslator.cs" />
     <Compile Include="Trees\AbstractVisitSkeleton.cs" />
     <Compile Include="Trees\Absyn.cs" />
-    <Compile Include="Trees\Parser.cs" />
-    <Compile Include="Trees\Printer.cs" />
-    <Compile Include="Trees\Scanner.cs" />
-    <Compile Include="Trees\ShiftReduceParserCode.cs" />
-    <Compile Include="Trees\Test.cs" />
     <Compile Include="Trees\VisitSkeleton.cs" />
     <Compile Include="Linearizer\UnknownLanguageException.cs" />
   </ItemGroup>

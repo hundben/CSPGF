@@ -13,7 +13,7 @@ namespace CSPGF
 {
     using System;
     using System.Diagnostics;
-
+    using System.Threading;
     using CSPGF.Parse;
 
     /// <summary>
@@ -24,35 +24,45 @@ namespace CSPGF
         /// <summary>
         /// Starting class.
         /// </summary>
+        
+        
         public static void Main()
         {
-            AdvancedTranslator at = new AdvancedTranslator("..\\..\\pgf examples\\Phrasebook.pgf");
-            at.SetInputLanguage("PhrasebookEng");
+            Thread.MemoryBarrier();
+            long initialMemory = System.GC.GetTotalMemory(true);
+            for (int i = 0; i < 10; i++)
+            {
+                AdvancedTranslator at = new AdvancedTranslator("../../pgf examples/Phrasebook.pgf");
+                at.SetInputLanguage("PhrasebookEng");
 
-            //foreach (string s in at.Predict())
-            //{
-            //    Console.WriteLine(s + " ,");
-            //}
+                //foreach (string s in at.Predict())
+                //{
+                //    Console.WriteLine(s + " ,");
+                //}
 
-            //at.Scan("flt");
-            //at.Scan("(");
-            //at.Scan("1.2");
-            //at.Scan(")");
-            at.Scan("this");
-            at.Scan("wine");
-            at.Scan("is");
-            at.Scan("delicious");
-            at.Scan(".");
-            //at.Scan("a");
-            //at.Scan("b");
-            //at.Scan("c");
+                //at.Scan("flt");
+                //at.Scan("(");
+                //at.Scan("1.2");
+                //at.Scan(")");
+                at.Scan("this");
+                at.Scan("wine");
+                at.Scan("is");
+                at.Scan("delicious");
+                at.Scan(".");
+                //at.Scan("a");
+                //at.Scan("b");
+                //at.Scan("c");
 
-            Console.WriteLine(" --- Translation ---");
-            at.SetOutputLanguage("PhrasebookEng");
-            Console.WriteLine(at.Translate());
-            //Console.WriteLine(at.PrintTree(at.GetTrees()[0]));
-            // Wait for a keypress.
-
+                Console.WriteLine(" --- Translation ---");
+                at.SetOutputLanguage("PhrasebookEng");
+                Console.WriteLine(at.Translate());
+                //Console.WriteLine(at.PrintTree(at.GetTrees()[0]));
+                // Wait for a keypress.
+            }
+            
+            Thread.MemoryBarrier();
+            long finalMemory = System.GC.GetTotalMemory(true);
+            Console.WriteLine(finalMemory - initialMemory);
             Console.ReadKey();
         }
     }
