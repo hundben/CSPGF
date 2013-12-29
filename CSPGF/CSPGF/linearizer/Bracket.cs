@@ -75,7 +75,7 @@ namespace CSPGF.Linearize
         /// <summary>
         /// Pretty prints the contents of the class
         /// </summary>
-        /// <returns>String containing debuginformation</returns>
+        /// <returns>String containing debug information</returns>
         public override string ToString()
         {
             string rez = "name : " + this.CId + ", linIndex : " + this.LIndex + ", fId : " + this.FId + ", bracketed tokens : " + this.Bracketedtoks;

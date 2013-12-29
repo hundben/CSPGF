@@ -116,7 +116,7 @@ namespace CSPGF
         /// <summary>
         /// Pretty prints information about the PGF-object
         /// </summary>
-        /// <returns>String with debuginformation</returns>
+        /// <returns>String with debug information</returns>
         public override string ToString()
         {
             string ss = "PGF : \nMajor version : " + this.majorVersion + ", Minor version : " + this.minorVersion + "\n" + "Flags : (";

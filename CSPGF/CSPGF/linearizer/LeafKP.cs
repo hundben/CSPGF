@@ -68,7 +68,7 @@ namespace CSPGF.Linearize
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string with debuginformation</returns>
+        /// <returns>Returns a string with debug information</returns>
         public override string ToString()
         {
             string rez = "string names : [";
