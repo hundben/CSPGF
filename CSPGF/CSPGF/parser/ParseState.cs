@@ -155,43 +155,6 @@ namespace CSPGF.Parse
 
                 return true;
             }
-            else
-            {
-                float number;
-
-                // Check if number
-                bool isNum = false;
-                try
-                {
-                    number = float.Parse(token, CultureInfo.InvariantCulture);
-                    isNum = true;
-                }
-                catch
-                {
-                    isNum = false;
-                }
-
-                int fId = 0;
-
-                bool test = token.Contains(".");
-
-                // Check what type of literal:
-                if (isNum && test)
-                {
-                    // float
-                    fId = -3;
-                }
-                else if (isNum)
-                {
-                    // int -2
-                    fId = -2;
-                }
-                else
-                {
-                    // string -1/-4
-                    fId = -1;   
-                }
-            }
 
             return false;
         }
@@ -300,10 +263,27 @@ namespace CSPGF.Parse
                 {
                     if (this.AddActiveSet(bd, r, item, this.active[this.position]))
                     {
-                        foreach (ApplyProduction prod in this.chart.GetProductions(bd)) 
+                        foreach (Production prod in this.chart.GetProductions(bd)) 
                         {
-                            ActiveItem it = new ActiveItem(this.position, bd, prod.Function, prod.Domain(), r, 0);
-                            this.agenda.Push(it);
+                            if (prod is ApplyProduction)
+                            {
+                                ApplyProduction ap = (ApplyProduction)prod;
+                                ActiveItem it = new ActiveItem(this.position, bd, ap.Function, prod.Domain(), r, 0);
+                                this.agenda.Push(it);
+                            } 
+                            else if (prod is ExternProduction)
+                            {
+                                // TODO
+                                ExternProduction ep = (ExternProduction)prod;
+                                ActiveItem it = new ActiveItem(this.position, bd, ep.Function, prod.Domain(), r, 0);
+                                this.agenda.Push(it);
+                            }
+                            else
+                            {
+                                // Coerce production, which GetProductions should handle
+                                // TODO throw exception
+                            }
+
                         }
                     }
 
@@ -331,7 +311,6 @@ namespace CSPGF.Parse
                 int d = litSym.Arg;
                 int r = litSym.Cons;
                 int bd = item.Domain[d];
-
                 // LITERAL
             }
             else if (sym is VarSymbol)
