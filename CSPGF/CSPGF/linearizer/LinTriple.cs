@@ -68,7 +68,7 @@ namespace CSPGF.Linearize
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string containing debuginformation</returns>
+        /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
             string rez = "id : " + this.FId + " cncType : (" + this.CncType + ") bracketedToken :[" + this.LinTable + "]";

@@ -59,7 +59,7 @@ namespace CSPGF.Linearize
         /// <summary>
         /// Pretty prints the information in this class
         /// </summary>
-        /// <returns>String with debuginformation</returns>
+        /// <returns>String with debug information</returns>
         public override string ToString()
         {
             return "name : " + this.CId + " , fId : " + this.FId;

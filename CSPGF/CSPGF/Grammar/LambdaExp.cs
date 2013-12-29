@@ -66,7 +66,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string containing debuginformation</returns>
+        /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
             return "Lambda Expression : [Bound Type : " + this.BType + " , Name : " + this.VName + " , Body : " + this.Body + "]";

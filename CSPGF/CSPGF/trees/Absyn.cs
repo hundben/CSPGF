@@ -455,7 +455,7 @@ namespace CSPGF.Trees.Absyn
       return this.String_.GetHashCode();
     }
     
-    public override R Accept<R,A>(Visitor<R,A> visitor, A arg)
+    public override R Accept<R, A>(Visitor<R, A> visitor, A arg)
     {
       return visitor.Visit(this, arg);
     }
