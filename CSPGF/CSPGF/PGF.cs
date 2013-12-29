@@ -170,7 +170,7 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// Returns the concrete with the inputname.
+        /// Returns the concrete with the input name.
         /// </summary>
         /// <param name="name">Name of grammar</param>
         /// <returns>Concrete grammar</returns>

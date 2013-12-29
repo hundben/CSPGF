@@ -101,7 +101,7 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Adds a production to the productionset.
+        /// Adds a production to the production set.
         /// </summary>
         /// <param name="p">The production to add.</param>
         /// <returns>Returns true if production was added.</returns>
@@ -128,7 +128,7 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Add a production to the productionset.
+        /// Add a production to the production set.
         /// </summary>
         /// <param name="cat">Category index.</param>
         /// <param name="fun">The function.</param>
@@ -263,10 +263,10 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Converts from CoerceProduction to ApplProducion.
+        /// Converts from CoerceProduction to ApplyProduction.
         /// </summary>
         /// <param name="p">Production to convert.</param>
-        /// <returns>List of ApplProductions</returns>
+        /// <returns>List of ApplyProductions</returns>
         private List<ApplyProduction> Uncoerce(object p)
         {
             List<ApplyProduction> prodList = new List<ApplyProduction>();
@@ -279,10 +279,6 @@ namespace CSPGF.Parse
                 CoerceProduction cp = (CoerceProduction)p;
                 foreach (Production prod in this.GetProductions(cp.InitId)) 
                 {
-                    /*foreach (ApplProduction prod2 in this.Uncoerce(prod)) 
-                    {
-                        prodList.Add(prod2);
-                    }*/
                     prodList.AddRange(this.Uncoerce(prod));
                 }
             }
