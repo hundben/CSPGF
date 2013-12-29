@@ -136,7 +136,7 @@ namespace CSPGF.Parse
         /// <returns>Returns true if production was added.</returns>
         public bool AddProduction(int cat, CncFun fun, int[] domain)
         {
-            return this.AddProduction(new ApplProduction(cat, fun, domain));
+            return this.AddProduction(new ApplyProduction(cat, fun, domain));
         }
 
         /// <summary>
@@ -144,14 +144,14 @@ namespace CSPGF.Parse
         /// </summary>
         /// <param name="resultCat">Category index</param>
         /// <returns>List of all productions with the index provided.</returns>
-        public List<ApplProduction> GetProductions(int resultCat)
+        public List<ApplyProduction> GetProductions(int resultCat)
         {
             HashSet<Production> prod;
 
             // Check if category exists, if not return empty productionset
             if (this.productionSets.TryGetValue(resultCat, out prod))
             {
-                List<ApplProduction> applProd = new List<ApplProduction>();
+                List<ApplyProduction> applProd = new List<ApplyProduction>();
                 foreach (Production p in prod)
                 {
                     applProd.AddRange(this.Uncoerce(p));
@@ -161,7 +161,7 @@ namespace CSPGF.Parse
             }
             else
             {
-                return new List<ApplProduction>();
+                return new List<ApplyProduction>();
             }
         }
         
@@ -267,12 +267,12 @@ namespace CSPGF.Parse
         /// </summary>
         /// <param name="p">Production to convert.</param>
         /// <returns>List of ApplProductions</returns>
-        private List<ApplProduction> Uncoerce(object p)
+        private List<ApplyProduction> Uncoerce(object p)
         {
-            List<ApplProduction> prodList = new List<ApplProduction>();
-            if (p is ApplProduction) 
+            List<ApplyProduction> prodList = new List<ApplyProduction>();
+            if (p is ApplyProduction) 
             {
-                prodList.Add((ApplProduction)p);
+                prodList.Add((ApplyProduction)p);
             }
             else if (p is CoerceProduction) 
             {

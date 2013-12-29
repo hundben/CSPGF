@@ -116,7 +116,7 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Creates a new aplication.
+        /// Creates a new application.
         /// </summary>
         /// <param name="f">The first tree.</param>
         /// <param name="x">The second tree.</param>
@@ -127,7 +127,7 @@ namespace CSPGF.Parse
         }
         
         /// <summary>
-        /// Creates a lambda node in the absyn tree.
+        /// Creates a lambda node in the abstract syntax tree.
         /// </summary>
         /// <param name="v">A tuple with the boolean and a string.</param>
         /// <param name="body">The body of the tree.</param>

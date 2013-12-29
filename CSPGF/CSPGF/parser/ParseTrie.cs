@@ -46,7 +46,7 @@ namespace CSPGF.Parse
         private Stack<ActiveItem> value = new Stack<ActiveItem>();
 
         /// <summary>
-        /// List of subtries.
+        /// List of sub trees
         /// </summary>
         private Dictionary<string, ParseTrie> childs = new Dictionary<string, ParseTrie>();
 
