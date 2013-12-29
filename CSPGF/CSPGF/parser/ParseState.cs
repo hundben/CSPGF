@@ -100,7 +100,7 @@ namespace CSPGF.Parse
 
             for (int id = this.startCat.FirstFID; id <= this.startCat.LastFID + 1; id++) 
             {
-                foreach (ApplProduction prod in this.chart.GetProductions(id)) 
+                foreach (ApplyProduction prod in this.chart.GetProductions(id)) 
                 {
                     ActiveItem ai = new ActiveItem(0, id, prod.Function, prod.Domain(), 0, 0);
                     this.agenda.Push(ai);
@@ -300,7 +300,7 @@ namespace CSPGF.Parse
                 {
                     if (this.AddActiveSet(bd, r, item, this.active[this.position]))
                     {
-                        foreach (ApplProduction prod in this.chart.GetProductions(bd)) 
+                        foreach (ApplyProduction prod in this.chart.GetProductions(bd)) 
                         {
                             ActiveItem it = new ActiveItem(this.position, bd, prod.Function, prod.Domain(), r, 0);
                             this.agenda.Push(it);

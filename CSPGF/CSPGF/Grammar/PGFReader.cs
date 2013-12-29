@@ -720,7 +720,7 @@ namespace CSPGF.Grammar
             switch (sel) 
             {
                 case 0: // application
-                    prod = new ApplProduction(leftCat, cncFuns[this.GetInt()], this.GetDomainFromPArgs());
+                    prod = new ApplyProduction(leftCat, cncFuns[this.GetInt()], this.GetDomainFromPArgs());
                     break;
                 case 1: // coercion
                     prod = new CoerceProduction(leftCat, this.GetInt());

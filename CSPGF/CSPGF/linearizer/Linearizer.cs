@@ -184,9 +184,9 @@ namespace CSPGF.Linearize
         private List<string> GetFunctions(Production p, Dictionary<int, HashSet<Production>> productions)
         {
             List<string> rez = new List<string>();
-            if (p is ApplProduction)
+            if (p is ApplyProduction)
             {
-                rez.Add(((ApplProduction)p).Function.Name);
+                rez.Add(((ApplyProduction)p).Function.Name);
             }
             else
             {
@@ -297,7 +297,7 @@ namespace CSPGF.Linearize
         /// <returns>True if true</returns>
         private bool FilterRule(Dictionary<int, HashSet<Production>> prods, Production p)
         {
-            ApplProduction ap = p as ApplProduction;
+            ApplyProduction ap = p as ApplyProduction;
             if (ap != null)
             {
                 foreach (int i in ap.Domain())
@@ -597,10 +597,10 @@ namespace CSPGF.Linearize
         private List<AppResult> ToApp(CncType cty, Production p, string f, Dictionary<int, HashSet<Production>> prods)
         {
             List<AppResult> rez = new List<AppResult>();
-            if (p is ApplProduction)
+            if (p is ApplyProduction)
             {
                 int[] args = p.Domain();
-                CncFun cncFun = ((ApplProduction)p).Function;
+                CncFun cncFun = ((ApplyProduction)p).Function;
                 List<CncType> vtype = new List<CncType>();
                 if (f.Equals("_V"))
                 {
