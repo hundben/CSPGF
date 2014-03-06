@@ -599,8 +599,9 @@ namespace CSPGF.Linearize
             List<AppResult> rez = new List<AppResult>();
             if (p is ProductionApply)
             {
-                int[] args = p.Domain();
-                CncFun cncFun = ((ProductionApply)p).Function;
+                ProductionApply ap = (ProductionApply)p;
+                int[] args = ap.Domain();
+                CncFun cncFun = ap.Function;
                 List<CncType> vtype = new List<CncType>();
                 if (f.Equals("_V"))
                 {

@@ -84,7 +84,7 @@
   <ItemGroup>
     <Compile Include="AdvancedTranslator.cs" />
     <Compile Include="Generator.cs" />
-    <Compile Include="Grammar\ExternProduction.cs" />
+    <Compile Include="Grammar\ProductionExtern.cs" />
     <Compile Include="Grammar\LitSymbol.cs" />
     <Compile Include="Linearizer\Linearizer.cs" />
     <Compile Include="Linearizer\LinearizerException.cs" />
@@ -122,12 +122,12 @@
     <Compile Include="Grammar\Alternative.cs" />
     <Compile Include="Grammar\AlternToksSymbol.cs" />
     <Compile Include="Grammar\AppExp.cs" />
-    <Compile Include="Grammar\ApplyProduction.cs" />
+    <Compile Include="Grammar\ProductionApply.cs" />
     <Compile Include="Grammar\AppPattern.cs" />
     <Compile Include="Grammar\ArgConstSymbol.cs" />
     <Compile Include="Grammar\CncCat.cs" />
     <Compile Include="Grammar\CncFun.cs" />
-    <Compile Include="Grammar\CoerceProduction.cs" />
+    <Compile Include="Grammar\ProductionCoerce.cs" />
     <Compile Include="Grammar\Concrete.cs" />
     <Compile Include="Grammar\Eq.cs" />
     <Compile Include="Grammar\Expr.cs" />

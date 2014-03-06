@@ -54,17 +54,6 @@ namespace CSPGF.Grammar
         public int InitId { get; private set; }
 
         /// <summary>
-        /// Returns the domains
-        /// </summary>
-        /// <returns>Returns a list of domains</returns>
-        public override int[] Domain()
-        {
-            int[] tmp = new int[1];
-            tmp[0] = this.InitId;
-            return tmp;
-        }
-
-        /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
         /// <returns>Returns a string containing debug information</returns>

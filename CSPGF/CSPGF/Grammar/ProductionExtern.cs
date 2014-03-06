@@ -41,9 +41,9 @@ namespace CSPGF.Grammar
     {
 
         /// <summary>
-        /// List of domains
+        /// List of external literals
         /// </summary>
-        private readonly int[] dom;
+        private readonly string[] lits;
 
         /// <summary>
         /// Initializes a new instance of the ApplProduction class.
@@ -51,16 +51,10 @@ namespace CSPGF.Grammar
         /// <param name="fId">Function id</param>
         /// <param name="function">Concrete function</param>
         /// <param name="domain">List of domains</param>
-        public ProductionExtern(int fId, CncFun function, int[] domain) : base(0, fId)
+        public ProductionExtern(int fId, string[] lins ) : base(0, fId)
         {
-            this.Function = function;
-            this.dom = domain;
+            this.lits = lins;
         }
-
-        /// <summary>
-        /// Gets the concrete function.
-        /// </summary>
-        public CncFun Function { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -69,23 +63,14 @@ namespace CSPGF.Grammar
         public override string ToString()
         {
             // Was commented out in the java-code.
-            string s = FId + " -> " + this.Function.Name + "[ ";
-            foreach (int c in this.dom) 
+            string s = "ProductionExtern(" + FId + " -> {";
+            foreach (string c in lits) 
             {
-                s += c + " ";
+                s += c + ", ";
             }
 
-            s += "]";
+            s += "})";
             return s;
-        }
-
-        /// <summary>
-        /// Get the list of domains
-        /// </summary>
-        /// <returns>List of domains</returns>
-        public override int[] Domain()
-        {
-            return this.dom;
         }
     }
 }

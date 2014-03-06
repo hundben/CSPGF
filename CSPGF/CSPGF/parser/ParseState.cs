@@ -268,15 +268,16 @@ namespace CSPGF.Parse
                             if (prod is ProductionApply)
                             {
                                 ProductionApply ap = (ProductionApply)prod;
-                                ActiveItem it = new ActiveItem(this.position, bd, ap.Function, prod.Domain(), r, 0);
+                                ActiveItem it = new ActiveItem(this.position, bd, ap.Function, ap.Domain(), r, 0);
                                 this.agenda.Push(it);
                             } 
                             else if (prod is ProductionExtern)
                             {
                                 // TODO
                                 ProductionExtern ep = (ProductionExtern)prod;
-                                ActiveItem it = new ActiveItem(this.position, bd, ep.Function, prod.Domain(), r, 0);
-                                this.agenda.Push(it);
+                                // TODO this is wrong
+                                //ActiveItem it = new ActiveItem(this.position, bd, ep.Function, prod.Domain(), r, 0);
+                                //this.agenda.Push(it);
                             }
                             else
                             {

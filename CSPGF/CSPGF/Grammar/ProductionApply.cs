@@ -81,7 +81,7 @@ namespace CSPGF.Grammar
         /// Get the list of domains
         /// </summary>
         /// <returns>List of domains</returns>
-        public override int[] Domain()
+        public int[] Domain()
         {
             return this.dom;
         }
