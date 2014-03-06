@@ -720,10 +720,10 @@ namespace CSPGF.Grammar
             switch (sel) 
             {
                 case 0: // application
-                    prod = new ApplyProduction(leftCat, cncFuns[this.GetInt()], this.GetDomainFromPArgs());
+                    prod = new ProductionApply(leftCat, cncFuns[this.GetInt()], this.GetDomainFromPArgs());
                     break;
                 case 1: // coercion
-                    prod = new CoerceProduction(leftCat, this.GetInt());
+                    prod = new ProductionCoerce(leftCat, this.GetInt());
                     break;
                 default:
                     throw new PGFException("Invalid tag for productions : " + sel);

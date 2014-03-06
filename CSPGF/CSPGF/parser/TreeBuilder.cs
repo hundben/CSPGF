@@ -70,7 +70,7 @@ namespace CSPGF.Parse
         public List<Tree> MkTreesForCat(int cat, Chart chart)
         {
             List<Tree> temp = new List<Tree>();
-            foreach (ApplyProduction p in chart.GetProductions(cat)) 
+            foreach (ProductionApply p in chart.GetProductions(cat)) 
             {
                 temp.AddRange(this.MkTreesForProduction(p, chart));
             }
@@ -84,7 +84,7 @@ namespace CSPGF.Parse
         /// <param name="p">An application production.</param>
         /// <param name="chart">The current chart.</param>
         /// <returns>A list of trees.</returns>
-        public List<Tree> MkTreesForProduction(ApplyProduction p, Chart chart)
+        public List<Tree> MkTreesForProduction(ProductionApply p, Chart chart)
         {
             List<Tree> temp = new List<Tree>();
             if (p.Domain().Length == 0)

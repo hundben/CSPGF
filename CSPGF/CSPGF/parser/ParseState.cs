@@ -100,7 +100,7 @@ namespace CSPGF.Parse
 
             for (int id = this.startCat.FirstFID; id <= this.startCat.LastFID + 1; id++) 
             {
-                foreach (ApplyProduction prod in this.chart.GetProductions(id)) 
+                foreach (ProductionApply prod in this.chart.GetProductions(id)) 
                 {
                     ActiveItem ai = new ActiveItem(0, id, prod.Function, prod.Domain(), 0, 0);
                     this.agenda.Push(ai);
@@ -265,16 +265,16 @@ namespace CSPGF.Parse
                     {
                         foreach (Production prod in this.chart.GetProductions(bd)) 
                         {
-                            if (prod is ApplyProduction)
+                            if (prod is ProductionApply)
                             {
-                                ApplyProduction ap = (ApplyProduction)prod;
+                                ProductionApply ap = (ProductionApply)prod;
                                 ActiveItem it = new ActiveItem(this.position, bd, ap.Function, prod.Domain(), r, 0);
                                 this.agenda.Push(it);
                             } 
-                            else if (prod is ExternProduction)
+                            else if (prod is ProductionExtern)
                             {
                                 // TODO
-                                ExternProduction ep = (ExternProduction)prod;
+                                ProductionExtern ep = (ProductionExtern)prod;
                                 ActiveItem it = new ActiveItem(this.position, bd, ep.Function, prod.Domain(), r, 0);
                                 this.agenda.Push(it);
                             }
@@ -350,7 +350,7 @@ namespace CSPGF.Parse
                     HashSet<ActiveItem> items = this.GetActiveSet(cat.Value, this.active[this.position]);
                     foreach (ActiveItem ai in items)
                     {
-                        int r = ((ArgConstSymbol)ai.CurrentSymbol()).Cons;  // Cons?
+                        int r = ((ArgConstSymbol)ai.CurrentSymbol()).Cons;
                         ActiveItem i = new ActiveItem(this.position, cat.Value, f, b, r, 0);
                         this.agenda.Push(i);
                     }

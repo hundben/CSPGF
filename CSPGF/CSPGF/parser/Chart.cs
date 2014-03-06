@@ -136,7 +136,7 @@ namespace CSPGF.Parse
         /// <returns>Returns true if production was added.</returns>
         public bool AddProduction(int cat, CncFun fun, int[] domain)
         {
-            return this.AddProduction(new ApplyProduction(cat, fun, domain));
+            return this.AddProduction(new ProductionApply(cat, fun, domain));
         }
 
         /// <summary>
@@ -271,9 +271,9 @@ namespace CSPGF.Parse
         {
             List<Production> prodList = new List<Production>();
             
-            if (p is CoerceProduction)
+            if (p is ProductionCoerce)
             {
-                CoerceProduction cp = (CoerceProduction)p;
+                ProductionCoerce cp = (ProductionCoerce)p;
                 foreach (Production prod in this.GetProductions(cp.InitId)) 
                 {
                     prodList.AddRange(this.Uncoerce(prod));

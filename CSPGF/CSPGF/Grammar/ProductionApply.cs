@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     /// Application production
     /// </summary>
     [Serializable]
-    internal class ApplyProduction : Production
+    internal class ProductionApply : Production
     {
         /// <summary>
         /// List of domains
@@ -49,7 +49,7 @@ namespace CSPGF.Grammar
         /// <param name="fId">Function id</param>
         /// <param name="function">Concrete function</param>
         /// <param name="domain">List of domains</param>
-        public ApplyProduction(int fId, CncFun function, int[] domain) : base(0, fId)
+        public ProductionApply(int fId, CncFun function, int[] domain) : base(0, fId)
         {
             this.Function = function;
             this.dom = domain;
@@ -67,13 +67,13 @@ namespace CSPGF.Grammar
         public override string ToString()
         {
             // Was commented out in the java-code.
-            string s = FId + " -> " + this.Function.Name + "[ ";
+            string s = "Production_Apply("+ FId + " -> " + this.Function.Name + "[ ";
             foreach (int c in this.dom) 
             {
                 s += c + " ";
             }
 
-            s += "]";
+            s += "])";
             return s;
         }
 

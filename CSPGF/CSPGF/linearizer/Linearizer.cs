@@ -184,14 +184,14 @@ namespace CSPGF.Linearize
         private List<string> GetFunctions(Production p, Dictionary<int, HashSet<Production>> productions)
         {
             List<string> rez = new List<string>();
-            if (p is ApplyProduction)
+            if (p is ProductionApply)
             {
-                rez.Add(((ApplyProduction)p).Function.Name);
+                rez.Add(((ProductionApply)p).Function.Name);
             }
             else
             {
                 HashSet<Production> prods;
-                if (productions.TryGetValue(((CoerceProduction)p).InitId, out prods))
+                if (productions.TryGetValue(((ProductionCoerce)p).InitId, out prods))
                 {
                     foreach (Production pp in prods)
                     {
@@ -297,7 +297,7 @@ namespace CSPGF.Linearize
         /// <returns>True if true</returns>
         private bool FilterRule(Dictionary<int, HashSet<Production>> prods, Production p)
         {
-            ApplyProduction ap = p as ApplyProduction;
+            ProductionApply ap = p as ProductionApply;
             if (ap != null)
             {
                 foreach (int i in ap.Domain())
@@ -311,9 +311,9 @@ namespace CSPGF.Linearize
                 return true;
             }
 
-            if (p is CoerceProduction)
+            if (p is ProductionCoerce)
             {
-                return this.ConditionProd(((CoerceProduction)p).InitId, prods);
+                return this.ConditionProd(((ProductionCoerce)p).InitId, prods);
             }
 
             throw new LinearizerException("The production wasn't either an ApplProduction or a CoerceProduction");
@@ -597,10 +597,10 @@ namespace CSPGF.Linearize
         private List<AppResult> ToApp(CncType cty, Production p, string f, Dictionary<int, HashSet<Production>> prods)
         {
             List<AppResult> rez = new List<AppResult>();
-            if (p is ApplyProduction)
+            if (p is ProductionApply)
             {
                 int[] args = p.Domain();
-                CncFun cncFun = ((ApplyProduction)p).Function;
+                CncFun cncFun = ((ProductionApply)p).Function;
                 List<CncType> vtype = new List<CncType>();
                 if (f.Equals("_V"))
                 {
@@ -654,7 +654,7 @@ namespace CSPGF.Linearize
             else
             {
                 HashSet<Production> setProds;
-                if (prods.TryGetValue(((CoerceProduction)p).InitId, out setProds))
+                if (prods.TryGetValue(((ProductionCoerce)p).InitId, out setProds))
                 {
                     foreach (Production prod in setProds)
                     {
@@ -664,7 +664,7 @@ namespace CSPGF.Linearize
                     return rez;
                 }
 
-                throw new LinearizerException("Couldn't find the production with InitId: " + ((CoerceProduction)p).InitId);
+                throw new LinearizerException("Couldn't find the production with InitId: " + ((ProductionCoerce)p).InitId);
             }
         }
 
