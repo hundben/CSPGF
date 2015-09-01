@@ -2,3 +2,9 @@
 *.SUO
 CSPGF.suo
 CSPGF.SUO
+CSPGFTest/obj
+CSPGFTest/bin
+Speech/bin
+Speech/obj
+Speech/StyleCop.cache
+CSPGF/StyleCop.cache
