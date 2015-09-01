@@ -228,7 +228,6 @@ namespace CSPGF.Parse
         public override string ToString()
         {
             string s = string.Empty; 
-#if (DEBUG)
             s = "=== Productions: ===\n";
             foreach (int i in this.productionSets.Keys) 
             {
@@ -243,9 +242,9 @@ namespace CSPGF.Parse
             foreach (KeyValuePair<string, int> ints in this.categoryBookKeeperHash) 
             {
                 // TODO add ToString on Category I guess? :D
-                s += ints.Key + " -> " + ints.Value + '\n';
+                s += "[" + ints.Key + "] = " + ints.Value + '\n';
             }
-#endif
+
             return s;
         }
 
