@@ -942,8 +942,18 @@ namespace CSPGF.Grammar
 
             if (disposing)
             {
-                binreader.Dispose();
-                inputstream.Dispose();
+                try
+                {
+                    binreader.Close();
+                    inputstream.Close();
+                    binreader.Dispose();
+                    inputstream.Dispose();
+                }
+                catch (Exception e)
+                {
+                    System.Console.WriteLine(e.ToString());
+                }
+                
             }
             disposed = true;
         }
