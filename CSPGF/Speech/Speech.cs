@@ -50,6 +50,11 @@ namespace Speech
         private readonly SpeechSynthesizer ss;
 
         /// <summary>
+        /// Stores the last result from ListenASync
+        /// </summary>
+        private string asyncresult = string.Empty;
+
+        /// <summary>
         /// Initializes a new instance of the Speech class.
         /// </summary>
         public Speech()
@@ -75,7 +80,7 @@ namespace Speech
         }
 
         /// <summary>
-        /// Listens for a set time and returns the recognised text.
+        /// Listens for a set time and returns the recognized text.
         /// </summary>
         /// <param name="time">Time to listen</param>
         /// <returns>Recognised words</returns>
@@ -96,7 +101,25 @@ namespace Speech
         /// </summary>
         public void ListenASync()
         {
+            this.sre.RecognizeCompleted += sre_RecognizeCompleted;
             this.sre.RecognizeAsync(RecognizeMode.Multiple);
+        }
+
+        /// <summary>
+        /// EventHandles that recieves the result from ListenASync.
+        /// </summary>
+        /// <param name="sender">The sender object</param>
+        /// <param name="e">The event information</param>
+        void sre_RecognizeCompleted(object sender, RecognizeCompletedEventArgs e)
+        {
+            if (e.Result != null)
+            {
+                asyncresult = e.Result.Text;
+            }
+            else
+            {
+                asyncresult = string.Empty;
+            }
         }
 
         /// <summary>
@@ -108,18 +131,18 @@ namespace Speech
         }
 
         /// <summary>
-        /// Returns the result from ListenASync.
+        /// Returns the result from ListenASync if successful, otherwise string.empty.
         /// </summary>
         /// <returns>Recognised sentence</returns>
         public string ASyncResult()
         {
-            return string.Empty;
+            return asyncresult;
         }
 
         /// <summary>
-        /// Synthesises the sentence.
+        /// Synthesizes the sentence.
         /// </summary>
-        /// <param name="sentence">Sentence to synthesise</param>
+        /// <param name="sentence">Sentence to synthesize</param>
         public void Say(string sentence)
         {
             this.ss.Rate = 1;
@@ -128,9 +151,9 @@ namespace Speech
         }
 
         /// <summary>
-        /// Synthesises the sentence with the given variables.
+        /// Synthesizes the sentence with the given variables.
         /// </summary>
-        /// <param name="sentence">Sentence to synthesise</param>
+        /// <param name="sentence">Sentence to synthesize</param>
         /// <param name="rate">Rate of speech</param>
         /// <param name="volume">Volume of speech</param>
         public void Say(string sentence, int rate, int volume)

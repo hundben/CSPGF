@@ -41,7 +41,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
-    <PlatformTarget>x86</PlatformTarget>
+    <PlatformTarget>x64</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -67,6 +67,8 @@
     <SignManifests>false</SignManifests>
   </PropertyGroup>
   <PropertyGroup />
+  <PropertyGroup />
+  <PropertyGroup />
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -80,6 +82,7 @@
   <ItemGroup>
     <Compile Include="AdvancedTranslator.cs" />
     <Compile Include="Generator.cs" />
+    <Compile Include="Grammar\ProductionExtern.cs" />
     <Compile Include="Grammar\LitSymbol.cs" />
     <Compile Include="Linearizer\Linearizer.cs" />
     <Compile Include="Linearizer\LinearizerException.cs" />
@@ -116,12 +119,12 @@
     <Compile Include="Grammar\Alternative.cs" />
     <Compile Include="Grammar\AlternToksSymbol.cs" />
     <Compile Include="Grammar\AppExp.cs" />
-    <Compile Include="Grammar\ApplProduction.cs" />
+    <Compile Include="Grammar\ProductionApply.cs" />
     <Compile Include="Grammar\AppPattern.cs" />
     <Compile Include="Grammar\ArgConstSymbol.cs" />
     <Compile Include="Grammar\CncCat.cs" />
     <Compile Include="Grammar\CncFun.cs" />
-    <Compile Include="Grammar\CoerceProduction.cs" />
+    <Compile Include="Grammar\ProductionCoerce.cs" />
     <Compile Include="Grammar\Concrete.cs" />
     <Compile Include="Grammar\Eq.cs" />
     <Compile Include="Grammar\Expr.cs" />
@@ -154,11 +157,6 @@
     <Compile Include="SimpleTranslator.cs" />
     <Compile Include="Trees\AbstractVisitSkeleton.cs" />
     <Compile Include="Trees\Absyn.cs" />
-    <Compile Include="Trees\Parser.cs" />
-    <Compile Include="Trees\Printer.cs" />
-    <Compile Include="Trees\Scanner.cs" />
-    <Compile Include="Trees\ShiftReduceParserCode.cs" />
-    <Compile Include="Trees\Test.cs" />
     <Compile Include="Trees\VisitSkeleton.cs" />
     <Compile Include="Linearizer\UnknownLanguageException.cs" />
   </ItemGroup>

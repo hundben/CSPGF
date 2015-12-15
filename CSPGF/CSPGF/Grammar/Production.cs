@@ -62,31 +62,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string containing debuginformation</returns>
+        /// <returns>Returns a string containing debug information</returns>
         public override abstract string ToString();
-
-        /// <summary>
-        /// Returns the list of domains.
-        /// </summary>
-        /// <returns>Returns the list of domains</returns>
-        public abstract int[] Domain();
-
-        /*public override bool Equals(object obj)
-        {
-            if (obj is Production)
-            {
-                Production p = (Production)obj;
-                if (this.FId == p.FId && this.Sel == p.Sel)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        public override int GetHashCode()
-        {
-            return base.GetHashCode();
-        }*/
     }
 }

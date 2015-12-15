@@ -100,7 +100,7 @@ namespace CSPGF.Parse
 
             for (int id = this.startCat.FirstFID; id <= this.startCat.LastFID + 1; id++) 
             {
-                foreach (ApplProduction prod in this.chart.GetProductions(id)) 
+                foreach (ProductionApply prod in this.chart.GetProductions(id)) 
                 {
                     ActiveItem ai = new ActiveItem(0, id, prod.Function, prod.Domain(), 0, 0);
                     this.agenda.Push(ai);
@@ -154,43 +154,6 @@ namespace CSPGF.Parse
                 }
 
                 return true;
-            }
-            else
-            {
-                float number;
-
-                // Check if number
-                bool isNum = false;
-                try
-                {
-                    number = float.Parse(token, CultureInfo.InvariantCulture);
-                    isNum = true;
-                }
-                catch
-                {
-                    isNum = false;
-                }
-
-                int fId = 0;
-
-                bool test = token.Contains(".");
-
-                // Check what type of literal:
-                if (isNum && test)
-                {
-                    // float
-                    fId = -3;
-                }
-                else if (isNum)
-                {
-                    // int -2
-                    fId = -2;
-                }
-                else
-                {
-                    // string -1/-4
-                    fId = -1;   
-                }
             }
 
             return false;
@@ -300,10 +263,28 @@ namespace CSPGF.Parse
                 {
                     if (this.AddActiveSet(bd, r, item, this.active[this.position]))
                     {
-                        foreach (ApplProduction prod in this.chart.GetProductions(bd)) 
+                        foreach (Production prod in this.chart.GetProductions(bd)) 
                         {
-                            ActiveItem it = new ActiveItem(this.position, bd, prod.Function, prod.Domain(), r, 0);
-                            this.agenda.Push(it);
+                            if (prod is ProductionApply)
+                            {
+                                ProductionApply ap = (ProductionApply)prod;
+                                ActiveItem it = new ActiveItem(this.position, bd, ap.Function, ap.Domain(), r, 0);
+                                this.agenda.Push(it);
+                            } 
+                            else if (prod is ProductionExtern)
+                            {
+                                // TODO
+                                ProductionExtern ep = (ProductionExtern)prod;
+                                // TODO this is wrong
+                                //ActiveItem it = new ActiveItem(this.position, bd, ep.Function, prod.Domain(), r, 0);
+                                //this.agenda.Push(it);
+                            }
+                            else
+                            {
+                                // Coerce production, which GetProductions should handle
+                                // TODO throw exception
+                            }
+
                         }
                     }
 
@@ -331,7 +312,6 @@ namespace CSPGF.Parse
                 int d = litSym.Arg;
                 int r = litSym.Cons;
                 int bd = item.Domain[d];
-
                 // LITERAL
             }
             else if (sym is VarSymbol)
@@ -371,7 +351,7 @@ namespace CSPGF.Parse
                     HashSet<ActiveItem> items = this.GetActiveSet(cat.Value, this.active[this.position]);
                     foreach (ActiveItem ai in items)
                     {
-                        int r = ((ArgConstSymbol)ai.CurrentSymbol()).Cons;  // Cons?
+                        int r = ((ArgConstSymbol)ai.CurrentSymbol()).Cons;
                         ActiveItem i = new ActiveItem(this.position, cat.Value, f, b, r, 0);
                         this.agenda.Push(i);
                     }

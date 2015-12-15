@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ApplProduction.cs" company="None">
+// <copyright file="CoerceProduction.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -33,57 +33,33 @@ namespace CSPGF.Grammar
     using System;
 
     /// <summary>
-    /// Application production
+    /// Coerce Production
     /// </summary>
     [Serializable]
-    internal class ApplProduction : Production
+    internal class ProductionCoerce : Production
     {
         /// <summary>
-        /// List of domains
-        /// </summary>
-        private readonly int[] dom;
-
-        /// <summary>
-        /// Initializes a new instance of the ApplProduction class.
+        /// Initializes a new instance of the CoerceProduction class.
         /// </summary>
         /// <param name="fId">Function id</param>
-        /// <param name="function">Concrete function</param>
-        /// <param name="domain">List of domains</param>
-        public ApplProduction(int fId, CncFun function, int[] domain) : base(0, fId)
+        /// <param name="initId">Initial id</param>
+        public ProductionCoerce(int fId, int initId) : base(1, fId)
         {
-            this.Function = function;
-            this.dom = domain;
+            this.InitId = initId;
         }
 
         /// <summary>
-        /// Gets the concrete function.
+        /// Gets the initial id
         /// </summary>
-        public CncFun Function { get; private set; }
+        public int InitId { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string containing debuginformation</returns>
+        /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            // Was commented out in the java-code.
-            string s = FId + " -> " + this.Function.Name + "[ ";
-            foreach (int c in this.dom) 
-            {
-                s += c + " ";
-            }
-
-            s += "]";
-            return s;
-        }
-
-        /// <summary>
-        /// Get the list of domains
-        /// </summary>
-        /// <returns>List of domains</returns>
-        public override int[] Domain()
-        {
-            return this.dom;
+            return "Production_Coerce(" + this.FId + " -> " + this.InitId + ")";
         }
     }
 }

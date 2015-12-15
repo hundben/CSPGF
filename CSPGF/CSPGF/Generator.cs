@@ -46,7 +46,7 @@ namespace CSPGF
         private readonly Concrete concrete;
 
         /// <summary>
-        /// Parsestate to generate sentences with
+        /// ParseState to generate sentences with
         /// </summary>
         private ParseState ps;
 

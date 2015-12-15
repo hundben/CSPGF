@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AbsFun.cs" company="None">
+// <copyright file="ApplyProduction.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -30,52 +30,35 @@
 
 namespace CSPGF.Grammar
 {
+    using System;
+
     /// <summary>
-    /// Abstract Function
+    /// Application production
     /// </summary>
-    internal class AbsFun
+    [Serializable]
+    internal class ProductionApply : Production
     {
         /// <summary>
-        /// Initializes a new instance of the AbsFun class.
+        /// List of domains
         /// </summary>
-        /// <param name="str">Name of the function</param>
-        /// <param name="type">Type of function</param>
-        /// <param name="arit">Some integer</param>
-        /// <param name="eqs">List of Eqs</param>
-        /// <param name="weight">Weight of function</param>
-        public AbsFun(string str, Type type, int arit, Eq[] eqs, double weight)
+        private readonly int[] dom;
+
+        /// <summary>
+        /// Initializes a new instance of the ApplyProduction class.
+        /// </summary>
+        /// <param name="fId">Function id</param>
+        /// <param name="function">Concrete function</param>
+        /// <param name="domain">List of domains</param>
+        public ProductionApply(int fId, CncFun function, int[] domain) : base(0, fId)
         {
-            this.Name = str;
-            this.Type = type;
-            this.Arit = arit;
-            this.Eqs = eqs;
-            this.Weight = weight;
+            this.Function = function;
+            this.dom = domain;
         }
 
         /// <summary>
-        /// Gets the name of the functions
+        /// Gets the concrete function.
         /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Gets the type of the function
-        /// </summary>
-        public Type Type { get; private set; }
-
-        /// <summary>
-        /// Gets some integer
-        /// </summary>
-        public int Arit { get; private set; }
-
-        /// <summary>
-        /// Gets a list of Eqs
-        /// </summary>
-        public Eq[] Eqs { get; private set; }
-
-        /// <summary>
-        /// Gets the weight of the functions
-        /// </summary>
-        public double Weight { get; private set; }
+        public CncFun Function { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -83,14 +66,24 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            string sb = "<function name = " + this.Name + " type = " + this.Type + " arity = " + this.Arit + " equations = [";
-            foreach (Eq e in this.Eqs) 
+            // Was commented out in the java-code.
+            string s = "Production_Apply("+ FId + " -> " + this.Function.Name + "[ ";
+            foreach (int c in this.dom) 
             {
-                sb += e + ", ";
+                s += c + " ";
             }
 
-            sb += "] weight = " + this.Weight + " > ";
-            return sb;
+            s += "])";
+            return s;
+        }
+
+        /// <summary>
+        /// Get the list of domains
+        /// </summary>
+        /// <returns>List of domains</returns>
+        public int[] Domain()
+        {
+            return this.dom;
         }
     }
 }

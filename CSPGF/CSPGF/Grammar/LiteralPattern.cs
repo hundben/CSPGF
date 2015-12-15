@@ -52,7 +52,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string containing debuginformation</returns>
+        /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
             return "Literal Pattern : " + this.Value;

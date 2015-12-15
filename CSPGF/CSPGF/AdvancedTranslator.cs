@@ -43,7 +43,7 @@ namespace CSPGF
     public class AdvancedTranslator
     {
         /// <summary>
-        /// The pgf file, only one per instance of the translator.
+        /// The PGF file, only one per instance of the translator.
         /// </summary>
         private readonly PGF pgf;
 
@@ -75,7 +75,7 @@ namespace CSPGF
         /// <summary>
         /// Initializes a new instance of the AdvancedTranslator class.
         /// </summary>
-        /// <param name="filename">The name and path of the pgf file.</param>
+        /// <param name="filename">The name and path of the PGF file.</param>
         public AdvancedTranslator(string filename)
         {
             PGFReader pr = new PGFReader(filename);
@@ -83,7 +83,7 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// Sets the input language, creates a new parsestate if needed.
+        /// Sets the input language, creates a new ParseState if needed.
         /// </summary>
         /// <param name="language">The name of the input language.</param>
         public void SetInputLanguage(string language)
@@ -162,7 +162,7 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// Translates the scaned sentence to the language set as output language.
+        /// Translates the scanned sentence to the language set as output language.
         /// </summary>
         /// <returns>A string with the translated sentence.</returns>
         public string Translate()
@@ -244,10 +244,10 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// Use .NET speech recognition to recognise words.
+        /// Use .NET speech recognition to recognize words.
         /// </summary>
         /// <param name="time">How long to listen</param>
-        /// <returns>Recognised words</returns>
+        /// <returns>Recognized words</returns>
         public string Listen(TimeSpan time)
         {
             if (this.IsLinux())
@@ -267,7 +267,7 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// Uses the .NET speech synthesiser to speak a sentence.
+        /// Uses the .NET speech synthesizer to speak a sentence.
         /// </summary>
         /// <param name="sentence">Sentence to speak</param>
         public void Say(string sentence)
@@ -289,9 +289,9 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// Uses the .NET speech synthesiser to speak a sentence.
+        /// Uses the .NET speech synthesizer to speak a sentence.
         /// </summary>
-        /// <param name="sentence">Sentence to speek</param>
+        /// <param name="sentence">Sentence to speak</param>
         /// <param name="rate">Rate of speech</param>
         /// <param name="volume">Volume of speech</param>
         public void Say(string sentence, int rate, int volume)

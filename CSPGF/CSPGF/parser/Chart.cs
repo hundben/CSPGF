@@ -101,7 +101,7 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Adds a production to the productionset.
+        /// Adds a production to the production set.
         /// </summary>
         /// <param name="p">The production to add.</param>
         /// <returns>Returns true if production was added.</returns>
@@ -128,7 +128,7 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Add a production to the productionset.
+        /// Add a production to the production set.
         /// </summary>
         /// <param name="cat">Category index.</param>
         /// <param name="fun">The function.</param>
@@ -136,7 +136,7 @@ namespace CSPGF.Parse
         /// <returns>Returns true if production was added.</returns>
         public bool AddProduction(int cat, CncFun fun, int[] domain)
         {
-            return this.AddProduction(new ApplProduction(cat, fun, domain));
+            return this.AddProduction(new ProductionApply(cat, fun, domain));
         }
 
         /// <summary>
@@ -144,14 +144,14 @@ namespace CSPGF.Parse
         /// </summary>
         /// <param name="resultCat">Category index</param>
         /// <returns>List of all productions with the index provided.</returns>
-        public List<ApplProduction> GetProductions(int resultCat)
+        public List<Production> GetProductions(int resultCat)
         {
             HashSet<Production> prod;
 
             // Check if category exists, if not return empty productionset
             if (this.productionSets.TryGetValue(resultCat, out prod))
             {
-                List<ApplProduction> applProd = new List<ApplProduction>();
+                List<Production> applProd = new List<Production>();
                 foreach (Production p in prod)
                 {
                     applProd.AddRange(this.Uncoerce(p));
@@ -161,7 +161,7 @@ namespace CSPGF.Parse
             }
             else
             {
-                return new List<ApplProduction>();
+                return new List<Production>();
             }
         }
         
@@ -228,7 +228,6 @@ namespace CSPGF.Parse
         public override string ToString()
         {
             string s = string.Empty; 
-#if (DEBUG)
             s = "=== Productions: ===\n";
             foreach (int i in this.productionSets.Keys) 
             {
@@ -243,9 +242,9 @@ namespace CSPGF.Parse
             foreach (KeyValuePair<string, int> ints in this.categoryBookKeeperHash) 
             {
                 // TODO add ToString on Category I guess? :D
-                s += ints.Key + " -> " + ints.Value + '\n';
+                s += "[" + ints.Key + "] = " + ints.Value + '\n';
             }
-#endif
+
             return s;
         }
 
@@ -263,28 +262,25 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// Converts from CoerceProduction to ApplProducion.
+        /// Converts from CoerceProduction to ApplyProduction.
         /// </summary>
         /// <param name="p">Production to convert.</param>
-        /// <returns>List of ApplProductions</returns>
-        private List<ApplProduction> Uncoerce(object p)
+        /// <returns>List of ApplyProductions</returns>
+        private List<Production> Uncoerce(Production p)
         {
-            List<ApplProduction> prodList = new List<ApplProduction>();
-            if (p is ApplProduction) 
+            List<Production> prodList = new List<Production>();
+            
+            if (p is ProductionCoerce)
             {
-                prodList.Add((ApplProduction)p);
-            }
-            else if (p is CoerceProduction) 
-            {
-                CoerceProduction cp = (CoerceProduction)p;
+                ProductionCoerce cp = (ProductionCoerce)p;
                 foreach (Production prod in this.GetProductions(cp.InitId)) 
                 {
-                    /*foreach (ApplProduction prod2 in this.Uncoerce(prod)) 
-                    {
-                        prodList.Add(prod2);
-                    }*/
                     prodList.AddRange(this.Uncoerce(prod));
                 }
+            }
+            else
+            {
+                prodList.Add(p);
             }
 
             return prodList;

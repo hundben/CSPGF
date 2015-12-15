@@ -116,7 +116,7 @@ namespace CSPGF
         /// <summary>
         /// Pretty prints information about the PGF-object
         /// </summary>
-        /// <returns>String with debuginformation</returns>
+        /// <returns>String with debug information</returns>
         public override string ToString()
         {
             string ss = "PGF : \nMajor version : " + this.majorVersion + ", Minor version : " + this.minorVersion + "\n" + "Flags : (";
@@ -170,7 +170,7 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// Returns the concrete with the inputname.
+        /// Returns the concrete with the input name.
         /// </summary>
         /// <param name="name">Name of grammar</param>
         /// <returns>Concrete grammar</returns>
