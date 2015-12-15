@@ -917,11 +917,18 @@ namespace CSPGF.Grammar
             return this.binreader.ReadDouble();
         }
 
+        /// <summary>
+        /// Implements disposable interface
+        /// </summary>
         public void Dispose()
         {
             Dispose(true);
         }
 
+        /// <summary>
+        /// Does the actual disposing
+        /// </summary>
+        /// <param name="disposing">If disposing should be done or not</param>
         public void Dispose(bool disposing)
         {
 

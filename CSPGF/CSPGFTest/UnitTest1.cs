@@ -41,6 +41,21 @@ namespace CSPGFTest
             Assert.IsTrue(false);
 
         }
+
+        [TestMethod]
+        public void TranslationTest1()
+        {
+            AdvancedTranslator at = new AdvancedTranslator("../../pgf examples/Phrasebook.pgf");
+            at.SetInputLanguage("PhrasebookEng");
+            at.Scan("this");
+            at.Scan("wine");
+            at.Scan("is");
+            at.Scan("delicious");
+            at.Scan(".");
+            at.SetOutputLanguage("PhrasebookSwe");
+            string check = at.Translate();
+            Assert.IsTrue(check.Equals("det här vinet är läckert ."));
+        }
     }
 }
 
