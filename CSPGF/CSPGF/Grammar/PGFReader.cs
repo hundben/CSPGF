@@ -32,11 +32,12 @@ namespace CSPGF.Grammar
 {
     using System.Collections.Generic;
     using System.IO;
+    using System;
 
     /// <summary>
     /// Reads an PGF object
     /// </summary>
-    internal class PGFReader
+    internal class PGFReader : IDisposable
     {
         /// <summary>
         /// Main inputstream to read from
@@ -914,6 +915,16 @@ namespace CSPGF.Grammar
         private double GetDouble()
         {
             return this.binreader.ReadDouble();
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+        }
+
+        public void Dispose(bool disposing)
+        {
+
         }
     }
 }
