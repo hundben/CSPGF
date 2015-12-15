@@ -55,6 +55,11 @@ namespace CSPGF.Grammar
         private readonly List<string> languages;
 
         /// <summary>
+        /// If disposed
+        /// </summary>
+        private bool disposed;
+
+        /// <summary>
         /// Initializes a new instance of the PGFReader class.
         /// </summary>
         /// <param name="filename">File to read from</param>
@@ -91,7 +96,7 @@ namespace CSPGF.Grammar
 
             // Reading the global flags
             Dictionary<string, RLiteral> flags = this.GetListFlag();
-            if (flags.ContainsKey("index")) 
+            if (flags.ContainsKey("index"))
             {
                 index = this.ReadIndex(((StringLit)flags["index"]).Value);
             }
@@ -103,21 +108,21 @@ namespace CSPGF.Grammar
             // Reading the concrete grammars
             int numConcretes = this.GetInt();
             Dictionary<string, Concrete> concretes = new Dictionary<string, Concrete>();
-            for (int i = 0; i < numConcretes; i++) 
+            for (int i = 0; i < numConcretes; i++)
             {
                 string name = this.GetIdent();
-                if (this.languages == null || this.languages.Remove(name)) 
+                if (this.languages == null || this.languages.Remove(name))
                 {
                     Concrete tmp = this.GetConcrete(name, startCat);
                     concretes.Add(tmp.Name, tmp);
                 }
-                else 
+                else
                 {
-                    if (index != null) 
+                    if (index != null)
                     {
                         this.inputstream.Seek(index[name], SeekOrigin.Current);
                     }
-                    else 
+                    else
                     {
                         this.GetConcrete(name, startCat);
                     }
@@ -125,9 +130,9 @@ namespace CSPGF.Grammar
             }
 
             // test that we actually found all the selected languages
-            if (this.languages != null && this.languages.Count > 0) 
+            if (this.languages != null && this.languages.Count > 0)
             {
-                foreach (string l in this.languages) 
+                foreach (string l in this.languages)
                 {
                     throw new UnknownLanguageException(l);
                 }
@@ -166,7 +171,7 @@ namespace CSPGF.Grammar
         {
             string[] items = str.Split('+');
             Dictionary<string, int> index = new Dictionary<string, int>();
-            foreach (string item in items) 
+            foreach (string item in items)
             {
                 string[] i = item.Split(':');
                 index.Add(i[0].Trim(), int.Parse(i[1]));
@@ -192,7 +197,7 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             Pattern[] patts = new Pattern[npoz];
-            for (int i = 0; i < npoz; i++) 
+            for (int i = 0; i < npoz; i++)
             {
                 patts[i] = this.GetPattern();
             }
@@ -296,7 +301,7 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             Hypo[] hypos = new Hypo[npoz];
-            for (int i = 0; i < npoz; i++) 
+            for (int i = 0; i < npoz; i++)
             {
                 hypos[i] = this.GetHypo();
             }
@@ -312,7 +317,7 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             Expr[] exps = new Expr[npoz];
-            for (int i = 0; i < npoz; i++) 
+            for (int i = 0; i < npoz; i++)
             {
                 exps[i] = this.GetExpr();
             }
@@ -372,7 +377,7 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             Eq[] eqs = new Eq[npoz];
-            for (int i = 0; i < npoz; i++) 
+            for (int i = 0; i < npoz; i++)
             {
                 eqs[i] = this.GetEq();
             }
@@ -388,7 +393,7 @@ namespace CSPGF.Grammar
         {
             int sel = this.inputstream.ReadByte();
             Pattern patt;
-            switch (sel) 
+            switch (sel)
             {
                 case 0: // application pattern
                     string absFun = this.GetIdent();
@@ -428,7 +433,7 @@ namespace CSPGF.Grammar
         {
             int sel = this.inputstream.ReadByte();
             RLiteral ss;
-            switch (sel) 
+            switch (sel)
             {
                 case 0:
                     ss = new StringLit(this.GetString());
@@ -529,7 +534,7 @@ namespace CSPGF.Grammar
         {
             int sel = this.inputstream.ReadByte();
             Symbol symb;
-            switch (sel) 
+            switch (sel)
             {
                 case 0: // category (non terminal symbol)
                     symb = new ArgConstSymbol(this.GetInt(), this.GetInt());
@@ -561,7 +566,7 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             Alternative[] alts = new Alternative[npoz];
-            for (int i = 0; i < npoz; i++) 
+            for (int i = 0; i < npoz; i++)
             {
                 alts[i] = this.GetAlternative();
             }
@@ -586,7 +591,7 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             Symbol[] tmp = new Symbol[npoz];
-            for (int i = 0; i < npoz; i++) 
+            for (int i = 0; i < npoz; i++)
             {
                 tmp[i] = this.GetSymbol();
             }
@@ -621,7 +626,7 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             CncFun[] cncfuns = new CncFun[npoz];
-            for (int i = 0; i < npoz; i++) 
+            for (int i = 0; i < npoz; i++)
             {
                 cncfuns[i] = this.GetCncFun(sequences);
             }
@@ -637,7 +642,7 @@ namespace CSPGF.Grammar
         {
             int size = this.GetInt();
             LinDef[] tmp = new LinDef[size];
-            for (int i = 0; i < size; i++) 
+            for (int i = 0; i < size; i++)
             {
                 tmp[i] = this.GetLinDef();
             }
@@ -654,7 +659,7 @@ namespace CSPGF.Grammar
             int key = this.GetInt();
             int listSize = this.GetInt();
             int[] funIds = new int[listSize];
-            for (int i = 0; i < listSize; i++) 
+            for (int i = 0; i < listSize; i++)
             {
                 funIds[i] = this.GetInt();
             }
@@ -682,7 +687,7 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             ProductionSet[] tmp = new ProductionSet[npoz];
-            for (int i = 0; i < npoz; i++) 
+            for (int i = 0; i < npoz; i++)
             {
                 tmp[i] = this.GetProductionSet(cncFuns);
             }
@@ -700,7 +705,7 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             Production[] tmp = new Production[npoz];
-            for (int i = 0; i < npoz; i++) 
+            for (int i = 0; i < npoz; i++)
             {
                 tmp[i] = this.GetProduction(leftCat, cncFuns);
             }
@@ -718,7 +723,7 @@ namespace CSPGF.Grammar
         {
             int sel = this.inputstream.ReadByte();
             Production prod;
-            switch (sel) 
+            switch (sel)
             {
                 case 0: // application
                     prod = new ProductionApply(leftCat, cncFuns[this.GetInt()], this.GetDomainFromPArgs());
@@ -759,7 +764,7 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             Dictionary<string, CncCat> cncCats = new Dictionary<string, CncCat>();
-            for (int i = 0; i < npoz; i++) 
+            for (int i = 0; i < npoz; i++)
             {
                 string name = this.GetIdent();
                 cncCats.Add(name, new CncCat(name, this.GetInt(), this.GetInt(), this.GetListString()));
@@ -776,12 +781,12 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             Dictionary<string, RLiteral> flags = new Dictionary<string, RLiteral>();
-            if (npoz == 0) 
+            if (npoz == 0)
             {
                 return flags;
             }
 
-            for (int i = 0; i < npoz; i++) 
+            for (int i = 0; i < npoz; i++)
             {
                 flags.Add(this.GetIdent(), this.GetLiteral());
             }
@@ -817,7 +822,7 @@ namespace CSPGF.Grammar
             {
                 return strs;
             }
-            
+
             for (int i = 0; i < npoz; i++)
             {
                 strs[i] = this.GetString();
@@ -900,7 +905,7 @@ namespace CSPGF.Grammar
         {
             int npoz = this.GetInt();
             int[] tmp = new int[npoz];
-            for (int i = 0; i < npoz; i++) 
+            for (int i = 0; i < npoz; i++)
             {
                 tmp[i] = this.GetInt();
             }
@@ -923,6 +928,7 @@ namespace CSPGF.Grammar
         public void Dispose()
         {
             Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         /// <summary>
@@ -931,7 +937,24 @@ namespace CSPGF.Grammar
         /// <param name="disposing">If disposing should be done or not</param>
         public void Dispose(bool disposing)
         {
+            if (disposed)
+                return;
 
+            if (disposing)
+            {
+                binreader.Dispose();
+                inputstream.Dispose();
+            }
+            disposed = true;
         }
+
+        /// <summary>
+        /// Finalizer for this PGFReader
+        /// </summary>
+        ~PGFReader()
+        {
+            Dispose(false);
+        }
+
     }
 }
