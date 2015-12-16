@@ -28,6 +28,7 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+[assembly: System.CLSCompliant(true)]
 namespace CSPGF
 {
     using System;
@@ -130,7 +131,7 @@ namespace CSPGF
         /// <returns>True if scan was successful.</returns>
         public bool Scan(string token)
         {
-            if (this.fromLanguage != string.Empty)
+            if (!string.IsNullOrEmpty(this.fromLanguage))
             {
                 return this.currentPState.Scan(token);
             }
@@ -145,7 +146,7 @@ namespace CSPGF
         /// <returns>True if scan was successful</returns>
         public bool ScanTokens(string tokens)
         {
-            if (this.fromLanguage != string.Empty)
+            if (!string.IsNullOrEmpty(this.fromLanguage))
             {
                 foreach (string tok in tokens.Split())
                 {
@@ -167,7 +168,7 @@ namespace CSPGF
         /// <returns>A string with the translated sentence.</returns>
         public string Translate()
         {
-            if (this.toLanguage != string.Empty)
+            if (!string.IsNullOrEmpty(this.toLanguage))
             {
                 List<Trees.Absyn.Tree> lt = this.GetTrees();
                 if (lt.Count > 0)
@@ -222,7 +223,7 @@ namespace CSPGF
         /// <returns>Linearized string</returns>
         public string LinearizeTree(Trees.Absyn.Tree tree)
         {
-            if (this.toLanguage != string.Empty)
+            if (!string.IsNullOrEmpty(this.toLanguage))
             {
                 if (tree != null)
                 {
@@ -252,7 +253,7 @@ namespace CSPGF
         {
             if (this.IsLinux())
             {
-                throw new Exception("Voice recognition doesn't work with mono.");
+                throw new MonoException("Voice recognition doesn't work with mono.");
             }
 
             Assembly assembly = Assembly.LoadFrom("Speech.dll");
