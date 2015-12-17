@@ -101,7 +101,7 @@ namespace Speech
         /// </summary>
         public void ListenASync()
         {
-            this.sre.RecognizeCompleted += sre_RecognizeCompleted;
+            this.sre.RecognizeCompleted += this.Sre_RecognizeCompleted;
             this.sre.RecognizeAsync(RecognizeMode.Multiple);
         }
 
@@ -110,15 +110,15 @@ namespace Speech
         /// </summary>
         /// <param name="sender">The sender object</param>
         /// <param name="e">The event information</param>
-        void sre_RecognizeCompleted(object sender, RecognizeCompletedEventArgs e)
+        public void Sre_RecognizeCompleted(object sender, RecognizeCompletedEventArgs e)
         {
             if (e.Result != null)
             {
-                asyncresult = e.Result.Text;
+                this.asyncresult = e.Result.Text;
             }
             else
             {
-                asyncresult = string.Empty;
+                this.asyncresult = string.Empty;
             }
         }
 
@@ -136,7 +136,7 @@ namespace Speech
         /// <returns>Recognised sentence</returns>
         public string ASyncResult()
         {
-            return asyncresult;
+            return this.asyncresult;
         }
 
         /// <summary>

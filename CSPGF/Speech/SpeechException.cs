@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Speech.cs" company="None">
+// <copyright file="SpeechException.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,20 +28,35 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System;
-
 namespace Speech
 {
+    using System;
+
+    /// <summary>
+    /// Exception class for Speech related exceptions.
+    /// </summary>
     public class SpeechException : Exception
     {
+        /// <summary>
+        /// Initializes a new instance of the SpeechException class.
+        /// </summary>
         public SpeechException()
         {
-
         }
+
+        /// <summary>
+        /// Initializes a new instance of the SpeechException class.
+        /// </summary>
+        /// <param name="message">Exception message.</param>
         public SpeechException(string message) : base(message)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the SpeechException class.
+        /// </summary>
+        /// <param name="message">Exception message.</param>
+        /// <param name="inner">Innter Exception.</param>
         public SpeechException(string message, Exception inner) : base(message, inner)
         {
         }

@@ -47,9 +47,8 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Initializes a new instance of the ProductionExtern class.
         /// </summary>
-        /// <param name="fId">Function id</param>
-        /// <param name="function">Concrete function</param>
-        /// <param name="domain">List of domains</param>
+        /// <param name="fId">The function id.</param>
+        /// <param name="lins">List of lins.</param>
         public ProductionExtern(int fId, string[] lins) : base(0, fId)
         {
             this.lits = lins;
