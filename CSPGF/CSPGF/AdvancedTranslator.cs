@@ -29,6 +29,7 @@
 //-----------------------------------------------------------------------
 
 [assembly: System.CLSCompliant(true)]
+
 namespace CSPGF
 {
     using System;
@@ -49,27 +50,27 @@ namespace CSPGF
         private readonly PGF pgf;
 
         /// <summary>
-        /// The start category
+        /// The start category.
         /// </summary>
         private string startcat;
 
         /// <summary>
-        /// Stack with all the states
+        /// Stack with all the states.
         /// </summary>
         private ParseState currentPState;
 
         /// <summary>
-        /// Current linearizer
+        /// Current linearizer.
         /// </summary>
         private Linearize.Linearizer currentLin;
 
         /// <summary>
-        /// The language last used to parse
+        /// The language last used to parse.
         /// </summary>
         private string fromLanguage = string.Empty;
 
         /// <summary>
-        /// The language last used to linearize to
+        /// The language last used to linearize to.
         /// </summary>
         private string toLanguage = string.Empty;
 
@@ -103,7 +104,7 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// Set the output language
+        /// Set the output language.
         /// </summary>
         /// <param name="language">The language as a string.</param>
         public void SetOutputLanguage(string language)
@@ -116,7 +117,7 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// Returns a list of supported languages
+        /// Returns a list of supported languages.
         /// </summary>
         /// <returns>List of languages.</returns>
         public List<string> GetLanguages()
@@ -127,7 +128,7 @@ namespace CSPGF
         /// <summary>
         /// Scan one token.
         /// </summary>
-        /// <param name="token">The next token</param>
+        /// <param name="token">The next token.</param>
         /// <returns>True if scan was successful.</returns>
         public bool Scan(string token)
         {
@@ -140,10 +141,10 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// Scan a few tokens at a time
+        /// Scan a few tokens at a time.
         /// </summary>
         /// <param name="tokens">A string with tokens.</param>
-        /// <returns>True if scan was successful</returns>
+        /// <returns>True if scan was successful.</returns>
         public bool ScanTokens(string tokens)
         {
             if (!string.IsNullOrEmpty(this.fromLanguage))
@@ -184,14 +185,14 @@ namespace CSPGF
         /// <summary>
         /// Returns a list of possible tokens.
         /// </summary>
-        /// <returns>A list of possible tokens</returns>
+        /// <returns>A list of possible tokens.</returns>
         public List<string> Predict()
         {
             return this.currentPState.Predict();
         }
 
         /// <summary>
-        /// Get the trees
+        /// Get the trees.
         /// </summary>
         /// <returns>Returns the trees.</returns>
         public List<Trees.Absyn.Tree> GetTrees()
@@ -219,8 +220,8 @@ namespace CSPGF
         /// <summary>
         /// Linearizes a tree using previously set language.
         /// </summary>
-        /// <param name="tree">Tree to linearize</param>
-        /// <returns>Linearized string</returns>
+        /// <param name="tree">Tree to linearize.</param>
+        /// <returns>Linearized string.</returns>
         public string LinearizeTree(Trees.Absyn.Tree tree)
         {
             if (!string.IsNullOrEmpty(this.toLanguage))
@@ -235,9 +236,9 @@ namespace CSPGF
         }
         
         /// <summary>
-        /// Checks if the current OS is *NIX
+        /// Checks if the current OS is *NIX.
         /// </summary>
-        /// <returns>True if *NIX</returns>
+        /// <returns>True if *NIX.</returns>
         public bool IsLinux()
         {
                 int p = (int)Environment.OSVersion.Platform;
@@ -270,7 +271,7 @@ namespace CSPGF
         /// <summary>
         /// Uses the .NET speech synthesizer to speak a sentence.
         /// </summary>
-        /// <param name="sentence">Sentence to speak</param>
+        /// <param name="sentence">Sentence to speak.</param>
         public void Say(string sentence)
         {
             if (this.IsLinux())
@@ -292,9 +293,9 @@ namespace CSPGF
         /// <summary>
         /// Uses the .NET speech synthesizer to speak a sentence.
         /// </summary>
-        /// <param name="sentence">Sentence to speak</param>
-        /// <param name="rate">Rate of speech</param>
-        /// <param name="volume">Volume of speech</param>
+        /// <param name="sentence">Sentence to speak.</param>
+        /// <param name="rate">Rate of speech.</param>
+        /// <param name="volume">Volume of speech.</param>
         public void Say(string sentence, int rate, int volume)
         {
             if (this.IsLinux())

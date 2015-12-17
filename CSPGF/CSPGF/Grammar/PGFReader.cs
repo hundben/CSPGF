@@ -30,9 +30,9 @@
 
 namespace CSPGF.Grammar
 {
+    using System;
     using System.Collections.Generic;
     using System.IO;
-    using System;
 
     /// <summary>
     /// Reads an PGF object
@@ -40,12 +40,12 @@ namespace CSPGF.Grammar
     internal class PGFReader : IDisposable
     {
         /// <summary>
-        /// Main inputstream to read from
+        /// Main input stream to read from
         /// </summary>
         private readonly MemoryStream inputstream;
 
         /// <summary>
-        /// Binarystream used by this class
+        /// Binary stream used by this class
         /// </summary>
         private readonly BinaryReader binreader;
 
@@ -79,6 +79,14 @@ namespace CSPGF.Grammar
             this.inputstream = new MemoryStream(File.ReadAllBytes(filename));
             this.binreader = new BinaryReader(this.inputstream);
             this.languages = languages;
+        }
+
+        /// <summary>
+        /// Finalizes an instance of the PGFReader class.
+        /// </summary>
+        ~PGFReader()
+        {
+            this.Dispose(false);
         }
 
         /// <summary>
@@ -142,6 +150,44 @@ namespace CSPGF.Grammar
             return new PGF(ii[0], ii[1], flags, abs, concretes);
         }
 
+        /// <summary>
+        /// Implements disposable interface
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
+        /// Does the actual disposing
+        /// </summary>
+        /// <param name="disposing">If disposing should be done or not</param>
+        public void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                try
+                {
+                    this.binreader.Close();
+                    this.inputstream.Close();
+                    this.binreader.Dispose();
+                    this.inputstream.Dispose();
+                }
+                catch (Exception e)
+                {
+                    System.Console.WriteLine(e.ToString());
+                }
+            }
+
+            this.disposed = true;
+        }
+
         /*
         /// <summary>
         /// This function guess the default start category from the
@@ -166,7 +212,7 @@ namespace CSPGF.Grammar
         /// Reads the index
         /// </summary>
         /// <param name="str">String to read from</param>
-        /// <returns>Dictionary with string/int pairs</returns>
+        /// <returns>Dictionary with (string,int) pairs</returns>
         private Dictionary<string, int> ReadIndex(string str)
         {
             string[] items = str.Split('+');
@@ -921,50 +967,5 @@ namespace CSPGF.Grammar
         {
             return this.binreader.ReadDouble();
         }
-
-        /// <summary>
-        /// Implements disposable interface
-        /// </summary>
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Does the actual disposing
-        /// </summary>
-        /// <param name="disposing">If disposing should be done or not</param>
-        public void Dispose(bool disposing)
-        {
-            if (disposed)
-                return;
-
-            if (disposing)
-            {
-                try
-                {
-                    binreader.Close();
-                    inputstream.Close();
-                    binreader.Dispose();
-                    inputstream.Dispose();
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.ToString());
-                }
-                
-            }
-            disposed = true;
-        }
-
-        /// <summary>
-        /// Finalizer for this PGFReader
-        /// </summary>
-        ~PGFReader()
-        {
-            Dispose(false);
-        }
-
     }
 }

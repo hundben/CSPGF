@@ -41,8 +41,8 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Initializes a new instance of the ArgConstSymbol class.
         /// </summary>
-        /// <param name="arg">Argument int</param>
-        /// <param name="cons">Constant int</param>
+        /// <param name="arg">Argument integer</param>
+        /// <param name="cons">Constant integer</param>
         public ArgConstSymbol(int arg, int cons)
         {
             this.Arg = arg;

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ApplyProduction.cs" company="None">
+// <copyright file="ProductionApply.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -44,7 +44,7 @@ namespace CSPGF.Grammar
         private readonly int[] dom;
 
         /// <summary>
-        /// Initializes a new instance of the ApplyProduction class.
+        /// Initializes a new instance of the ProductionApply class.
         /// </summary>
         /// <param name="fId">Function id</param>
         /// <param name="function">Concrete function</param>
@@ -67,7 +67,7 @@ namespace CSPGF.Grammar
         public override string ToString()
         {
             // Was commented out in the java-code.
-            string s = "Production_Apply("+ FId + " -> " + this.Function.Name + "[ ";
+            string s = "Production_Apply(" + FId + " -> " + this.Function.Name + "[ ";
             foreach (int c in this.dom) 
             {
                 s += c + " ";

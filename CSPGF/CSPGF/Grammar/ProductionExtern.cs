@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ExternProduction.cs" company="None">
+// <copyright file="ProductionExtern.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -37,21 +37,20 @@ namespace CSPGF.Grammar
     /// </summary>
     [Serializable]
 
-    class ProductionExtern : Production
+    internal class ProductionExtern : Production
     {
-
         /// <summary>
         /// List of external literals
         /// </summary>
         private readonly string[] lits;
 
         /// <summary>
-        /// Initializes a new instance of the ApplProduction class.
+        /// Initializes a new instance of the ProductionExtern class.
         /// </summary>
         /// <param name="fId">Function id</param>
         /// <param name="function">Concrete function</param>
         /// <param name="domain">List of domains</param>
-        public ProductionExtern(int fId, string[] lins ) : base(0, fId)
+        public ProductionExtern(int fId, string[] lins) : base(0, fId)
         {
             this.lits = lins;
         }
@@ -59,12 +58,12 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
-        /// <returns>Returns a string containing debuginformation</returns>
+        /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
             // Was commented out in the java-code.
             string s = "ProductionExtern(" + FId + " -> {";
-            foreach (string c in lits) 
+            foreach (string c in this.lits) 
             {
                 s += c + ", ";
             }

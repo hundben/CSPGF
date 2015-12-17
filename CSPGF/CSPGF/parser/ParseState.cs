@@ -275,16 +275,15 @@ namespace CSPGF.Parse
                             {
                                 // TODO
                                 ProductionExtern ep = (ProductionExtern)prod;
-                                // TODO this is wrong
-                                //ActiveItem it = new ActiveItem(this.position, bd, ep.Function, prod.Domain(), r, 0);
-                                //this.agenda.Push(it);
+                                /* TODO this is wrong
+                                ActiveItem it = new ActiveItem(this.position, bd, ep.Function, prod.Domain(), r, 0);
+                                this.agenda.Push(it);*/
                             }
                             else
                             {
                                 // Coerce production, which GetProductions should handle
                                 // TODO throw exception
                             }
-
                         }
                     }
 
@@ -306,19 +305,20 @@ namespace CSPGF.Parse
             }
             else if (sym is LitSymbol)
             {
-                // TODO notice a lot of this is just test...
-                // TempLog.LogMessageToFile("Case before {d,r}");
+                /*TODO notice a lot of this is just test...
+                TempLog.LogMessageToFile("Case before {d,r}");*/
                 LitSymbol litSym = (LitSymbol)sym;
                 int d = litSym.Arg;
                 int r = litSym.Cons;
                 int bd = item.Domain[d];
+
                 // LITERAL
             }
             else if (sym is VarSymbol)
             {
-                // TODO implement
-                // High-order argument
-                // TempLog.LogMessageToFile("Case before <d,$r>");
+                /* TODO implement
+                High-order argument
+                TempLog.LogMessageToFile("Case before <d,$r>");*/
             }
             else
             {

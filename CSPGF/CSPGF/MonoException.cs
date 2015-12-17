@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Speech.cs" company="None">
+// <copyright file="MonoException.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,20 +28,35 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using System;
-
 namespace CSPGF
 {
+    using System;
+
+    /// <summary>
+    /// Exception cast when the user is using mono.
+    /// </summary>
     public class MonoException : Exception
     {
+        /// <summary>
+        /// Initializes a new instance of the MonoException class.
+        /// </summary>
         public MonoException()
         {
-
         }
+
+        /// <summary>
+        /// Initializes a new instance of the MonoException class.
+        /// </summary>
+        /// <param name="message">Exception message.</param>
         public MonoException(string message) : base(message)
         {
         }
 
+        /// <summary>
+        /// Initializes a new instance of the MonoException class.
+        /// </summary>
+        /// <param name="message">Exception message.</param>
+        /// <param name="inner">Inner Exception.</param>
         public MonoException(string message, Exception inner) : base(message, inner)
         {
         }

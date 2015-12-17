@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CoerceProduction.cs" company="None">
+// <copyright file="ProductionCoerce.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -39,7 +39,7 @@ namespace CSPGF.Grammar
     internal class ProductionCoerce : Production
     {
         /// <summary>
-        /// Initializes a new instance of the CoerceProduction class.
+        /// Initializes a new instance of the ProductionCoerce class.
         /// </summary>
         /// <param name="fId">Function id</param>
         /// <param name="initId">Initial id</param>

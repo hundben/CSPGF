@@ -112,7 +112,9 @@
     <Compile Include="PGF.cs" />
     <Compile Include="Grammar\PGFReader.cs" />
     <Compile Include="Grammar\VarSymbol.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Grammar\AbsCat.cs" />
     <Compile Include="Grammar\AbsFun.cs" />
     <Compile Include="Grammar\AbsNameExp.cs" />
@@ -157,9 +159,15 @@
     <Compile Include="Grammar\WildCardPattern.cs" />
     <Compile Include="SimpleTranslator.cs" />
     <Compile Include="MonoException.cs" />
-    <Compile Include="Trees\AbstractVisitSkeleton.cs" />
-    <Compile Include="Trees\Absyn.cs" />
-    <Compile Include="Trees\VisitSkeleton.cs" />
+    <Compile Include="Trees\AbstractVisitSkeleton.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Trees\Absyn.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Trees\VisitSkeleton.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Linearizer\UnknownLanguageException.cs" />
   </ItemGroup>
   <ItemGroup>
