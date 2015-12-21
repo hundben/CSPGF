@@ -236,36 +236,25 @@ namespace CSPGF
         }
         
         /// <summary>
-        /// Checks if the current OS is *NIX.
-        /// </summary>
-        /// <returns>True if *NIX.</returns>
-        public bool IsLinux()
-        {
-                int p = (int)Environment.OSVersion.Platform;
-                return (p == 4) || (p == 6) || (p == 128);
-        }
-
-        /// <summary>
         /// Use .NET speech recognition to recognize words.
         /// </summary>
         /// <param name="time">How long to listen</param>
         /// <returns>Recognized words</returns>
         public string Listen(TimeSpan time)
         {
-            if (this.IsLinux())
+            try
             {
-                throw new MonoException("Voice recognition doesn't work with mono.");
+                Assembly assembly = Assembly.LoadFrom("Speech.dll");
+                System.Type speech = assembly.GetType("Speech.Speech");
+                object speechobj = Activator.CreateInstance(speech);
+                return (string)speech.InvokeMember("Listen",
+                                                   BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance, null, speechobj, new object[] { time });
+            } catch (Exception exception)
+            {
+                System.Console.WriteLine(exception.ToString());
             }
 
-            Assembly assembly = Assembly.LoadFrom("Speech.dll");
-            System.Type speech = assembly.GetType("Speech.Speech");
-            object speechobj = Activator.CreateInstance(speech);
-            return (string)speech.InvokeMember(
-                                               "Listen", 
-                                               BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance,
-                                               null, 
-                                               speechobj, 
-                                               new object[] { time });
+            return null;
         }
 
         /// <summary>
@@ -274,20 +263,22 @@ namespace CSPGF
         /// <param name="sentence">Sentence to speak.</param>
         public void Say(string sentence)
         {
-            if (this.IsLinux())
+            try
             {
-                throw new Exception("Voice synthesis isn't supported by mono.");
+                Assembly assembly = Assembly.LoadFrom("Speech.dll");
+                System.Type speech = assembly.GetType("Speech.Speech");
+                object speechobj = Activator.CreateInstance(speech);
+                speech.InvokeMember(
+                                    "Say",
+                                    BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance,
+                                    null,
+                                    speechobj,
+                                    new object[] { sentence, 1, 100 });
+            } catch (Exception exception)
+            {
+                System.Console.WriteLine(exception.ToString());
             }
 
-            Assembly assembly = Assembly.LoadFrom("Speech.dll");
-            System.Type speech = assembly.GetType("Speech.Speech");
-            object speechobj = Activator.CreateInstance(speech);
-            speech.InvokeMember(
-                                "Say", 
-                                BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance,
-                                null, 
-                                speechobj, 
-                                new object[] { sentence, 1, 100 });
         }
 
         /// <summary>
@@ -298,20 +289,22 @@ namespace CSPGF
         /// <param name="volume">Volume of speech.</param>
         public void Say(string sentence, int rate, int volume)
         {
-            if (this.IsLinux())
+            try
             {
-                throw new Exception("Voice synthesis isn't supported by mono.");
+                Assembly assembly = Assembly.LoadFrom("Speech.dll");
+                System.Type speech = assembly.GetType("Speech.Speech");
+                object speechobj = Activator.CreateInstance(speech);
+                speech.InvokeMember(
+                                    "Say",
+                                    BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance,
+                                    null,
+                                    speechobj,
+                                    new object[] { sentence, rate, volume });
+            } catch (Exception exception)
+            {
+                System.Console.WriteLine(exception.ToString());
             }
 
-            Assembly assembly = Assembly.LoadFrom("Speech.dll");
-            System.Type speech = assembly.GetType("Speech.Speech");
-            object speechobj = Activator.CreateInstance(speech);
-            speech.InvokeMember(
-                                "Say", 
-                                BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance,
-                                null, 
-                                speechobj, 
-                                new object[] { sentence, rate, volume });
         }
 
         /// <summary>

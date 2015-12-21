@@ -43,7 +43,7 @@ namespace CSPGF.Linearize
         /// <param name="fId">Function id</param>
         /// <param name="cncType">Concrete type</param>
         /// <param name="linTable">Linearization table</param>
-        public LinTriple(int fId, CncType cncType, List<List<BracketedTokn>> linTable)
+        public LinTriple(int fId, ConcreteType cncType, List<List<BracketedTokn>> linTable)
         {
             this.FId = fId;
             this.CncType = cncType;
@@ -58,7 +58,7 @@ namespace CSPGF.Linearize
         /// <summary>
         /// Gets the Concrete type
         /// </summary>
-        public CncType CncType { get; private set; }
+        public ConcreteType CncType { get; private set; }
 
         /// <summary>
         /// Gets the LinTable

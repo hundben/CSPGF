@@ -434,7 +434,7 @@ namespace CSPGF.Linearize
         /// <param name="mbfid">Function id</param>
         /// <param name="tree">Tree to linearize</param>
         /// <returns>List of all possible linearized tuples</returns>
-        private List<LinTriple> Lin0(List<string> xs, List<string> ys, CncType mbcty, int mbfid, Tree tree)
+        private List<LinTriple> Lin0(List<string> xs, List<string> ys, ConcreteType mbcty, int mbfid, Tree tree)
         {
             // if tree is a lambda, we add the variable to the list of bound
             // variables and we linearize the subtree.
@@ -490,7 +490,7 @@ namespace CSPGF.Linearize
         /// <param name="f">Name of the function to be applied</param>
         /// <param name="es">The argument of the function to linearize</param>
         /// <returns>All possible linearizations for the application of f to es</returns>
-        private List<LinTriple> Apply(List<string> xs, CncType mbcty, int nextfid, string f, List<Tree> es)
+        private List<LinTriple> Apply(List<string> xs, ConcreteType mbcty, int nextfid, string f, List<Tree> es)
         {
             Dictionary<int, HashSet<Production>> prods;
             if (!this.linProd.TryGetValue(f, out prods))
@@ -505,7 +505,7 @@ namespace CSPGF.Linearize
                 List<LinTriple> rez = new List<LinTriple>();
                 foreach (AppResult appr in listApp)
                 {
-                    List<CncType> ctys = new List<CncType>();
+                    List<ConcreteType> ctys = new List<ConcreteType>();
                     for (int ind = appr.CncTypes.Count - 1; ind >= 0; ind--)
                     {
                         ctys.Add(appr.CncTypes.ElementAt(ind));
@@ -528,7 +528,7 @@ namespace CSPGF.Linearize
                             linTab.Add(this.ComputeSeq(seq, rez2.CncTypes, rez2.Bracketedtokn));
                         }
 
-                        rez.Add(new LinTriple(nextfid + 1, new CncType(cat, nextfid), linTab));
+                        rez.Add(new LinTriple(nextfid + 1, new ConcreteType(cat, nextfid), linTab));
                     }
                 }
 
@@ -543,7 +543,7 @@ namespace CSPGF.Linearize
         /// <param name="mbcty">Concrete type</param>
         /// <param name="f">Name of the function</param>
         /// <returns>List of AppResults</returns>
-        private List<AppResult> GetApps(Dictionary<int, HashSet<Production>> prods, CncType mbcty, string f)
+        private List<AppResult> GetApps(Dictionary<int, HashSet<Production>> prods, ConcreteType mbcty, string f)
         {
             if (mbcty == null)
             {
@@ -559,7 +559,7 @@ namespace CSPGF.Linearize
                         int fid = it.Key;
                         foreach (Production prod in it.Value)
                         {
-                            rez.AddRange(this.ToApp(new CncType("_", fid), prod, f, prods));
+                            rez.AddRange(this.ToApp(new ConcreteType("_", fid), prod, f, prods));
                         }
                     }
 
@@ -594,7 +594,7 @@ namespace CSPGF.Linearize
         /// <param name="f">Function to use</param>
         /// <param name="prods">Productions to use</param>
         /// <returns>List of AppResults</returns>
-        private List<AppResult> ToApp(CncType cty, Production p, string f, Dictionary<int, HashSet<Production>> prods)
+        private List<AppResult> ToApp(ConcreteType cty, Production p, string f, Dictionary<int, HashSet<Production>> prods)
         {
             List<AppResult> rez = new List<AppResult>();
             if (p is ProductionApply)
@@ -602,12 +602,12 @@ namespace CSPGF.Linearize
                 ProductionApply ap = (ProductionApply)p;
                 int[] args = ap.Domain();
                 CncFun cncFun = ap.Function;
-                List<CncType> vtype = new List<CncType>();
+                List<ConcreteType> vtype = new List<ConcreteType>();
                 if (f.Equals("_V"))
                 {
                     foreach (int j in args)
                     {
-                        vtype.Add(new CncType("__gfVar", j));
+                        vtype.Add(new ConcreteType("__gfVar", j));
                     }
 
                     rez.Add(new AppResult(cncFun, cty, vtype));
@@ -615,10 +615,10 @@ namespace CSPGF.Linearize
                 } 
                 else if (f.Equals("_B"))
                 {
-                    vtype.Add(new CncType(cty.CId, args[0]));
+                    vtype.Add(new ConcreteType(cty.CId, args[0]));
                     for (int i = 1; i < args.Length; i++)
                     {
-                        vtype.Add(new CncType("__gfVar", args[i]));
+                        vtype.Add(new ConcreteType("__gfVar", args[i]));
                     }
 
                     rez.Add(new AppResult(cncFun, cty, vtype));
@@ -645,10 +645,10 @@ namespace CSPGF.Linearize
                     string res = catSkel.ElementAt(0);
                     for (int i = 0; i < args.Length; i++)
                     {
-                        vtype.Add(new CncType(catSkel.ElementAt(i + 1), args[i]));
+                        vtype.Add(new ConcreteType(catSkel.ElementAt(i + 1), args[i]));
                     }
 
-                    rez.Add(new AppResult(cncFun, new CncType(res, cty.FId), vtype));
+                    rez.Add(new AppResult(cncFun, new ConcreteType(res, cty.FId), vtype));
                     return rez;
                 }
             }
@@ -692,7 +692,7 @@ namespace CSPGF.Linearize
         /// <param name="cncTypes">List of Concrete types</param>
         /// <param name="linTables">List of list of list of BracketedTokns</param>
         /// <returns>List of BracketedTokn</returns>
-        private List<BracketedTokn> Compute(Symbol s, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
+        private List<BracketedTokn> Compute(Symbol s, List<ConcreteType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
             if (s is ArgConstSymbol)
             {
@@ -731,7 +731,7 @@ namespace CSPGF.Linearize
         /// <param name="cncTypes">List of concrete types</param>
         /// <param name="linTables">List of list of list of BracketedTokns</param>
         /// <returns>List of BracketedTokns</returns>
-        private List<BracketedTokn> GetArg(int d, int r, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
+        private List<BracketedTokn> GetArg(int d, int r, List<ConcreteType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
             if (d != 0)
             {
@@ -759,7 +759,7 @@ namespace CSPGF.Linearize
         /// <param name="cncTypes">List of Concrete types</param>
         /// <param name="linTables">List of list of list of BracketedTokns</param>
         /// <returns>List of BracketedTokns</returns>
-        private List<BracketedTokn> ComputeSeq(Symbol[] seqId, List<CncType> cncTypes, List<List<List<BracketedTokn>>> linTables)
+        private List<BracketedTokn> ComputeSeq(Symbol[] seqId, List<ConcreteType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
             List<BracketedTokn> bt = new List<BracketedTokn>();
             foreach (Symbol sym in seqId)
@@ -779,16 +779,16 @@ namespace CSPGF.Linearize
         /// <param name="exps">List of trees</param>
         /// <param name="xs">List of strings</param>
         /// <returns>List of RezDesc</returns>
-        private List<RezDesc> Descend(int nextfid, List<CncType> cncTypes, List<Tree> exps, List<string> xs)
+        private List<RezDesc> Descend(int nextfid, List<ConcreteType> cncTypes, List<Tree> exps, List<string> xs)
         {
             List<RezDesc> rez = new List<RezDesc>();
             if (exps.Count == 0)
             {
-                rez.Add(new RezDesc(nextfid, new List<CncType>(), new List<List<List<BracketedTokn>>>()));
+                rez.Add(new RezDesc(nextfid, new List<ConcreteType>(), new List<List<List<BracketedTokn>>>()));
                 return rez;
             }
 
-            CncType cncType = cncTypes.First();
+            ConcreteType cncType = cncTypes.First();
             cncTypes.RemoveAt(0);
             Tree exp = exps.First();
             exps.RemoveAt(0);

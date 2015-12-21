@@ -43,7 +43,7 @@ namespace CSPGF.Linearize
         /// <param name="fid">Function id.</param>
         /// <param name="cncTypes">A list of cnc types.</param>
         /// <param name="bss">A list of lists of lists of lists of bracketed tokens.</param>
-        public RezDesc(int fid, List<CncType> cncTypes, List<List<List<BracketedTokn>>> bss)
+        public RezDesc(int fid, List<ConcreteType> cncTypes, List<List<List<BracketedTokn>>> bss)
         {
             this.Fid = fid;
             this.CncTypes = cncTypes;
@@ -58,7 +58,7 @@ namespace CSPGF.Linearize
         /// <summary>
         /// Gets or sets a list of CncTypes.
         /// </summary>
-        public List<CncType> CncTypes { get; set; }
+        public List<ConcreteType> CncTypes { get; set; }
         
         /// <summary>
         /// Gets a bracketed token.

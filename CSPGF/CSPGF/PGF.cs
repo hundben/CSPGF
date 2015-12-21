@@ -141,6 +141,11 @@ namespace CSPGF
         /// <returns>List of languages</returns>
         public List<string> GetLanguages()
         {
+            /*Better version?
+            return new List<string>(this.concretes.Keys);
+            //Even better? Using LINQ though.
+            return this.concretes.Keys.ToList<string>();*/
+            
             List<string> tmp = new List<string>();
             foreach (KeyValuePair<string, Concrete> kvp in this.concretes)
             {
@@ -178,7 +183,7 @@ namespace CSPGF
         {
             Concrete conc;
             if (!this.concretes.TryGetValue(name, out conc))
-            {
+            { 
                 throw new UnknownLanguageException(name);
             }
 

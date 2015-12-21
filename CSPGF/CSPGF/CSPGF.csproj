@@ -90,7 +90,7 @@
     <Compile Include="Linearizer\AppResult.cs" />
     <Compile Include="Linearizer\Bracket.cs" />
     <Compile Include="Linearizer\BracketedTokn.cs" />
-    <Compile Include="Linearizer\CncType.cs" />
+    <Compile Include="Linearizer\ConcreteType.cs" />
     <Compile Include="Linearizer\LeafKP.cs" />
     <Compile Include="Linearizer\LeafKS.cs" />
     <Compile Include="Linearizer\LinTriple.cs" />
@@ -158,7 +158,6 @@
     <Compile Include="Grammar\CatFun.cs" />
     <Compile Include="Grammar\WildCardPattern.cs" />
     <Compile Include="SimpleTranslator.cs" />
-    <Compile Include="MonoException.cs" />
     <Compile Include="Trees\AbstractVisitSkeleton.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>

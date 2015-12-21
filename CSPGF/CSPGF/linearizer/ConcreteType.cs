@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CncType.cs" company="None">
+// <copyright file="ConcreteType.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -33,14 +33,14 @@ namespace CSPGF.Linearize
     /// <summary>
     /// Concrete type
     /// </summary>
-    internal class CncType
+    internal class ConcreteType
     {
         /// <summary>
         /// Initializes a new instance of the CncType class.
         /// </summary>
         /// <param name="cId">Concrete id</param>
         /// <param name="fId">Function id</param>
-        public CncType(string cId, int fId)
+        public ConcreteType(string cId, int fId)
         {
             this.CId = cId;
             this.FId = fId;
