@@ -247,9 +247,9 @@ namespace CSPGF
                 Assembly assembly = Assembly.LoadFrom("Speech.dll");
                 System.Type speech = assembly.GetType("Speech.Speech");
                 object speechobj = Activator.CreateInstance(speech);
-                return (string)speech.InvokeMember("Listen",
-                                                   BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance, null, speechobj, new object[] { time });
-            } catch (Exception exception)
+                return (string)speech.InvokeMember("Listen", BindingFlags.Public | BindingFlags.InvokeMethod | BindingFlags.Instance, null, speechobj, new object[] { time });
+            }
+            catch (Exception exception)
             {
                 System.Console.WriteLine(exception.ToString());
             }
@@ -274,11 +274,11 @@ namespace CSPGF
                                     null,
                                     speechobj,
                                     new object[] { sentence, 1, 100 });
-            } catch (Exception exception)
+            }
+            catch (Exception exception)
             {
                 System.Console.WriteLine(exception.ToString());
             }
-
         }
 
         /// <summary>
@@ -300,11 +300,11 @@ namespace CSPGF
                                     null,
                                     speechobj,
                                     new object[] { sentence, rate, volume });
-            } catch (Exception exception)
+            }
+            catch (Exception exception)
             {
                 System.Console.WriteLine(exception.ToString());
             }
-
         }
 
         /// <summary>

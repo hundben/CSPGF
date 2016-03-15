@@ -36,7 +36,7 @@ namespace CSPGF.Linearize
     internal class ConcreteType
     {
         /// <summary>
-        /// Initializes a new instance of the CncType class.
+        /// Initializes a new instance of the ConcreteType class.
         /// </summary>
         /// <param name="cId">Concrete id</param>
         /// <param name="fId">Function id</param>
