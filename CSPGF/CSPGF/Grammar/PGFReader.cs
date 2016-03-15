@@ -60,6 +60,11 @@ namespace CSPGF.Grammar
         private bool disposed;
 
         /// <summary>
+        /// PGF file version
+        /// </summary>
+        private int[] version;
+
+        /// <summary>
         /// Initializes a new instance of the PGFReader class.
         /// </summary>
         /// <param name="filename">File to read from</param>
@@ -67,6 +72,7 @@ namespace CSPGF.Grammar
         {
             this.inputstream = new MemoryStream(File.ReadAllBytes(filename));
             this.binreader = new BinaryReader(this.inputstream);
+            this.version = new int[2];
         }
 
         /// <summary>
@@ -79,6 +85,7 @@ namespace CSPGF.Grammar
             this.inputstream = new MemoryStream(File.ReadAllBytes(filename));
             this.binreader = new BinaryReader(this.inputstream);
             this.languages = languages;
+            this.version = new int[2];
         }
 
         /// <summary>
@@ -96,10 +103,11 @@ namespace CSPGF.Grammar
         public PGF ReadPGF()
         {
             Dictionary<string, int> index = null;
-            int[] ii = new int[2];
+
+            // int[] ii = new int[2];
             for (int i = 0; i < 2; i++)
             {
-                ii[i] = this.binreader.ReadInt16();
+                this.version[i] = this.BE16toLE16(this.binreader.ReadInt16());
             }
 
             // Reading the global flags
@@ -147,7 +155,8 @@ namespace CSPGF.Grammar
             }
 
             // builds and returns the pgf object.
-            return new PGF(ii[0], ii[1], flags, abs, concretes);
+            // return new PGF(ii[0], ii[1], flags, abs, concretes);
+            return new PGF(this.version[0], this.version[1], flags, abs, concretes);
         }
 
         /// <summary>
@@ -846,14 +855,17 @@ namespace CSPGF.Grammar
         /// <returns>Returns the string</returns>
         private string GetString()
         {
-            int npoz = this.GetInt();
+            /*int npoz = this.GetInt();
             char[] bytes = new char[npoz];
             for (int i = 0; i < npoz; i++)
             {
                 bytes[i] = this.binreader.ReadChar();
             }
 
-            return new string(bytes);
+            return new string(bytes);*/
+
+            // This might work?
+            return new string(this.binreader.ReadChars(this.GetInt()));
         }
 
         /// <summary>
@@ -883,11 +895,24 @@ namespace CSPGF.Grammar
         /// <returns>Returns the identifier</returns>
         private string GetIdent()
         {
+            /*
             int numChar = this.GetInt();
             byte[] bytes = new byte[numChar];
             this.inputstream.Read(bytes, 0, numChar);
-            System.Text.Encoding enc = System.Text.Encoding.ASCII;
-            return enc.GetString(bytes);
+            System.Text.Encoding enc = System.Text.Encoding.ASCII;  
+            return enc.GetString(bytes);*/
+            if (this.version[0] == 1)
+            {
+                return System.Text.Encoding.ASCII.GetString(this.binreader.ReadBytes(this.GetInt()));
+            }
+            else if (this.version[0] == 2)
+            {
+                return System.Text.Encoding.UTF8.GetString(this.binreader.ReadBytes(this.GetInt()));
+            }
+            else
+            {
+                throw new Exception("PGF version not supported: " + this.version[0] + " " + this.version[1]);
+            }
         }
 
         /*
@@ -966,6 +991,18 @@ namespace CSPGF.Grammar
         private double GetDouble()
         {
             return this.binreader.ReadDouble();
+        }
+
+        /// <summary>
+        /// Reverses the bytes in an integer16
+        /// </summary>
+        /// <param name="val">Integer to reverse</param>
+        /// <returns>Reversed integer</returns>
+        private int BE16toLE16(short val)
+        {
+            byte[] intAsBytes = BitConverter.GetBytes(val);
+            Array.Reverse(intAsBytes);
+            return BitConverter.ToInt16(intAsBytes, 0);
         }
     }
 }

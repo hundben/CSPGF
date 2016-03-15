@@ -135,7 +135,6 @@ namespace CSPGF.Linearize
             Dictionary<string, Dictionary<int, HashSet<Production>>> vtemp = new Dictionary<string, Dictionary<int, HashSet<Production>>>();
             foreach (KeyValuePair<int, HashSet<Production>> kvp in productions)
             {
-                int res = kvp.Key;
                 foreach (Production prod in kvp.Value)
                 {
                     List<string> vs = this.GetFunctions(prod, productions);
@@ -145,19 +144,19 @@ namespace CSPGF.Linearize
                         {
                             Dictionary<int, HashSet<Production>> htemp = new Dictionary<int, HashSet<Production>>();
                             HashSet<Production> singleton = new HashSet<Production> { prod };
-                            htemp.Add(res, singleton);
+                            htemp.Add(kvp.Key, singleton);
                             if (vtemp.ContainsKey(str))
                             {
                                 Dictionary<int, HashSet<Production>> obj = vtemp[str];
-                                if (obj.ContainsKey(res))
+                                if (obj.ContainsKey(kvp.Key))
                                 {
-                                    HashSet<Production> ttemp = obj[res];
+                                    HashSet<Production> ttemp = obj[kvp.Key];
                                     ttemp.Add(prod);
                                     vtemp[str] = obj;
                                 }
                                 else
                                 {
-                                    obj.Add(res, singleton);
+                                    obj.Add(kvp.Key, singleton);
                                     vtemp[str] = obj;
                                 }
                             }
@@ -227,16 +226,16 @@ namespace CSPGF.Linearize
         /// <returns>Set of Productions</returns>
         private HashSet<Production> FilterProdSet1(Dictionary<int, HashSet<Production>> prods0, HashSet<Production> set)
         {
-            HashSet<Production> set1 = new HashSet<Production>();
+            HashSet<Production> tempset = new HashSet<Production>();
             foreach (Production prod in set)
             {
                 if (this.FilterRule(prods0, prod))
                 {
-                    set1.Add(prod);
+                    tempset.Add(prod);
                 }
             }
 
-            return set1;
+            return tempset;
         }
 
         /// <summary>
