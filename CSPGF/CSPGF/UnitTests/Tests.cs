@@ -17,7 +17,7 @@ namespace CSPGF
             at.Scan(".");
             at.SetOutputLanguage("PhrasebookEng");
             string check = at.Translate();
-            Assert.Equal(true, check.Equals("this wine is delicious ."));
+            Assert.Equal(check.Equals("this wine is delicious ."), true);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace CSPGF
             at.Scan(".");
             at.SetOutputLanguage("PhrasebookSwe");
             string check = at.Translate();
-            Assert.Equal(true, check.Equals("det här vinet är läckert ."));
+            Assert.Equal(check.Equals("det här vinet är läckert ."), true);
         }
     }
 }
