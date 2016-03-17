@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="PGFReader.cs" company="None">
+// <copyright file="OldPGFReader.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -37,7 +37,7 @@ namespace CSPGF.Grammar
     /// <summary>
     /// Reads an PGF object
     /// </summary>
-    internal class PGFReader : IDisposable
+    internal class OldPGFReader : IDisposable
     {
         /// <summary>
         /// Main input stream to read from
@@ -65,10 +65,10 @@ namespace CSPGF.Grammar
         private int[] version;
 
         /// <summary>
-        /// Initializes a new instance of the PGFReader class.
+        /// Initializes a new instance of the OldPGFReader class.
         /// </summary>
         /// <param name="filename">File to read from</param>
-        public PGFReader(string filename)
+        public OldPGFReader(string filename)
         {
             this.inputstream = new MemoryStream(File.ReadAllBytes(filename));
             this.binreader = new BinaryReader(this.inputstream);
@@ -76,11 +76,11 @@ namespace CSPGF.Grammar
         }
 
         /// <summary>
-        /// Initializes a new instance of the PGFReader class with the desired languages.
+        /// Initializes a new instance of the OldPGFReader class with the desired languages.
         /// </summary>
         /// <param name="filename">File to read from</param>
         /// <param name="languages">Desired languages</param>
-        public PGFReader(string filename, List<string> languages)
+        public OldPGFReader(string filename, List<string> languages)
         {
             this.inputstream = new MemoryStream(File.ReadAllBytes(filename));
             this.binreader = new BinaryReader(this.inputstream);
@@ -89,9 +89,9 @@ namespace CSPGF.Grammar
         }
 
         /// <summary>
-        /// Finalizes an instance of the PGFReader class.
+        /// Finalizes an instance of the OldPGFReader class.
         /// </summary>
-        ~PGFReader()
+        ~OldPGFReader()
         {
             this.Dispose(false);
         }
@@ -901,7 +901,7 @@ namespace CSPGF.Grammar
             this.inputstream.Read(bytes, 0, numChar);
             System.Text.Encoding enc = System.Text.Encoding.ASCII;  
             return enc.GetString(bytes);*/
-            return System.Text.Encoding.UTF8.GetString(this.binreader.ReadBytes(this.GetInt()));
+            return System.Text.Encoding.ASCII.GetString(this.binreader.ReadBytes(this.GetInt()));
         }
 
         /*
@@ -945,7 +945,6 @@ namespace CSPGF.Grammar
         /// <returns>Returns the integer</returns>
         private int GetInt()
         {
-            //return this.binreader.ReadInt32();
             // long -> int
             int rez = this.inputstream.ReadByte();
             if (rez <= 0x7f)

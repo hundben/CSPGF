@@ -56,5 +56,23 @@ namespace CSPGF
             string check = at.Translate();
             Assert.Equal(check.Equals("det här vinet är läckert ."), true);
         }
+
+        /// <summary>
+        /// A simple test to try to parse the new version of the PGF file format.
+        /// </summary>
+        [Fact]
+        public void TestNewPGF()
+        {
+            AdvancedTranslator at = new AdvancedTranslator("../../PGF examples/Phrasebook_new.pgf");
+            at.SetInputLanguage("PhrasebookEng");
+            at.Scan("this");
+            at.Scan("wine");
+            at.Scan("is");
+            at.Scan("delicious");
+            at.Scan(".");
+            at.SetOutputLanguage("PhrasebookEng");
+            string check = at.Translate();
+            Assert.Equal(check.Equals("this wine is delicious ."), true);
+        }
     }
 }
