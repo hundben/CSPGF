@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="OldPGFReader.cs" company="None">
+// <copyright file="OldPGF.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -37,7 +37,7 @@ namespace CSPGF.Grammar
     /// <summary>
     /// Reads an PGF object
     /// </summary>
-    internal class OldPGFReader : IDisposable
+    internal class OldPGF
     {
         /// <summary>
         /// Main input stream to read from
@@ -60,112 +60,16 @@ namespace CSPGF.Grammar
         private bool disposed;
 
         /// <summary>
-        /// PGF file version
+        /// Initializes a new instance of the OldPGF class.
         /// </summary>
-        private int[] version;
-
-        /// <summary>
-        /// Initializes a new instance of the OldPGFReader class.
-        /// </summary>
-        /// <param name="filename">File to read from</param>
-        public OldPGFReader(string filename)
+        /// <param name="ms">MemoryStream for reading the PGF file</param>
+        /// <param name="br">BinaryReader for reading the PGF file</param>
+        /// <param name="lang">List of languages</param>
+        public OldPGF(MemoryStream ms, BinaryReader br, List<string> lang)
         {
-            this.inputstream = new MemoryStream(File.ReadAllBytes(filename));
-            this.binreader = new BinaryReader(this.inputstream);
-            this.version = new int[2];
-        }
-
-        /// <summary>
-        /// Initializes a new instance of the OldPGFReader class with the desired languages.
-        /// </summary>
-        /// <param name="filename">File to read from</param>
-        /// <param name="languages">Desired languages</param>
-        public OldPGFReader(string filename, List<string> languages)
-        {
-            this.inputstream = new MemoryStream(File.ReadAllBytes(filename));
-            this.binreader = new BinaryReader(this.inputstream);
-            this.languages = languages;
-            this.version = new int[2];
-        }
-
-        /// <summary>
-        /// Finalizes an instance of the OldPGFReader class.
-        /// </summary>
-        ~OldPGFReader()
-        {
-            this.Dispose(false);
-        }
-
-        /// <summary>
-        /// Starts reading the PGF object
-        /// </summary>
-        /// <returns>PGF object</returns>
-        public PGF ReadPGF()
-        {
-            Dictionary<string, int> index = null;
-
-            // int[] ii = new int[2];
-            for (int i = 0; i < 2; i++)
-            {
-                this.version[i] = this.BE16toLE16(this.binreader.ReadInt16());
-            }
-
-            // Reading the global flags
-            Dictionary<string, RLiteral> flags = this.GetListFlag();
-            if (flags.ContainsKey("index"))
-            {
-                index = this.ReadIndex(((StringLit)flags["index"]).Value);
-            }
-
-            // Reading the abstract
-            Abstract abs = this.GetAbstract();
-            string startCat = abs.StartCat();
-
-            // Reading the concrete grammars
-            int numConcretes = this.GetInt();
-            Dictionary<string, Concrete> concretes = new Dictionary<string, Concrete>();
-            for (int i = 0; i < numConcretes; i++)
-            {
-                string name = this.GetIdent();
-                if (this.languages == null || this.languages.Remove(name))
-                {
-                    Concrete tmp = this.GetConcrete(name, startCat);
-                    concretes.Add(tmp.Name, tmp);
-                }
-                else
-                {
-                    if (index != null)
-                    {
-                        this.inputstream.Seek(index[name], SeekOrigin.Current);
-                    }
-                    else
-                    {
-                        this.GetConcrete(name, startCat);
-                    }
-                }
-            }
-
-            // test that we actually found all the selected languages
-            if (this.languages != null && this.languages.Count > 0)
-            {
-                foreach (string l in this.languages)
-                {
-                    throw new UnknownLanguageException(l);
-                }
-            }
-
-            // builds and returns the pgf object.
-            // return new PGF(ii[0], ii[1], flags, abs, concretes);
-            return new PGF(this.version[0], this.version[1], flags, abs, concretes);
-        }
-
-        /// <summary>
-        /// Implements disposable interface
-        /// </summary>
-        public void Dispose()
-        {
-            this.Dispose(true);
-            GC.SuppressFinalize(this);
+            this.inputstream = ms;
+            this.binreader = br;
+            this.languages = lang;
         }
 
         /// <summary>
@@ -195,6 +99,66 @@ namespace CSPGF.Grammar
             }
 
             this.disposed = true;
+        }
+
+        /// <summary>
+        ///  Gets a list of flags in the PGF file. Will also modify the dictionary.
+        /// </summary>
+        /// <param name="index">Dictionary set to null.</param>
+        /// <returns>Returns a list of flags for the PGF object.</returns>
+        internal Dictionary<string, RLiteral> GetFlags(Dictionary<string, int> index)
+        {
+            // Reading the global flags
+            Dictionary<string, RLiteral> flags = this.GetListFlag();
+            if (flags.ContainsKey("index"))
+            {
+                index = this.ReadIndex(((StringLit)flags["index"]).Value);
+            }
+
+            return flags;
+        }
+
+        /// <summary>
+        /// Reads the concrete grammars from the PGF file.
+        /// </summary>
+        /// <param name="startCat">Starting category</param>
+        /// <param name="index">Index to use to read the concrete grammars</param>
+        /// <returns>Dictionary containing the concrete grammars</returns>
+        internal Dictionary<string, Concrete> GetConcretes(string startCat, Dictionary<string, int> index)
+        {
+            int numConcretes = this.GetInt();
+            Dictionary<string, Concrete> concretes = new Dictionary<string, Concrete>();
+            for (int i = 0; i < numConcretes; i++)
+            {
+                string name = this.GetIdent();
+                if (this.languages == null || this.languages.Remove(name))
+                {
+                    Concrete tmp = this.GetConcrete(name, startCat);
+                    concretes.Add(tmp.Name, tmp);
+                }
+                else
+                {
+                    if (index != null)
+                    {
+                        this.inputstream.Seek(index[name], SeekOrigin.Current);
+                    }
+                    else
+                    {
+                        this.GetConcrete(name, startCat);
+                    }
+                }
+            }
+
+            return concretes;
+        }
+
+        /// <summary>
+        /// Read the abstract grammar.
+        /// </summary>
+        /// <returns>Abstract grammar</returns>
+        internal Abstract GetAbstract()
+        {
+            return new Abstract(this.GetIdent(), this.GetListFlag(), this.GetListAbsFun(), this.GetListAbsCat());
         }
 
         /*
@@ -233,15 +197,6 @@ namespace CSPGF.Grammar
             }
 
             return index;
-        }
-
-        /// <summary>
-        /// Read the abstract grammar.
-        /// </summary>
-        /// <returns>Abstract grammar</returns>
-        private Abstract GetAbstract()
-        {
-            return new Abstract(this.GetIdent(), this.GetListFlag(), this.GetListAbsFun(), this.GetListAbsCat());
         }
 
         /// <summary>
@@ -980,18 +935,6 @@ namespace CSPGF.Grammar
         private double GetDouble()
         {
             return this.binreader.ReadDouble();
-        }
-
-        /// <summary>
-        /// Reverses the bytes in an integer16
-        /// </summary>
-        /// <param name="val">Integer to reverse</param>
-        /// <returns>Reversed integer</returns>
-        private int BE16toLE16(short val)
-        {
-            byte[] intAsBytes = BitConverter.GetBytes(val);
-            Array.Reverse(intAsBytes);
-            return BitConverter.ToInt16(intAsBytes, 0);
         }
     }
 }
