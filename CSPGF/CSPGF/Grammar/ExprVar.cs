@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AbsNameExp.cs" company="None">
+// <copyright file="ExprVar.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,23 +31,23 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Abstract name expression
+    /// Variable Expression
     /// </summary>
-    internal class AbsNameExp : Expr // EFun?????
+    internal class ExprVar : Expr // EVar
     {
         /// <summary>
-        /// Initializes a new instance of the AbsNameExp class.
+        /// Initializes a new instance of the VarExp class.
         /// </summary>
-        /// <param name="name">Name of expression</param>
-        public AbsNameExp(string name)
+        /// <param name="ind">The index</param>
+        public ExprVar(int ind)
         {
-            this.Name = name;
+            this.Ind = ind;
         }
 
         /// <summary>
-        /// Gets the name of the expression
+        /// Gets the index
         /// </summary>
-        public string Name { get; private set; }
+        public int Ind { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -55,7 +55,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Abstract Name Expression : [Name : " + this.Name + "]";
+            return "Variable Expression : [Index : " + this.Ind + "]";
         }
     }
 }

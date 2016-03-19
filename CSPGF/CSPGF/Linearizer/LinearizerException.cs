@@ -35,14 +35,29 @@ namespace CSPGF
     /// <summary>
     /// Exception used to show that the linearizing process failed somehow.
     /// </summary>
-    [Serializable]
     public class LinearizerException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the LinearizerException class.
         /// </summary>
         /// <param name="str">The error</param>
-        public LinearizerException(string str) : base(str)
+        public LinearizerException(string msg) : base(msg)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the LinearizerException class.
+        /// </summary>
+        public LinearizerException()
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the LinearizerException class.
+        /// </summary>
+        /// <param name="msg">Exception message</param>
+        /// <param name="exc">Base exception</param>
+        public LinearizerException(string msg, Exception exc) : base(msg, exc)
         {
         }
     

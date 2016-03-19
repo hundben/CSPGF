@@ -123,13 +123,13 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="index">Dictionary set to null.</param>
         /// <returns>Returns a list of flags for the PGF object.</returns>
-        internal Dictionary<string, RLiteral> GetFlags(Dictionary<string, int> index)
+        internal Dictionary<string, Literal> GetFlags(Dictionary<string, int> index)
         {
             // Reading the global flags
-            Dictionary<string, RLiteral> flags = this.GetListFlag();
+            Dictionary<string, Literal> flags = this.GetListFlag();
             if (flags.ContainsKey("index"))
             {
-                index = this.ReadIndex(((StringLit)flags["index"]).Value);
+                index = this.ReadIndex(((LitString)flags["index"]).Value);
             }
 
             return flags;
@@ -236,9 +236,9 @@ namespace CSPGF.Grammar
         /// Reads an Eq
         /// </summary>
         /// <returns>Returns the Eq</returns>
-        private Eq GetEq()
+        private Equation GetEq()
         {
-            return new Eq(this.GetListPattern(), this.GetExpr());
+            return new Equation(this.GetListPattern(), this.GetExpr());
         }
 
         /// <summary>
@@ -247,7 +247,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the AbsFun</returns>
         private AbsFun GetAbsFun()
         {
-            return new AbsFun(this.GetIdent(), this.GetType2(), this.GetInt(), this.inputstream.ReadByte() == 0 ? new Eq[0] : this.GetListEq(), this.GetDouble());
+            return new AbsFun(this.GetIdent(), this.GetType2(), this.GetInt(), this.inputstream.ReadByte() == 0 ? new Equation[0] : this.GetListEq(), this.GetDouble());
         }
 
         /// <summary>
@@ -365,29 +365,29 @@ namespace CSPGF.Grammar
                 case 0: // lambda abstraction
                     int bt = this.inputstream.ReadByte();
                     bool btype = bt != 0;
-                    expr = new LambdaExp(btype, this.GetIdent(), this.GetExpr());
+                    expr = new ExprLambda(btype, this.GetIdent(), this.GetExpr());
                     break;
                 case 1: // expression application
-                    expr = new AppExp(this.GetExpr(), this.GetExpr());
+                    expr = new ExprApp(this.GetExpr(), this.GetExpr());
                     break;
                 case 2: // literal expression
-                    expr = new LiteralExp(this.GetLiteral());
+                    expr = new ExprLiteral(this.GetLiteral());
                     break;
                 case 3: // meta variable
-                    expr = new MetaExp(this.GetInt());
+                    expr = new ExprMeta(this.GetInt());
                     break;
                 case 4: // abstract function name
-                    expr = new AbsNameExp(this.GetIdent());
+                    expr = new ExprFun(this.GetIdent());
                     break;
                 case 5: // variable
-                    expr = new VarExp(this.GetInt());
+                    expr = new ExprVar(this.GetInt());
                     break;
                 case 6: // type annotated expression
-                    expr = new TypedExp(this.GetExpr(), this.GetType2());
+                    expr = new ExprTyped(this.GetExpr(), this.GetType2());
                     break;
                 case 7: // implicit argument
                     Expr ee = this.GetExpr();
-                    expr = new ImplExp(ee);
+                    expr = new ExprImpl(ee);
                     break;
                 default:
                     throw new PGFException("Invalid tag for expressions : " + sel);
@@ -400,10 +400,10 @@ namespace CSPGF.Grammar
         /// Reads a list of Eqs
         /// </summary>
         /// <returns>List of Eqs</returns>
-        private Eq[] GetListEq()
+        private Equation[] GetListEq()
         {
             int npoz = this.GetInt();
-            Eq[] eqs = new Eq[npoz];
+            Equation[] eqs = new Equation[npoz];
             for (int i = 0; i < npoz; i++)
             {
                 eqs[i] = this.GetEq();
@@ -428,22 +428,22 @@ namespace CSPGF.Grammar
                     patt = new AppPattern(absFun, patts);
                     break;
                 case 1: // variable pattern
-                    patt = new VarPattern(this.GetIdent());
+                    patt = new PatternVar(this.GetIdent());
                     break;
                 case 2: // variable as pattern
-                    patt = new VarAsPattern(this.GetIdent(), this.GetPattern());
+                    patt = new PatternVariableAt(this.GetIdent(), this.GetPattern());
                     break;
                 case 3: // wild card pattern
-                    patt = new WildCardPattern();
+                    patt = new PatternWildCard();
                     break;
                 case 4: // literal pattern
-                    patt = new LiteralPattern(this.GetLiteral());
+                    patt = new PatternLiteral(this.GetLiteral());
                     break;
                 case 5: // implicit argument
-                    patt = new ImpArgPattern(this.GetPattern());
+                    patt = new PatternImplicit(this.GetPattern());
                     break;
                 case 6: // inaccessible pattern
-                    patt = new InaccPattern(this.GetExpr());
+                    patt = new PatternTilde(this.GetExpr());
                     break;
                 default:
                     throw new PGFException("Invalid tag for patterns : " + sel);
@@ -456,20 +456,20 @@ namespace CSPGF.Grammar
         /// Reads a RLiteral
         /// </summary>
         /// <returns>Returns the RLiteral</returns>
-        private RLiteral GetLiteral()
+        private Literal GetLiteral()
         {
             int sel = this.inputstream.ReadByte();
-            RLiteral ss;
+            Literal ss;
             switch (sel)
             {
                 case 0:
-                    ss = new StringLit(this.GetString());
+                    ss = new LitString(this.GetString());
                     break;
                 case 1:
-                    ss = new IntLit(this.GetInt());
+                    ss = new LitInt(this.GetInt());
                     break;
                 case 2:
-                    ss = new FloatLit(this.GetDouble());
+                    ss = new LitFloat(this.GetDouble());
                     break;
                 default:
                     throw new PGFException("Incorrect literal tag " + sel);
@@ -486,7 +486,7 @@ namespace CSPGF.Grammar
         /// <returns>The concrete grammar</returns>
         private Concrete GetConcrete(string name, string startCat)
         {
-            Dictionary<string, RLiteral> flags = this.GetListFlag();
+            Dictionary<string, Literal> flags = this.GetListFlag();
 
             // We don't use the print names, but we need to read them to skip them
             this.GetListPrintName();
@@ -804,10 +804,10 @@ namespace CSPGF.Grammar
         /// Reads a list of Flags
         /// </summary>
         /// <returns>Dictionary of string/literal</returns>
-        private Dictionary<string, RLiteral> GetListFlag()
+        private Dictionary<string, Literal> GetListFlag()
         {
             int npoz = this.GetInt();
-            Dictionary<string, RLiteral> flags = new Dictionary<string, RLiteral>();
+            Dictionary<string, Literal> flags = new Dictionary<string, Literal>();
             if (npoz == 0)
             {
                 return flags;

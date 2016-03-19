@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="InaccPattern.cs" company="None">
+// <copyright file="LitInt.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,23 +31,23 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Inaccessible pattern class
+    /// Integer Literal
     /// </summary>
-    internal class InaccPattern : Pattern // PTilde
+    internal class LitInt : Literal
     {
         /// <summary>
-        /// Initializes a new instance of the InaccPattern class.
+        /// Initializes a new instance of the IntLit class.
         /// </summary>
-        /// <param name="exp">Inaccessible pattern</param>
-        public InaccPattern(Expr exp)
+        /// <param name="value">Integer value</param>
+        public LitInt(int value)
         {
-            this.Exp = exp;
+            this.Value = value;
         }
 
         /// <summary>
-        /// Gets the expression
+        /// Gets the value
         /// </summary>
-        public Expr Exp { get; private set; }
+        public int Value { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -55,7 +55,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Inaccessible Pattern : " + this.Exp;
+            return "Integer Literal : " + this.Value;
         }
     }
 }

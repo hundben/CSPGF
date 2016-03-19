@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="StringLit.cs" company="None">
+// <copyright file="BracketedToken.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,34 +28,12 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Grammar
+namespace CSPGF.Linearize
 {
     /// <summary>
-    /// String Literal
+    /// Abstract class
     /// </summary>
-    internal class StringLit : RLiteral
+    internal abstract class BracketedToken
     {
-        /// <summary>
-        /// Initializes a new instance of the StringLit class.
-        /// </summary>
-        /// <param name="value">String literal</param>
-        public StringLit(string value)
-        {
-            this.Value = value;
-        }
-
-        /// <summary>
-        /// Gets the string value
-        /// </summary>
-        public string Value { get; private set; }
-
-        /// <summary>
-        /// Pretty prints the contents of this class
-        /// </summary>
-        /// <returns>Returns a string containing debug information</returns>
-        public override string ToString()
-        {
-            return "String literal : " + this.Value;
-        }
     }
 }

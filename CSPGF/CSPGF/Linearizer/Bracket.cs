@@ -35,7 +35,7 @@ namespace CSPGF.Linearize
     /// <summary>
     /// Bracketed tokens?
     /// </summary>
-    internal class Bracket : BracketedTokn
+    internal class Bracket : BracketedToken
     {
         /// <summary>
         /// Initializes a new instance of the Bracket class.
@@ -44,7 +44,7 @@ namespace CSPGF.Linearize
         /// <param name="index">Index for this class?</param>
         /// <param name="fId">Function id</param>
         /// <param name="bss">List of BracketedTokns</param>
-        public Bracket(string cId, int index, int fId, List<BracketedTokn> bss)
+        public Bracket(string cId, int index, int fId, List<BracketedToken> bss)
         {
             this.CId = cId;
             this.LIndex = index;
@@ -70,7 +70,7 @@ namespace CSPGF.Linearize
         /// <summary>
         /// Gets list of bracketed tokens
         /// </summary>
-        public List<BracketedTokn> Bracketedtoks { get; private set; }
+        public List<BracketedToken> Bracketedtoks { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of the class

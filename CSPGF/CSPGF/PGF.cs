@@ -51,7 +51,7 @@ namespace CSPGF
         /// <summary>
         /// Flags for the PGF-object
         /// </summary>
-        private readonly Dictionary<string, RLiteral> flags;
+        private readonly Dictionary<string, Literal> flags;
 
         /// <summary>
         /// Abstract grammar
@@ -71,7 +71,7 @@ namespace CSPGF
         /// <param name="flags">Flags for the PGF object</param>
         /// <param name="abstr">Abstract grammar</param>
         /// <param name="concretes">Concrete grammars</param>
-        internal PGF(int majorVersion, int minorVersion, Dictionary<string, RLiteral> flags, Abstract abstr, Dictionary<string, Concrete> concretes)
+        internal PGF(int majorVersion, int minorVersion, Dictionary<string, Literal> flags, Abstract abstr, Dictionary<string, Concrete> concretes)
         {
             this.majorVersion = majorVersion;
             this.minorVersion = minorVersion;

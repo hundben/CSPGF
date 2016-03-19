@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="VarAsPattern.cs" company="None">
+// <copyright file="PatternLiteral.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,30 +31,23 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Variable as Pattern class
+    /// Literal Pattern
     /// </summary>
-    internal class VarAsPattern : Pattern  // PAs
+    internal class PatternLiteral : Pattern // PLit
     {
         /// <summary>
-        /// Initializes a new instance of the VarAsPattern class.
+        /// Initializes a new instance of the LiteralPattern class.
         /// </summary>
-        /// <param name="name">Name of pattern</param>
-        /// <param name="patt">The Pattern</param>
-        public VarAsPattern(string name, Pattern patt)
+        /// <param name="value">The RLiteral</param>
+        public PatternLiteral(Literal value)
         {
-            this.Name = name;
-            this.Patt = patt;
+            this.Value = value;
         }
 
         /// <summary>
-        /// Gets name of pattern
+        /// Gets the value
         /// </summary>
-        public string Name { get; private set; }
-
-        /// <summary>
-        /// Gets pattern
-        /// </summary>
-        public Pattern Patt { get; private set; }
+        public Literal Value { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -62,7 +55,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Variable as Pattern : [ Variable Name : " + this.Name + " , Pattern : " + this.Patt + "]";
+            return "Literal Pattern : " + this.Value;
         }
     }
 }

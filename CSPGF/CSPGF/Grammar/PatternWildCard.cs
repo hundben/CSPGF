@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="VarExp.cs" company="None">
+// <copyright file="PatternWildCard.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,31 +31,17 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Variable Expression
+    /// Wildcard Pattern
     /// </summary>
-    internal class VarExp : Expr // EVar
+    internal class PatternWildCard : Pattern // PWild
     {
-        /// <summary>
-        /// Initializes a new instance of the VarExp class.
-        /// </summary>
-        /// <param name="ind">The index</param>
-        public VarExp(int ind)
-        {
-            this.Ind = ind;
-        }
-
-        /// <summary>
-        /// Gets the index
-        /// </summary>
-        public int Ind { get; private set; }
-
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Variable Expression : [Index : " + this.Ind + "]";
+            return "Wild Card Pattern";
         }
     }
 }

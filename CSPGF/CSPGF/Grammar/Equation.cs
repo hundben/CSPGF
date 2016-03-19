@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LiteralExp.cs" company="None">
+// <copyright file="Equation.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,23 +31,33 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Literal Expression class
+    /// The equation is used to define lambda function as a sequence
+    /// of equations with pattern matching.The list of 'Expr' represents
+    /// the patterns and the second 'Expr' is the function body for this
+    /// equation.
     /// </summary>
-    internal class LiteralExp : Expr // ELit
+    internal class Equation
     {
         /// <summary>
-        /// Initializes a new instance of the LiteralExp class.
+        /// Initializes a new instance of the Equation class.
         /// </summary>
-        /// <param name="literal">The RLiteral</param>
-        public LiteralExp(RLiteral literal)
+        /// <param name="patts">List of patterns</param>
+        /// <param name="expr">The expression</param>
+        public Equation(Pattern[] patts, Expr expr)
         {
-            this.Literal = literal;
+            this.Patts = patts;
+            this.Expr = expr;
         }
 
         /// <summary>
-        /// Gets the literal
+        /// Gets the list of patterns
         /// </summary>
-        public RLiteral Literal { get; private set; }
+        public Pattern[] Patts { get; private set; }
+
+        /// <summary>
+        /// Gets the expression
+        /// </summary>
+        public Expr Expr { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -55,7 +65,13 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Literal Expression : " + this.Literal;
+            string ss = "Patterns : (";
+            foreach (Pattern p in this.Patts)
+            {
+                ss += " " + p;
+            }
+            ss += ") , Expression : " + Expr;
+            return ss;
         }
     }
 }

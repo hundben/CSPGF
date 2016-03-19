@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="TypedExp.cs" company="None">
+// <copyright file="AbsNameExp.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,30 +31,23 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Typed Expression
+    /// Abstract name expression
     /// </summary>
-    internal class TypedExp : Expr // ETyped
+    internal class ExprFun : Expr // EFun?????
     {
         /// <summary>
-        /// Initializes a new instance of the TypedExp class.
+        /// Initializes a new instance of the AbsNameExp class.
         /// </summary>
-        /// <param name="exp">The Expression</param>
-        /// <param name="t">The Type</param>
-        public TypedExp(Expr exp, Type t)
+        /// <param name="name">Name of expression</param>
+        public ExprFun(string name)
         {
-            this.Exp = exp;
-            this.Type = t;
+            this.Name = name;
         }
 
         /// <summary>
-        /// Gets the expression
+        /// Gets the name of the expression
         /// </summary>
-        public Expr Exp { get; private set; }
-
-        /// <summary>
-        /// Gets the type
-        /// </summary>
-        public Type Type { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -62,7 +55,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Typed Expression : [Expr : " + this.Exp + " , Type : " + this.Type + "]";
+            return "Abstract Name Expression : [Name : " + this.Name + "]";
         }
     }
 }

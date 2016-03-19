@@ -299,7 +299,7 @@ namespace CSPGF.Linearize
         /// <param name="bt">BracketedTokn to use</param>
         /// <param name="after">String to use</param>
         /// <returns>List of strings</returns>
-        private List<string> Untokn(BracketedTokn bt, string after)
+        private List<string> Untokn(BracketedToken bt, string after)
         {
             List<string> rez = new List<string>();
             if (bt is LeafKS)
@@ -338,7 +338,7 @@ namespace CSPGF.Linearize
             }
             else if (bt is Bracket)
             {
-                foreach (BracketedTokn bs in (((Bracket)bt).Bracketedtoks).Reverse<BracketedTokn>())
+                foreach (BracketedToken bs in (((Bracket)bt).Bracketedtoks).Reverse<BracketedToken>())
                 {
                     rez.AddRange(this.Untokn(bs, after));
                     after = rez.Last();
@@ -360,7 +360,7 @@ namespace CSPGF.Linearize
         private List<string> RenderLin(LinTriple v)
         {
             List<string> rez = new List<string>();
-            List<List<BracketedTokn>> vtemp = v.LinTable;
+            List<List<BracketedToken>> vtemp = v.LinTable;
             string after = string.Empty;
             for (int k = vtemp.ElementAt(0).Count - 1; k >= 0; k--)
             {
@@ -430,7 +430,7 @@ namespace CSPGF.Linearize
                 List<Tree> exprs = new List<Tree> { tree };
                 foreach (string str in xs)
                 {
-                    exprs.Add(new Literal(new StringLiteral(str)));
+                    exprs.Add(new Trees.Absyn.Literal(new StringLiteral(str)));
                 }
 
                 return this.Apply(xs, mbcty, mbfid, "_B", exprs);
@@ -453,7 +453,7 @@ namespace CSPGF.Linearize
             Dictionary<int, HashSet<Production>> prods;
             if (!this.linProd.TryGetValue(f, out prods))
             {
-                List<Tree> newes = new List<Tree> { new Literal(new StringLiteral(f)) };
+                List<Tree> newes = new List<Tree> { new Trees.Absyn.Literal(new StringLiteral(f)) };
                 Console.WriteLine("Function " + f + " does not have a linearization !");
                 return this.Apply(xs, mbcty, nextfid, "_V", newes);
             }
@@ -480,7 +480,7 @@ namespace CSPGF.Linearize
                     List<RezDesc> rezDesc = this.Descend(nextfid, ctys, copyExpr, xs);
                     foreach (RezDesc rez2 in rezDesc)
                     {
-                        List<List<BracketedTokn>> linTab = new List<List<BracketedTokn>>();
+                        List<List<BracketedToken>> linTab = new List<List<BracketedToken>>();
                         foreach (Symbol[] seq in lins)
                         {
                             linTab.Add(this.ComputeSeq(seq, rez2.CncTypes, rez2.Bracketedtokn));
@@ -650,7 +650,7 @@ namespace CSPGF.Linearize
         /// <param name="cncTypes">List of Concrete types</param>
         /// <param name="linTables">List of list of list of BracketedTokns</param>
         /// <returns>List of BracketedTokn</returns>
-        private List<BracketedTokn> Compute(Symbol s, List<ConcreteType> cncTypes, List<List<List<BracketedTokn>>> linTables)
+        private List<BracketedToken> Compute(Symbol s, List<ConcreteType> cncTypes, List<List<List<BracketedToken>>> linTables)
         {
             if (s is SymbolCat)
             {
@@ -658,7 +658,7 @@ namespace CSPGF.Linearize
             }
             else if (s is SymbolKP)
             {
-                return new List<BracketedTokn> { new LeafKP(((SymbolKP)s).Tokens, ((SymbolKP)s).Alts) };
+                return new List<BracketedToken> { new LeafKP(((SymbolKP)s).Tokens, ((SymbolKP)s).Alts) };
             }
             else if (s is SymbolLit)
             {
@@ -666,7 +666,7 @@ namespace CSPGF.Linearize
             }
             else
             {
-                return new List<BracketedTokn> { new LeafKS(((SymbolKS)s).Tokens) };
+                return new List<BracketedToken> { new LeafKS(((SymbolKS)s).Tokens) };
             }
         }
 
@@ -679,7 +679,7 @@ namespace CSPGF.Linearize
         /// <param name="cncTypes">List of concrete types</param>
         /// <param name="linTables">List of list of list of BracketedTokns</param>
         /// <returns>List of BracketedTokns</returns>
-        private List<BracketedTokn> GetArg(int d, int r, List<ConcreteType> cncTypes, List<List<List<BracketedTokn>>> linTables)
+        private List<BracketedToken> GetArg(int d, int r, List<ConcreteType> cncTypes, List<List<List<BracketedToken>>> linTables)
         {
             if (d != 0)
             {
@@ -688,16 +688,16 @@ namespace CSPGF.Linearize
 
             if (cncTypes.Count <= d)
             {
-                return new List<BracketedTokn>();
+                return new List<BracketedToken>();
             }
             
-            List<BracketedTokn> argLin = linTables.ElementAt(d).ElementAt(r);
+            List<BracketedToken> argLin = linTables.ElementAt(d).ElementAt(r);
             if (argLin.Count == 0)
             {
                 return argLin;
             }
 
-            return new List<BracketedTokn> { new Bracket(cncTypes.ElementAt(d).CId, cncTypes.ElementAt(d).FId, r, argLin) };
+            return new List<BracketedToken> { new Bracket(cncTypes.ElementAt(d).CId, cncTypes.ElementAt(d).FId, r, argLin) };
         }
 
         /// <summary>
@@ -707,9 +707,9 @@ namespace CSPGF.Linearize
         /// <param name="cncTypes">List of Concrete types</param>
         /// <param name="linTables">List of list of list of BracketedTokns</param>
         /// <returns>List of BracketedTokns</returns>
-        private List<BracketedTokn> ComputeSeq(Symbol[] seqId, List<ConcreteType> cncTypes, List<List<List<BracketedTokn>>> linTables)
+        private List<BracketedToken> ComputeSeq(Symbol[] seqId, List<ConcreteType> cncTypes, List<List<List<BracketedToken>>> linTables)
         {
-            List<BracketedTokn> bt = new List<BracketedTokn>();
+            List<BracketedToken> bt = new List<BracketedToken>();
             foreach (Symbol sym in seqId)
             {
                 bt.AddRange(this.Compute(sym, cncTypes, linTables));
@@ -732,7 +732,7 @@ namespace CSPGF.Linearize
             List<RezDesc> rez = new List<RezDesc>();
             if (exps.Count == 0)
             {
-                rez.Add(new RezDesc(nextfid, new List<ConcreteType>(), new List<List<List<BracketedTokn>>>()));
+                rez.Add(new RezDesc(nextfid, new List<ConcreteType>(), new List<List<List<BracketedToken>>>()));
                 return rez;
             }
 

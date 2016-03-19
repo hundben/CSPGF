@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Eq.cs" company="None">
+// <copyright file="Literal.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,45 +31,15 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Eq class
+    /// Abstract class RLiteral
+    /// Used as flags for the Concrete and Abstract grammars.
     /// </summary>
-    internal class Eq
+    internal abstract class Literal
     {
-        /// <summary>
-        /// Initializes a new instance of the Eq class.
-        /// </summary>
-        /// <param name="patts">List of patterns</param>
-        /// <param name="expr">The expression</param>
-        public Eq(Pattern[] patts, Expr expr)
-        {
-            this.Patts = patts;
-            this.Expr = expr;
-        }
-
-        /// <summary>
-        /// Gets the list of patterns
-        /// </summary>
-        public Pattern[] Patts { get; private set; }
-
-        /// <summary>
-        /// Gets the expression
-        /// </summary>
-        public Expr Expr { get; private set; }
-
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
         /// <returns>Returns a string containing debug information</returns>
-        public override string ToString()
-        {
-            string ss = "Patterns : (";
-            foreach (Pattern p in this.Patts)
-            {
-                ss += " " + p;
-            }
-
-            ss += ") , Expression : " + Expr;
-            return ss;
-        }
+        public override abstract string ToString();
     }
 }
