@@ -64,8 +64,7 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="ms">MemoryStream for reading the PGF file</param>
         /// <param name="br">BinaryReader for reading the PGF file</param>
-        /// <param name="lang">List of languages</param>
-        public OldPGF(MemoryStream ms, BinaryReader br)
+        internal OldPGF(MemoryStream ms, BinaryReader br)
         {
             this.inputstream = ms;
             this.binreader = br;
@@ -86,35 +85,6 @@ namespace CSPGF.Grammar
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Does the actual disposing
-        /// </summary>
-        /// <param name="disposing">If disposing should be done or not</param>
-        public void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                try
-                {
-                    this.binreader.Close();
-                    this.inputstream.Close();
-                    this.binreader.Dispose();
-                    this.inputstream.Dispose();
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.ToString());
-                }
-            }
-
-            this.disposed = true;
         }
 
         /// <summary>
@@ -196,6 +166,35 @@ namespace CSPGF.Grammar
             
             return ((StringLit)cat).Value;
         }*/
+
+        /// <summary>
+        /// Does the actual disposing
+        /// </summary>
+        /// <param name="disposing">If disposing should be done or not</param>
+        private void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                try
+                {
+                    this.binreader.Close();
+                    this.inputstream.Close();
+                    this.binreader.Dispose();
+                    this.inputstream.Dispose();
+                }
+                catch (Exception e)
+                {
+                    System.Console.WriteLine(e.ToString());
+                }
+            }
+
+            this.disposed = true;
+        }
 
         /// <summary>
         /// Reads the index
