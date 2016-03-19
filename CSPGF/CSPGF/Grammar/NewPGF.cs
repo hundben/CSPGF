@@ -928,6 +928,7 @@ namespace CSPGF.Grammar
             int ii = this.GetInt();
             rez = (ii << 7) | (rez & 0x7f);
             return rez;
+            //return (int)this.binreader.ReadUInt32();
         }
 
         /// <summary>

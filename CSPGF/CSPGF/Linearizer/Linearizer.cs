@@ -83,37 +83,13 @@ namespace CSPGF.Linearize
         }
 
         /// <summary>
-        /// Linearizes a tree into a list of tokens.
-        /// </summary>
-        /// <param name="absyn">Tree to linearize</param>
-        /// <returns>List of strings</returns>
-        public List<string> LinearizeAll(Tree absyn)
-        {
-            List<List<string>> tmp = this.RenderAllLins(this.Linearize(absyn));
-            List<string> tmp2 = new List<string>();
-            foreach (List<string> lstr in tmp)
-            {
-                tmp2.AddRange(lstr);
-                tmp2.Add("\n");
-            }
-
-            return tmp2;
-        }
-
-        /// <summary>
         /// Linearize a tree to a string.
         /// </summary>
         /// <param name="absyn">Tree to linearize</param>
         /// <returns>Linearized string</returns>
         public string LinearizeString(Tree absyn)
         {
-            string sb = string.Empty;
-            foreach (string w in this.LinearizeTokens(absyn))
-            {
-                sb += w + " ";
-            }
-
-            return sb.Trim();
+            return string.Join(" ", this.LinearizeTokens(absyn)).Trim();
         }
 
         /// <summary>
@@ -251,8 +227,7 @@ namespace CSPGF.Linearize
 
             foreach (KeyValuePair<int, HashSet<Production>> kvp in prods)
             {
-                HashSet<Production> setProd = kvp.Value;
-                HashSet<Production> intermRez = this.FilterProdSet1(prods0, setProd);
+                HashSet<Production> intermRez = this.FilterProdSet1(prods0, kvp.Value);
                 if (intermRez.Count != 0)
                 {
                     tempRez.Add(kvp.Key, intermRez);
@@ -263,24 +238,23 @@ namespace CSPGF.Linearize
 
             foreach (KeyValuePair<int, HashSet<Production>> kvp in tempRez)
             {
-                int index = kvp.Key;
                 HashSet<Production> hp = kvp.Value;
-                if (prods0.ContainsKey(index))
+                if (prods0.ContainsKey(kvp.Key))
                 {
-                    if (!prods0[index].SetEquals(hp))
+                    if (!prods0[kvp.Key].SetEquals(hp))
                     {
-                        foreach (Production p in prods0[index])
+                        foreach (Production p in prods0[kvp.Key])
                         {
                             hp.Add(p);
                         }
 
-                        prods1[index] = hp;
+                        prods1[kvp.Key] = hp;
                         areDiff = true;
                     }
                 }
                 else
                 {
-                    prods1[index] = hp;
+                    prods1[kvp.Key] = hp;
                     areDiff = true;
                 }
             }
@@ -296,9 +270,9 @@ namespace CSPGF.Linearize
         /// <returns>True if true</returns>
         private bool FilterRule(Dictionary<int, HashSet<Production>> prods, Production p)
         {
-            ProductionApply ap = p as ProductionApply;
-            if (ap != null)
+            if (p is ProductionApply)
             {
+                ProductionApply ap = (ProductionApply)p;
                 foreach (int i in ap.Domain())
                 {
                     if (!this.ConditionProd(i, prods))
@@ -309,13 +283,14 @@ namespace CSPGF.Linearize
 
                 return true;
             }
-
-            if (p is ProductionCoerce)
+            else if (p is ProductionCoerce)
             {
                 return this.ConditionProd(((ProductionCoerce)p).InitId, prods);
             }
-
-            throw new LinearizerException("The production wasn't either an ApplProduction or a CoerceProduction");
+            else
+            {
+                throw new LinearizerException("The production wasn't either an ProductionApply or a ProductionCoerce");
+            }
         }
 
         /// <summary>
@@ -329,52 +304,51 @@ namespace CSPGF.Linearize
             List<string> rez = new List<string>();
             if (bt is LeafKS)
             {
-                string[] d = ((LeafKS)bt).Tokens;
-                for (int i = d.Length - 1; i >= 0; i--)
+                foreach (string i in ((LeafKS)bt).Tokens.Reverse())
                 {
-                    rez.Add(d[i]);
+                    rez.Add(i);
                 }
 
                 return rez;
             }
             else if (bt is LeafKP)
             {
-                string[] d = ((LeafKP)bt).DefaultTokens;
                 foreach (Alternative alt in ((LeafKP)bt).Alternatives)
                 {
-                    string[] ss2 = alt.Alt2;
-                    foreach (string str in ss2)
+                    foreach (string str in alt.Alt2)
                     {
                         if (after.StartsWith(str))
                         {
-                            string[] ss1 = alt.Alt1;
-                            for (int k = ss1.Length - 1; k >= 0; k--)
+                            foreach (string i in alt.Alt1.Reverse())
                             {
-                                rez.Add(ss1[k]);
+                                rez.Add(i);
                             }
 
                             return rez;
                         }
                     }
                 }
-
-                for (int i = d.Length - 1; i >= 0; i--)
+                
+                foreach (string i in ((LeafKP)bt).DefaultTokens.Reverse())
                 {
-                    rez.Add(d[i]);
+                    rez.Add(i);
+                }
+
+                return rez;
+            }
+            else if (bt is Bracket)
+            {
+                foreach (BracketedTokn bs in (((Bracket)bt).Bracketedtoks).Reverse<BracketedTokn>())
+                {
+                    rez.AddRange(this.Untokn(bs, after));
+                    after = rez.Last();
                 }
 
                 return rez;
             }
             else
             {
-                List<BracketedTokn> bs = ((Bracket)bt).Bracketedtoks;
-                for (int i = bs.Count - 1; i >= 0; i--)
-                {
-                    rez.AddRange(this.Untokn(bs.ElementAt(i), after));
-                    after = rez.Last();
-                }
-
-                return rez;
+                throw new LinearizerException("Token was of unknown type.");
             }
         }
 
@@ -398,21 +372,6 @@ namespace CSPGF.Linearize
             return rez;
         }
 
-        /// <summary>
-        /// Flatten a list of LinTriples
-        /// </summary>
-        /// <param name="v">List to flatten</param>
-        /// <returns>List of list of strings</returns>
-        private List<List<string>> RenderAllLins(List<LinTriple> v)
-        {
-            List<List<string>> rez = new List<List<string>>();
-            foreach (LinTriple lt in v)
-            {
-                rez.Add(this.RenderLin(lt));
-            }
-
-            return rez;
-        }
 
         /// <summary>
         /// Linearize a tree
@@ -695,29 +654,20 @@ namespace CSPGF.Linearize
         {
             if (s is SymbolCat)
             {
-                int arg = ((SymbolCat)s).Arg;
-                int cons = ((SymbolCat)s).Cons;
-                return this.GetArg(arg, cons, cncTypes, linTables);
+                return this.GetArg(((SymbolCat)s).Arg, ((SymbolCat)s).Cons, cncTypes, linTables);
             }
             else if (s is SymbolKP)
             {
-                string[] toks = ((SymbolKP)s).Tokens;
-                Alternative[] alts = ((SymbolKP)s).Alts;
-                List<BracketedTokn> v = new List<BracketedTokn> { new LeafKP(toks, alts) };
-                return v;
+                return new List<BracketedTokn> { new LeafKP(((SymbolKP)s).Tokens, ((SymbolKP)s).Alts) };
             }
             else if (s is SymbolLit)
             {
                 // TODO: Fix? D:
-                int arg = ((SymbolLit)s).Arg;
-                int cons = ((SymbolLit)s).Cons;
-                return this.GetArg(arg, cons, cncTypes, linTables);
+                return this.GetArg(((SymbolLit)s).Arg, ((SymbolLit)s).Cons, cncTypes, linTables);
             }
             else
             {
-                string[] toks = ((SymbolKS)s).Tokens;
-                List<BracketedTokn> v = new List<BracketedTokn> { new LeafKS(toks) };
-                return v;
+                return new List<BracketedTokn> { new LeafKS(((SymbolKS)s).Tokens) };
             }
         }
 
