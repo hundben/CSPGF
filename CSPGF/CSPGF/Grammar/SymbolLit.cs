@@ -43,11 +43,11 @@ namespace CSPGF.Grammar
         /// {d,r} 
         /// </summary>
         /// <param name="arg">Argument int</param>
-        /// <param name="cons">Constituent int</param>
-        public SymbolLit(int arg, int cons)
+        /// <param name="label">Constituent int</param>
+        public SymbolLit(int arg, int label)
         {
             this.Arg = arg;
-            this.Cons = cons;
+            this.Label = label;
         }
 
         /// <summary>
@@ -58,7 +58,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Gets the constant
         /// </summary>
-        public int Cons { get; private set; }
+        public int Label { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -66,7 +66,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Argument : " + this.Arg + " Constituent : " + this.Cons;
+            return "Argument : " + this.Arg + " Label : " + this.Label;
         }
     }
 }

@@ -654,7 +654,7 @@ namespace CSPGF.Linearize
         {
             if (s is SymbolCat)
             {
-                return this.GetArg(((SymbolCat)s).Arg, ((SymbolCat)s).Cons, cncTypes, linTables);
+                return this.GetArg(((SymbolCat)s).Arg, ((SymbolCat)s).Label, cncTypes, linTables);
             }
             else if (s is SymbolKP)
             {
@@ -662,7 +662,7 @@ namespace CSPGF.Linearize
             }
             else if (s is SymbolLit)
             {
-                return this.GetArg(((SymbolLit)s).Arg, ((SymbolLit)s).Cons, cncTypes, linTables);
+                return this.GetArg(((SymbolLit)s).Arg, ((SymbolLit)s).Label, cncTypes, linTables);
             }
             else
             {

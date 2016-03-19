@@ -86,5 +86,15 @@ namespace CSPGF.Parse
         {
             return new ActiveItem2(this.offset, this.dot + 1, this.fun, this.seq, this.args, this.fid, this.lbl);
         }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
     }
 }

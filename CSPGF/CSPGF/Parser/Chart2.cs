@@ -9,17 +9,17 @@ namespace CSPGF.Parse
 {
     class Chart2
     {
-        private Dictionary<int, Dictionary<int, List<ActiveItem>>> active;
-        private List<Dictionary<int, Dictionary<int, List<ActiveItem>>>> actives;
+        private Dictionary<int, Dictionary<int, List<ActiveItem2>>> active;
+        private List<Dictionary<int, Dictionary<int, List<ActiveItem2>>>> actives;
         private Dictionary<string, int> passive;
-        private Dictionary<int, List<Production>> forest;
-        private int nextId;
-        private int offset;
+        public Dictionary<int, List<Production>> forest;
+        public int nextId;
+        public int offset;
 
         public Chart2(Concrete concrete)
         {
-            this.active = new Dictionary<int, Dictionary<int, List<ActiveItem>>>();
-            this.actives = new List<Dictionary<int, Dictionary<int, List<ActiveItem>>>>();
+            this.active = new Dictionary<int, Dictionary<int, List<ActiveItem2>>>();
+            this.actives = new List<Dictionary<int, Dictionary<int, List<ActiveItem2>>>>();
             this.passive = new Dictionary<string, int>();
             this.forest = new Dictionary<int, List<Production>>();
             this.nextId = concrete.FId; //  TODO fix so that it uses totalFID instead
@@ -44,7 +44,7 @@ namespace CSPGF.Parse
         /// <param name="fid"></param>
         /// <param name="label"></param>
         /// <returns></returns>
-        public List<ActiveItem> lookupAC(int fid, int label)
+        public List<ActiveItem2> lookupAC(int fid, int label)
         {
             if (this.active.ContainsKey(fid))
             {
@@ -61,7 +61,7 @@ namespace CSPGF.Parse
         /// <param name="fid"></param>
         /// <param name="label"></param>
         /// <returns></returns>
-        public List<ActiveItem> lookupACo(int offset, int fid, int label)
+        public List<ActiveItem2> lookupACo(int offset, int fid, int label)
         {
             //var tmp;
             if (offset == this.offset)
@@ -93,7 +93,7 @@ namespace CSPGF.Parse
         /// </summary>
         /// <param name="fid"></param>
         /// <returns></returns>
-        public Dictionary<int, List<ActiveItem>> labelsAC(int fid)
+        public Dictionary<int, List<ActiveItem2>> labelsAC(int fid)
         {
             return this.active[fid];
         }
@@ -104,7 +104,7 @@ namespace CSPGF.Parse
         /// <param name="fid"></param>
         /// <param name="label"></param>
         /// <param name="items"></param>
-        public void insertAC(int fid, int label, List<ActiveItem> items)
+        public void insertAC(int fid, int label, List<ActiveItem2> items)
         {
             if (this.active.ContainsKey(fid))
             {
@@ -112,7 +112,7 @@ namespace CSPGF.Parse
             }
             else
             {
-                var temp = new Dictionary<int, List<ActiveItem>>();
+                var temp = new Dictionary<int, List<ActiveItem2>>();
                 temp[label] = items;
                 this.active[fid] = temp;
             }         
@@ -125,10 +125,15 @@ namespace CSPGF.Parse
         /// <param name="label"></param>
         /// <param name="offset"></param>
         /// <returns></returns>
-        public int lookupPC(int fid, int label, int offset)
+        public int? lookupPC(int fid, int label, int offset)
         {
             string key = fid + "." + label + "-" + offset;
-            return this.passive[key];
+            if (this.passive.ContainsKey(key))
+            {
+                return this.passive[key];
+            }
+
+            return null;
         }
 
         /// <summary>
@@ -150,7 +155,7 @@ namespace CSPGF.Parse
         public void shift()
         {
             this.actives.Add(this.active);
-            this.active = new Dictionary<int, Dictionary<int, List<ActiveItem>>>();
+            this.active = new Dictionary<int, Dictionary<int, List<ActiveItem2>>>();
             this.passive = new Dictionary<string, int>();
             this.offset++;
         }

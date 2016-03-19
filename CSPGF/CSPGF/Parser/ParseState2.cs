@@ -82,23 +82,125 @@ namespace CSPGF.Parse
                     var sym = lin[item.dot];
                     if (sym is SymbolCat)
                     {
+                        var newSym = (SymbolCat)sym;
+                        var fid = item.args[newSym.Arg];
+                        var label = newSym.Label;
 
+                        var items = this.chart.lookupAC(fid, label);
+                        if (items.Count > 0)
+                        {
+                            var rules = this.chart.expandForest(fid);
+                            foreach(ProductionApply rule in rules)
+                            {
+                                var newAI = new ActiveItem2(this.chart.offset, 0, rule.Function, rule.Function.Sequences[label].ToList<Symbol>(), rule.Domain().ToList<int>(), fid, label);
+                                agenda.Add(newAI);
+                            }
+
+                            List<ActiveItem2> temp = new List<ActiveItem2>();
+                            temp.Add(item);
+                            this.chart.insertAC(fid, label, temp);
+                        }
+                        else
+                        {
+                            bool isMember = false;
+                            foreach (ActiveItem2 ai in items)
+                            {
+                                if (ai.Equals(item))
+                                {
+                                    isMember = true;
+                                    break;
+                                }
+                            }
+
+                            if (!isMember)
+                            {
+                                items.Add(item);
+
+                                var fid2 = this.chart.lookupPC(fid, label, this.chart.offset);
+                                if (fid2.HasValue)
+                                {
+                                    agenda.Add(item.shiftOverArg(newSym.Arg, fid2.Value));
+                                }
+                            }
+                        }
                     }
                     else if (sym is SymbolLit)
                     {
-
+                        var newSym = (SymbolLit)sym;
+                        // TODO
                     }
                     else if (sym is SymbolKS)
                     {
-
+                        var newSym = (SymbolKS)sym;
+                        // TODO
                     }
                     else if (sym is SymbolKP)
                     {
-
+                        var newSym = (SymbolKP)sym;
+                        // TODO
                     }
                     else if (sym is SymbolVar)
                     {
+                        var newSym = (SymbolVar)sym;
+                        // TODO
+                    }
+                }
+                else
+                {
+                    int? tempfid = this.chart.lookupPC(item.fid, item.lbl, item.offset);
+                    if (!tempfid.HasValue)
+                    {
+                        int fid = this.chart.nextId++;
 
+                        var items = this.chart.lookupACo(item.offset, item.fid, item.lbl);
+                        foreach(ActiveItem2 pitem in items)
+                        {
+                            var temp = pitem.seq[pitem.dot];
+                            if (temp is SymbolCat)
+                            {
+                                var arg = ((SymbolCat)temp).Arg;
+                                agenda.Add(pitem.shiftOverArg(arg, fid));
+
+                            }
+                            else if (temp is SymbolLit)
+                            {
+                                var arg = ((SymbolLit)temp).Arg;
+                                agenda.Add(pitem.shiftOverArg(arg, fid));
+                            }
+                        }
+
+                        this.chart.insertPC(item.fid, item.lbl, item.offset, fid);
+                        var newProd = new ProductionApply(this.chart.nextId++, item.fun, item.args.ToArray<int>());
+                        this.chart.forest[fid].Add(newProd);
+                    }
+                    else
+                    {
+                        int fid = tempfid.Value;
+                        var labels = this.chart.labelsAC(fid);
+                        foreach(int k in labels.Keys)
+                        {
+                            var newAI = new ActiveItem2(this.chart.offset, 0, item.fun, item.fun.Sequences[k].ToList<Symbol>(), item.args, fid, k);
+                            agenda.Add(newAI);
+                        }
+
+                        var rules = this.chart.forest[fid];
+                        var rule = new ProductionApply(this.chart.nextId++, item.fun, item.args.ToArray<int>());
+                        bool isMember = false;
+                        foreach(Production p in rules)
+                        {
+                            if (p is ProductionApply)
+                            {
+                                if (rule.Equals((ProductionApply)p))
+                                {
+                                    isMember = true;
+                                }
+                            }
+                        }
+                        
+                        if (!isMember)
+                        {
+                            rules.Add(rule);
+                        }
                     }
                 }
             }
