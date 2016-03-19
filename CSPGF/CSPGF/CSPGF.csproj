@@ -119,14 +119,17 @@
     <Compile Include="Linearizer\RezDesc.cs" />
     <Compile Include="Linearizer\Tokn.cs" />
     <Compile Include="Parser\ActiveItem.cs" />
+    <Compile Include="Parser\ActiveItem2.cs" />
     <Compile Include="Parser\Application.cs" />
     <Compile Include="Parser\Chart.cs" />
+    <Compile Include="Parser\Chart2.cs" />
     <Compile Include="Parser\Literal.cs" />
     <Compile Include="Parser\MetaVariable.cs" />
     <Compile Include="Parser\ParseState.cs" />
     <Compile Include="Parser\ParseTrie.cs" />
     <Compile Include="Parser\TreeBuilder.cs" />
     <Compile Include="Parser\TreeConverter.cs" />
+    <Compile Include="Parser\Trie.cs" />
     <Compile Include="Parser\Variable.cs" />
     <Compile Include="Parser\Lambda.cs" />
     <Compile Include="Parser\Tree.cs" />
@@ -216,6 +219,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Compile Include="Parser\ParseState2.cs" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

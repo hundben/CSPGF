@@ -66,6 +66,21 @@ namespace CSPGF.Grammar
             this.FId = fId;
             this.startCat = defaultStartCat;
             this.LinDefs = linDefs;
+
+            // Populate helper dictionary for production set
+            // TODO check if productionsets can have the same ID?
+            Productions = new Dictionary<int, List<Production>>();
+
+            foreach (ProductionSet ps in this.Prods)
+            {
+                var tempProd = new List<Production>();
+                foreach (Production p in ps.Prods)
+                {
+                    tempProd.Add(p);
+                }
+
+                Productions[ps.ID] = tempProd;
+            }
         }
 
         /// <summary>
@@ -89,9 +104,19 @@ namespace CSPGF.Grammar
         public int FId { get; private set; }
 
         /// <summary>
+        /// Gets the totalFID
+        /// </summary>
+        public int TotalFID { get; private set; }
+
+        /// <summary>
         /// Gets the default linearization categories
         /// </summary>
         public LinDef[] LinDefs { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public Dictionary<int, List<Production>> Productions { get; private set; }
 
         /// <summary>
         /// Gets a list of concrete categories
