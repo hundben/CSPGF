@@ -105,6 +105,10 @@
   <ItemGroup>
     <Compile Include="AdvancedTranslator.cs" />
     <Compile Include="Generator.cs" />
+    <Compile Include="Grammar\OldPGF.cs">
+      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
+    </Compile>
+    <Compile Include="Grammar\NewPGF.cs" />
     <Compile Include="Grammar\ProductionExtern.cs" />
     <Compile Include="Grammar\LitSymbol.cs" />
     <Compile Include="Linearizer\Linearizer.cs" />
