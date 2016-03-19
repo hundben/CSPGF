@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ToksSymbol.cs" company="None">
+// <copyright file="ArgConstSymbol.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -33,24 +33,32 @@ namespace CSPGF.Grammar
     using System;
 
     /// <summary>
-    /// Token Symbol class
+    /// Argument Constant Symbol?
     /// </summary>
     [Serializable]
-    internal class ToksSymbol : Symbol // SymKS
+    internal class SymbolCat : Symbol
     {
         /// <summary>
-        /// Initializes a new instance of the ToksSymbol class.
+        /// Initializes a new instance of the SymbolCat class.
+        /// Same as SymbolArg
         /// </summary>
-        /// <param name="toks">List of strings</param>
-        public ToksSymbol(string[] toks)
+        /// <param name="arg">Argument integer</param>
+        /// <param name="cons">Constant integer</param>
+        public SymbolCat(int arg, int cons)
         {
-            this.Tokens = toks;
+            this.Arg = arg;
+            this.Cons = cons;
         }
 
         /// <summary>
-        /// Gets the list of strings
+        /// Gets the argument
         /// </summary>
-        public string[] Tokens { get; private set; }
+        public int Arg { get; private set; }
+
+        /// <summary>
+        /// Gets the constant
+        /// </summary>
+        public int Cons { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -58,13 +66,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            string s = "Tokens : ";
-            foreach (string st in this.Tokens)
-            {
-                s += " " + st;
-            }
-
-            return s;
+            return "Argument : " + this.Arg + " Constituent : " + this.Cons;
         }
     }
 }

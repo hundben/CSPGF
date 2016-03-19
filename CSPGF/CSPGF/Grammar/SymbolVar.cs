@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AlternToksSymbol.cs" company="None">
+// <copyright file="VarSymbol.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -30,59 +30,39 @@
 
 namespace CSPGF.Grammar
 {
-    using System;
-
     /// <summary>
-    /// Alternative Token Symbol
+    /// TODO: Update summary.
     /// </summary>
-    [Serializable]
-    internal class AlternToksSymbol : ToksSymbol // SymKP
+    internal class SymbolVar : Symbol
     {
         /// <summary>
-        /// Initializes a new instance of the AlternToksSymbol class.
+        /// Initializes a new instance of the VarSymbol class.
         /// </summary>
-        /// <param name="toks">List of tokens</param>
-        /// <param name="alts">List of alternatives</param>
-        public AlternToksSymbol(string[] toks, Alternative[] alts)
-            : base(toks)
+        /// <param name="arg">Argument index</param>
+        /// <param name="var">Variable number</param>
+        public SymbolVar(int arg, int var)
         {
-            this.Alts = alts;
+            this.Arg = arg;
+            this.Var = var;
         }
 
         /// <summary>
-        /// Gets the list of Alternatives
+        /// Gets the argument index
         /// </summary>
-        public Alternative[] Alts { get; private set; }
+        public int Arg { get; private set; }     // Int argument index
 
         /// <summary>
-        /// Returns true if terminal.
+        /// Gets the variable number.
         /// </summary>
-        /// <returns>Returns true if terminal</returns>
-        public bool IsTerminal()
-        {
-            return true;
-        }
+        public int Var { get; private set; }     // Int variable number
 
         /// <summary>
-        /// Pretty prints the contents of this class
+        /// Pretty prints the data contained in the class.
         /// </summary>
-        /// <returns>Returns a string containing debug information</returns>
-        public override string ToString()
+        /// <returns>String with data</returns>
+        public override string ToString() 
         {
-            string sb = "pre { ";
-            foreach (string s in this.Tokens) 
-            {
-                sb += s + " ";
-            }
-
-            sb += "; ";
-            foreach (Alternative a in this.Alts) 
-            {
-                sb += a + "; ";
-            }
-
-            sb += "}";
-            return sb;
+            return "Arg: " + this.Arg + " Var: " + this.Var;
         }
     }
 }

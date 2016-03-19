@@ -49,6 +49,13 @@ namespace CSPGF.Parse
 
         public void next(string token)
         {
+            var acc = this.items.lookup(token);
+            if (acc.isEmpty())
+            {
+                acc = new Trie();
+            }
+
+
             // TODO
         }
 
@@ -64,6 +71,37 @@ namespace CSPGF.Parse
 
         public void process(List<ActiveItem2> agenda)
         {
+            while (agenda.Count > 0)
+            {
+                var item = agenda[0];
+                agenda.RemoveAt(0);
+                var lin = item.seq;
+
+                if (item.dot < lin.Count)
+                {
+                    var sym = lin[item.dot];
+                    if (sym is SymbolCat)
+                    {
+
+                    }
+                    else if (sym is SymbolLit)
+                    {
+
+                    }
+                    else if (sym is SymbolKS)
+                    {
+
+                    }
+                    else if (sym is SymbolKP)
+                    {
+
+                    }
+                    else if (sym is SymbolVar)
+                    {
+
+                    }
+                }
+            }
 
         }
     }

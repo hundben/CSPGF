@@ -114,7 +114,7 @@
     </Compile>
     <Compile Include="Grammar\NewPGF.cs" />
     <Compile Include="Grammar\ProductionExtern.cs" />
-    <Compile Include="Grammar\LitSymbol.cs" />
+    <Compile Include="Grammar\SymbolLit.cs" />
     <Compile Include="Linearizer\Linearizer.cs" />
     <Compile Include="Linearizer\LinearizerException.cs" />
     <Compile Include="Linearizer\AppResult.cs" />
@@ -144,7 +144,7 @@
     <Compile Include="Grammar\PGFException.cs" />
     <Compile Include="PGF.cs" />
     <Compile Include="Grammar\PGFReader.cs" />
-    <Compile Include="Grammar\VarSymbol.cs" />
+    <Compile Include="Grammar\SymbolVar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
@@ -153,11 +153,11 @@
     <Compile Include="Grammar\AbsNameExp.cs" />
     <Compile Include="Grammar\Abstract.cs" />
     <Compile Include="Grammar\Alternative.cs" />
-    <Compile Include="Grammar\AlternToksSymbol.cs" />
+    <Compile Include="Grammar\SymbolKP.cs" />
     <Compile Include="Grammar\AppExp.cs" />
     <Compile Include="Grammar\ProductionApply.cs" />
     <Compile Include="Grammar\AppPattern.cs" />
-    <Compile Include="Grammar\ArgConstSymbol.cs" />
+    <Compile Include="Grammar\SymbolCat.cs" />
     <Compile Include="Grammar\CncCat.cs" />
     <Compile Include="Grammar\CncFun.cs" />
     <Compile Include="Grammar\ProductionCoerce.cs" />
@@ -182,7 +182,7 @@
     <Compile Include="Grammar\RLiteral.cs" />
     <Compile Include="Grammar\StringLit.cs" />
     <Compile Include="Grammar\Symbol.cs" />
-    <Compile Include="Grammar\ToksSymbol.cs" />
+    <Compile Include="Grammar\SymbolKS.cs" />
     <Compile Include="Grammar\Type.cs" />
     <Compile Include="Grammar\TypedExp.cs" />
     <Compile Include="Grammar\VarAsPattern.cs" />

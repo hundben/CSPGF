@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     /// Argument Constant Symbol?
     /// </summary>
     [Serializable]
-    internal class LitSymbol : Symbol
+    internal class SymbolLit : Symbol
     {
         /// <summary>
         /// Initializes a new instance of the LitSymbol class.
@@ -44,7 +44,7 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="arg">Argument int</param>
         /// <param name="cons">Constituent int</param>
-        public LitSymbol(int arg, int cons)
+        public SymbolLit(int arg, int cons)
         {
             this.Arg = arg;
             this.Cons = cons;

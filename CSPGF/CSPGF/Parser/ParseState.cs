@@ -232,10 +232,10 @@ namespace CSPGF.Parse
             Symbol sym = item.CurrentSymbol();
 
             // if (this.active.Count >= this.position) { <- TODO move this here 
-            if (sym is ToksSymbol)
+            if (sym is SymbolKS)
             {
                 // TempLog.LogMessageToFile("Case before s in T");
-                ToksSymbol tok = (ToksSymbol)sym;
+                SymbolKS tok = (SymbolKS)sym;
                 string[] tokens = tok.Tokens;
 
                 ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
@@ -250,10 +250,10 @@ namespace CSPGF.Parse
 
                 newAgenda.Push(i);
             }
-            else if (sym is ArgConstSymbol) 
+            else if (sym is SymbolCat) 
             {
                 // TempLog.LogMessageToFile("Case before <d,r>");
-                ArgConstSymbol arg = (ArgConstSymbol)sym;
+                SymbolCat arg = (SymbolCat)sym;
                 int d = arg.Arg;
                 int r = arg.Cons;
                 int bd = item.Domain[d];
@@ -303,18 +303,18 @@ namespace CSPGF.Parse
                     }
                 }
             }
-            else if (sym is LitSymbol)
+            else if (sym is SymbolLit)
             {
                 /*TODO notice a lot of this is just test...
                 TempLog.LogMessageToFile("Case before {d,r}");*/
-                LitSymbol litSym = (LitSymbol)sym;
+                SymbolLit litSym = (SymbolLit)sym;
                 int d = litSym.Arg;
                 int r = litSym.Cons;
                 int bd = item.Domain[d];
 
                 // LITERAL
             }
-            else if (sym is VarSymbol)
+            else if (sym is SymbolVar)
             {
                 /* TODO implement
                 High-order argument
@@ -333,7 +333,7 @@ namespace CSPGF.Parse
                     foreach (ActiveItem ai in this.GetActiveSet(a, l, this.active[j]))
                     {
                         ActiveItem ip = ai;
-                        int d = ((ArgConstSymbol)ai.CurrentSymbol()).Arg;
+                        int d = ((SymbolCat)ai.CurrentSymbol()).Arg;
                         List<int> domain = new List<int>(ip.Domain);
 
                         // TempLog.LogMessageToFile("Combine with " + ip.ToString() + "(" + domain[d] + ")");
@@ -351,7 +351,7 @@ namespace CSPGF.Parse
                     HashSet<ActiveItem> items = this.GetActiveSet(cat.Value, this.active[this.position]);
                     foreach (ActiveItem ai in items)
                     {
-                        int r = ((ArgConstSymbol)ai.CurrentSymbol()).Cons;
+                        int r = ((SymbolCat)ai.CurrentSymbol()).Cons;
                         ActiveItem i = new ActiveItem(this.position, cat.Value, f, b, r, 0);
                         this.agenda.Push(i);
                     }

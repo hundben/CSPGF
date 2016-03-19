@@ -693,29 +693,29 @@ namespace CSPGF.Linearize
         /// <returns>List of BracketedTokn</returns>
         private List<BracketedTokn> Compute(Symbol s, List<ConcreteType> cncTypes, List<List<List<BracketedTokn>>> linTables)
         {
-            if (s is ArgConstSymbol)
+            if (s is SymbolCat)
             {
-                int arg = ((ArgConstSymbol)s).Arg;
-                int cons = ((ArgConstSymbol)s).Cons;
+                int arg = ((SymbolCat)s).Arg;
+                int cons = ((SymbolCat)s).Cons;
                 return this.GetArg(arg, cons, cncTypes, linTables);
             }
-            else if (s is AlternToksSymbol)
+            else if (s is SymbolKP)
             {
-                string[] toks = ((AlternToksSymbol)s).Tokens;
-                Alternative[] alts = ((AlternToksSymbol)s).Alts;
+                string[] toks = ((SymbolKP)s).Tokens;
+                Alternative[] alts = ((SymbolKP)s).Alts;
                 List<BracketedTokn> v = new List<BracketedTokn> { new LeafKP(toks, alts) };
                 return v;
             }
-            else if (s is LitSymbol)
+            else if (s is SymbolLit)
             {
                 // TODO: Fix? D:
-                int arg = ((LitSymbol)s).Arg;
-                int cons = ((LitSymbol)s).Cons;
+                int arg = ((SymbolLit)s).Arg;
+                int cons = ((SymbolLit)s).Cons;
                 return this.GetArg(arg, cons, cncTypes, linTables);
             }
             else
             {
-                string[] toks = ((ToksSymbol)s).Tokens;
+                string[] toks = ((SymbolKS)s).Tokens;
                 List<BracketedTokn> v = new List<BracketedTokn> { new LeafKS(toks) };
                 return v;
             }

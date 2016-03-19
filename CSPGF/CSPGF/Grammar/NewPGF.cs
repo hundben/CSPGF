@@ -564,19 +564,19 @@ namespace CSPGF.Grammar
             switch (sel)
             {
                 case 0: // category (non terminal symbol)
-                    symb = new ArgConstSymbol(this.GetInt(), this.GetInt());
+                    symb = new SymbolCat(this.GetInt(), this.GetInt());
                     break;
                 case 1: // Literal category
-                    symb = new LitSymbol(this.GetInt(), this.GetInt());
+                    symb = new SymbolLit(this.GetInt(), this.GetInt());
                     break;
                 case 2: // Variable
-                    symb = new VarSymbol(this.GetInt(), this.GetInt());
+                    symb = new SymbolVar(this.GetInt(), this.GetInt());
                     break;
                 case 3: // sequence of tokens
-                    symb = new ToksSymbol(this.GetListString());
+                    symb = new SymbolKS(this.GetListString());
                     break;
                 case 4: // alternative tokens
-                    symb = new AlternToksSymbol(this.GetListString(), this.GetListAlternative());
+                    symb = new SymbolKP(this.GetListString(), this.GetListAlternative());
                     break;
                 default:
                     throw new PGFException("Invalid tag for symbols : " + sel);
