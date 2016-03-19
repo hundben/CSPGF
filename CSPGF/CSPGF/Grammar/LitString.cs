@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ImplExp.cs" company="None">
+// <copyright file="LitString.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,23 +31,23 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Implicit arguments expression class
+    /// String Literal
     /// </summary>
-    internal class ImplExp : Expr // EImplArg
+    internal class LitString : Literal
     {
         /// <summary>
-        /// Initializes a new instance of the ImplExp class.
+        /// Initializes a new instance of the StringLit class.
         /// </summary>
-        /// <param name="arg">Implicit arguments expression</param>
-        public ImplExp(Expr arg)
+        /// <param name="value">String literal</param>
+        public LitString(string value)
         {
-            this.Exp = arg;
+            this.Value = value;
         }
 
         /// <summary>
-        /// Gets the expression
+        /// Gets the string value
         /// </summary>
-        public Expr Exp { get; private set; }
+        public string Value { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -55,7 +55,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Implicit Arguments Expression : [ Argument : " + this.Exp + "]";
+            return "String literal : " + this.Value;
         }
     }
 }

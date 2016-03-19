@@ -43,7 +43,7 @@ namespace CSPGF.Grammar
         /// <param name="arit">Some integer</param>
         /// <param name="eqs">List of Eqs</param>
         /// <param name="weight">Weight of function</param>
-        public AbsFun(string str, Type type, int arit, Eq[] eqs, double weight)
+        public AbsFun(string str, Type type, int arit, Equation[] eqs, double weight)
         {
             this.Name = str;
             this.Type = type;
@@ -70,7 +70,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Gets a list of Eqs
         /// </summary>
-        public Eq[] Eqs { get; private set; }
+        public Equation[] Eqs { get; private set; }
 
         /// <summary>
         /// Gets the weight of the functions
@@ -84,7 +84,7 @@ namespace CSPGF.Grammar
         public override string ToString()
         {
             string sb = "<function name = " + this.Name + " type = " + this.Type + " arity = " + this.Arit + " equations = [";
-            foreach (Eq e in this.Eqs) 
+            foreach (Equation e in this.Eqs) 
             {
                 sb += e + ", ";
             }

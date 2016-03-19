@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="VarPattern.cs" company="None">
+// <copyright file="PatternTilde.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,23 +31,23 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Variable pattern
+    /// Inaccessible pattern class
     /// </summary>
-    internal class VarPattern : Pattern // PVar
+    internal class PatternTilde : Pattern // PTilde
     {
         /// <summary>
-        /// Initializes a new instance of the VarPattern class.
+        /// Initializes a new instance of the InaccPattern class.
         /// </summary>
-        /// <param name="name">Name of pattern</param>
-        public VarPattern(string name)
+        /// <param name="exp">Inaccessible pattern</param>
+        public PatternTilde(Expr exp)
         {
-            this.Name = name;
+            this.Exp = exp;
         }
 
         /// <summary>
-        /// Gets the name
+        /// Gets the expression
         /// </summary>
-        public string Name { get; private set; }
+        public Expr Exp { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -55,7 +55,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Variable Pattern : " + this.Name;
+            return "Inaccessible Pattern : " + this.Exp;
         }
     }
 }

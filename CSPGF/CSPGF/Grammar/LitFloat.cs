@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="MetaExp.cs" company="None">
+// <copyright file="LitFloat.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,23 +31,23 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Meta Expression
+    /// Float literal
     /// </summary>
-    internal class MetaExp : Expr // EMeta
+    internal class LitFloat : Literal
     {
         /// <summary>
-        /// Initializes a new instance of the MetaExp class.
+        /// Initializes a new instance of the FloatLit class.
         /// </summary>
-        /// <param name="id">Expression id</param>
-        public MetaExp(int id)
+        /// <param name="value">Double value</param>
+        public LitFloat(double value)
         {
-            this.Meta = id;
+            this.Value = value;
         }
 
         /// <summary>
-        /// Gets the id
+        /// Gets the value
         /// </summary>
-        public int Meta { get; private set; }
+        public double Value { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -55,7 +55,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Meta Expression : [Id : " + this.Meta + "]";
+            return "Float literal : " + this.Value;
         }
     }
 }

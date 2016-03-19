@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="RLiteral.cs" company="None">
+// <copyright file="PatternImplicit.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,15 +31,31 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Abstract class RLiteral
-    /// Used as flags for the Concrete and Abstract grammars.
+    /// Implicit argument pattern class
     /// </summary>
-    internal abstract class RLiteral
+    internal class PatternImplicit : Pattern // PImplArg
     {
+        /// <summary>
+        /// Initializes a new instance of the ImpArgPattern class.
+        /// </summary>
+        /// <param name="patt">Implicit argument pattern</param>
+        public PatternImplicit(Pattern patt)
+        {
+            this.Patt = patt;
+        }
+
+        /// <summary>
+        /// Gets the pattern
+        /// </summary>
+        public Pattern Patt { get; private set; }
+
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
         /// <returns>Returns a string containing debug information</returns>
-        public override abstract string ToString();
+        public override string ToString()
+        {
+            return "Implicit Argument Pattern : " + this.Patt;
+        }
     }
 }

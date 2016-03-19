@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="IntLit.cs" company="None">
+// <copyright file="ExprApp.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,23 +31,30 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Integer Literal
+    /// Application Expression
     /// </summary>
-    internal class IntLit : RLiteral
+    internal class ExprApp : Expr // EApp
     {
         /// <summary>
-        /// Initializes a new instance of the IntLit class.
+        /// Initializes a new instance of the AppExp class.
         /// </summary>
-        /// <param name="value">Integer value</param>
-        public IntLit(int value)
+        /// <param name="leftExp">Left expression</param>
+        /// <param name="rightExp">Right expression</param>
+        public ExprApp(Expr leftExp, Expr rightExp)
         {
-            this.Value = value;
+            this.LExp = leftExp;
+            this.RExp = rightExp;
         }
 
         /// <summary>
-        /// Gets the value
+        /// Gets the left expression
         /// </summary>
-        public int Value { get; private set; }
+        public Expr LExp { get; private set; }
+
+        /// <summary>
+        /// Gets the right expression
+        /// </summary>
+        public Expr RExp { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -55,7 +62,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Integer Literal : " + this.Value;
+            return "Expression application [Left-hand side : ( " + this.LExp + "), Right-hand side : (" + this.RExp + ")]";
         }
     }
 }

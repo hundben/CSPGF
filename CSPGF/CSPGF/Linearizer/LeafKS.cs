@@ -33,7 +33,7 @@ namespace CSPGF.Linearize
     /// <summary>
     /// This class represents a standard token
     /// </summary>
-    internal class LeafKS : BracketedTokn
+    internal class LeafKS : BracketedToken
     {
         /// <summary>
         /// Initializes a new instance of the LeafKS class.

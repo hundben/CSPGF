@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ImpArgPattern.cs" company="None">
+// <copyright file="ExprMeta.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,23 +31,23 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Implicit argument pattern class
+    /// Meta Expression
     /// </summary>
-    internal class ImpArgPattern : Pattern // PImplArg
+    internal class ExprMeta : Expr // EMeta
     {
         /// <summary>
-        /// Initializes a new instance of the ImpArgPattern class.
+        /// Initializes a new instance of the MetaExp class.
         /// </summary>
-        /// <param name="patt">Implicit argument pattern</param>
-        public ImpArgPattern(Pattern patt)
+        /// <param name="id">Expression id</param>
+        public ExprMeta(int id)
         {
-            this.Patt = patt;
+            this.Meta = id;
         }
 
         /// <summary>
-        /// Gets the pattern
+        /// Gets the id
         /// </summary>
-        public Pattern Patt { get; private set; }
+        public int Meta { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -55,7 +55,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Implicit Argument Pattern : " + this.Patt;
+            return "Meta Expression : [Id : " + this.Meta + "]";
         }
     }
 }

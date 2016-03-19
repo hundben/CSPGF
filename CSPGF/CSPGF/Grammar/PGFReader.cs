@@ -100,7 +100,7 @@ namespace CSPGF.Grammar
             if (this.version[0] == 1)
             {
                 OldPGF pgf = new OldPGF(this.inputstream, this.binreader, this.languages);
-                Dictionary<string, RLiteral> flags = pgf.GetFlags(index);
+                Dictionary<string, Literal> flags = pgf.GetFlags(index);
                 Abstract abs = pgf.GetAbstract();
                 this.CheckLangs();
                 PGF pgfobj = new PGF(this.version[0], this.version[1], flags, abs, pgf.GetConcretes(abs.StartCat(), index));
@@ -110,7 +110,7 @@ namespace CSPGF.Grammar
             else if (this.version[0] == 2 && this.version[1] == 1)
             {
                 NewPGF pgf = new NewPGF(this.inputstream, this.binreader, this.languages);
-                Dictionary<string, RLiteral> flags = pgf.GetFlags(index);
+                Dictionary<string, Literal> flags = pgf.GetFlags(index);
                 Abstract abs = pgf.GetAbstract();
                 this.CheckLangs();
                 PGF pgfobj = new PGF(this.version[0], this.version[1], flags, abs, pgf.GetConcretes(abs.StartCat(), index));

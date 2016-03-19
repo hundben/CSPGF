@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="WildCardPattern.cs" company="None">
+// <copyright file="ExprLambda.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,17 +31,45 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Wildcard Pattern
+    /// Lambda Expression
     /// </summary>
-    internal class WildCardPattern : Pattern // PWild
+    internal class ExprLambda : Expr // EAbs
     {
+        /// <summary>
+        /// Initializes a new instance of the LambdaExp class.
+        /// </summary>
+        /// <param name="type">Bind type</param>
+        /// <param name="varName">Variable name</param>
+        /// <param name="body">Lambda expression</param>
+        public ExprLambda(bool type, string varName, Expr body)
+        {
+            this.BType = type;
+            this.VName = varName;
+            this.Body = body;
+        }
+
+        /// <summary>
+        /// Gets a value indicating whether it binds or not
+        /// </summary>
+        public bool BType { get; private set; }
+
+        /// <summary>
+        /// Gets the variable name
+        /// </summary>
+        public string VName { get; private set; }
+
+        /// <summary>
+        /// Gets the expression
+        /// </summary>
+        public Expr Body { get; private set; }
+
         /// <summary>
         /// Pretty prints the contents of this class
         /// </summary>
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Wild Card Pattern";
+            return "Lambda Expression : [Bound Type : " + this.BType + " , Name : " + this.VName + " , Body : " + this.Body + "]";
         }
     }
 }

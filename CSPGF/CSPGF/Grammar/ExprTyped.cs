@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="BracketedTokn.cs" company="None">
+// <copyright file="ExprTyped.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,12 +28,41 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-namespace CSPGF.Linearize
+namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Abstract class
+    /// Typed Expression
     /// </summary>
-    internal abstract class BracketedTokn
+    internal class ExprTyped : Expr // ETyped
     {
+        /// <summary>
+        /// Initializes a new instance of the TypedExp class.
+        /// </summary>
+        /// <param name="exp">The Expression</param>
+        /// <param name="t">The Type</param>
+        public ExprTyped(Expr exp, Type t)
+        {
+            this.Exp = exp;
+            this.Type = t;
+        }
+
+        /// <summary>
+        /// Gets the expression
+        /// </summary>
+        public Expr Exp { get; private set; }
+
+        /// <summary>
+        /// Gets the type
+        /// </summary>
+        public Type Type { get; private set; }
+
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debug information</returns>
+        public override string ToString()
+        {
+            return "Typed Expression : [Expr : " + this.Exp + " , Type : " + this.Type + "]";
+        }
     }
 }

@@ -40,7 +40,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Abstract flags
         /// </summary>
-        private readonly Dictionary<string, RLiteral> flags;
+        private readonly Dictionary<string, Literal> flags;
         
         /// <summary>
         /// Initializes a new instance of the Abstract class.
@@ -49,7 +49,7 @@ namespace CSPGF.Grammar
         /// <param name="flags">Abstract flags</param>
         /// <param name="absFuns">Abstract functions</param>
         /// <param name="absCats">Abstract categories</param>
-        public Abstract(string name, Dictionary<string, RLiteral> flags, AbsFun[] absFuns, AbsCat[] absCats)
+        public Abstract(string name, Dictionary<string, Literal> flags, AbsFun[] absFuns, AbsCat[] absCats)
         {
             this.Name = name;
             this.flags = flags;
@@ -78,10 +78,10 @@ namespace CSPGF.Grammar
         /// <returns>Returns the starting category</returns>
         public string StartCat()
         {
-            RLiteral cat;
+            Literal cat;
             if (this.flags.TryGetValue("startcat", out cat)) 
             {
-                return ((StringLit)cat).Value;
+                return ((LitString)cat).Value;
             }
             
             return "Sentence";
@@ -98,7 +98,7 @@ namespace CSPGF.Grammar
             // TODO: Är bortkommenterat i javakoden också kanske borde fixa?
             // for(int i=0; i<flags.length;i++)
             // ss+=(" "+flags[i].toString());
-            foreach (KeyValuePair<string, RLiteral> kvp in this.flags) 
+            foreach (KeyValuePair<string, Literal> kvp in this.flags) 
             {
                 ss += "String: " + kvp.Key + "RLiteral: " + kvp.Value;
             }

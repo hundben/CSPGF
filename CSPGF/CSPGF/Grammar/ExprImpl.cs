@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="FloatLit.cs" company="None">
+// <copyright file="ExprImpl.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,23 +31,23 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Float literal
+    /// Implicit arguments expression class
     /// </summary>
-    internal class FloatLit : RLiteral
+    internal class ExprImpl : Expr // EImplArg
     {
         /// <summary>
-        /// Initializes a new instance of the FloatLit class.
+        /// Initializes a new instance of the ImplExp class.
         /// </summary>
-        /// <param name="value">Double value</param>
-        public FloatLit(double value)
+        /// <param name="arg">Implicit arguments expression</param>
+        public ExprImpl(Expr arg)
         {
-            this.Value = value;
+            this.Exp = arg;
         }
 
         /// <summary>
-        /// Gets the value
+        /// Gets the expression
         /// </summary>
-        public double Value { get; private set; }
+        public Expr Exp { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -55,7 +55,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Float literal : " + this.Value;
+            return "Implicit Arguments Expression : [ Argument : " + this.Exp + "]";
         }
     }
 }

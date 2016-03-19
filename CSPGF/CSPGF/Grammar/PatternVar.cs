@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppExp.cs" company="None">
+// <copyright file="PatternVar.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,30 +31,23 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Application Expression
+    /// Variable pattern
     /// </summary>
-    internal class AppExp : Expr // EApp
+    internal class PatternVar : Pattern // PVar
     {
         /// <summary>
-        /// Initializes a new instance of the AppExp class.
+        /// Initializes a new instance of the VarPattern class.
         /// </summary>
-        /// <param name="leftExp">Left expression</param>
-        /// <param name="rightExp">Right expression</param>
-        public AppExp(Expr leftExp, Expr rightExp)
+        /// <param name="name">Name of pattern</param>
+        public PatternVar(string name)
         {
-            this.LExp = leftExp;
-            this.RExp = rightExp;
+            this.Name = name;
         }
 
         /// <summary>
-        /// Gets the left expression
+        /// Gets the name
         /// </summary>
-        public Expr LExp { get; private set; }
-
-        /// <summary>
-        /// Gets the right expression
-        /// </summary>
-        public Expr RExp { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -62,7 +55,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Expression application [Left-hand side : ( " + this.LExp + "), Right-hand side : (" + this.RExp + ")]";
+            return "Variable Pattern : " + this.Name;
         }
     }
 }

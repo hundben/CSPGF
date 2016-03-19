@@ -45,7 +45,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Concrete grammar flags
         /// </summary>
-        private Dictionary<string, RLiteral> flags;
+        private Dictionary<string, Literal> flags;
 
         /// <summary>
         /// Initializes a new instance of the Concrete class.
@@ -57,7 +57,7 @@ namespace CSPGF.Grammar
         /// <param name="cncCats">Dictionary containing concrete categories</param>
         /// <param name="fId">Function id</param>
         /// <param name="defaultStartCat">Default starting category</param>
-        public Concrete(string name, Dictionary<string, RLiteral> flags, LinDef[] linDefs, ProductionSet[] prods, Dictionary<string, CncCat> cncCats, int fId, string defaultStartCat)
+        public Concrete(string name, Dictionary<string, Literal> flags, LinDef[] linDefs, ProductionSet[] prods, Dictionary<string, CncCat> cncCats, int fId, string defaultStartCat)
         {
             this.Name = name;
             this.flags = flags;

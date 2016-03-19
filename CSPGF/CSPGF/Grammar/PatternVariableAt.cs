@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LambdaExp.cs" company="None">
+// <copyright file="PatternVariableAt.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,37 +31,30 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Lambda Expression
+    /// Variable as Pattern class
     /// </summary>
-    internal class LambdaExp : Expr // EAbs
+    internal class PatternVariableAt : Pattern  // PAs
     {
         /// <summary>
-        /// Initializes a new instance of the LambdaExp class.
+        /// Initializes a new instance of the VarAsPattern class.
         /// </summary>
-        /// <param name="type">Bind type</param>
-        /// <param name="varName">Variable name</param>
-        /// <param name="body">Lambda expression</param>
-        public LambdaExp(bool type, string varName, Expr body)
+        /// <param name="name">Name of pattern</param>
+        /// <param name="patt">The Pattern</param>
+        public PatternVariableAt(string name, Pattern patt)
         {
-            this.BType = type;
-            this.VName = varName;
-            this.Body = body;
+            this.Name = name;
+            this.Patt = patt;
         }
 
         /// <summary>
-        /// Gets a value indicating whether it binds or not
+        /// Gets name of pattern
         /// </summary>
-        public bool BType { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets the variable name
+        /// Gets pattern
         /// </summary>
-        public string VName { get; private set; }
-
-        /// <summary>
-        /// Gets the expression
-        /// </summary>
-        public Expr Body { get; private set; }
+        public Pattern Patt { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -69,7 +62,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Lambda Expression : [Bound Type : " + this.BType + " , Name : " + this.VName + " , Body : " + this.Body + "]";
+            return "Variable as Pattern : [ Variable Name : " + this.Name + " , Pattern : " + this.Patt + "]";
         }
     }
 }

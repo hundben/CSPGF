@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LiteralPattern.cs" company="None">
+// <copyright file="ExprLiteral.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,23 +31,23 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Literal Pattern
+    /// Literal Expression class
     /// </summary>
-    internal class LiteralPattern : Pattern // PLit
+    internal class ExprLiteral : Expr // ELit
     {
         /// <summary>
-        /// Initializes a new instance of the LiteralPattern class.
+        /// Initializes a new instance of the LiteralExp class.
         /// </summary>
-        /// <param name="value">The RLiteral</param>
-        public LiteralPattern(RLiteral value)
+        /// <param name="literal">The RLiteral</param>
+        public ExprLiteral(Literal literal)
         {
-            this.Value = value;
+            this.Literal = literal;
         }
 
         /// <summary>
-        /// Gets the value
+        /// Gets the literal
         /// </summary>
-        public RLiteral Value { get; private set; }
+        public Literal Literal { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -55,7 +55,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Literal Pattern : " + this.Value;
+            return "Literal Expression : " + this.Literal;
         }
     }
 }

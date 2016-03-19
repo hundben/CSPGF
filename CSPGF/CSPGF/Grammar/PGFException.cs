@@ -35,14 +35,13 @@ namespace CSPGF.Grammar
     /// <summary>
     /// Exception used to show that the linearizing process failed somehow.
     /// </summary>
-    [Serializable]
     public class PGFException : Exception
     {
         /// <summary>
         /// Initializes a new instance of the PGFException class.
         /// </summary>
         /// <param name="str">The error</param>
-        public PGFException(string str) : base(str)
+        public PGFException(string msg) : base(msg)
         {
         }
 
@@ -51,7 +50,7 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="str">Exception message</param>
         /// <param name="exc">Base Exception</param>
-        public PGFException(string str, Exception exc) :base(str, exc)
+        public PGFException(string msg, Exception exc) : base(msg, exc)
         {
         }
 
