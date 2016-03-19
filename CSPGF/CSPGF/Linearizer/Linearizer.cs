@@ -83,37 +83,13 @@ namespace CSPGF.Linearize
         }
 
         /// <summary>
-        /// Linearizes a tree into a list of tokens.
-        /// </summary>
-        /// <param name="absyn">Tree to linearize</param>
-        /// <returns>List of strings</returns>
-        public List<string> LinearizeAll(Tree absyn)
-        {
-            List<List<string>> tmp = this.RenderAllLins(this.Linearize(absyn));
-            List<string> tmp2 = new List<string>();
-            foreach (List<string> lstr in tmp)
-            {
-                tmp2.AddRange(lstr);
-                tmp2.Add("\n");
-            }
-
-            return tmp2;
-        }
-
-        /// <summary>
         /// Linearize a tree to a string.
         /// </summary>
         /// <param name="absyn">Tree to linearize</param>
         /// <returns>Linearized string</returns>
         public string LinearizeString(Tree absyn)
         {
-            string sb = string.Empty;
-            foreach (string w in this.LinearizeTokens(absyn))
-            {
-                sb += w + " ";
-            }
-
-            return sb.Trim();
+            return string.Join(" ", this.LinearizeTokens(absyn)).Trim();
         }
 
         /// <summary>
@@ -360,16 +336,19 @@ namespace CSPGF.Linearize
 
                 return rez;
             }
-            else
+            else if (bt is Bracket)
             {
-                List<BracketedTokn> bs = ((Bracket)bt).Bracketedtoks;
-                for (int i = bs.Count - 1; i >= 0; i--)
+                foreach (BracketedTokn bs in (((Bracket)bt).Bracketedtoks).Reverse<BracketedTokn>())
                 {
-                    rez.AddRange(this.Untokn(bs.ElementAt(i), after));
+                    rez.AddRange(this.Untokn(bs, after));
                     after = rez.Last();
                 }
 
                 return rez;
+            }
+            else
+            {
+                throw new LinearizerException("Token was of unknown type.");
             }
         }
 
@@ -393,21 +372,6 @@ namespace CSPGF.Linearize
             return rez;
         }
 
-        /// <summary>
-        /// Flatten a list of LinTriples
-        /// </summary>
-        /// <param name="v">List to flatten</param>
-        /// <returns>List of list of strings</returns>
-        private List<List<string>> RenderAllLins(List<LinTriple> v)
-        {
-            List<List<string>> rez = new List<List<string>>();
-            foreach (LinTriple lt in v)
-            {
-                rez.Add(this.RenderLin(lt));
-            }
-
-            return rez;
-        }
 
         /// <summary>
         /// Linearize a tree
@@ -690,29 +654,20 @@ namespace CSPGF.Linearize
         {
             if (s is ArgConstSymbol)
             {
-                int arg = ((ArgConstSymbol)s).Arg;
-                int cons = ((ArgConstSymbol)s).Cons;
-                return this.GetArg(arg, cons, cncTypes, linTables);
+                return this.GetArg(((ArgConstSymbol)s).Arg, ((ArgConstSymbol)s).Cons, cncTypes, linTables);
             }
             else if (s is AlternToksSymbol)
             {
-                string[] toks = ((AlternToksSymbol)s).Tokens;
-                Alternative[] alts = ((AlternToksSymbol)s).Alts;
-                List<BracketedTokn> v = new List<BracketedTokn> { new LeafKP(toks, alts) };
-                return v;
+                return new List<BracketedTokn> { new LeafKP(((AlternToksSymbol)s).Tokens, ((AlternToksSymbol)s).Alts) };
             }
             else if (s is LitSymbol)
             {
                 // TODO: Fix? D:
-                int arg = ((LitSymbol)s).Arg;
-                int cons = ((LitSymbol)s).Cons;
-                return this.GetArg(arg, cons, cncTypes, linTables);
+                return this.GetArg(((LitSymbol)s).Arg, ((LitSymbol)s).Cons, cncTypes, linTables);
             }
             else
             {
-                string[] toks = ((ToksSymbol)s).Tokens;
-                List<BracketedTokn> v = new List<BracketedTokn> { new LeafKS(toks) };
-                return v;
+                return new List<BracketedTokn> { new LeafKS(((ToksSymbol)s).Tokens) };
             }
         }
 
