@@ -68,10 +68,10 @@ namespace CSPGF
             at.Scan("(");
             at.Scan("1.2");
             at.Scan(")");
-            string check = at.Translate();
+            string check = at.Translate().Trim();
 
             // TODO write this one
-            Assert.Equal(false, true);
+            Assert.Equal(check, "flt ( 1.2 )");
         }
 
         /// <summary>
