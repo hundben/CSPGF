@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class ExprLambda : Expr // EAbs
     {
         /// <summary>
-        /// Initializes a new instance of the ExprImpl class.
+        /// Initializes a new instance of the ExprLambda class.
         /// </summary>
         /// <param name="type">Bind type</param>
         /// <param name="varName">Variable name</param>

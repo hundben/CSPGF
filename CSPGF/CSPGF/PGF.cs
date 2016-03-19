@@ -141,7 +141,6 @@ namespace CSPGF
         /// <returns>List of languages</returns>
         public List<string> GetLanguages()
         {
-
             return new List<string>(this.concretes.Keys);
             /*Better version?
             return this.concretes.Keys.ToList<string>();*/

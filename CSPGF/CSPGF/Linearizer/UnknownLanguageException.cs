@@ -41,7 +41,7 @@ namespace CSPGF
         /// <summary>
         /// Initializes a new instance of the UnknownLanguageException class.
         /// </summary>
-        /// <param name="language">The language that is missing</param>
+        /// <param name="msg">The language that is missing</param>
         public UnknownLanguageException(string msg) : base(msg)
         {
         }

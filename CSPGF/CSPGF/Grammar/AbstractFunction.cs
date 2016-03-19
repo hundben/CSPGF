@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AbstractFuncion.cs" company="None">
+// <copyright file="AbstractFunction.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class AbstractFunction
     {
         /// <summary>
-        /// Initializes a new instance of the AbsFun class.
+        /// Initializes a new instance of the AbstractFunction class.
         /// </summary>
         /// <param name="str">Name of the function</param>
         /// <param name="type">Type of function</param>

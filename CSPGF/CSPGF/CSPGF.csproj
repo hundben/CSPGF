@@ -141,7 +141,9 @@
     <Compile Include="Parser\ParseTrie.cs" />
     <Compile Include="Parser\TreeBuilder.cs" />
     <Compile Include="Parser\TreeConverter.cs" />
-    <Compile Include="Parser\Trie.cs" />
+    <Compile Include="Parser\Trie.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Parser\Variable.cs" />
     <Compile Include="Parser\Lambda.cs" />
     <Compile Include="Parser\Tree.cs" />

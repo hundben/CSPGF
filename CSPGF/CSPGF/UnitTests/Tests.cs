@@ -31,6 +31,10 @@
 namespace CSPGF
 {
     using Xunit;
+
+    /// <summary>
+    /// Class containing unit tests.
+    /// </summary>
     public class Tests
     {
         /// <summary>

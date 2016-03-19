@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class AbstractCategory
     {
         /// <summary>
-        /// Initializes a new instance of the AbsCat class.
+        /// Initializes a new instance of the AbstractCategory class.
         /// </summary>
         /// <param name="name">Name of category</param>
         /// <param name="hypos">List of hypos</param>
