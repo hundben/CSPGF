@@ -73,6 +73,23 @@ namespace CSPGF.Grammar
         }
 
         /// <summary>
+        /// Finalizes an instance of the OldPGF class.
+        /// </summary>
+        ~OldPGF()
+        {
+            this.Dispose(false);
+        }
+
+        /// <summary>
+        /// Implements disposable interface
+        /// </summary>
+        public void Dispose()
+        {
+            this.Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        /// <summary>
         /// Does the actual disposing
         /// </summary>
         /// <param name="disposing">If disposing should be done or not</param>

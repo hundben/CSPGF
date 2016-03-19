@@ -53,6 +53,10 @@ namespace CSPGF
         {
         }
 
+        public UnknownLanguageException(string language, Exception exception) : base(language,exception)
+        {
+        }
+
         /// <summary>
         /// Creates a string to show which language is missing
         /// </summary>
