@@ -255,7 +255,7 @@ namespace CSPGF.Parse
                 // TempLog.LogMessageToFile("Case before <d,r>");
                 SymbolCat arg = (SymbolCat)sym;
                 int d = arg.Arg;
-                int r = arg.Cons;
+                int r = arg.Label;
                 int bd = item.Domain[d];
 
                 // PREDICT
@@ -309,7 +309,7 @@ namespace CSPGF.Parse
                 TempLog.LogMessageToFile("Case before {d,r}");*/
                 SymbolLit litSym = (SymbolLit)sym;
                 int d = litSym.Arg;
-                int r = litSym.Cons;
+                int r = litSym.Label;
                 int bd = item.Domain[d];
 
                 // LITERAL
@@ -351,7 +351,7 @@ namespace CSPGF.Parse
                     HashSet<ActiveItem> items = this.GetActiveSet(cat.Value, this.active[this.position]);
                     foreach (ActiveItem ai in items)
                     {
-                        int r = ((SymbolCat)ai.CurrentSymbol()).Cons;
+                        int r = ((SymbolCat)ai.CurrentSymbol()).Label;
                         ActiveItem i = new ActiveItem(this.position, cat.Value, f, b, r, 0);
                         this.agenda.Push(i);
                     }
