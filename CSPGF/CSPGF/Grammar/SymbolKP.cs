@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AlternToksSymbol.cs" company="None">
+// <copyright file="SymbolKP.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -39,7 +39,7 @@ namespace CSPGF.Grammar
     internal class SymbolKP : SymbolKS // SymKP
     {
         /// <summary>
-        /// Initializes a new instance of the AlternToksSymbol class.
+        /// Initializes a new instance of the SymbolKP class.
         /// </summary>
         /// <param name="toks">List of tokens</param>
         /// <param name="alts">List of alternatives</param>

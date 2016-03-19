@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class LitString : Literal
     {
         /// <summary>
-        /// Initializes a new instance of the StringLit class.
+        /// Initializes a new instance of the LitString class.
         /// </summary>
         /// <param name="value">String literal</param>
         public LitString(string value)

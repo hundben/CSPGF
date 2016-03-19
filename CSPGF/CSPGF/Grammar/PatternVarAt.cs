@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CatFun.cs" company="None">
+// <copyright file="PatternVarAt.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,29 +31,38 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Weighted Ident class
+    /// Variable as Pattern class
     /// </summary>
-    internal class CatFun
+    internal class PatternVarAt : Pattern  // PAs
     {
         /// <summary>
-        /// Initializes a new instance of the CatFun class.
+        /// Initializes a new instance of the PatternVarAt class.
         /// </summary>
-        /// <param name="ident">The identifier</param>
-        /// <param name="weight">The weight</param>
-        public CatFun(string ident, double weight)
+        /// <param name="name">Name of pattern</param>
+        /// <param name="patt">The Pattern</param>
+        public PatternVarAt(string name, Pattern patt)
         {
-            this.Ident = ident;
-            this.Weight = weight;
+            this.Name = name;
+            this.Patt = patt;
         }
 
         /// <summary>
-        /// Gets the weight
+        /// Gets name of pattern
         /// </summary>
-        public double Weight { get; private set; }
+        public string Name { get; private set; }
 
         /// <summary>
-        /// Gets the ident
+        /// Gets pattern
         /// </summary>
-        public string Ident { get; private set; }
+        public Pattern Patt { get; private set; }
+
+        /// <summary>
+        /// Pretty prints the contents of this class
+        /// </summary>
+        /// <returns>Returns a string containing debug information</returns>
+        public override string ToString()
+        {
+            return "Variable as Pattern : [ Variable Name : " + this.Name + " , Pattern : " + this.Patt + "]";
+        }
     }
 }

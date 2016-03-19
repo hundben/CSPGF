@@ -52,7 +52,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Desired languages
         /// </summary>
-        private readonly List<string> languages;
+        private readonly List<string> languages = null;
 
         /// <summary>
         /// If disposed
@@ -65,11 +65,10 @@ namespace CSPGF.Grammar
         /// <param name="ms">MemoryStream for reading the PGF file</param>
         /// <param name="br">BinaryReader for reading the PGF file</param>
         /// <param name="lang">List of languages</param>
-        public NewPGF(MemoryStream ms, BinaryReader br, List<string> lang)
+        public NewPGF(MemoryStream ms, BinaryReader br)
         {
             this.inputstream = ms;
             this.binreader = br;
-            this.languages = lang;
         }
 
         /// <summary>
@@ -245,28 +244,28 @@ namespace CSPGF.Grammar
         /// Reads an AbsFun
         /// </summary>
         /// <returns>Returns the AbsFun</returns>
-        private AbsFun GetAbsFun()
+        private AbstractFunction GetAbsFun()
         {
-            return new AbsFun(this.GetIdent(), this.GetType2(), this.GetInt(), this.inputstream.ReadByte() == 0 ? new Equation[0] : this.GetListEq(), this.GetDouble());
+            return new AbstractFunction(this.GetIdent(), this.GetType2(), this.GetInt(), this.inputstream.ReadByte() == 0 ? new Equation[0] : this.GetListEq(), this.GetDouble());
         }
 
         /// <summary>
         /// Reads an AbsCat
         /// </summary>
         /// <returns>Returns the AbsCat</returns>
-        private AbsCat GetAbsCat()
+        private AbstractCategory GetAbsCat()
         {
-            return new AbsCat(this.GetIdent(), this.GetListHypo(), this.GetListCatFun());
+            return new AbstractCategory(this.GetIdent(), this.GetListHypo(), this.GetListCatFun());
         }
 
         /// <summary>
         /// Reads an list of AbsFun
         /// </summary>
         /// <returns>List of AbsFun</returns>
-        private AbsFun[] GetListAbsFun()
+        private AbstractFunction[] GetListAbsFun()
         {
             int npoz = this.GetInt();
-            AbsFun[] tmp = new AbsFun[npoz];
+            AbstractFunction[] tmp = new AbstractFunction[npoz];
             if (npoz == 0)
             {
                 return tmp;
@@ -284,10 +283,10 @@ namespace CSPGF.Grammar
         /// Reads a list of AbsCat
         /// </summary>
         /// <returns>List of AbsCat</returns>
-        private AbsCat[] GetListAbsCat()
+        private AbstractCategory[] GetListAbsCat()
         {
             int npoz = this.GetInt();
-            AbsCat[] tmp = new AbsCat[npoz];
+            AbstractCategory[] tmp = new AbstractCategory[npoz];
             if (npoz == 0)
             {
                 return tmp;
@@ -431,7 +430,7 @@ namespace CSPGF.Grammar
                     patt = new PatternVar(this.GetIdent());
                     break;
                 case 2: // variable as pattern
-                    patt = new PatternVariableAt(this.GetIdent(), this.GetPattern());
+                    patt = new PatternVarAt(this.GetIdent(), this.GetPattern());
                     break;
                 case 3: // wild card pattern
                     patt = new PatternWildCard();
@@ -897,15 +896,15 @@ namespace CSPGF.Grammar
         /// Reads a list of CatFuns
         /// </summary>
         /// <returns>List of CatFuns</returns>
-        private CatFun[] GetListCatFun()
+        private CategoryFunction[] GetListCatFun()
         {
             int nb = this.GetInt();
-            CatFun[] wids = new CatFun[nb];
+            CategoryFunction[] wids = new CategoryFunction[nb];
             for (int i = 0; i < nb; i++)
             {
                 double w = this.GetDouble();
                 string s = this.GetIdent();
-                wids[i] = new CatFun(s, w);
+                wids[i] = new CategoryFunction(s, w);
             }
 
             return wids;
@@ -928,7 +927,8 @@ namespace CSPGF.Grammar
             int ii = this.GetInt();
             rez = (ii << 7) | (rez & 0x7f);
             return rez;
-            //return (int)this.binreader.ReadUInt32();
+
+            // return (int)this.binreader.ReadUInt32();
         }
 
         /// <summary>

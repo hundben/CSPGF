@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class PatternVar : Pattern // PVar
     {
         /// <summary>
-        /// Initializes a new instance of the VarPattern class.
+        /// Initializes a new instance of the PatternVar class.
         /// </summary>
         /// <param name="name">Name of pattern</param>
         public PatternVar(string name)

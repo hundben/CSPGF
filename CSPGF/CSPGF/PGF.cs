@@ -141,20 +141,12 @@ namespace CSPGF
         /// <returns>List of languages</returns>
         public List<string> GetLanguages()
         {
-            //Better version?
-            return new List<string>(this.concretes.Keys);
-            /*Even better? Using LINQ though.
-            return this.concretes.Keys.ToList<string>();*/
-            
-            /*List<string> tmp = new List<string>();
-            foreach (KeyValuePair<string, Concrete> kvp in this.concretes)
-            {
-                tmp.Add(kvp.Key);
-            }
 
-            return tmp;*/
+            return new List<string>(this.concretes.Keys);
+            /*Better version?
+            return this.concretes.Keys.ToList<string>();*/
         }
-        
+
         /// <summary>
         /// Reads a PGF-file and returns a PGF-object.
         /// </summary>

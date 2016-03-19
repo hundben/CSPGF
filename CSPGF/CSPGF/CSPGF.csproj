@@ -127,10 +127,14 @@
     <Compile Include="Linearizer\RezDesc.cs" />
     <Compile Include="Linearizer\Tokn.cs" />
     <Compile Include="Parser\ActiveItem.cs" />
-    <Compile Include="Parser\ActiveItem2.cs" />
+    <Compile Include="Parser\ActiveItem2.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Parser\Application.cs" />
     <Compile Include="Parser\Chart.cs" />
-    <Compile Include="Parser\Chart2.cs" />
+    <Compile Include="Parser\Chart2.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Parser\Literal.cs" />
     <Compile Include="Parser\MetaVariable.cs" />
     <Compile Include="Parser\ParseState.cs" />
@@ -150,8 +154,8 @@
     <Compile Include="Properties\AssemblyInfo.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
-    <Compile Include="Grammar\AbsCat.cs" />
-    <Compile Include="Grammar\AbsFun.cs" />
+    <Compile Include="Grammar\AbstractCategory.cs" />
+    <Compile Include="Grammar\AbstractFunction.cs" />
     <Compile Include="Grammar\ExprFun.cs" />
     <Compile Include="Grammar\Abstract.cs" />
     <Compile Include="Grammar\Alternative.cs" />
@@ -187,10 +191,10 @@
     <Compile Include="Grammar\SymbolKS.cs" />
     <Compile Include="Grammar\Type.cs" />
     <Compile Include="Grammar\ExprTyped.cs" />
-    <Compile Include="Grammar\PatternVariableAt.cs" />
+    <Compile Include="Grammar\PatternVarAt.cs" />
     <Compile Include="Grammar\ExprVar.cs" />
     <Compile Include="Grammar\PatternVar.cs" />
-    <Compile Include="Grammar\CatFun.cs" />
+    <Compile Include="Grammar\CategoryFunction.cs" />
     <Compile Include="Grammar\PatternWildCard.cs" />
     <Compile Include="SimpleTranslator.cs" />
     <Compile Include="UnitTests\Tests.cs" />
@@ -229,7 +233,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <Compile Include="Parser\ParseState2.cs" />
+    <Compile Include="Parser\ParseState2.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />

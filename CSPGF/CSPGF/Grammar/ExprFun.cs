@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AbsNameExp.cs" company="None">
+// <copyright file="ExprFun.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class ExprFun : Expr // EFun?????
     {
         /// <summary>
-        /// Initializes a new instance of the AbsNameExp class.
+        /// Initializes a new instance of the ExprFun class.
         /// </summary>
         /// <param name="name">Name of expression</param>
         public ExprFun(string name)

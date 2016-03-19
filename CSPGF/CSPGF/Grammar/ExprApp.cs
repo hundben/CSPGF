@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class ExprApp : Expr // EApp
     {
         /// <summary>
-        /// Initializes a new instance of the AppExp class.
+        /// Initializes a new instance of the ExprApp class.
         /// </summary>
         /// <param name="leftExp">Left expression</param>
         /// <param name="rightExp">Right expression</param>

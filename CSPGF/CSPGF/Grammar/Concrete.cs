@@ -69,7 +69,7 @@ namespace CSPGF.Grammar
 
             // Populate helper dictionary for production set
             // TODO check if productionsets can have the same ID?
-            Productions = new Dictionary<int, List<Production>>();
+            this.Productions = new Dictionary<int, List<Production>>();
 
             foreach (ProductionSet ps in this.Prods)
             {
@@ -79,7 +79,7 @@ namespace CSPGF.Grammar
                     tempProd.Add(p);
                 }
 
-                Productions[ps.ID] = tempProd;
+                this.Productions[ps.ID] = tempProd;
             }
         }
 
@@ -114,7 +114,7 @@ namespace CSPGF.Grammar
         public LinDef[] LinDefs { get; private set; }
 
         /// <summary>
-        /// 
+        /// Gets a dictionary of productions
         /// </summary>
         public Dictionary<int, List<Production>> Productions { get; private set; }
 

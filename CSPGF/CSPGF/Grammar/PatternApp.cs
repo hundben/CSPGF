@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class PatternApp : Pattern // PApp
     {
         /// <summary>
-        /// Initializes a new instance of the AppPattern class.
+        /// Initializes a new instance of the PatternApp class.
         /// </summary>
         /// <param name="name">Name of AppPattern</param>
         /// <param name="patts">List of patterns</param>

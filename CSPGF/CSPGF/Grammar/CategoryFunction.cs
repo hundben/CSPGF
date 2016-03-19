@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AbsCat.cs" company="None">
+// <copyright file="CategoryFunction.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,58 +31,29 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Abstract Category
+    /// Weighted Ident class
     /// </summary>
-    internal class AbsCat
+    internal class CategoryFunction
     {
         /// <summary>
-        /// Initializes a new instance of the AbsCat class.
+        /// Initializes a new instance of the CategoryFunction class.
         /// </summary>
-        /// <param name="name">Name of category</param>
-        /// <param name="hypos">List of hypos</param>
-        /// <param name="functions">List of weightedidents</param>
-        public AbsCat(string name, Hypo[] hypos, CatFun[] functions)
+        /// <param name="ident">The identifier</param>
+        /// <param name="weight">The weight</param>
+        public CategoryFunction(string ident, double weight)
         {
-            this.Name = name;
-            this.Hypos = hypos;
-            this.Functions = functions;
+            this.Ident = ident;
+            this.Weight = weight;
         }
 
         /// <summary>
-        /// Gets the name of the abstract category
+        /// Gets the weight
         /// </summary>
-        public string Name { get; private set; }
+        public double Weight { get; private set; }
 
         /// <summary>
-        /// Gets a list of hypos.
+        /// Gets the ident
         /// </summary>
-        public Hypo[] Hypos { get; private set; }
-
-        /// <summary>
-        /// Gets a list of WeightedIdents
-        /// </summary>
-        public CatFun[] Functions { get; private set; }
-
-        /// <summary>
-        /// Pretty prints the contents of this class
-        /// </summary>
-        /// <returns>Returns a string containing debug information</returns>
-        public override string ToString()
-        {
-            string ss = "Name : " + this.Name + " , Hypotheses : (";
-            foreach (Hypo h in this.Hypos) 
-            {
-                ss += " " + h;
-            }
-
-            ss += ") , String Names : (";
-            foreach (CatFun w in this.Functions) 
-            {
-                ss += " " + w;
-            }
-
-            ss += ")";
-            return ss;
-        }
+        public string Ident { get; private set; }
     }
 }

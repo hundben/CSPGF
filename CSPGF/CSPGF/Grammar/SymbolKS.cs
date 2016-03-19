@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ToksSymbol.cs" company="None">
+// <copyright file="SymbolKS.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -39,7 +39,7 @@ namespace CSPGF.Grammar
     internal class SymbolKS : Symbol // SymKS
     {
         /// <summary>
-        /// Initializes a new instance of the ToksSymbol class.
+        /// Initializes a new instance of the SymbolKS class.
         /// </summary>
         /// <param name="toks">List of strings</param>
         public SymbolKS(string[] toks)

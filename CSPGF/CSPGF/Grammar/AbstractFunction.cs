@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="PatternVariableAt.cs" company="None">
+// <copyright file="AbstractFuncion.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,30 +31,51 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Variable as Pattern class
+    /// Abstract Function
     /// </summary>
-    internal class PatternVariableAt : Pattern  // PAs
+    internal class AbstractFunction
     {
         /// <summary>
-        /// Initializes a new instance of the VarAsPattern class.
+        /// Initializes a new instance of the AbsFun class.
         /// </summary>
-        /// <param name="name">Name of pattern</param>
-        /// <param name="patt">The Pattern</param>
-        public PatternVariableAt(string name, Pattern patt)
+        /// <param name="str">Name of the function</param>
+        /// <param name="type">Type of function</param>
+        /// <param name="arit">Some integer</param>
+        /// <param name="eqs">List of Eqs</param>
+        /// <param name="weight">Weight of function</param>
+        public AbstractFunction(string str, Type type, int arit, Equation[] eqs, double weight)
         {
-            this.Name = name;
-            this.Patt = patt;
+            this.Name = str;
+            this.Type = type;
+            this.Arit = arit;
+            this.Eqs = eqs;
+            this.Weight = weight;
         }
 
         /// <summary>
-        /// Gets name of pattern
+        /// Gets the name of the functions
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// Gets pattern
+        /// Gets the type of the function
         /// </summary>
-        public Pattern Patt { get; private set; }
+        public Type Type { get; private set; }
+
+        /// <summary>
+        /// Gets some integer
+        /// </summary>
+        public int Arit { get; private set; }
+
+        /// <summary>
+        /// Gets a list of Eqs
+        /// </summary>
+        public Equation[] Eqs { get; private set; }
+
+        /// <summary>
+        /// Gets the weight of the functions
+        /// </summary>
+        public double Weight { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -62,7 +83,14 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Variable as Pattern : [ Variable Name : " + this.Name + " , Pattern : " + this.Patt + "]";
+            string sb = "<function name = " + this.Name + " type = " + this.Type + " arity = " + this.Arit + " equations = [";
+            foreach (Equation e in this.Eqs) 
+            {
+                sb += e + ", ";
+            }
+
+            sb += "] weight = " + this.Weight + " > ";
+            return sb;
         }
     }
 }

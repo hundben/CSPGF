@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class PatternLiteral : Pattern // PLit
     {
         /// <summary>
-        /// Initializes a new instance of the LiteralPattern class.
+        /// Initializes a new instance of the PatternLiteral class.
         /// </summary>
         /// <param name="value">The RLiteral</param>
         public PatternLiteral(Literal value)

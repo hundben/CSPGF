@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AbsFun.cs" company="None">
+// <copyright file="AbstractCategory.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,51 +31,37 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Abstract Function
+    /// Abstract Category
     /// </summary>
-    internal class AbsFun
+    internal class AbstractCategory
     {
         /// <summary>
-        /// Initializes a new instance of the AbsFun class.
+        /// Initializes a new instance of the AbsCat class.
         /// </summary>
-        /// <param name="str">Name of the function</param>
-        /// <param name="type">Type of function</param>
-        /// <param name="arit">Some integer</param>
-        /// <param name="eqs">List of Eqs</param>
-        /// <param name="weight">Weight of function</param>
-        public AbsFun(string str, Type type, int arit, Equation[] eqs, double weight)
+        /// <param name="name">Name of category</param>
+        /// <param name="hypos">List of hypos</param>
+        /// <param name="functions">List of weightedidents</param>
+        public AbstractCategory(string name, Hypo[] hypos, CategoryFunction[] functions)
         {
-            this.Name = str;
-            this.Type = type;
-            this.Arit = arit;
-            this.Eqs = eqs;
-            this.Weight = weight;
+            this.Name = name;
+            this.Hypos = hypos;
+            this.Functions = functions;
         }
 
         /// <summary>
-        /// Gets the name of the functions
+        /// Gets the name of the abstract category
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// Gets the type of the function
+        /// Gets a list of hypos.
         /// </summary>
-        public Type Type { get; private set; }
+        public Hypo[] Hypos { get; private set; }
 
         /// <summary>
-        /// Gets some integer
+        /// Gets a list of WeightedIdents
         /// </summary>
-        public int Arit { get; private set; }
-
-        /// <summary>
-        /// Gets a list of Eqs
-        /// </summary>
-        public Equation[] Eqs { get; private set; }
-
-        /// <summary>
-        /// Gets the weight of the functions
-        /// </summary>
-        public double Weight { get; private set; }
+        public CategoryFunction[] Functions { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -83,14 +69,20 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            string sb = "<function name = " + this.Name + " type = " + this.Type + " arity = " + this.Arit + " equations = [";
-            foreach (Equation e in this.Eqs) 
+            string ss = "Name : " + this.Name + " , Hypotheses : (";
+            foreach (Hypo h in this.Hypos) 
             {
-                sb += e + ", ";
+                ss += " " + h;
             }
 
-            sb += "] weight = " + this.Weight + " > ";
-            return sb;
+            ss += ") , String Names : (";
+            foreach (CategoryFunction w in this.Functions) 
+            {
+                ss += " " + w;
+            }
+
+            ss += ")";
+            return ss;
         }
     }
 }

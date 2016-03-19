@@ -49,7 +49,7 @@ namespace CSPGF.Grammar
         /// <param name="flags">Abstract flags</param>
         /// <param name="absFuns">Abstract functions</param>
         /// <param name="absCats">Abstract categories</param>
-        public Abstract(string name, Dictionary<string, Literal> flags, AbsFun[] absFuns, AbsCat[] absCats)
+        public Abstract(string name, Dictionary<string, Literal> flags, AbstractFunction[] absFuns, AbstractCategory[] absCats)
         {
             this.Name = name;
             this.flags = flags;
@@ -65,12 +65,12 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Gets a list of abstract functions
         /// </summary>
-        public AbsFun[] AbsFuns { get; private set; }
+        public AbstractFunction[] AbsFuns { get; private set; }
 
         /// <summary>
         /// Gets a list of abstract categories
         /// </summary>
-        public AbsCat[] AbsCats { get; private set; }
+        public AbstractCategory[] AbsCats { get; private set; }
 
         /// <summary>
         /// Returns the starting category, or "Sentence" if it doesn't exist.
@@ -104,13 +104,13 @@ namespace CSPGF.Grammar
             }
 
             ss += ") , Abstract Functions : (";
-            foreach (AbsFun a in this.AbsFuns) 
+            foreach (AbstractFunction a in this.AbsFuns) 
             {
                 ss += " " + a;
             }
 
             ss += ") , Abstract Categories : (";
-            foreach (AbsCat a in this.AbsCats) 
+            foreach (AbstractCategory a in this.AbsCats) 
             {
                 ss += " " + a;
             }

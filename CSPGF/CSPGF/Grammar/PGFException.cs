@@ -40,7 +40,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Initializes a new instance of the PGFException class.
         /// </summary>
-        /// <param name="str">The error</param>
+        /// <param name="msg">Exception text</param>
         public PGFException(string msg) : base(msg)
         {
         }
@@ -48,7 +48,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Initializes a new instance of the PGFException class.
         /// </summary>
-        /// <param name="str">Exception message</param>
+        /// <param name="msg">Exception message</param>
         /// <param name="exc">Base Exception</param>
         public PGFException(string msg, Exception exc) : base(msg, exc)
         {

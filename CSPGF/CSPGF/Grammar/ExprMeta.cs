@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class ExprMeta : Expr // EMeta
     {
         /// <summary>
-        /// Initializes a new instance of the MetaExp class.
+        /// Initializes a new instance of the ExprMeta class.
         /// </summary>
         /// <param name="id">Expression id</param>
         public ExprMeta(int id)

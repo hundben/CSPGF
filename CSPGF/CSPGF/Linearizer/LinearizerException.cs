@@ -40,7 +40,7 @@ namespace CSPGF
         /// <summary>
         /// Initializes a new instance of the LinearizerException class.
         /// </summary>
-        /// <param name="str">The error</param>
+        /// <param name="msg">The error</param>
         public LinearizerException(string msg) : base(msg)
         {
         }
