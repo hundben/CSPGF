@@ -82,22 +82,66 @@ namespace CSPGF.Parse
                     var sym = lin[item.dot];
                     if (sym is SymbolCat)
                     {
-                        // TODO
+                        var newSym = (SymbolCat)sym;
+                        var fid = item.args[newSym.Arg];
+                        var label = newSym.Label;
+
+                        var items = this.chart.lookupAC(fid, label);
+                        if (items.Count > 0)
+                        {
+                            var rules = this.chart.expandForest(fid);
+                            foreach(ProductionApply rule in rules)
+                            {
+                                var newAI = new ActiveItem2(this.chart.offset, 0, rule.Function, rule.Function.Sequences[label].ToList<Symbol>(), rule.Domain().ToList<int>(), fid, label);
+                                agenda.Add(newAI);
+                            }
+
+                            List<ActiveItem2> temp = new List<ActiveItem2>();
+                            temp.Add(item);
+                            this.chart.insertAC(fid, label, temp);
+                        }
+                        else
+                        {
+                            bool isMember = false;
+                            foreach (ActiveItem2 ai in items)
+                            {
+                                if (ai.Equals(item))
+                                {
+                                    isMember = true;
+                                    break;
+                                }
+                            }
+
+                            if (!isMember)
+                            {
+                                items.Add(item);
+
+                                var fid2 = this.chart.lookupPC(fid, label, this.chart.offset);
+                                if (fid2.HasValue)
+                                {
+                                    agenda.Add(item.shiftOverArg(newSym.Arg, fid2.Value));
+                                }
+                            }
+                        }
                     }
                     else if (sym is SymbolLit)
                     {
+                        var newSym = (SymbolLit)sym;
                         // TODO
                     }
                     else if (sym is SymbolKS)
                     {
+                        var newSym = (SymbolKS)sym;
                         // TODO
                     }
                     else if (sym is SymbolKP)
                     {
+                        var newSym = (SymbolKP)sym;
                         // TODO
                     }
                     else if (sym is SymbolVar)
                     {
+                        var newSym = (SymbolVar)sym;
                         // TODO
                     }
                 }
