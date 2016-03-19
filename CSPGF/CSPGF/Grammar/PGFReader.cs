@@ -76,19 +76,6 @@ namespace CSPGF.Grammar
         }
 
         /// <summary>
-        /// Initializes a new instance of the PGFReader class with the desired languages.
-        /// </summary>
-        /// <param name="filename">File to read from</param>
-        /// <param name="languages">Desired languages</param>
-        public PGFReader(string filename, List<string> languages)
-        {
-            this.inputstream = new MemoryStream(File.ReadAllBytes(filename));
-            this.binreader = new BinaryReader(this.inputstream);
-            this.languages = languages;
-            this.version = new int[2];
-        }
-
-        /// <summary>
         /// Finalizes an instance of the PGFReader class.
         /// </summary>
         ~PGFReader()
@@ -116,7 +103,9 @@ namespace CSPGF.Grammar
                 Dictionary<string, RLiteral> flags = pgf.GetFlags(index);
                 Abstract abs = pgf.GetAbstract();
                 this.CheckLangs();
-                return new PGF(this.version[0], this.version[1], flags, abs, pgf.GetConcretes(abs.StartCat(), index));
+                PGF pgfobj = new PGF(this.version[0], this.version[1], flags, abs, pgf.GetConcretes(abs.StartCat(), index));
+                pgf.Dispose();
+                return pgfobj;
             }
             else if (this.version[0] == 2 && this.version[1] == 1)
             {
@@ -124,11 +113,13 @@ namespace CSPGF.Grammar
                 Dictionary<string, RLiteral> flags = pgf.GetFlags(index);
                 Abstract abs = pgf.GetAbstract();
                 this.CheckLangs();
-                return new PGF(this.version[0], this.version[1], flags, abs, pgf.GetConcretes(abs.StartCat(), index));
+                PGF pgfobj = new PGF(this.version[0], this.version[1], flags, abs, pgf.GetConcretes(abs.StartCat(), index));
+                pgf.Dispose();
+                return pgfobj;
             }
             else
             {
-                throw new Exception("This library does not support this version of the PGF file format.");
+                throw new PGFException("This library does not support this version of the PGF file format.");
             }
         }
 

@@ -421,7 +421,7 @@ namespace CSPGF.Linearize
                 }
                 else
                 {
-                    throw new Exception("Undefined construction for expressions !!!");
+                    throw new LinearizerException("Undefined construction for expressions !!!");
                 }
             }
             else
@@ -662,7 +662,6 @@ namespace CSPGF.Linearize
             }
             else if (s is SymbolLit)
             {
-                // TODO: Fix? D:
                 return this.GetArg(((SymbolLit)s).Arg, ((SymbolLit)s).Label, cncTypes, linTables);
             }
             else

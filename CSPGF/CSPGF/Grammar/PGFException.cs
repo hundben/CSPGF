@@ -42,8 +42,23 @@ namespace CSPGF.Grammar
         /// Initializes a new instance of the PGFException class.
         /// </summary>
         /// <param name="str">The error</param>
-        public PGFException(string str)
-            : base(str)
+        public PGFException(string str) : base(str)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the PGFException class.
+        /// </summary>
+        /// <param name="str">Exception message</param>
+        /// <param name="exc">Base Exception</param>
+        public PGFException(string str, Exception exc) :base(str, exc)
+        {
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the PGFException class.
+        /// </summary>
+        public PGFException()
         {
         }
 
