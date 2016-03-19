@@ -558,7 +558,7 @@ namespace CSPGF.Linearize
             {
                 ProductionApply ap = (ProductionApply)p;
                 int[] args = ap.Domain();
-                CncFun cncFun = ap.Function;
+                ConcreteFunction cncFun = ap.Function;
                 List<ConcreteType> vtype = new List<ConcreteType>();
                 if (f.Equals("_V"))
                 {

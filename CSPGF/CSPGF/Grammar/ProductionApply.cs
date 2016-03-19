@@ -49,7 +49,7 @@ namespace CSPGF.Grammar
         /// <param name="fId">Function id</param>
         /// <param name="function">Concrete function</param>
         /// <param name="domain">List of domains</param>
-        public ProductionApply(int fId, CncFun function, int[] domain) : base(0, fId)
+        public ProductionApply(int fId, ConcreteFunction function, int[] domain) : base(0, fId)
         {
             this.Function = function;
             this.dom = domain;
@@ -58,7 +58,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Gets the concrete function.
         /// </summary>
-        public CncFun Function { get; private set; }
+        public ConcreteFunction Function { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class

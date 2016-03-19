@@ -489,7 +489,7 @@ namespace CSPGF.Grammar
             // We don't use the print names, but we need to read them to skip them
             this.GetListPrintName();
             Symbol[][] seqs = this.GetListSequence();
-            CncFun[] cncFuns = this.GetListCncFun(seqs);
+            ConcreteFunction[] cncFuns = this.GetListCncFun(seqs);
 
             // We don't need the lindefs for now but again we need to
             // parse them to skip them
@@ -629,7 +629,7 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="sequences">List of sequences</param>
         /// <returns>Returns the Concrete Function</returns>
-        private CncFun GetCncFun(Symbol[][] sequences)
+        private ConcreteFunction GetCncFun(Symbol[][] sequences)
         {
             string name = this.GetIdent();
             int[] seqIndices = this.GetListInt();
@@ -639,7 +639,7 @@ namespace CSPGF.Grammar
                 seqs[i] = sequences[seqIndices[i]];
             }
 
-            return new CncFun(name, seqs);
+            return new ConcreteFunction(name, seqs);
         }
 
         /// <summary>
@@ -647,10 +647,10 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="sequences">List of Sequences</param>
         /// <returns>List of Concrete Functions</returns>
-        private CncFun[] GetListCncFun(Symbol[][] sequences)
+        private ConcreteFunction[] GetListCncFun(Symbol[][] sequences)
         {
             int npoz = this.GetInt();
-            CncFun[] cncfuns = new CncFun[npoz];
+            ConcreteFunction[] cncfuns = new ConcreteFunction[npoz];
             for (int i = 0; i < npoz; i++)
             {
                 cncfuns[i] = this.GetCncFun(sequences);
@@ -697,7 +697,7 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="cncFuns">List of Concrete Functions</param>
         /// <returns>Returns the ProductionSet</returns>
-        private ProductionSet GetProductionSet(CncFun[] cncFuns)
+        private ProductionSet GetProductionSet(ConcreteFunction[] cncFuns)
         {
             int id = this.GetInt();
             return new ProductionSet(id, this.GetListProduction(id, cncFuns));
@@ -708,7 +708,7 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="cncFuns">List of Concrete Functions</param>
         /// <returns>List of ProductionSets</returns>
-        private ProductionSet[] GetListProductionSet(CncFun[] cncFuns)
+        private ProductionSet[] GetListProductionSet(ConcreteFunction[] cncFuns)
         {
             int npoz = this.GetInt();
             ProductionSet[] tmp = new ProductionSet[npoz];
@@ -726,7 +726,7 @@ namespace CSPGF.Grammar
         /// <param name="leftCat">Left hand side category</param>
         /// <param name="cncFuns">List of Concrete Functions</param>
         /// <returns>List of Productions</returns>
-        private Production[] GetListProduction(int leftCat, CncFun[] cncFuns)
+        private Production[] GetListProduction(int leftCat, ConcreteFunction[] cncFuns)
         {
             int npoz = this.GetInt();
             Production[] tmp = new Production[npoz];
@@ -744,7 +744,7 @@ namespace CSPGF.Grammar
         /// <param name="leftCat">Left hand side category</param>
         /// <param name="cncFuns">List of Concrete Functions</param>
         /// <returns>Returns the Production</returns>
-        private Production GetProduction(int leftCat, CncFun[] cncFuns)
+        private Production GetProduction(int leftCat, ConcreteFunction[] cncFuns)
         {
             int sel = this.inputstream.ReadByte();
             Production prod;
@@ -785,14 +785,14 @@ namespace CSPGF.Grammar
         /// Read a list of Concrete Categories
         /// </summary>
         /// <returns>Dictionary of name/category</returns>
-        private Dictionary<string, CncCat> GetListCncCat()
+        private Dictionary<string, ConcreteCategory> GetListCncCat()
         {
             int npoz = this.GetInt();
-            Dictionary<string, CncCat> cncCats = new Dictionary<string, CncCat>();
+            Dictionary<string, ConcreteCategory> cncCats = new Dictionary<string, ConcreteCategory>();
             for (int i = 0; i < npoz; i++)
             {
                 string name = this.GetIdent();
-                cncCats.Add(name, new CncCat(name, this.GetInt(), this.GetInt(), this.GetListString()));
+                cncCats.Add(name, new ConcreteCategory(name, this.GetInt(), this.GetInt(), this.GetListString()));
             }
 
             return cncCats;

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CncFun.cs" company="None">
+// <copyright file="ConcreteFunction.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -36,14 +36,14 @@ namespace CSPGF.Grammar
     /// Concrete function
     /// </summary>
     [Serializable]
-    internal class CncFun
+    internal class ConcreteFunction
     {
         /// <summary>
-        /// Initializes a new instance of the CncFun class.
+        /// Initializes a new instance of the ConcreteFunction class.
         /// </summary>
         /// <param name="name">Name of function</param>
         /// <param name="sequences">List of list of symbols</param>
-        public CncFun(string name, Symbol[][] sequences)
+        public ConcreteFunction(string name, Symbol[][] sequences)
         {
             this.Name = name;
             this.Sequences = sequences;
@@ -79,9 +79,9 @@ namespace CSPGF.Grammar
 
         /*public override bool Equals(object obj)
         {
-            if (obj is CncFun)
+            if (obj is ConcreteFunction)
             {
-                CncFun fun = (CncFun)obj;
+                ConcreteFunction fun = (ConcreteFunction)obj;
                 return this.Name.Equals(fun.Name) && this.Sequences.Equals(fun.Sequences);
             }
             return false;

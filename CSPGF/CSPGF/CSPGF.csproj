@@ -164,8 +164,8 @@
     <Compile Include="Grammar\ProductionApply.cs" />
     <Compile Include="Grammar\PatternApp.cs" />
     <Compile Include="Grammar\SymbolCat.cs" />
-    <Compile Include="Grammar\CncCat.cs" />
-    <Compile Include="Grammar\CncFun.cs" />
+    <Compile Include="Grammar\ConcreteCategory.cs" />
+    <Compile Include="Grammar\ConcreteFunction.cs" />
     <Compile Include="Grammar\ProductionCoerce.cs" />
     <Compile Include="Grammar\Concrete.cs" />
     <Compile Include="Grammar\Equation.cs" />

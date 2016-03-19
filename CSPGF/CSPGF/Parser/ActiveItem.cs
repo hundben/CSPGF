@@ -30,7 +30,7 @@
 
 namespace CSPGF.Parse
 {
-    using CncFun = Grammar.CncFun;
+    using ConcreteFunction = Grammar.ConcreteFunction;
     using Symbol = Grammar.Symbol;
 
     /// <summary>
@@ -47,7 +47,7 @@ namespace CSPGF.Parse
         /// <param name="domain">A list of the domains.</param>
         /// <param name="constituent">The constituent to use.</param>
         /// <param name="position">The position (the </param>
-        public ActiveItem(int begin, int category, CncFun function, int[] domain, int constituent, int position)
+        public ActiveItem(int begin, int category, ConcreteFunction function, int[] domain, int constituent, int position)
         {
             this.Begin = begin;
             this.Category = category;
@@ -70,7 +70,7 @@ namespace CSPGF.Parse
         /// <summary>
         /// Gets the value of function.
         /// </summary>
-        public CncFun Function { get; private set; }
+        public ConcreteFunction Function { get; private set; }
 
         /// <summary>
         /// Gets the value of domain.

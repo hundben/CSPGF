@@ -46,7 +46,7 @@ namespace CSPGF.Parse
         /// <param name="startCat">The start category.</param>
         /// <param name="length">The length</param>
         /// <returns>A list of trees.</returns>
-        public List<Tree> BuildTrees(Chart chart, CncCat startCat, int length)
+        public List<Tree> BuildTrees(Chart chart, ConcreteCategory startCat, int length)
         {
             List<Tree> temp = new List<Tree>();
             for (int catID = startCat.FirstFID; catID < startCat.LastFID + 1; catID++) 

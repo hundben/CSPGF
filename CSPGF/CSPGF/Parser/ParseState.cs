@@ -42,7 +42,7 @@ namespace CSPGF.Parse
         /// <summary>
         /// Start category
         /// </summary>
-        private CncCat startCat;
+        private ConcreteCategory startCat;
 
         /// <summary>
         /// The parse tree.
@@ -223,7 +223,7 @@ namespace CSPGF.Parse
         {
             int j = item.Begin;
             int a = item.Category;
-            CncFun f = item.Function;
+            ConcreteFunction f = item.Function;
             int[] b = item.Domain;
             int l = item.Constituent;
             int p = item.Position;

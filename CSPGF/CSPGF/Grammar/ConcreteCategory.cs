@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CncCat.cs" company="None">
+// <copyright file="ConcreteCategory.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -43,16 +43,16 @@ namespace CSPGF.Grammar
     /// Here we will keep only the indices.
     /// </summary>
     [Serializable]
-    internal class CncCat
+    internal class ConcreteCategory
     {
         /// <summary>
-        /// Initializes a new instance of the CncCat class.
+        /// Initializes a new instance of the ConcreteCategory class.
         /// </summary>
         /// <param name="name">Name of category</param>
         /// <param name="firstFId">First id</param>
         /// <param name="lastFId">Last id</param>
         /// <param name="labels">List of labels</param>
-        public CncCat(string name, int firstFId, int lastFId, string[] labels)
+        public ConcreteCategory(string name, int firstFId, int lastFId, string[] labels)
         {
             this.Name = name;
             this.FirstFID = firstFId;
