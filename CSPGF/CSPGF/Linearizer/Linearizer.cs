@@ -251,8 +251,7 @@ namespace CSPGF.Linearize
 
             foreach (KeyValuePair<int, HashSet<Production>> kvp in prods)
             {
-                HashSet<Production> setProd = kvp.Value;
-                HashSet<Production> intermRez = this.FilterProdSet1(prods0, setProd);
+                HashSet<Production> intermRez = this.FilterProdSet1(prods0, kvp.Value);
                 if (intermRez.Count != 0)
                 {
                     tempRez.Add(kvp.Key, intermRez);
@@ -263,24 +262,23 @@ namespace CSPGF.Linearize
 
             foreach (KeyValuePair<int, HashSet<Production>> kvp in tempRez)
             {
-                int index = kvp.Key;
                 HashSet<Production> hp = kvp.Value;
-                if (prods0.ContainsKey(index))
+                if (prods0.ContainsKey(kvp.Key))
                 {
-                    if (!prods0[index].SetEquals(hp))
+                    if (!prods0[kvp.Key].SetEquals(hp))
                     {
-                        foreach (Production p in prods0[index])
+                        foreach (Production p in prods0[kvp.Key])
                         {
                             hp.Add(p);
                         }
 
-                        prods1[index] = hp;
+                        prods1[kvp.Key] = hp;
                         areDiff = true;
                     }
                 }
                 else
                 {
-                    prods1[index] = hp;
+                    prods1[kvp.Key] = hp;
                     areDiff = true;
                 }
             }
@@ -296,9 +294,9 @@ namespace CSPGF.Linearize
         /// <returns>True if true</returns>
         private bool FilterRule(Dictionary<int, HashSet<Production>> prods, Production p)
         {
-            ProductionApply ap = p as ProductionApply;
-            if (ap != null)
+            if (p is ProductionApply)
             {
+                ProductionApply ap = (ProductionApply)p;
                 foreach (int i in ap.Domain())
                 {
                     if (!this.ConditionProd(i, prods))
@@ -309,13 +307,14 @@ namespace CSPGF.Linearize
 
                 return true;
             }
-
-            if (p is ProductionCoerce)
+            else if (p is ProductionCoerce)
             {
                 return this.ConditionProd(((ProductionCoerce)p).InitId, prods);
             }
-
-            throw new LinearizerException("The production wasn't either an ApplProduction or a CoerceProduction");
+            else
+            {
+                throw new LinearizerException("The production wasn't either an ProductionApply or a ProductionCoerce");
+            }
         }
 
         /// <summary>
@@ -329,38 +328,34 @@ namespace CSPGF.Linearize
             List<string> rez = new List<string>();
             if (bt is LeafKS)
             {
-                string[] d = ((LeafKS)bt).Tokens;
-                for (int i = d.Length - 1; i >= 0; i--)
+                foreach (string i in ((LeafKS)bt).Tokens.Reverse())
                 {
-                    rez.Add(d[i]);
+                    rez.Add(i);
                 }
 
                 return rez;
             }
             else if (bt is LeafKP)
             {
-                string[] d = ((LeafKP)bt).DefaultTokens;
                 foreach (Alternative alt in ((LeafKP)bt).Alternatives)
                 {
-                    string[] ss2 = alt.Alt2;
-                    foreach (string str in ss2)
+                    foreach (string str in alt.Alt2)
                     {
                         if (after.StartsWith(str))
                         {
-                            string[] ss1 = alt.Alt1;
-                            for (int k = ss1.Length - 1; k >= 0; k--)
+                            foreach (string i in alt.Alt1.Reverse())
                             {
-                                rez.Add(ss1[k]);
+                                rez.Add(i);
                             }
 
                             return rez;
                         }
                     }
                 }
-
-                for (int i = d.Length - 1; i >= 0; i--)
+                
+                foreach (string i in ((LeafKP)bt).DefaultTokens.Reverse())
                 {
-                    rez.Add(d[i]);
+                    rez.Add(i);
                 }
 
                 return rez;
