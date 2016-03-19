@@ -127,6 +127,17 @@ namespace CSPGF.Parse
                     else if (sym is SymbolLit)
                     {
                         var newSym = (SymbolLit)sym;
+                        var fid = item.args[newSym.Arg];
+                        var rules = this.chart.forest[fid];
+                        if (rules.Count > 0)
+                        {
+                            // TODO tokencallback
+                        }
+                        else
+                        {
+                            //var rule = literalCallback
+                        }
+
                         // TODO
                     }
                     else if (sym is SymbolKS)
