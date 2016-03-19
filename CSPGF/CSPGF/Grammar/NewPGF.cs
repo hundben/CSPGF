@@ -425,7 +425,7 @@ namespace CSPGF.Grammar
                 case 0: // application pattern
                     string absFun = this.GetIdent();
                     Pattern[] patts = this.GetListPattern();
-                    patt = new AppPattern(absFun, patts);
+                    patt = new PatternApp(absFun, patts);
                     break;
                 case 1: // variable pattern
                     patt = new PatternVar(this.GetIdent());

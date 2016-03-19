@@ -158,7 +158,7 @@
     <Compile Include="Grammar\SymbolKP.cs" />
     <Compile Include="Grammar\ExprApp.cs" />
     <Compile Include="Grammar\ProductionApply.cs" />
-    <Compile Include="Grammar\AppPattern.cs" />
+    <Compile Include="Grammar\PatternApp.cs" />
     <Compile Include="Grammar\SymbolCat.cs" />
     <Compile Include="Grammar\CncCat.cs" />
     <Compile Include="Grammar\CncFun.cs" />
