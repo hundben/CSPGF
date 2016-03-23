@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="LitSymbol.cs" company="None">
+// <copyright file="SymbolLit.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -39,7 +39,7 @@ namespace CSPGF.Grammar
     internal class SymbolLit : Symbol
     {
         /// <summary>
-        /// Initializes a new instance of the LitSymbol class.
+        /// Initializes a new instance of the SymbolLit class.
         /// {d,r} 
         /// </summary>
         /// <param name="arg">Argument int</param>

@@ -57,7 +57,7 @@ namespace CSPGF.Grammar
         /// <param name="cncCats">Dictionary containing concrete categories</param>
         /// <param name="fId">Function id</param>
         /// <param name="defaultStartCat">Default starting category</param>
-        public Concrete(string name, Dictionary<string, Literal> flags, LinDef[] linDefs, ProductionSet[] prods, Dictionary<string, CncCat> cncCats, int fId, string defaultStartCat)
+        public Concrete(string name, Dictionary<string, Literal> flags, LinDef[] linDefs, ProductionSet[] prods, Dictionary<string, ConcreteCategory> cncCats, int fId, string defaultStartCat)
         {
             this.Name = name;
             this.flags = flags;
@@ -69,7 +69,7 @@ namespace CSPGF.Grammar
 
             // Populate helper dictionary for production set
             // TODO check if productionsets can have the same ID?
-            Productions = new Dictionary<int, List<Production>>();
+            this.Productions = new Dictionary<int, List<Production>>();
 
             foreach (ProductionSet ps in this.Prods)
             {
@@ -79,7 +79,7 @@ namespace CSPGF.Grammar
                     tempProd.Add(p);
                 }
 
-                Productions[ps.ID] = tempProd;
+                this.Productions[ps.ID] = tempProd;
             }
         }
 
@@ -96,7 +96,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Gets the dictionary containing concrete categories
         /// </summary>
-        public Dictionary<string, CncCat> CncCats { get; private set; }
+        public Dictionary<string, ConcreteCategory> CncCats { get; private set; }
 
         /// <summary>
         /// Gets the function id
@@ -114,7 +114,7 @@ namespace CSPGF.Grammar
         public LinDef[] LinDefs { get; private set; }
 
         /// <summary>
-        /// 
+        /// Gets a dictionary of productions
         /// </summary>
         public Dictionary<int, List<Production>> Productions { get; private set; }
 
@@ -122,10 +122,10 @@ namespace CSPGF.Grammar
         /// Gets a list of concrete categories
         /// </summary>
         /// <returns>List of concrete categories</returns>
-        public List<CncCat> GetCncCats()
+        public List<ConcreteCategory> GetCncCats()
         {
-            List<CncCat> tmp = new List<CncCat>();
-            foreach (KeyValuePair<string, CncCat> c in this.CncCats) 
+            List<ConcreteCategory> tmp = new List<ConcreteCategory>();
+            foreach (KeyValuePair<string, ConcreteCategory> c in this.CncCats) 
             {
                 tmp.Add(c.Value);
             }
@@ -137,14 +137,14 @@ namespace CSPGF.Grammar
         /// Returns starting category if it exists, otherwise defaultStartCat.
         /// </summary>
         /// <returns>Starting category</returns>
-        public CncCat GetStartCat()
+        public ConcreteCategory GetStartCat()
         {
             if (this.CncCats.ContainsKey(this.startCat))
             {
                 return this.CncCats[this.startCat];
             }
             
-            return new CncCat(this.startCat, 0, 0, new string[0]);
+            return new ConcreteCategory(this.startCat, 0, 0, new string[0]);
         }
 
         /// <summary>

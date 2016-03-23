@@ -10,7 +10,7 @@ namespace CSPGF.Parse
     class ParseState2
     {
         private Concrete concrete;
-        private CncCat startCat;
+        private ConcreteCategory startCat;
         private Trie items;
         private Chart2 chart;
         private string currentToken;
@@ -20,7 +20,7 @@ namespace CSPGF.Parse
         /// </summary>
         /// <param name="concrete"></param>
         /// <param name="startCat"></param>
-		public ParseState2(Concrete concrete, CncCat startCat)
+		public ParseState2(Concrete concrete, ConcreteCategory startCat)
         {
 
             this.concrete = concrete;
@@ -29,7 +29,7 @@ namespace CSPGF.Parse
             this.items = new Trie();
             this.chart = new Chart2(concrete);
 
-            CncCat tempcat = concrete.GetStartCat();
+            ConcreteCategory tempcat = concrete.GetStartCat();
             for(int fid = tempcat.FirstFID; fid <= tempcat.LastFID; fid++)
             {
                 var prods = this.chart.expandForest(fid);

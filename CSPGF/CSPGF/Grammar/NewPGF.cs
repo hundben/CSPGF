@@ -52,7 +52,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Desired languages
         /// </summary>
-        private readonly List<string> languages;
+        private readonly List<string> languages = null;
 
         /// <summary>
         /// If disposed
@@ -64,12 +64,10 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="ms">MemoryStream for reading the PGF file</param>
         /// <param name="br">BinaryReader for reading the PGF file</param>
-        /// <param name="lang">List of languages</param>
-        public NewPGF(MemoryStream ms, BinaryReader br, List<string> lang)
+        internal NewPGF(MemoryStream ms, BinaryReader br)
         {
             this.inputstream = ms;
             this.binreader = br;
-            this.languages = lang;
         }
 
         /// <summary>
@@ -87,35 +85,6 @@ namespace CSPGF.Grammar
         {
             this.Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        /// <summary>
-        /// Does the actual disposing
-        /// </summary>
-        /// <param name="disposing">If disposing should be done or not</param>
-        public void Dispose(bool disposing)
-        {
-            if (this.disposed)
-            {
-                return;
-            }
-
-            if (disposing)
-            {
-                try
-                {
-                    this.binreader.Close();
-                    this.inputstream.Close();
-                    this.binreader.Dispose();
-                    this.inputstream.Dispose();
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.ToString());
-                }
-            }
-
-            this.disposed = true;
         }
 
         /// <summary>
@@ -176,6 +145,35 @@ namespace CSPGF.Grammar
         internal Abstract GetAbstract()
         {
             return new Abstract(this.GetIdent(), this.GetListFlag(), this.GetListAbsFun(), this.GetListAbsCat());
+        }
+
+        /// <summary>
+        /// Does the actual disposing
+        /// </summary>
+        /// <param name="disposing">If disposing should be done or not</param>
+        private void Dispose(bool disposing)
+        {
+            if (this.disposed)
+            {
+                return;
+            }
+
+            if (disposing)
+            {
+                try
+                {
+                    this.binreader.Close();
+                    this.inputstream.Close();
+                    this.binreader.Dispose();
+                    this.inputstream.Dispose();
+                }
+                catch (Exception e)
+                {
+                    System.Console.WriteLine(e.ToString());
+                }
+            }
+
+            this.disposed = true;
         }
 
         /// <summary>
@@ -245,28 +243,28 @@ namespace CSPGF.Grammar
         /// Reads an AbsFun
         /// </summary>
         /// <returns>Returns the AbsFun</returns>
-        private AbsFun GetAbsFun()
+        private AbstractFunction GetAbsFun()
         {
-            return new AbsFun(this.GetIdent(), this.GetType2(), this.GetInt(), this.inputstream.ReadByte() == 0 ? new Equation[0] : this.GetListEq(), this.GetDouble());
+            return new AbstractFunction(this.GetIdent(), this.GetType2(), this.GetInt(), this.inputstream.ReadByte() == 0 ? new Equation[0] : this.GetListEq(), this.GetDouble());
         }
 
         /// <summary>
         /// Reads an AbsCat
         /// </summary>
         /// <returns>Returns the AbsCat</returns>
-        private AbsCat GetAbsCat()
+        private AbstractCategory GetAbsCat()
         {
-            return new AbsCat(this.GetIdent(), this.GetListHypo(), this.GetListCatFun());
+            return new AbstractCategory(this.GetIdent(), this.GetListHypo(), this.GetListCatFun());
         }
 
         /// <summary>
         /// Reads an list of AbsFun
         /// </summary>
         /// <returns>List of AbsFun</returns>
-        private AbsFun[] GetListAbsFun()
+        private AbstractFunction[] GetListAbsFun()
         {
             int npoz = this.GetInt();
-            AbsFun[] tmp = new AbsFun[npoz];
+            AbstractFunction[] tmp = new AbstractFunction[npoz];
             if (npoz == 0)
             {
                 return tmp;
@@ -284,10 +282,10 @@ namespace CSPGF.Grammar
         /// Reads a list of AbsCat
         /// </summary>
         /// <returns>List of AbsCat</returns>
-        private AbsCat[] GetListAbsCat()
+        private AbstractCategory[] GetListAbsCat()
         {
             int npoz = this.GetInt();
-            AbsCat[] tmp = new AbsCat[npoz];
+            AbstractCategory[] tmp = new AbstractCategory[npoz];
             if (npoz == 0)
             {
                 return tmp;
@@ -425,13 +423,13 @@ namespace CSPGF.Grammar
                 case 0: // application pattern
                     string absFun = this.GetIdent();
                     Pattern[] patts = this.GetListPattern();
-                    patt = new AppPattern(absFun, patts);
+                    patt = new PatternApp(absFun, patts);
                     break;
                 case 1: // variable pattern
                     patt = new PatternVar(this.GetIdent());
                     break;
                 case 2: // variable as pattern
-                    patt = new PatternVariableAt(this.GetIdent(), this.GetPattern());
+                    patt = new PatternVarAt(this.GetIdent(), this.GetPattern());
                     break;
                 case 3: // wild card pattern
                     patt = new PatternWildCard();
@@ -491,7 +489,7 @@ namespace CSPGF.Grammar
             // We don't use the print names, but we need to read them to skip them
             this.GetListPrintName();
             Symbol[][] seqs = this.GetListSequence();
-            CncFun[] cncFuns = this.GetListCncFun(seqs);
+            ConcreteFunction[] cncFuns = this.GetListCncFun(seqs);
 
             // We don't need the lindefs for now but again we need to
             // parse them to skip them
@@ -631,7 +629,7 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="sequences">List of sequences</param>
         /// <returns>Returns the Concrete Function</returns>
-        private CncFun GetCncFun(Symbol[][] sequences)
+        private ConcreteFunction GetCncFun(Symbol[][] sequences)
         {
             string name = this.GetIdent();
             int[] seqIndices = this.GetListInt();
@@ -641,7 +639,7 @@ namespace CSPGF.Grammar
                 seqs[i] = sequences[seqIndices[i]];
             }
 
-            return new CncFun(name, seqs);
+            return new ConcreteFunction(name, seqs);
         }
 
         /// <summary>
@@ -649,10 +647,10 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="sequences">List of Sequences</param>
         /// <returns>List of Concrete Functions</returns>
-        private CncFun[] GetListCncFun(Symbol[][] sequences)
+        private ConcreteFunction[] GetListCncFun(Symbol[][] sequences)
         {
             int npoz = this.GetInt();
-            CncFun[] cncfuns = new CncFun[npoz];
+            ConcreteFunction[] cncfuns = new ConcreteFunction[npoz];
             for (int i = 0; i < npoz; i++)
             {
                 cncfuns[i] = this.GetCncFun(sequences);
@@ -699,7 +697,7 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="cncFuns">List of Concrete Functions</param>
         /// <returns>Returns the ProductionSet</returns>
-        private ProductionSet GetProductionSet(CncFun[] cncFuns)
+        private ProductionSet GetProductionSet(ConcreteFunction[] cncFuns)
         {
             int id = this.GetInt();
             return new ProductionSet(id, this.GetListProduction(id, cncFuns));
@@ -710,7 +708,7 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="cncFuns">List of Concrete Functions</param>
         /// <returns>List of ProductionSets</returns>
-        private ProductionSet[] GetListProductionSet(CncFun[] cncFuns)
+        private ProductionSet[] GetListProductionSet(ConcreteFunction[] cncFuns)
         {
             int npoz = this.GetInt();
             ProductionSet[] tmp = new ProductionSet[npoz];
@@ -728,7 +726,7 @@ namespace CSPGF.Grammar
         /// <param name="leftCat">Left hand side category</param>
         /// <param name="cncFuns">List of Concrete Functions</param>
         /// <returns>List of Productions</returns>
-        private Production[] GetListProduction(int leftCat, CncFun[] cncFuns)
+        private Production[] GetListProduction(int leftCat, ConcreteFunction[] cncFuns)
         {
             int npoz = this.GetInt();
             Production[] tmp = new Production[npoz];
@@ -746,7 +744,7 @@ namespace CSPGF.Grammar
         /// <param name="leftCat">Left hand side category</param>
         /// <param name="cncFuns">List of Concrete Functions</param>
         /// <returns>Returns the Production</returns>
-        private Production GetProduction(int leftCat, CncFun[] cncFuns)
+        private Production GetProduction(int leftCat, ConcreteFunction[] cncFuns)
         {
             int sel = this.inputstream.ReadByte();
             Production prod;
@@ -787,14 +785,14 @@ namespace CSPGF.Grammar
         /// Read a list of Concrete Categories
         /// </summary>
         /// <returns>Dictionary of name/category</returns>
-        private Dictionary<string, CncCat> GetListCncCat()
+        private Dictionary<string, ConcreteCategory> GetListCncCat()
         {
             int npoz = this.GetInt();
-            Dictionary<string, CncCat> cncCats = new Dictionary<string, CncCat>();
+            Dictionary<string, ConcreteCategory> cncCats = new Dictionary<string, ConcreteCategory>();
             for (int i = 0; i < npoz; i++)
             {
                 string name = this.GetIdent();
-                cncCats.Add(name, new CncCat(name, this.GetInt(), this.GetInt(), this.GetListString()));
+                cncCats.Add(name, new ConcreteCategory(name, this.GetInt(), this.GetInt(), this.GetListString()));
             }
 
             return cncCats;
@@ -897,15 +895,15 @@ namespace CSPGF.Grammar
         /// Reads a list of CatFuns
         /// </summary>
         /// <returns>List of CatFuns</returns>
-        private CatFun[] GetListCatFun()
+        private CategoryFunction[] GetListCatFun()
         {
             int nb = this.GetInt();
-            CatFun[] wids = new CatFun[nb];
+            CategoryFunction[] wids = new CategoryFunction[nb];
             for (int i = 0; i < nb; i++)
             {
                 double w = this.GetDouble();
                 string s = this.GetIdent();
-                wids[i] = new CatFun(s, w);
+                wids[i] = new CategoryFunction(s, w);
             }
 
             return wids;
@@ -928,7 +926,8 @@ namespace CSPGF.Grammar
             int ii = this.GetInt();
             rez = (ii << 7) | (rez & 0x7f);
             return rez;
-            //return (int)this.binreader.ReadUInt32();
+
+            // return (int)this.binreader.ReadUInt32();
         }
 
         /// <summary>

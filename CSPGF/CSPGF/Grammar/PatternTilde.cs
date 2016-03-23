@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class PatternTilde : Pattern // PTilde
     {
         /// <summary>
-        /// Initializes a new instance of the InaccPattern class.
+        /// Initializes a new instance of the PatternTilde class.
         /// </summary>
         /// <param name="exp">Inaccessible pattern</param>
         public PatternTilde(Expr exp)

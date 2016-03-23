@@ -338,7 +338,7 @@ namespace CSPGF.Linearize
             }
             else if (bt is Bracket)
             {
-                foreach (BracketedToken bs in (((Bracket)bt).Bracketedtoks).Reverse<BracketedToken>())
+                foreach (BracketedToken bs in ((Bracket)bt).Bracketedtoks.Reverse<BracketedToken>())
                 {
                     rez.AddRange(this.Untokn(bs, after));
                     after = rez.Last();
@@ -371,7 +371,6 @@ namespace CSPGF.Linearize
             rez.Reverse();
             return rez;
         }
-
 
         /// <summary>
         /// Linearize a tree
@@ -559,7 +558,7 @@ namespace CSPGF.Linearize
             {
                 ProductionApply ap = (ProductionApply)p;
                 int[] args = ap.Domain();
-                CncFun cncFun = ap.Function;
+                ConcreteFunction cncFun = ap.Function;
                 List<ConcreteType> vtype = new List<ConcreteType>();
                 if (f.Equals("_V"))
                 {
@@ -585,7 +584,7 @@ namespace CSPGF.Linearize
                 else
                 {
                     Grammar.Type t = null;
-                    foreach (AbsFun abs in this.pgf.GetAbstract().AbsFuns)
+                    foreach (AbstractFunction abs in this.pgf.GetAbstract().AbsFuns)
                     {
                         if (f.Equals(abs.Name))
                         {

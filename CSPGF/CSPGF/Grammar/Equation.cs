@@ -70,6 +70,7 @@ namespace CSPGF.Grammar
             {
                 ss += " " + p;
             }
+
             ss += ") , Expression : " + Expr;
             return ss;
         }

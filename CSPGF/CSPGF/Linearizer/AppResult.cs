@@ -44,7 +44,7 @@ namespace CSPGF.Linearize
         /// <param name="cncFun">Concrete Function</param>
         /// <param name="cncType">Concrete Type</param>
         /// <param name="cncTypes">List of Concrete types</param>
-        public AppResult(CncFun cncFun, ConcreteType cncType, List<ConcreteType> cncTypes)
+        public AppResult(ConcreteFunction cncFun, ConcreteType cncType, List<ConcreteType> cncTypes)
         {
             this.CncFun = cncFun;
             this.CncType = cncType;
@@ -54,7 +54,7 @@ namespace CSPGF.Linearize
         /// <summary>
         /// Gets the Concrete Function
         /// </summary>
-        public CncFun CncFun { get; private set; }
+        public ConcreteFunction CncFun { get; private set; }
 
         /// <summary>
         /// Gets the Concrete Type

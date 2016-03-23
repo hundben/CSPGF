@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AbsCat.cs" company="None">
+// <copyright file="ConcreteFunction.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -30,38 +30,34 @@
 
 namespace CSPGF.Grammar
 {
+    using System;
+
     /// <summary>
-    /// Abstract Category
+    /// Concrete function
     /// </summary>
-    internal class AbsCat
+    [Serializable]
+    internal class ConcreteFunction
     {
         /// <summary>
-        /// Initializes a new instance of the AbsCat class.
+        /// Initializes a new instance of the ConcreteFunction class.
         /// </summary>
-        /// <param name="name">Name of category</param>
-        /// <param name="hypos">List of hypos</param>
-        /// <param name="functions">List of weightedidents</param>
-        public AbsCat(string name, Hypo[] hypos, CatFun[] functions)
+        /// <param name="name">Name of function</param>
+        /// <param name="sequences">List of list of symbols</param>
+        public ConcreteFunction(string name, Symbol[][] sequences)
         {
             this.Name = name;
-            this.Hypos = hypos;
-            this.Functions = functions;
+            this.Sequences = sequences;
         }
 
         /// <summary>
-        /// Gets the name of the abstract category
+        /// Gets the name of the concrete function
         /// </summary>
-        public string Name { get; private set; }
+        public string Name { get; private set; } // TODO: This might not be needed. Isn't used in the haskell-version?
 
         /// <summary>
-        /// Gets a list of hypos.
+        /// Gets a list of list of symbols
         /// </summary>
-        public Hypo[] Hypos { get; private set; }
-
-        /// <summary>
-        /// Gets a list of WeightedIdents
-        /// </summary>
-        public CatFun[] Functions { get; private set; }
+        public Symbol[][] Sequences { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -69,20 +65,31 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            string ss = "Name : " + this.Name + " , Hypotheses : (";
-            foreach (Hypo h in this.Hypos) 
+            string ss = "Name : " + this.Name + " , Indices : ";
+            foreach (Symbol[] s in this.Sequences) 
             {
-                ss += " " + h;
+                foreach (Symbol sym in s)
+                {
+                    ss += " " + sym;
+                }
             }
 
-            ss += ") , String Names : (";
-            foreach (CatFun w in this.Functions) 
-            {
-                ss += " " + w;
-            }
-
-            ss += ")";
             return ss;
         }
+
+        /*public override bool Equals(object obj)
+        {
+            if (obj is ConcreteFunction)
+            {
+                ConcreteFunction fun = (ConcreteFunction)obj;
+                return this.Name.Equals(fun.Name) && this.Sequences.Equals(fun.Sequences);
+            }
+            return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }*/
     }
 }

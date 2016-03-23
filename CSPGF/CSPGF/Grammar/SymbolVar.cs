@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="VarSymbol.cs" company="None">
+// <copyright file="SymbolVar.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class SymbolVar : Symbol
     {
         /// <summary>
-        /// Initializes a new instance of the VarSymbol class.
+        /// Initializes a new instance of the SymbolVar class.
         /// </summary>
         /// <param name="arg">Argument index</param>
         /// <param name="var">Variable number</param>

@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class ExprVar : Expr // EVar
     {
         /// <summary>
-        /// Initializes a new instance of the VarExp class.
+        /// Initializes a new instance of the ExprVar class.
         /// </summary>
         /// <param name="ind">The index</param>
         public ExprVar(int ind)

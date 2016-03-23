@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CatFun.cs" company="None">
+// <copyright file="AbstractFunction.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -31,29 +31,66 @@
 namespace CSPGF.Grammar
 {
     /// <summary>
-    /// Weighted Ident class
+    /// Abstract Function
     /// </summary>
-    internal class CatFun
+    internal class AbstractFunction
     {
         /// <summary>
-        /// Initializes a new instance of the CatFun class.
+        /// Initializes a new instance of the AbstractFunction class.
         /// </summary>
-        /// <param name="ident">The identifier</param>
-        /// <param name="weight">The weight</param>
-        public CatFun(string ident, double weight)
+        /// <param name="str">Name of the function</param>
+        /// <param name="type">Type of function</param>
+        /// <param name="arit">Some integer</param>
+        /// <param name="eqs">List of Eqs</param>
+        /// <param name="weight">Weight of function</param>
+        public AbstractFunction(string str, Type type, int arit, Equation[] eqs, double weight)
         {
-            this.Ident = ident;
+            this.Name = str;
+            this.Type = type;
+            this.Arit = arit;
+            this.Eqs = eqs;
             this.Weight = weight;
         }
 
         /// <summary>
-        /// Gets the weight
+        /// Gets the name of the functions
+        /// </summary>
+        public string Name { get; private set; }
+
+        /// <summary>
+        /// Gets the type of the function
+        /// </summary>
+        public Type Type { get; private set; }
+
+        /// <summary>
+        /// Gets some integer
+        /// </summary>
+        public int Arit { get; private set; }
+
+        /// <summary>
+        /// Gets a list of Eqs
+        /// </summary>
+        public Equation[] Eqs { get; private set; }
+
+        /// <summary>
+        /// Gets the weight of the functions
         /// </summary>
         public double Weight { get; private set; }
 
         /// <summary>
-        /// Gets the ident
+        /// Pretty prints the contents of this class
         /// </summary>
-        public string Ident { get; private set; }
+        /// <returns>Returns a string containing debug information</returns>
+        public override string ToString()
+        {
+            string sb = "<function name = " + this.Name + " type = " + this.Type + " arity = " + this.Arit + " equations = [";
+            foreach (Equation e in this.Eqs) 
+            {
+                sb += e + ", ";
+            }
+
+            sb += "] weight = " + this.Weight + " > ";
+            return sb;
+        }
     }
 }

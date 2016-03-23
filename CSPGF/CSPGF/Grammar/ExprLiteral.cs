@@ -36,9 +36,9 @@ namespace CSPGF.Grammar
     internal class ExprLiteral : Expr // ELit
     {
         /// <summary>
-        /// Initializes a new instance of the LiteralExp class.
+        /// Initializes a new instance of the ExprLiteral class.
         /// </summary>
-        /// <param name="literal">The RLiteral</param>
+        /// <param name="literal">The Literal</param>
         public ExprLiteral(Literal literal)
         {
             this.Literal = literal;

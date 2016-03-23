@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class LitFloat : Literal
     {
         /// <summary>
-        /// Initializes a new instance of the FloatLit class.
+        /// Initializes a new instance of the LitFloat class.
         /// </summary>
         /// <param name="value">Double value</param>
         public LitFloat(double value)

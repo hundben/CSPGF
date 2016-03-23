@@ -15,7 +15,7 @@ namespace CSPGF.Parse
 
         public int dot;
 
-        public CncFun fun;
+        public ConcreteFunction fun;
 
         public List<Symbol> seq;
 
@@ -25,7 +25,7 @@ namespace CSPGF.Parse
 
         public int lbl;
 
-        public ActiveItem2(int offset, int dot, CncFun fun, List<Symbol> seq, List<int> args, int fid, int lbl) 
+        public ActiveItem2(int offset, int dot, ConcreteFunction fun, List<Symbol> seq, List<int> args, int fid, int lbl) 
         {
             this.offset = offset;
             this.dot = dot;

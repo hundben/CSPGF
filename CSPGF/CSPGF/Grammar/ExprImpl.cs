@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class ExprImpl : Expr // EImplArg
     {
         /// <summary>
-        /// Initializes a new instance of the ImplExp class.
+        /// Initializes a new instance of the ExprImpl class.
         /// </summary>
         /// <param name="arg">Implicit arguments expression</param>
         public ExprImpl(Expr arg)

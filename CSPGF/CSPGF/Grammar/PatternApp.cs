@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="AppPattern.cs" company="None">
+// <copyright file="PatternApp.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -33,14 +33,14 @@ namespace CSPGF.Grammar
     /// <summary>
     /// Application Pattern
     /// </summary>
-    internal class AppPattern : Pattern // PApp
+    internal class PatternApp : Pattern // PApp
     {
         /// <summary>
-        /// Initializes a new instance of the AppPattern class.
+        /// Initializes a new instance of the PatternApp class.
         /// </summary>
         /// <param name="name">Name of AppPattern</param>
         /// <param name="patts">List of patterns</param>
-        public AppPattern(string name, Pattern[] patts)
+        public PatternApp(string name, Pattern[] patts)
         {
             this.Name = name;
             this.Patts = patts;

@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class ExprTyped : Expr // ETyped
     {
         /// <summary>
-        /// Initializes a new instance of the TypedExp class.
+        /// Initializes a new instance of the ExprTyped class.
         /// </summary>
         /// <param name="exp">The Expression</param>
         /// <param name="t">The Type</param>

@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="CncCat.cs" company="None">
+// <copyright file="PatternVarAt.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -30,55 +30,31 @@
 
 namespace CSPGF.Grammar
 {
-    using System;
-
     /// <summary>
-    /// Concrete category are a maping from category names (abstract-categories)
-    /// to multiple, conjoint, concrete categories.
-    /// They are represented in the pgf binary by :
-    ///  - the name of the abstract category (ex: Adj)
-    ///  - the first concrete categoy (ex : C18)
-    ///  - the last corresponding concrete category (ex : C21)
-    ///  - a list of labels (names of fields in the pmcfg tuples)
-    /// Here we will keep only the indices.
+    /// Variable as Pattern class
     /// </summary>
-    [Serializable]
-    internal class CncCat
+    internal class PatternVarAt : Pattern  // PAs
     {
         /// <summary>
-        /// Initializes a new instance of the CncCat class.
+        /// Initializes a new instance of the PatternVarAt class.
         /// </summary>
-        /// <param name="name">Name of category</param>
-        /// <param name="firstFId">First id</param>
-        /// <param name="lastFId">Last id</param>
-        /// <param name="labels">List of labels</param>
-        public CncCat(string name, int firstFId, int lastFId, string[] labels)
+        /// <param name="name">Name of pattern</param>
+        /// <param name="patt">The Pattern</param>
+        public PatternVarAt(string name, Pattern patt)
         {
             this.Name = name;
-            this.FirstFID = firstFId;
-            this.LastFID = lastFId;
-            this.Labels = labels; // was also commented out.
+            this.Patt = patt;
         }
 
         /// <summary>
-        /// Gets the name of the category
+        /// Gets name of pattern
         /// </summary>
         public string Name { get; private set; }
 
         /// <summary>
-        /// Gets the first id
+        /// Gets pattern
         /// </summary>
-        public int FirstFID { get; private set; }
-
-        /// <summary>
-        /// Gets the last id
-        /// </summary>
-        public int LastFID { get; private set; }
-
-        /// <summary>
-        /// Gets the list of labels
-        /// </summary>
-        public string[] Labels { get; private set; }
+        public Pattern Patt { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
@@ -86,7 +62,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return this.Name + " [C" + this.FirstFID + " ... C" + this.LastFID + "]";
+            return "Variable as Pattern : [ Variable Name : " + this.Name + " , Pattern : " + this.Patt + "]";
         }
     }
 }

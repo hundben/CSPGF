@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="ArgConstSymbol.cs" company="None">
+// <copyright file="SymbolCat.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -43,7 +43,7 @@ namespace CSPGF.Grammar
         /// Same as SymbolArg
         /// </summary>
         /// <param name="arg">Argument integer</param>
-        /// <param name="label">Cons</param>
+        /// <param name="label">Label integer</param>
         public SymbolCat(int arg, int label)
         {
             this.Arg = arg;

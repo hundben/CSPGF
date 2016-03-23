@@ -50,11 +50,6 @@ namespace CSPGF.Grammar
         private readonly BinaryReader binreader;
 
         /// <summary>
-        /// Desired languages
-        /// </summary>
-        private readonly List<string> languages;
-
-        /// <summary>
         /// If disposed
         /// </summary>
         private bool disposed;
@@ -90,8 +85,6 @@ namespace CSPGF.Grammar
         public PGF ReadPGF()
         {
             Dictionary<string, int> index = null;
-
-            // int[] ii = new int[2];
             for (int i = 0; i < 2; i++)
             {
                 this.version[i] = this.BE16toLE16(this.binreader.ReadInt16());
@@ -99,20 +92,18 @@ namespace CSPGF.Grammar
 
             if (this.version[0] == 1)
             {
-                OldPGF pgf = new OldPGF(this.inputstream, this.binreader, this.languages);
+                OldPGF pgf = new OldPGF(this.inputstream, this.binreader);
                 Dictionary<string, Literal> flags = pgf.GetFlags(index);
                 Abstract abs = pgf.GetAbstract();
-                this.CheckLangs();
                 PGF pgfobj = new PGF(this.version[0], this.version[1], flags, abs, pgf.GetConcretes(abs.StartCat(), index));
                 pgf.Dispose();
                 return pgfobj;
             }
             else if (this.version[0] == 2 && this.version[1] == 1)
             {
-                NewPGF pgf = new NewPGF(this.inputstream, this.binreader, this.languages);
+                NewPGF pgf = new NewPGF(this.inputstream, this.binreader);
                 Dictionary<string, Literal> flags = pgf.GetFlags(index);
                 Abstract abs = pgf.GetAbstract();
-                this.CheckLangs();
                 PGF pgfobj = new PGF(this.version[0], this.version[1], flags, abs, pgf.GetConcretes(abs.StartCat(), index));
                 pgf.Dispose();
                 return pgfobj;
@@ -177,20 +168,6 @@ namespace CSPGF.Grammar
             else
             {
                 return val;
-            }
-        }
-
-        /// <summary>
-        /// Throws exception if a language does not exist in the PGF file.
-        /// </summary>
-        private void CheckLangs()
-        {
-            if (this.languages != null && this.languages.Count > 0)
-            {
-                foreach (string l in this.languages)
-                {
-                    throw new UnknownLanguageException(l);
-                }
             }
         }
     }

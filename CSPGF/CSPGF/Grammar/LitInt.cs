@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class LitInt : Literal
     {
         /// <summary>
-        /// Initializes a new instance of the IntLit class.
+        /// Initializes a new instance of the LitInt class.
         /// </summary>
         /// <param name="value">Integer value</param>
         public LitInt(int value)

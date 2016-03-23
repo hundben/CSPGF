@@ -36,7 +36,7 @@ namespace CSPGF.Grammar
     internal class PatternImplicit : Pattern // PImplArg
     {
         /// <summary>
-        /// Initializes a new instance of the ImpArgPattern class.
+        /// Initializes a new instance of the PatternImplicit class.
         /// </summary>
         /// <param name="patt">Implicit argument pattern</param>
         public PatternImplicit(Pattern patt)
