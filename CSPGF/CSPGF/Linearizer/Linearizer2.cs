@@ -1,4 +1,4 @@
-﻿namespace CSPGF.Linearize
+﻿/*namespace CSPGF.Linearize
 {
     using System;
     using System.Collections.Generic;
@@ -65,9 +65,10 @@
                   return o;
                 }
               }
-            };*/
+            };*//*
             return string.Empty;
         }
 
     }
 }
+*/
