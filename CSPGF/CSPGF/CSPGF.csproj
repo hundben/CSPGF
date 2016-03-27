@@ -141,6 +141,7 @@
     <Compile Include="Parser\MetaVariable.cs" />
     <Compile Include="Parser\ParseState.cs" />
     <Compile Include="Parser\ParseTrie.cs" />
+    <Compile Include="Grammar\ProductionConst.cs" />
     <Compile Include="Parser\TreeBuilder.cs" />
     <Compile Include="Parser\TreeConverter.cs" />
     <Compile Include="Parser\Trie.cs">

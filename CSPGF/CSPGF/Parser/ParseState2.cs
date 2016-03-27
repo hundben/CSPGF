@@ -13,7 +13,8 @@ namespace CSPGF.Parse
         private ConcreteCategory startCat;
         private Trie items;
         private Chart2 chart;
-
+        private string currentToken;
+        private Trie currentAcc;
         /// <summary>
         /// 
         /// </summary>
@@ -47,7 +48,12 @@ namespace CSPGF.Parse
             this.items.insertChain(new List<string>(), items);
         }
 
-        public void next(string token)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public bool next(string token)
         {
             var acc = this.items.lookup(token);
             if (acc.isEmpty())
@@ -55,10 +61,23 @@ namespace CSPGF.Parse
                 acc = new Trie();
             }
 
+            // Temporary store token instead of callback
+            this.currentToken = token;
+            this.currentAcc = acc;
 
-            // TODO
+            process(acc.value);
+
+            this.items = acc;
+            this.chart.shift();
+
+            return !this.items.isEmpty();
+
         }
 
+        /// <summary>
+        /// TODO not used... so remove
+        /// </summary>
+        /// <param name="currentToken"></param>
         public void complete(string currentToken)
         {
             // TODO
@@ -131,29 +150,121 @@ namespace CSPGF.Parse
                         var rules = this.chart.forest[fid];
                         if (rules.Count > 0)
                         {
-                            // TODO tokencallback
+                            if (rules[0] is ProductionConst)
+                            {
+                                ProductionConst pc = (ProductionConst)rules[0];
+                                List<string> tokens = pc.tokens;
+                                ActiveItem2 ai2 = item.shiftOverTokn();
+                                if (pc.tokens.Count > 1 && (currentToken == string.Empty || tokens[0] == currentToken))
+                                {
+                                    tokens.RemoveAt(0);
+                                    Trie tt = new Trie();
+                                    tt.value = new List<ActiveItem2>() { ai2 };
+                                    this.currentAcc.insertChain1(tokens, tt);
+                                }
+                            }
                         }
                         else
                         {
-                            //var rule = literalCallback
-                        }
+                            List<Production> newProd = new List<Production>();
+                            
+                            Symbol[][] syms = new Symbol[0][];  // TODO check if this is correct?
+                            List<string> tokens = new List<string>();
+                            if (fid == -1)
+                            {
+                                // If string
+                                string token = "\"" + this.currentToken + "\"";                              
+                                tokens.Add(token);
+                                CncFun newFun = new CncFun(token, syms);
+                                newProd.Add(new ProductionConst(this.chart.nextId++, newFun, tokens));
+                            }
+                            else if (fid == -2)
+                            {
+                                // If int
+                                int i = 0;
+                                if (int.TryParse(this.currentToken, out i))
+                                {
+                                    tokens.Add(this.currentToken);
+                                    CncFun newFun = new CncFun(this.currentToken, syms);
+                                    newProd.Add(new ProductionConst(this.chart.nextId++, newFun, tokens));
+                                }
+                            }
+                            else if (fid == -3)
+                            {
+                                // If float
+                                float f = 0;
+                                if (float.TryParse(this.currentToken, out f))
+                                {
+                                    tokens.Add(this.currentToken);
+                                    CncFun newFun = new CncFun(this.currentToken, syms);
+                                    newProd.Add( new ProductionConst(this.chart.nextId++, newFun, tokens));
+                                }
+                            }
 
-                        // TODO
+                            if (newProd.Count > 0)
+                            {
+                                var currentProd = (ProductionConst)newProd[0];
+                                fid = this.chart.nextId++;
+                                this.chart.forest[fid] = newProd;
+
+                                // notice, replaces earlier tokens but is the same... TODO maybe remove this as it's not nessecary
+                                var tokens2 = currentProd.tokens;
+                                var item2 = item.shiftOverArg(newSym.Arg, fid);
+
+                                if (tokens2.Count > 1 && (this.currentToken == string.Empty || tokens2[0] == this.currentToken))
+                                {
+                                    // TODO remove first and keep the rest
+                                    tokens2.RemoveAt(0);
+                                    Trie tt = new Trie();
+                                    tt.value = new List<ActiveItem2>() { item2 };
+                                    this.currentAcc.insertChain1(tokens2, tt);
+                                }
+                            }
+                        }
                     }
                     else if (sym is SymbolKS)
                     {
                         var newSym = (SymbolKS)sym;
-                        // TODO
+                        var tokens = newSym.Tokens.ToList<string>();
+                        var ai = item.shiftOverTokn();
+                        if (tokens.Count > 1 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
+                        {
+                            tokens.RemoveAt(0);
+                            Trie tt = new Trie();
+                            tt.value = new List<ActiveItem2>() { ai };
+                            this.currentAcc.insertChain1(tokens, tt);
+                        }
                     }
                     else if (sym is SymbolKP)
                     {
                         var newSym = (SymbolKP)sym;
-                        // TODO
+                        var pitem = item.shiftOverTokn();
+                        var tokens = newSym.Tokens.ToList<string>();
+                        if (tokens.Count > 1 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
+                        {
+                            tokens.RemoveAt(0);
+                            Trie tt = new Trie();
+                            tt.value = new List<ActiveItem2>() { pitem };
+                            this.currentAcc.insertChain1(tokens, tt);
+                        }
+
+                        foreach ( Alternative alt in newSym.Alts)
+                        {
+                            tokens = alt.Alt1.ToList<string>();
+                            if (tokens.Count > 1 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
+                            {
+                                tokens.RemoveAt(0);
+                                Trie tt = new Trie();
+                                tt.value = new List<ActiveItem2>() { pitem };
+                                this.currentAcc.insertChain1(tokens, tt);
+                            }
+                        }
                     }
                     else if (sym is SymbolVar)
                     {
                         var newSym = (SymbolVar)sym;
-                        // TODO
+                        // TODO Not
+                        throw new NotImplementedException();
                     }
                 }
                 else
@@ -215,7 +326,6 @@ namespace CSPGF.Parse
                     }
                 }
             }
-
         }
     }
 }
