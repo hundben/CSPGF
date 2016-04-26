@@ -13,14 +13,14 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="fId"></param>
         /// <param name="tokens"></param>
-        public ProductionConst(int fId, CncFun function, List<string> tokens) : base(0, fId)
+        public ProductionConst(int fId, ConcreteFunction function, List<string> tokens) : base(0, fId)
         {
             this.tokens = tokens;
             this.fun = function;
         }
 
         public List<string> tokens;
-        public CncFun fun;
+        public ConcreteFunction fun;
 
         public override string ToString()
         {

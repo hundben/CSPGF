@@ -307,7 +307,7 @@ function go(fid) {
                                 // If string
                                 string token = "\"" + this.currentToken + "\"";                              
                                 tokens.Add(token);
-                                CncFun newFun = new CncFun(token, syms);
+                                ConcreteFunction newFun = new ConcreteFunction(token, syms);
                                 newProd.Add(new ProductionConst(this.chart.nextId++, newFun, tokens));
                             }
                             else if (fid == -2)
@@ -317,7 +317,7 @@ function go(fid) {
                                 if (int.TryParse(this.currentToken, out i))
                                 {
                                     tokens.Add(this.currentToken);
-                                    CncFun newFun = new CncFun(this.currentToken, syms);
+                                    ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
                                     newProd.Add(new ProductionConst(this.chart.nextId++, newFun, tokens));
                                 }
                             }
@@ -328,7 +328,7 @@ function go(fid) {
                                 if (float.TryParse(this.currentToken, out f))
                                 {
                                     tokens.Add(this.currentToken);
-                                    CncFun newFun = new CncFun(this.currentToken, syms);
+                                    ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
                                     newProd.Add( new ProductionConst(this.chart.nextId++, newFun, tokens));
                                 }
                             }

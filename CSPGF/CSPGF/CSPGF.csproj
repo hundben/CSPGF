@@ -115,7 +115,9 @@
     <Compile Include="Grammar\NewPGF.cs" />
     <Compile Include="Grammar\ProductionExtern.cs" />
     <Compile Include="Grammar\SymbolLit.cs" />
+    <Compile Include="Linearizer\LeafKS2.cs" />
     <Compile Include="Linearizer\Linearizer.cs" />
+    <Compile Include="Linearizer\Linearizer2.cs" />
     <Compile Include="Linearizer\LinearizerException.cs" />
     <Compile Include="Linearizer\AppResult.cs" />
     <Compile Include="Linearizer\Bracket.cs" />
