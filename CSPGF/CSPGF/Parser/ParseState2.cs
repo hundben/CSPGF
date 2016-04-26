@@ -88,7 +88,7 @@ namespace CSPGF.Parse
             this.process(this.items.value); // TODO maybe a flag on process for this
             var totalFIds = this.concrete.TotalFID;
             var forest = this.chart.forest;
-            List<Production> trees = new List<Production>();    // TODO change type of this to the correct type
+            List<CategoryFunction> trees = new List<CategoryFunction>();    // TODO change type of this to the correct type
 
             var fids = this.concrete.GetStartCat(); // TODO check if correct
             if (fids != null)
@@ -145,10 +145,10 @@ namespace CSPGF.Parse
             }
         }
 
-        private List<Production> go(int fid, Dictionary<int, List<Production>> forest)
+        private List<CategoryFunction> go(int fid, Dictionary<int, List<Production>> forest)
         {
             // TODO implement go here
-            var trees = new List<Trie>();   //TODO wrong but temporary
+            var trees = new List<CategoryFunction>();
             if (forest.ContainsKey(fid))
             {
                 var rules = forest[fid];
@@ -168,7 +168,7 @@ namespace CSPGF.Parse
                 }
             }
 
-            return new List<Production>();  // TODO remove
+            return new List<CategoryFunction>();  // TODO remove
         }
 
         /*
