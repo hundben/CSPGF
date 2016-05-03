@@ -83,6 +83,25 @@ namespace CSPGF.Parse
             // TODO
         }
 
+        /// <summary>
+        /// Get the trees.
+        /// </summary>
+        /// <returns>A list of the trees.</returns>
+        public List<Trees.Absyn.Tree> GetTrees()
+        {
+            TreeBuilder2 tb = new TreeBuilder2();
+            TreeConverter tc = new TreeConverter();
+            List<Trees.Absyn.Tree> trees = new List<Trees.Absyn.Tree>();
+            foreach (Tree t in tb.BuildTrees(this.chart, this.startCat))
+            {
+                trees.Add(tc.Intermediate2Abstract(t));
+            }
+
+            return trees;
+        }
+
+
+        /*
         public void extractTrees()
         {
             this.process(this.items.value); // TODO maybe a flag on process for this
@@ -145,10 +164,10 @@ namespace CSPGF.Parse
             }
         }
 
-        private List<CategoryFunction> go(int fid, Dictionary<int, List<Production>> forest)
+        private List<ConcreteFunction> go(int fid, Dictionary<int, List<Production>> forest)
         {
             // TODO implement go here
-            var trees = new List<CategoryFunction>();
+            var trees = new List<ConcreteFunction>();
             if (forest.ContainsKey(fid))
             {
                 var rules = forest[fid];
@@ -158,17 +177,37 @@ namespace CSPGF.Parse
                     {
                         var prodConst = (ProductionConst)rule;
                         // TODO 
-
+                        trees.Add(prodConst.fun);
 
                     }
-                    else
+                    else if (rule is ProductionApply)
                     {
+                        var prodApply = (ProductionApply)rule;
 
+                        var arg_ix = new List<int>();
+                        var arg_ts = new List<List<ConcreteFunction>>();
+                        foreach (var k in prodApply.Domain())
+                        {
+                            arg_ix.Add(0);
+                            arg_ts.Add(go(k, forest)); 
+                        }
+
+                        while(true)
+                        {
+                            Symbol[][] symbols = new Symbol[arg_ts.Count][];
+                            // TODO fix args
+                            for(int i=0; i<arg_ix.Count; i++)
+                            {
+                                symbols[i] = arg_ts[i].ToArray();
+                            }
+
+                            var t = new ConcreteFunction(prodApply.Function.Name,)
+                        }
                     }
                 }
             }
 
-            return new List<CategoryFunction>();  // TODO remove
+            return new List<ConcreteFunction>();  // TODO remove
         }
 
         /*
@@ -219,6 +258,7 @@ function go(fid) {
     }
   }
 */
+
 
         public void process(List<ActiveItem2> agenda)
         {

@@ -143,6 +143,7 @@
     <Compile Include="Parser\ParseTrie.cs" />
     <Compile Include="Grammar\ProductionConst.cs" />
     <Compile Include="Parser\TreeBuilder.cs" />
+    <Compile Include="Parser\TreeBuilder2.cs" />
     <Compile Include="Parser\TreeConverter.cs" />
     <Compile Include="Parser\Trie.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
