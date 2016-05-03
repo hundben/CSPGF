@@ -30,6 +30,9 @@
 
 namespace CSPGF
 {
+    using Grammar;
+    using Parse;
+    using System.Collections.Generic;
     using Xunit;
 
     /// <summary>
@@ -108,6 +111,28 @@ namespace CSPGF
             at.SetOutputLanguage("PhrasebookEng");
             string check = at.Translate();
             Assert.Equal(check.Equals("this wine is delicious ."), true);
+        }
+
+        [Fact]
+        public void TestNewParser()
+        {
+            PGFReader pr = new PGFReader("../../PGF examples/MiniLit.pgf");
+            PGF pgf = pr.ReadPGF();
+            
+            Concrete language = pgf.GetConcrete("MiniLitCnc");
+            ParseState2 pstate = new ParseState2(language, language.GetStartCat());
+            pstate.next("flt");
+            pstate.next("(");
+            pstate.next("1.2");
+            pstate.next(")");
+
+            var currentLin = new Linearize.Linearizer(pgf, language);
+            List<Trees.Absyn.Tree> lt = pstate.GetTrees();
+            Trees.Absyn.Tree t = lt[0];
+            string check =  currentLin.LinearizeString(t);
+
+
+            Assert.Equal(check, "flt ( 1.2 )");
         }
     }
 }
