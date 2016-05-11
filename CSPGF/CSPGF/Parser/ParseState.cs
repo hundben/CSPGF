@@ -345,20 +345,47 @@ namespace CSPGF.Parse
                     }
                     else
                     {
+                        Symbol[][] syms = new Symbol[0][];
+                        ProductionConst prodConst = null;
                         // -1 String 
                         if (item.Category == -1)
                         {
-                            // TODO
+                            ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
+                            int newcat = this.chart.GenerateFreshCategory();    // check with a first
+                            List<string> tokens = new List<string>() { this.currentToken };
+                            prodConst = new ProductionConst(this.chart.GetFreshCategory(a,l,j,this.position), newFun, tokens);
                         }
                         // -2 Int
                         else if (item.Category == -2)
                         {
-                            // TODO
+                            int i = 0;
+                            if (int.TryParse(this.currentToken, out i))
+                            {
+                                ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
+                                int newcat = this.chart.GenerateFreshCategory();    // check with a first
+                                List<string> tokens = new List<string>() { this.currentToken };
+                                prodConst = new ProductionConst(this.chart.GetFreshCategory(a, l, j, this.position), newFun, tokens);
+                            }
+                            // TODO throw exception
                         }
                         // -3 Float
                         else if (item.Category == -3)
                         {
-                             // TODO
+                            float fl = 0;
+                            if (float.TryParse(this.currentToken, out fl))
+                            {
+                                ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
+                                int newcat = this.chart.GenerateFreshCategory();    // check with a first
+                                List<string> tokens = new List<string>() { this.currentToken };
+                                prodConst = new ProductionConst(this.chart.GetFreshCategory(a, l, j, this.position), newFun, tokens);
+                            }
+                             // TODO throw exception
+                        }
+
+                        if (prodConst != null)
+                        {
+                            // TODO is this enough?
+                            this.chart.AddProduction(prodConst);
                         }
                     }   
 

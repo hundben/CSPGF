@@ -88,10 +88,10 @@ namespace CSPGF
             }
             catch (Exception e)
             {
-                System.Console.WriteLine("FEL:" + e.StackTrace.ToString());
+                output.WriteLine("Error:" + e.StackTrace.ToString());
             }
-            // TODO write this one
-            Assert.Equal(check, "flt ( 1.2 )");
+
+            Assert.Equal("flt ( 1.2 )", check);
         }
 
         /// <summary>
@@ -154,10 +154,9 @@ namespace CSPGF
             }
             catch (Exception e)
             {
-                output.WriteLine("FEL:" + e.StackTrace.ToString());
+                output.WriteLine("Error:" + e.StackTrace.ToString());
             }
 
-            System.Console.WriteLine("Rätt?: " + check);
             Assert.Equal("flt ( 1.2 )", check);
         }
     }

@@ -249,6 +249,17 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public int GenerateFreshCategory()
+        {
+            int cat = this.nextCat;
+            this.nextCat++;
+            return cat;
+        }
+
+        /// <summary>
         /// Generate a fresh category.
         /// </summary>
         /// <param name="hash">The old category.</param>
