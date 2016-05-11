@@ -161,7 +161,7 @@ namespace CSPGF.Parse
                                 ProductionConst pc = (ProductionConst)rules[0];
                                 List<string> tokens = pc.tokens;
                                 ActiveItem2 ai2 = item.shiftOverTokn();
-                                if (pc.tokens.Count > 1 && (currentToken == string.Empty || tokens[0] == currentToken))
+                                if (pc.tokens.Count > 0 && (currentToken == string.Empty || tokens[0] == currentToken))
                                 {
                                     tokens.RemoveAt(0);
                                     Trie tt = new Trie();
@@ -217,7 +217,7 @@ namespace CSPGF.Parse
                                 var tokens2 = currentProd.tokens;
                                 var item2 = item.shiftOverArg(newSym.Arg, fid);
 
-                                if (tokens2.Count > 1 && (this.currentToken == string.Empty || tokens2[0] == this.currentToken))
+                                if (tokens2.Count > 0 && (this.currentToken == string.Empty || tokens2[0] == this.currentToken))
                                 {
                                     // TODO remove first and keep the rest
                                     tokens2.RemoveAt(0);
@@ -233,7 +233,7 @@ namespace CSPGF.Parse
                         var newSym = (SymbolKS)sym;
                         var tokens = newSym.Tokens.ToList<string>();
                         var ai = item.shiftOverTokn();
-                        if (tokens.Count > 1 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
+                        if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
                         {
                             tokens.RemoveAt(0);
                             Trie tt = new Trie();
@@ -246,7 +246,7 @@ namespace CSPGF.Parse
                         var newSym = (SymbolKP)sym;
                         var pitem = item.shiftOverTokn();
                         var tokens = newSym.Tokens.ToList<string>();
-                        if (tokens.Count > 1 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
+                        if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
                         {
                             tokens.RemoveAt(0);
                             Trie tt = new Trie();
@@ -257,7 +257,7 @@ namespace CSPGF.Parse
                         foreach ( Alternative alt in newSym.Alts)
                         {
                             tokens = alt.Alt1.ToList<string>();
-                            if (tokens.Count > 1 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
+                            if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
                             {
                                 tokens.RemoveAt(0);
                                 Trie tt = new Trie();
