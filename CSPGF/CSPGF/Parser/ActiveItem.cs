@@ -49,12 +49,12 @@ namespace CSPGF.Parse
         /// <param name="position">The position (the </param>
         public ActiveItem(int begin, int category, ConcreteFunction function, int[] domain, int constituent, int position)
         {
-            this.Begin = begin;
-            this.Category = category;
-            this.Function = function;
-            this.Domain = domain;
-            this.Constituent = constituent;
-            this.Position = position;
+            this.Begin = begin;         // offset
+            this.Category = category;   // fid
+            this.Function = function;   
+            this.Domain = domain;       // args 
+            this.Constituent = constituent; // lbl?
+            this.Position = position;   // dot?
         }
 
         /// <summary>
@@ -99,6 +99,15 @@ namespace CSPGF.Parse
             }
 
             return null;
+        }
+
+        /// <summary>
+        /// Simple helper function
+        /// </summary>
+        /// <returns></returns>
+        public ActiveItem shiftOverTokn()
+        {
+            return new ActiveItem(this.Begin, this.Category, this.Function, this.Domain, this.Constituent, this.Position + 1);
         }
 
         /// <summary>

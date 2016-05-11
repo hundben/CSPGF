@@ -45,6 +45,11 @@ namespace CSPGF.Parse
         private ConcreteCategory startCat;
 
         /// <summary>
+        /// Current token
+        /// </summary>
+        private string currentToken;
+
+        /// <summary>
         /// The parse tree.
         /// </summary>
         private ParseTrie trie;
@@ -134,6 +139,9 @@ namespace CSPGF.Parse
         /// <returns>Returns true if scan is successful.</returns>
         public bool Scan(string token)
         {
+            // Store for later use
+            this.currentToken = token;
+
             // Store the old trie
             this.listOfTries.Push(this.trie);
 
@@ -313,6 +321,48 @@ namespace CSPGF.Parse
                 int bd = item.Domain[d];
 
                 // LITERAL
+                if (this.active.Count >= this.position)
+                {
+                    if (this.AddActiveSet(bd, r, item, this.active[this.position]))
+                    {
+                        foreach (Production prod in this.chart.GetProductions(bd))
+                        {
+                            if (prod is ProductionConst)
+                            {
+                                ProductionConst pc = (ProductionConst)prod;
+                                ActiveItem ai2 = item.shiftOverTokn();
+                                Stack<ActiveItem> aistack = new Stack<ActiveItem>();
+                                aistack.Push(ai2);
+                                List<string> tokens = pc.tokens;
+
+                                if (pc.tokens.Count > 1 && currentToken == string.Empty || currentToken == pc.tokens[0])
+                                {
+                                    pc.removeFirstToken();
+                                    this.trie.Add(pc.tokens, aistack);
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        // -1 String 
+                        if (item.Category == -1)
+                        {
+                            // TODO
+                        }
+                        // -2 Int
+                        else if (item.Category == -2)
+                        {
+                            // TODO
+                        }
+                        // -3 Float
+                        else if (item.Category == -3)
+                        {
+                             // TODO
+                        }
+                    }   
+
+                }
             }
             else if (sym is SymbolVar)
             {

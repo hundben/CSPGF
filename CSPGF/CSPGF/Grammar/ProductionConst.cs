@@ -22,6 +22,17 @@ namespace CSPGF.Grammar
         public List<string> tokens;
         public ConcreteFunction fun;
 
+        /// <summary>
+        /// Removes first token, used when we have a Literal with multiple tokens
+        /// </summary>
+        public void removeFirstToken()
+        {
+            if (tokens.Count > 0)
+            {
+                tokens.RemoveAt(0);
+            }
+        }
+
         public override string ToString()
         {
             throw new NotImplementedException();
