@@ -43,12 +43,12 @@ namespace CSPGF.Parse
         /// <summary>
         /// The agenda connected to this node.
         /// </summary>
-        private Stack<ActiveItem> value = new Stack<ActiveItem>();
+        public Stack<ActiveItem> value = new Stack<ActiveItem>();   //priv
 
         /// <summary>
         /// List of sub trees
         /// </summary>
-        private Dictionary<string, ParseTrie> childs = new Dictionary<string, ParseTrie>();
+        public Dictionary<string, ParseTrie> childs = new Dictionary<string, ParseTrie>();  //priv
 
         /// <summary>
         /// Initializes a new instance of the ParseTrie class.

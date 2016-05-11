@@ -95,7 +95,14 @@ namespace CSPGF.Parse
         /// <param name="items"></param>
         public Trie lookup(string key)
         {
-            return this.items[key];
+            if (this.items.ContainsKey(key))
+            {
+                return this.items[key];
+            }
+            else
+            {
+                return new Trie();
+            }
         }
 
         /// <summary>
