@@ -168,7 +168,7 @@ namespace CSPGF.Parse
                                     tokens.RemoveAt(0);
                                     Trie tt = new Trie();
                                     tt.value = new List<ActiveItem2>() { ai2 };
-                                    this.currentAcc.insertChain1(tokens, tt);
+                                    this.currentAcc = this.currentAcc.insertChain1(tokens, tt);
                                 }
                             }
                         }
@@ -225,7 +225,7 @@ namespace CSPGF.Parse
                                     tokens2.RemoveAt(0);
                                     Trie tt = new Trie();
                                     tt.value = new List<ActiveItem2>() { item2 };
-                                    this.currentAcc.insertChain1(tokens2, tt);
+                                    this.currentAcc = this.currentAcc.insertChain1(tokens2, tt);
                                 }
                             }
                         }
@@ -253,7 +253,7 @@ namespace CSPGF.Parse
                             tokens.RemoveAt(0);
                             Trie tt = new Trie();
                             tt.value = new List<ActiveItem2>() { pitem };
-                            this.currentAcc.insertChain1(tokens, tt);
+                            this.currentAcc = this.currentAcc.insertChain1(tokens, tt);
                         }
 
                         foreach ( Alternative alt in newSym.Alts)
@@ -264,7 +264,7 @@ namespace CSPGF.Parse
                                 tokens.RemoveAt(0);
                                 Trie tt = new Trie();
                                 tt.value = new List<ActiveItem2>() { pitem };
-                                this.currentAcc.insertChain1(tokens, tt);
+                                this.currentAcc = this.currentAcc.insertChain1(tokens, tt);
                             }
                         }
                     }
