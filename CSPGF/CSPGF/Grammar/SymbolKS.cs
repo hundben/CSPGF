@@ -58,13 +58,13 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            string s = "Tokens : ";
+            string s = "SymbolKS[Tokens : ";
             foreach (string st in this.Tokens)
             {
                 s += " " + st;
             }
 
-            return s;
+            return s + "]";
         }
     }
 }

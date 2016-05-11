@@ -56,16 +56,12 @@ namespace CSPGF.Parse
         public bool next(string token)
         {
             var acc = this.items.lookup(token);
-            if (acc.isEmpty())
-            {
-                acc = new Trie();
-            }
 
             // Temporary store token instead of callback
             this.currentToken = token;
             this.currentAcc = acc;
 
-            process(acc.value);
+            process(this.items.value);
 
             this.items = acc;
             this.chart.shift();

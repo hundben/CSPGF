@@ -69,7 +69,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            string sb = "pre { ";
+            string sb = "SymbolKP[pre { ";
             foreach (string s in this.Tokens) 
             {
                 sb += s + " ";
@@ -81,7 +81,7 @@ namespace CSPGF.Grammar
                 sb += a + "; ";
             }
 
-            sb += "}";
+            sb += "}]";
             return sb;
         }
     }

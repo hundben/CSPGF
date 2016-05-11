@@ -66,7 +66,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            return "Argument : " + this.Arg + " Constituent : " + this.Label;
+            return "SymbolCat[Argument : " + this.Arg + " Constituent : " + this.Label + "]";
         }
     }
 }

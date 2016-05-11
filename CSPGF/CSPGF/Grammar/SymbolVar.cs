@@ -62,7 +62,7 @@ namespace CSPGF.Grammar
         /// <returns>String with data</returns>
         public override string ToString() 
         {
-            return "Arg: " + this.Arg + " Var: " + this.Var;
+            return "SymbolVar[Arg: " + this.Arg + " Var: " + this.Var + "]";
         }
     }
 }
