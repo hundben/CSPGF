@@ -35,6 +35,7 @@ namespace CSPGF.Parse
                 var prods = this.chart.expandForest(fid);
                 foreach(ProductionApply k in prods)
                 {
+                    k.Function.FixSymbols();
                     int lbl = 0;
                     foreach(Symbol[] sym in k.Function.Sequences)
                     {
@@ -98,8 +99,8 @@ namespace CSPGF.Parse
         {
             while (agenda.Count > 0)
             {
-                var item = agenda[0];
-                agenda.RemoveAt(0);
+                var item = agenda[agenda.Count - 1];
+                agenda.RemoveAt(agenda.Count - 1);
                 var lin = item.seq;
 
                 if (item.dot < lin.Count)
@@ -153,7 +154,20 @@ namespace CSPGF.Parse
                     {
                         var newSym = (SymbolLit)sym;
                         var fid = item.args[newSym.Arg];
-                        var rules = this.chart.forest[fid];
+
+                        List<Production> rules;
+                        if (this.chart.forest.ContainsKey(fid))
+                        {
+                            rules = this.chart.forest[fid];
+                        }
+                        else
+                        {
+                            rules = new List<Production>();
+                        }
+
+                        //var rules = this.chart.forest[fid]; // TODO can return 0
+
+
                         if (rules.Count > 0)
                         {
                             if (rules[0] is ProductionConst)
@@ -233,6 +247,10 @@ namespace CSPGF.Parse
                         var newSym = (SymbolKS)sym;
                         var tokens = newSym.Tokens.ToList<string>();
                         var ai = item.shiftOverTokn();
+                        if (tokens.Count > 1 && ai.dot > 0)
+                        {
+                            //ai.dot--;
+                        }
                         if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
                         {
                             tokens.RemoveAt(0);

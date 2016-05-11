@@ -31,7 +31,7 @@
 namespace CSPGF.Grammar
 {
     using System;
-
+    using System.Collections.Generic;
     /// <summary>
     /// Concrete function
     /// </summary>
@@ -58,6 +58,46 @@ namespace CSPGF.Grammar
         /// Gets a list of list of symbols
         /// </summary>
         public Symbol[][] Sequences { get; private set; }
+
+        /// <summary>
+        /// Only for testing
+        /// </summary>
+        public void FixSymbols()
+        {
+            List<List<Symbol>> syms = new List<List<Symbol>>();
+            foreach(Symbol[] st in this.Sequences)
+            {
+                var temp = new List<Symbol>();
+                foreach(Symbol sym in st)
+                {
+                    if (sym is SymbolKS)
+                    {
+                        foreach(string token in ((SymbolKS)sym).Tokens)
+                        {
+                            string[] tmp2 = { token };
+                            temp.Add(new SymbolKS(tmp2));
+                        }
+                    }
+                    else
+                    {
+                        temp.Add(sym);
+                    }
+                }
+
+                syms.Add(temp);
+            }
+
+            Symbol[][] seqs = new Symbol[syms.Count][];
+            int i = 0;
+            foreach (List<Symbol> t in syms)
+            {
+                seqs[i] = t.ToArray();
+                i++;
+            }
+
+            this.Sequences = seqs;
+
+        }
 
         /// <summary>
         /// Pretty prints the contents of this class
