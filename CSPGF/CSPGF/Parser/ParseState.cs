@@ -112,7 +112,7 @@ namespace CSPGF.Parse
                 }
             }
 
-            this.Compute(string.Empty);
+            this.Compute();
         }
 
         /// <summary>
@@ -158,7 +158,7 @@ namespace CSPGF.Parse
                     this.position++;
                     this.agenda = newAgenda;
 
-                    this.Compute(token);                    
+                    this.Compute();                    
                 }
 
                 return true;
@@ -209,8 +209,7 @@ namespace CSPGF.Parse
         /// <summary>
         /// Computes the new trees.
         /// </summary>
-        /// <param name="lit">The literal if any.</param>
-        private void Compute(string lit)
+        private void Compute()
         {
             this.active.Add(new Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>());
 
@@ -218,7 +217,7 @@ namespace CSPGF.Parse
             while (this.agenda.Count != 0) 
             {
                 ActiveItem e = this.agenda.Pop();
-                this.ProcessActiveItem(e, lit);
+                this.ProcessActiveItem(e);
             }
         }
 
@@ -227,7 +226,7 @@ namespace CSPGF.Parse
         /// </summary>
         /// <param name="item">The item to be processed.</param>
         /// <param name="lit">The literal if any.</param>
-        private void ProcessActiveItem(ActiveItem item, string lit)
+        private void ProcessActiveItem(ActiveItem item)
         {
             int j = item.Begin;
             int a = item.Category;
@@ -351,7 +350,7 @@ namespace CSPGF.Parse
                         if (item.Category == -1)
                         {
                             ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
-                            int newcat = this.chart.GenerateFreshCategory();    // check with a first
+                            //int newcat = this.chart.GenerateFreshCategory();    // check with a first
                             List<string> tokens = new List<string>() { this.currentToken };
                             prodConst = new ProductionConst(this.chart.GetFreshCategory(a,l,j,this.position), newFun, tokens);
                         }
@@ -362,7 +361,7 @@ namespace CSPGF.Parse
                             if (int.TryParse(this.currentToken, out i))
                             {
                                 ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
-                                int newcat = this.chart.GenerateFreshCategory();    // check with a first
+                                //int newcat = this.chart.GenerateFreshCategory();    // check with a first
                                 List<string> tokens = new List<string>() { this.currentToken };
                                 prodConst = new ProductionConst(this.chart.GetFreshCategory(a, l, j, this.position), newFun, tokens);
                             }
@@ -375,7 +374,7 @@ namespace CSPGF.Parse
                             if (float.TryParse(this.currentToken, out fl))
                             {
                                 ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
-                                int newcat = this.chart.GenerateFreshCategory();    // check with a first
+                                //int newcat = this.chart.GenerateFreshCategory();    // check with a first
                                 List<string> tokens = new List<string>() { this.currentToken };
                                 prodConst = new ProductionConst(this.chart.GetFreshCategory(a, l, j, this.position), newFun, tokens);
                             }
@@ -386,6 +385,16 @@ namespace CSPGF.Parse
                         {
                             // TODO is this enough?
                             this.chart.AddProduction(prodConst);
+                            // shift over args
+                            var nargs = new List<int>();
+                            foreach (int k in item.Domain)
+                            {
+                                nargs.Add(k);
+                            }
+                            //var item2 = item.shiftOverArg(newSym.Arg, fid);
+                            nargs[litSym.Arg] = item.Category;
+                           //  return new ActiveItem2(this.offset, this.dot + 1, this.fun, this.seq, nargs, this.fid, this.lbl);
+
                         }
                     }   
 
