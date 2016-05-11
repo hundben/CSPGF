@@ -240,7 +240,7 @@ namespace CSPGF.Parse
                             tokens.RemoveAt(0);
                             Trie tt = new Trie();
                             tt.value = new List<ActiveItem2>() { ai };
-                            this.currentAcc.insertChain1(tokens, tt);
+                            this.currentAcc = this.currentAcc.insertChain1(tokens, tt);
                         }
                     }
                     else if (sym is SymbolKP)
