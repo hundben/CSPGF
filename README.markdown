@@ -18,7 +18,7 @@ Missing features
 
 How to build
 ------------
-Open the project file in Visual Studio 2010 (or later) or in Mono Develop 2.6 and build it there.
+Open the project file in Visual Studio 2010 (or newer) or in Mono Develop and build it there.
 
 How to use
 ----------
