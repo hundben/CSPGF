@@ -128,7 +128,7 @@
     <Compile Include="Linearizer\LinTriple.cs" />
     <Compile Include="Linearizer\RezDesc.cs" />
     <Compile Include="Linearizer\Tokn.cs" />
-    <Compile Include="Parser\ActiveItem2.cs">
+    <Compile Include="Parser\ActiveItem.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
     </Compile>
     <Compile Include="Parser\Application.cs" />

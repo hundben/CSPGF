@@ -39,6 +39,7 @@ namespace CSPGF.Parse
         /// Initializes a new instance of the Literal class.
         /// </summary>
         /// <param name="value">The value.</param>
+        /// <param name="type">The type, same as the FId for literals.</param>
         public Literal(string value, int type)
         {
             this.Type = type;
@@ -50,6 +51,9 @@ namespace CSPGF.Parse
         /// </summary>
         public string Value { get; private set; }
 
+        /// <summary>
+        /// Gets the type.
+        /// </summary>
         public int Type { get; private set; }
     }
 }

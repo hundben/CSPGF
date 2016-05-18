@@ -152,15 +152,15 @@ namespace CSPGF.Parse
             {
                 var item = agenda[agenda.Count - 1];
                 agenda.RemoveAt(agenda.Count - 1);
-                var lin = item.seq;
+                var lin = item.Seq;
 
-                if (item.dot < lin.Count)
+                if (item.Dot < lin.Count)
                 {
-                    var sym = lin[item.dot];
+                    var sym = lin[item.Dot];
                     if (sym is SymbolCat)
                     {
                         var newSym = (SymbolCat)sym;
-                        var fid = item.args[newSym.Arg];
+                        var fid = item.Args[newSym.Arg];
                         var label = newSym.Label;
                         var items = this.chart.lookupAC(fid, label);
                         
@@ -197,7 +197,7 @@ namespace CSPGF.Parse
                                 var fid2 = this.chart.lookupPC(fid, label, this.chart.offset);
                                 if (fid2.HasValue)
                                 {
-                                    agenda.Add(item.shiftOverArg(newSym.Arg, fid2.Value));
+                                    agenda.Add(item.ShiftOverArg(newSym.Arg, fid2.Value));
                                 }
                             }
                         }
@@ -205,7 +205,7 @@ namespace CSPGF.Parse
                     else if (sym is SymbolLit)
                     {
                         var newSym = (SymbolLit)sym;
-                        var fid = item.args[newSym.Arg];
+                        var fid = item.Args[newSym.Arg];
 
                         List<Production> rules;
                         if (this.chart.forest.ContainsKey(fid))
@@ -223,7 +223,7 @@ namespace CSPGF.Parse
                             {
                                 ProductionConst pc = (ProductionConst)rules[0];
                                 List<string> tokens = new List<string>(pc.tokens);
-                                ActiveItem ai2 = item.shiftOverTokn();
+                                ActiveItem ai2 = item.ShiftOverTokn();
                                 if (pc.tokens.Count > 0 && (currentToken == string.Empty || tokens[0] == currentToken))
                                 {
                                     tokens.RemoveAt(0);
@@ -273,7 +273,7 @@ namespace CSPGF.Parse
                                 this.chart.forest[fid] = newProd;
 
                                 var tokens2 = new List<string>(currentProd.tokens); 
-                                var item2 = item.shiftOverArg(newSym.Arg, fid);
+                                var item2 = item.ShiftOverArg(newSym.Arg, fid);
 
                                 if (tokens2.Count > 0 && (this.currentToken == string.Empty || tokens2[0] == this.currentToken))
                                 {
@@ -289,7 +289,7 @@ namespace CSPGF.Parse
                     {
                         var newSym = (SymbolKS)sym;
                         var tokens = new List<string>(newSym.Tokens.ToList<string>());
-                        var ai = item.shiftOverTokn();
+                        var ai = item.ShiftOverTokn();
                         if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
                         {
                             tokens.RemoveAt(0);
@@ -301,7 +301,7 @@ namespace CSPGF.Parse
                     else if (sym is SymbolKP)
                     {
                         var newSym = (SymbolKP)sym;
-                        var pitem = item.shiftOverTokn();
+                        var pitem = item.ShiftOverTokn();
                         var tokens = newSym.Tokens.ToList<string>();
                         if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
                         {
@@ -332,33 +332,33 @@ namespace CSPGF.Parse
                 }
                 else
                 {
-                    int? tempfid = this.chart.lookupPC(item.fid, item.lbl, item.offset);
+                    int? tempfid = this.chart.lookupPC(item.FId, item.Lbl, item.Offset);
                     if (!tempfid.HasValue)
                     {
                         int fid = this.chart.nextId++;
 
-                        var items = this.chart.lookupACo(item.offset, item.fid, item.lbl);
+                        var items = this.chart.lookupACo(item.Offset, item.FId, item.Lbl);
                         if (items != null)
                         {
                             foreach (ActiveItem pitem in items)
                             {
-                                var temp = pitem.seq[pitem.dot];
+                                var temp = pitem.Seq[pitem.Dot];
                                 if (temp is SymbolCat)
                                 {
                                     var arg = ((SymbolCat)temp).Arg;
-                                    agenda.Add(pitem.shiftOverArg(arg, fid));
+                                    agenda.Add(pitem.ShiftOverArg(arg, fid));
 
                                 }
                                 else if (temp is SymbolLit)
                                 {
                                     var arg = ((SymbolLit)temp).Arg;
-                                    agenda.Add(pitem.shiftOverArg(arg, fid));
+                                    agenda.Add(pitem.ShiftOverArg(arg, fid));
                                 }
                             }
                         }
 
-                        this.chart.insertPC(item.fid, item.lbl, item.offset, fid);
-                        var newProd = new ProductionApply(this.chart.nextId, item.fun, item.args.ToArray<int>());
+                        this.chart.insertPC(item.FId, item.Lbl, item.Offset, fid);
+                        var newProd = new ProductionApply(this.chart.nextId, item.Fun, item.Args.ToArray<int>());
                         if (this.chart.forest.ContainsKey(fid))
                         {
                             this.chart.forest[fid].Add(newProd);
@@ -374,12 +374,12 @@ namespace CSPGF.Parse
                         var labels = this.chart.labelsAC(fid);
                         foreach(int k in labels.Keys)
                         {
-                            var newAI = new ActiveItem(this.chart.offset, 0, item.fun, item.fun.Sequences[k].ToList<Symbol>(), item.args, fid, k);
+                            var newAI = new ActiveItem(this.chart.offset, 0, item.Fun, item.Fun.Sequences[k].ToList<Symbol>(), item.Args, fid, k);
                             agenda.Add(newAI);
                         }
 
                         var rules = this.chart.forest[fid];
-                        var rule = new ProductionApply(this.chart.nextId, item.fun, item.args.ToArray<int>());
+                        var rule = new ProductionApply(this.chart.nextId, item.Fun, item.Args.ToArray<int>());
                         bool isMember = false;
                         foreach(Production p in rules)
                         {
