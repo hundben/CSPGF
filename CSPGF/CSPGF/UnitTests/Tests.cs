@@ -131,7 +131,7 @@ namespace CSPGF
         }
 
         [Fact]
-        public void TestNewParser()
+        public void NewParserLiteral()
         {
             string check = "";
             try
@@ -154,10 +154,39 @@ namespace CSPGF
             }
             catch (Exception e)
             {
-                output.WriteLine("Error:" + e.StackTrace.ToString());
+                output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
             }
 
             Assert.Equal("flt ( 1.2 )", check);
+        }
+
+        [Fact]
+        public void NewParserNormal()
+        {
+            string check = "";
+            try
+            {
+                string filename = "../../PGF examples/Phrasebook.pgf";
+                PGFReader pr = new PGFReader(filename);
+                PGF pgf = pr.ReadPGF();
+                Concrete language = pgf.GetConcrete("PhrasebookEng");
+                ParseState2 pstate = new ParseState2(language, language.GetStartCat());
+                pstate.next("this");
+                pstate.next("wine");
+                pstate.next("is");
+                pstate.next("delicious");
+                pstate.next(".");
+                var currentLin = new Linearize.Linearizer(pgf, language);
+                List<Trees.Absyn.Tree> lt = pstate.GetTrees();
+                Trees.Absyn.Tree t = lt[0];
+                check = currentLin.LinearizeString(t);
+            }
+            catch (Exception e)
+            {
+                output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
+            }
+
+            Assert.Equal("this wine is delicious .", check);
         }
     }
 }

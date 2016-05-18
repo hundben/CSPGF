@@ -117,9 +117,31 @@ namespace CSPGF.Parse
                         var label = newSym.Label;
 
                         var items = this.chart.lookupAC(fid, label);
-                        if (items.Count > 0)
+
+
+                        /*
+                         *                       if (items == null) {
+                                                var rules = this.chart.expandForest(fid);
+                                                for (var j in rules) {
+                                                  var rule = rules[j];
+                                                  agenda.push(new ActiveItem(this.chart.offset,0,rule.fun,rule.fun.lins[label],rule.args,fid,label));
+                                                }
+                                                this.chart.insertAC(fid,label,[item]);
+                                              } else {
+                                                var isMember = false;
+                                                for (var j in items) {
+                                                  if (items[j].isEqual(item)) {
+                                                    isMember = true;
+                                                    break;
+                                                  }
+                                                }
+
+                         */
+                        
+                        if (items == null)
                         {
                             var rules = this.chart.expandForest(fid);
+                            
                             foreach(ProductionApply rule in rules)
                             {
                                 var newAI = new ActiveItem2(this.chart.offset, 0, rule.Function, rule.Function.Sequences[label].ToList<Symbol>(), rule.Domain().ToList<int>(), fid, label);

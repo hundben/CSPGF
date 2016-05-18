@@ -48,7 +48,10 @@ namespace CSPGF.Parse
         {
             if (this.active.ContainsKey(fid))
             {
-                return this.active[fid][label];
+                if (this.active[fid].ContainsKey(label))
+                {
+                    return this.active[fid][label];
+                }
             }
 
             return null;
@@ -165,15 +168,15 @@ namespace CSPGF.Parse
         /// </summary>
         /// <param name="fid"></param>
         /// <returns></returns>
-        public List<ProductionApply> expandForest(int fid)
+        public List<Production> expandForest(int fid)
         {
-            var rules = new List<ProductionApply>();
+            var rules = new List<Production>();
 
             foreach (Production p in this.forest[fid])
             {
-                if (p is ProductionApply)
+                if (p is ProductionApply || p is ProductionConst)
                 {
-                    rules.Add((ProductionApply)p);
+                    rules.Add(p);
                 }
                 else if (p is ProductionCoerce) 
                 {
