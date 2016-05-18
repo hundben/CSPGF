@@ -177,7 +177,7 @@ namespace CSPGF.Parse
                             if (rules[0] is ProductionConst)
                             {
                                 ProductionConst pc = (ProductionConst)rules[0];
-                                List<string> tokens = pc.tokens;
+                                List<string> tokens = new List<string>(pc.tokens);
                                 ActiveItem2 ai2 = item.shiftOverTokn();
                                 if (pc.tokens.Count > 0 && (currentToken == string.Empty || tokens[0] == currentToken))
                                 {
@@ -193,14 +193,12 @@ namespace CSPGF.Parse
                             List<Production> newProd = new List<Production>();
                             
                             Symbol[][] syms = new Symbol[0][];  // TODO check if this is correct?
-                            List<string> tokens = new List<string>();
                             if (fid == -1)
                             {
                                 // If string
                                 string token = "\"" + this.currentToken + "\"";                              
-                                tokens.Add(token);
                                 ConcreteFunction newFun = new ConcreteFunction(token, syms);
-                                newProd.Add(new ProductionConst(this.chart.nextId, newFun, tokens));    // nextId´+??
+                                newProd.Add(new ProductionConst(this.chart.nextId, newFun, new List<string>() { token }));    // nextId´+??
                             }
                             else if (fid == -2)
                             {
@@ -208,9 +206,8 @@ namespace CSPGF.Parse
                                 int i = 0;
                                 if (int.TryParse(this.currentToken, out i))
                                 {
-                                    tokens.Add(this.currentToken);
                                     ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
-                                    newProd.Add(new ProductionConst(this.chart.nextId, newFun, tokens));
+                                    newProd.Add(new ProductionConst(this.chart.nextId, newFun, new List<string>() { this.currentToken }));
                                 }
                             }
                             else if (fid == -3)
@@ -219,9 +216,8 @@ namespace CSPGF.Parse
                                 float f = 0;
                                 if (float.TryParse(this.currentToken, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out f))
                                 {
-                                    tokens.Add(this.currentToken);
                                     ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
-                                    newProd.Add( new ProductionConst(this.chart.nextId, newFun, tokens));
+                                    newProd.Add( new ProductionConst(this.chart.nextId, newFun, new List<string>() { this.currentToken }));
                                 }
                             }
 
@@ -232,7 +228,7 @@ namespace CSPGF.Parse
                                 this.chart.forest[fid] = newProd;
 
                                 // notice, replaces earlier tokens but is the same... TODO maybe remove this as it's not nessecary
-                                var tokens2 = currentProd.tokens;
+                                var tokens2 = new List<string>(currentProd.tokens); 
                                 var item2 = item.shiftOverArg(newSym.Arg, fid);
 
                                 if (tokens2.Count > 0 && (this.currentToken == string.Empty || tokens2[0] == this.currentToken))
@@ -249,7 +245,7 @@ namespace CSPGF.Parse
                     else if (sym is SymbolKS)
                     {
                         var newSym = (SymbolKS)sym;
-                        var tokens = newSym.Tokens.ToList<string>();
+                        var tokens = new List<string>(newSym.Tokens.ToList<string>());
                         var ai = item.shiftOverTokn();
                         if (tokens.Count > 1 && ai.dot > 0)
                         {
@@ -278,7 +274,7 @@ namespace CSPGF.Parse
 
                         foreach ( Alternative alt in newSym.Alts)
                         {
-                            tokens = alt.Alt1.ToList<string>();
+                            tokens = new List<string>(alt.Alt1.ToList<string>());
                             if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
                             {
                                 tokens.RemoveAt(0);
