@@ -115,11 +115,11 @@ namespace CSPGF
                 PGF pgf = pr.ReadPGF();
 
                 Concrete language = pgf.GetConcrete("MiniLitCnc");
-                ParseState2 pstate = new ParseState2(language, language.GetStartCat());
-                pstate.next("flt");
-                pstate.next("(");
-                pstate.next("1.2");
-                pstate.next(")");
+                ParseState pstate = new ParseState(language);
+                pstate.Next("flt");
+                pstate.Next("(");
+                pstate.Next("1.2");
+                pstate.Next(")");
 
                 var currentLin = new Linearize.Linearizer(pgf, language);
                 List<Trees.Absyn.Tree> lt = pstate.GetTrees();
@@ -144,12 +144,12 @@ namespace CSPGF
                 PGFReader pr = new PGFReader(filename);
                 PGF pgf = pr.ReadPGF();
                 Concrete language = pgf.GetConcrete("PhrasebookEng");
-                ParseState2 pstate = new ParseState2(language, language.GetStartCat());
-                pstate.next("this");
-                pstate.next("wine");
-                pstate.next("is");
-                pstate.next("delicious");
-                pstate.next(".");
+                ParseState pstate = new ParseState(language);
+                pstate.Next("this");
+                pstate.Next("wine");
+                pstate.Next("is");
+                pstate.Next("delicious");
+                pstate.Next(".");
                 var currentLin = new Linearize.Linearizer(pgf, language);
                 List<Trees.Absyn.Tree> lt = pstate.GetTrees();
                 Trees.Absyn.Tree t = lt[0];

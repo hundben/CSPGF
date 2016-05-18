@@ -134,7 +134,7 @@ namespace CSPGF
         {
             if (!string.IsNullOrEmpty(this.fromLanguage))
             {
-                return this.currentPState.Scan(token);
+                return this.currentPState.Next(token);
             }
 
             return false;
@@ -151,7 +151,7 @@ namespace CSPGF
             {
                 foreach (string tok in tokens.Split())
                 {
-                    if (!this.currentPState.Scan(tok))
+                    if (!this.currentPState.Next(tok))
                     {
                         return false;
                     }

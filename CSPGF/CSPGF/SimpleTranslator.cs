@@ -108,7 +108,7 @@ namespace CSPGF
 
             foreach (string str in sentence.Split(' '))
             {
-                this.ps.Scan(str);
+                this.ps.Next(str);
             }
 
             if (!this.to.Equals(to))

@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Chart.cs" company="None">
-//  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
+// <copyright file="Chart2.cs" company="None">
+//  Copyright (c) 2011-2016, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
 //
@@ -28,286 +28,195 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using CSPGF.Grammar;
+using System.Collections.Generic;
+
 namespace CSPGF.Parse
 {
-    using System.Collections.Generic;
-    using Grammar;
-
-    /// <summary>
-    /// The chart. Stores production sets and new categories.
-    /// </summary>
-    internal class Chart
+    class Chart
     {
-        /// <summary>
-        /// The set of productions
-        /// </summary>
-        private Dictionary<int, HashSet<Production>> productionSets = new Dictionary<int, HashSet<Production>>();
+        private Dictionary<int, Dictionary<int, List<ActiveItem>>> active;
+        private List<Dictionary<int, Dictionary<int, List<ActiveItem>>>> actives;
+        private Dictionary<string, int> passive;
+        public Dictionary<int, List<Production>> forest;
+        public int nextId;
+        public int offset;
 
-        /// <summary>
-        /// Contains all categories with an index as a value.
-        /// This is just a fun test :D Is faster than old version but probably not near a good solution.
-        /// </summary>
-        private Dictionary<string, int> categoryBookKeeperHash = new Dictionary<string, int>();
-
-        /// <summary>
-        /// The next category index to use
-        /// </summary>
-        private int nextCat;
-
-        /// <summary>
-        /// Last production
-        /// </summary>
-        private int currentProd;
-
-        /// <summary>
-        /// Handles productions, used to remove newer productions.
-        /// </summary>
-        private Stack<int> lastProduction = new Stack<int>();
-
-        /// <summary>
-        /// Initializes a new instance of the Chart class.
-        /// </summary>
-        /// <param name="nextCat">The next category index to use.</param>
-        public Chart(int nextCat)
+        public Chart(Concrete concrete)
         {
-            this.nextCat = nextCat;
-            this.currentProd = 0;
-        }
+            this.active = new Dictionary<int, Dictionary<int, List<ActiveItem>>>();
+            this.actives = new List<Dictionary<int, Dictionary<int, List<ActiveItem>>>>();
+            this.passive = new Dictionary<string, int>();
+            this.forest = new Dictionary<int, List<Production>>();
+            this.nextId = concrete.FId; //  TODO fix so that it uses totalFID instead
+            this.offset = 0;
 
-        /// <summary>
-        /// Removes categories to save some memory.
-        /// </summary>
-        public void NextToken()
-        {
-            this.categoryBookKeeperHash = new Dictionary<string, int>();
-            this.lastProduction.Push(this.currentProd);
-        }
-
-        /// <summary>
-        /// Removes all productions associated with the last production
-        /// </summary>
-        public void RemoveToken()
-        {
-            int remove = this.lastProduction.Pop();
-            HashSet<int> temp = new HashSet<int>(this.productionSets.Keys);
-
-            foreach (int key in temp)
+            // TODO check if we need to copy or not (copy now to be safe)
+            foreach(KeyValuePair<int, List<Production>> entry in concrete.Productions)
             {
-                if (key > remove)
+                var temp = new List<Production>();
+                foreach(Production p in entry.Value)
                 {
-                    this.productionSets.Remove(key);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Adds a production to the production set.
-        /// </summary>
-        /// <param name="p">The production to add.</param>
-        /// <returns>Returns true if production was added.</returns>
-        public bool AddProduction(Production p)
-        {
-            HashSet<Production> prodSet;
-            if (this.productionSets.TryGetValue(p.FId, out prodSet))
-            {
-                if (prodSet.Contains(p)) 
-                { 
-                    return false; 
+                    temp.Add(p);
                 }
 
-                prodSet.Add(p);
-            }
-            else
-            {
-                prodSet = new HashSet<Production> { p };
-                this.productionSets.Add(p.FId, prodSet);
-            }
-
-            this.currentProd = p.FId;
-            return true;
-        }
-
-        /// <summary>
-        /// Add a production to the production set.
-        /// </summary>
-        /// <param name="cat">Category index.</param>
-        /// <param name="fun">The function.</param>
-        /// <param name="domain">A list of domains.</param>
-        /// <returns>Returns true if production was added.</returns>
-        public bool AddProduction(int cat, ConcreteFunction fun, int[] domain)
-        {
-            return this.AddProduction(new ProductionApply(cat, fun, domain));
-        }
-
-        /// <summary>
-        /// Returns all the productions with the index resultCat.
-        /// </summary>
-        /// <param name="resultCat">Category index</param>
-        /// <returns>List of all productions with the index provided.</returns>
-        public List<Production> GetProductions(int resultCat)
-        {
-            HashSet<Production> prod;
-
-            // Check if category exists, if not return empty productionset
-            if (this.productionSets.TryGetValue(resultCat, out prod))
-            {
-                List<Production> applProd = new List<Production>();
-                foreach (Production p in prod)
-                {
-                    applProd.AddRange(this.Uncoerce(p));
-                }
-
-                return applProd;
-            }
-            else
-            {
-                return new List<Production>();
+                this.forest.Add(entry.Key, temp);
             }
         }
         
         /// <summary>
-        /// Creates a new category.
+        /// 
         /// </summary>
-        /// <param name="oldCat">Old category index</param>
-        /// <param name="l">The constituent value.</param>
-        /// <param name="j">Start index</param>
-        /// <param name="k">End index</param>
-        /// <returns>New category index.</returns>
-        public int GetFreshCategory(int oldCat, int l, int j, int k)
+        /// <param name="fid"></param>
+        /// <param name="label"></param>
+        /// <returns></returns>
+        public List<ActiveItem> lookupAC(int fid, int label)
         {
-            string hash = this.GenerateHash(oldCat, l, j, k);
-            if (this.categoryBookKeeperHash.ContainsKey(hash))
+            if (this.active.ContainsKey(fid))
             {
-                return this.categoryBookKeeperHash[hash];
-            }
-            else
-            {
-                return this.GenerateFreshCategory(hash);
-            }
-        }
-
-        /// <summary>
-        /// Get a category.
-        /// </summary>
-        /// <param name="oldCat">The old category.</param>
-        /// <param name="cons">Add description for cons.</param>
-        /// <param name="begin">Where it begins.</param>
-        /// <param name="end">Where it ends.</param>
-        /// <returns>Returns the category.</returns>
-        public int? GetCategory(int oldCat, int cons, int begin, int end)
-        {
-            string hash = this.GenerateHash(oldCat, cons, begin, end);
-
-            if (this.categoryBookKeeperHash.ContainsKey(hash))
-            {
-                return this.categoryBookKeeperHash[hash];
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /// <summary>
-        /// Generates a fresh category
-        /// </summary>
-        /// <param name="oldCat">Old category.</param>
-        /// <param name="l">Where to begin.</param>
-        /// <param name="j">Where to end.</param>
-        /// <param name="k">The position.</param>
-        /// <returns>The new category.</returns>
-        public int GenerateFreshCategory(int oldCat, int l, int j, int k)
-        {
-            return this.GenerateFreshCategory(this.GenerateHash(oldCat, l, j, k));
-        }
-
-        /// <summary>
-        /// Creates a string with data for debugging.
-        /// </summary>
-        /// <returns>Pretty print of all the important data for debugging.</returns>
-        public override string ToString()
-        {
-            string s = string.Empty; 
-            s = "=== Productions: ===\n";
-            foreach (int i in this.productionSets.Keys) 
-            {
-                s += " < PRODUCTION SET :" + i + " >\n";
-                foreach (Production p in this.productionSets[i])
+                if (this.active[fid].ContainsKey(label))
                 {
-                    s += p + "\n";
+                    return this.active[fid][label];
                 }
             }
 
-            s += "=== passive items: ===\n";
-            foreach (KeyValuePair<string, int> ints in this.categoryBookKeeperHash) 
-            {
-                // TODO add ToString on Category I guess? :D
-                s += "[" + ints.Key + "] = " + ints.Value + '\n';
-            }
-
-            return s;
+            return null;
         }
 
         /// <summary>
         /// 
         /// </summary>
+        /// <param name="offset"></param>
+        /// <param name="fid"></param>
+        /// <param name="label"></param>
         /// <returns></returns>
-        public int GenerateFreshCategory()
+        public List<ActiveItem> lookupACo(int offset, int fid, int label)
         {
-            int cat = this.nextCat;
-            this.nextCat++;
-            return cat;
-        }
-
-        /// <summary>
-        /// Generate a fresh category.
-        /// </summary>
-        /// <param name="hash">The old category.</param>
-        /// <returns>The new category</returns>
-        private int GenerateFreshCategory(string hash)
-        {
-            int cat = this.nextCat;
-            this.nextCat++;
-            this.categoryBookKeeperHash[hash] = cat;
-            return cat;
-        }
-
-        /// <summary>
-        /// Converts from CoerceProduction to ApplyProduction.
-        /// </summary>
-        /// <param name="p">Production to convert.</param>
-        /// <returns>List of ApplyProductions</returns>
-        private List<Production> Uncoerce(Production p)
-        {
-            List<Production> prodList = new List<Production>();
-            
-            if (p is ProductionCoerce)
+            //var tmp;
+            if (offset == this.offset)
             {
-                ProductionCoerce cp = (ProductionCoerce)p;
-                foreach (Production prod in this.GetProductions(cp.InitId)) 
+                try
                 {
-                    prodList.AddRange(this.Uncoerce(prod));
+                    return this.active[fid][label];
+                }
+                catch
+                {
+                    return null;
                 }
             }
             else
             {
-                prodList.Add(p);
+                try
+                {
+                    return this.actives[offset][fid][label];
+                }
+                catch
+                {
+                    return null;
+                }
             }
-
-            return prodList;
         }
 
         /// <summary>
-        /// Generates a hash for the dictionary.
+        /// 
         /// </summary>
-        /// <param name="oldCat">The old category.</param>
-        /// <param name="cons">The constituent.</param>
-        /// <param name="begin">Where it begins.</param>
-        /// <param name="end">Where it ends.</param>
-        /// <returns>The hash as a string.</returns>
-        private string GenerateHash(int oldCat, int cons, int begin, int end)
+        /// <param name="fid"></param>
+        /// <returns></returns>
+        public Dictionary<int, List<ActiveItem>> labelsAC(int fid)
         {
-            return oldCat + " " + cons + " " + begin + " " + end;
+            return this.active[fid];
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fid"></param>
+        /// <param name="label"></param>
+        /// <param name="items"></param>
+        public void insertAC(int fid, int label, List<ActiveItem> items)
+        {
+            if (this.active.ContainsKey(fid))
+            {
+                this.active[fid][label] = items;
+            }
+            else
+            {
+                var temp = new Dictionary<int, List<ActiveItem>>();
+                temp[label] = items;
+                this.active[fid] = temp;
+            }         
+        }
+
+        /// <summary>
+        /// TODO change label to correct type
+        /// </summary>
+        /// <param name="fid"></param>
+        /// <param name="label"></param>
+        /// <param name="offset"></param>
+        /// <returns></returns>
+        public int? lookupPC(int fid, int label, int offset)
+        {
+            string key = fid + "." + label + "-" + offset;
+            if (this.passive.ContainsKey(key))
+            {
+                return this.passive[key];
+            }
+
+            return null;
+        }
+
+        /// <summary>
+        /// TODO change label to correct type
+        /// </summary>
+        /// <param name="fid1"></param>
+        /// <param name="label"></param>
+        /// <param name="offset"></param>
+        /// <param name="fid2"></param>
+        public void insertPC(int fid1, int label, int offset, int fid2)
+        {
+            string key = fid1 + "." + label + "-" + offset;
+            this.passive[key] = fid2;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void shift()
+        {
+            this.actives.Add(this.active);
+            this.active = new Dictionary<int, Dictionary<int, List<ActiveItem>>>();
+            this.passive = new Dictionary<string, int>();
+            this.offset++;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="fid"></param>
+        /// <returns></returns>
+        public List<Production> expandForest(int fid)
+        {
+            var rules = new List<Production>();
+
+            foreach (Production p in this.forest[fid])
+            {
+                if (p is ProductionApply || p is ProductionConst)
+                {
+                    rules.Add(p);
+                }
+                else if (p is ProductionCoerce) 
+                {
+                    ProductionCoerce pc = (ProductionCoerce)p;
+                    var moreRules = expandForest(pc.InitId);
+                    foreach(Production p2 in moreRules)
+                    {
+
+                        rules.Add((ProductionApply)p2);
+                    }
+                }
+            }
+
+            return rules;
         }
     }
 }

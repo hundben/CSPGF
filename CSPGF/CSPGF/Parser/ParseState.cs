@@ -1,6 +1,6 @@
 ﻿//-----------------------------------------------------------------------
 // <copyright file="ParseState.cs" company="None">
-//  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
+//  Copyright (c) 2011-2016, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
 //
@@ -28,91 +28,102 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using CSPGF.Grammar;
+using System.Globalization;
+
 namespace CSPGF.Parse
 {
-    using System.Collections.Generic;
-    using System.Globalization;
-    using Grammar;
-
-    /// <summary>
-    /// The parsestate class.
-    /// </summary>
-    internal class ParseState
+    class ParseState
     {
-        /// <summary>
-        /// Start category
-        /// </summary>
+        private Concrete concrete;
         private ConcreteCategory startCat;
-
-        /// <summary>
-        /// Current token
-        /// </summary>
-        private string currentToken;
-
-        /// <summary>
-        /// The parse tree.
-        /// </summary>
-        private ParseTrie trie;
-
-        /// <summary>
-        /// The chart.
-        /// </summary>
+        private Trie items;
         private Chart chart;
-
+        private string currentToken;
+        private Trie currentAcc;
         /// <summary>
-        /// A stack of active items.
+        /// Creates a new instance of ParseState2
         /// </summary>
-        private Stack<ActiveItem> agenda;
-
-        /// <summary>
-        /// Current position.
-        /// </summary>
-        private int position;
-
-        /// <summary>
-        /// List of position in the parsetrie (new for each new token).
-        /// </summary>
-        private Stack<ParseTrie> listOfTries;
-
-        /// <summary>
-        /// List with sets of acctive items.
-        /// </summary>
-        private List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>> active;
-
-        /// <summary>
-        /// Initializes a new instance of the ParseState class.
-        /// </summary>
-        /// <param name="grammar">The concrete grammar we would like to use.</param>
-        public ParseState(Concrete grammar)
+        /// <param name="concrete"></param>
+        /// <param name="startCat"></param>
+		public ParseState(Concrete concrete)
         {
-            this.startCat = grammar.GetStartCat();
-            this.trie = new ParseTrie();
 
-            this.listOfTries = new Stack<ParseTrie>();
-            this.listOfTries.Push(this.trie);
+            this.concrete = concrete;
+			this.startCat = concrete.GetStartCat();
 
-            this.chart = new Chart(grammar.FId + 1);
+            this.items = new Trie();
+            this.chart = new Chart(concrete);
 
-            this.agenda = new Stack<ActiveItem>();
-            this.position = 0;
-            this.active = new List<Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>>();
-
-            // Initial Predict
-            foreach (Production k in grammar.GetProductions()) 
+            ConcreteCategory tempcat = concrete.GetStartCat();
+            for(int fid = tempcat.FirstFID; fid <= tempcat.LastFID; fid++)
             {
-                this.chart.AddProduction(k);
-            }
-
-            for (int id = this.startCat.FirstFID; id <= this.startCat.LastFID + 1; id++) 
-            {
-                foreach (ProductionApply prod in this.chart.GetProductions(id)) 
+                var prods = this.chart.expandForest(fid);
+                foreach(ProductionApply k in prods)
                 {
-                    ActiveItem ai = new ActiveItem(0, id, prod.Function, prod.Domain(), 0, 0);
-                    this.agenda.Push(ai);
+                    k.Function.FixSymbols();
+                    int lbl = 0;
+                    foreach(Symbol[] sym in k.Function.Sequences)
+                    {
+                        var activeItem = new ActiveItem(0, 0, k.Function, sym.ToList<Symbol>(), k.Domain().ToList<int>(), fid, lbl);
+                        items.value.Add(activeItem);
+                        lbl++;
+                    }
                 }
             }
 
-            this.Compute();
+            this.items.insertChain(new List<string>(), items);
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="token"></param>
+        /// <returns></returns>
+        public bool Next(string token)
+        { 
+            // Temporary store token instead of callback
+            this.currentToken = token;
+            this.currentAcc = this.items.lookup(token) ;
+
+            Process(this.items.value);
+
+            this.items = currentAcc;
+            this.chart.shift();
+
+            return !this.items.isEmpty();
+
+        }
+        
+        /// <summary>
+        /// Returns a list of predictions
+        /// </summary>
+        /// <returns>A list of predictions.</returns>
+        public List<string> Predict()
+        {
+            // TODO check if correct
+            return this.items.Predict();
+        }
+
+        /// <summary>
+        /// Resets the parser but keeps grammar.
+        /// </summary>
+        public void Reset()
+        {
+            // TODO implement
+        }
+
+        /// <summary>
+        /// Removes one token if the recovery-parser is used.
+        /// </summary>
+        /// <returns></returns>
+        public bool RemoveToken()
+        {
+            // TODO implement
+            return false;
         }
 
         /// <summary>
@@ -121,10 +132,13 @@ namespace CSPGF.Parse
         /// <returns>A list of the trees.</returns>
         public List<Trees.Absyn.Tree> GetTrees()
         {
+            this.currentToken = string.Empty;
+            this.Process(this.items.value);
+
             TreeBuilder tb = new TreeBuilder();
             TreeConverter tc = new TreeConverter();
             List<Trees.Absyn.Tree> trees = new List<Trees.Absyn.Tree>();
-            foreach (Tree t in tb.BuildTrees(this.chart, this.startCat, this.position)) 
+            foreach (Tree t in tb.BuildTrees(this.chart, this.startCat))
             {
                 trees.Add(tc.Intermediate2Abstract(t));
             }
@@ -132,409 +146,259 @@ namespace CSPGF.Parse
             return trees;
         }
 
-        /// <summary>
-        /// Scans a new token.
-        /// </summary>
-        /// <param name="token">The token to scan.</param>
-        /// <returns>Returns true if scan is successful.</returns>
-        public bool Scan(string token)
+        public void Process(List<ActiveItem> agenda)
         {
-            // Store for later use
-            this.currentToken = token;
-
-            // Store the old trie
-            this.listOfTries.Push(this.trie);
-
-            // Try to get the token and create a copy of the trie
-            ParseTrie newTrie = this.trie.GetSubTrie(token);
-
-            if (newTrie != null)
+            while (agenda.Count > 0)
             {
-                Stack<ActiveItem> newAgenda = newTrie.Lookup(string.Empty);
-                if (newAgenda != null)
+                var item = agenda[agenda.Count - 1];
+                agenda.RemoveAt(agenda.Count - 1);
+                var lin = item.seq;
+
+                if (item.dot < lin.Count)
                 {
-                    this.chart.NextToken();
-                    this.trie = newTrie;
-                    this.position++;
-                    this.agenda = newAgenda;
-
-                    this.Compute();                    
-                }
-
-                return true;
-            }
-
-            return false;
-        }
-
-        /// <summary>
-        /// Predicts the next token.
-        /// </summary>
-        /// <returns>A list of valid tokens.</returns>
-        public List<string> Predict()
-        {
-            return this.trie.Predict();
-        }
-
-        /// <summary>
-        /// Removes all tokens but keeps initial state.
-        /// </summary>
-        public void Reset()
-        {
-            while (this.RemoveToken())
-            {
-            }
-        }
-
-        /// <summary>
-        /// Remove the last scanned token.
-        /// </summary>
-        /// <returns>Return true if removed successfully.</returns>
-        public bool RemoveToken()
-        {
-            if (this.position > 0)
-            {
-                this.chart.RemoveToken();
-                this.trie = this.listOfTries.Pop();
-                this.active.RemoveAt(this.position);
-                this.position--;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Computes the new trees.
-        /// </summary>
-        private void Compute()
-        {
-            this.active.Add(new Dictionary<int, Dictionary<int, HashSet<ActiveItem>>>());
-
-            // redo this with iterator or something like that?
-            while (this.agenda.Count != 0) 
-            {
-                ActiveItem e = this.agenda.Pop();
-                this.ProcessActiveItem(e);
-            }
-        }
-
-        /// <summary>
-        /// Processes an active item.
-        /// </summary>
-        /// <param name="item">The item to be processed.</param>
-        /// <param name="lit">The literal if any.</param>
-        private void ProcessActiveItem(ActiveItem item)
-        {
-            int j = item.Begin;
-            int a = item.Category;
-            ConcreteFunction f = item.Function;
-            int[] b = item.Domain;
-            int l = item.Constituent;
-            int p = item.Position;
-
-            // TempLog.LogMessageToFile("Processing active item: " + item + " ");
-            Symbol sym = item.CurrentSymbol();
-
-            // if (this.active.Count >= this.position) { <- TODO move this here 
-            if (sym is SymbolKS)
-            {
-                // TempLog.LogMessageToFile("Case before s in T");
-                SymbolKS tok = (SymbolKS)sym;
-                string[] tokens = tok.Tokens;
-
-                ActiveItem i = new ActiveItem(j, a, f, b, l, p + 1);
-
-                // SCAN
-                Stack<ActiveItem> newAgenda = this.trie.Lookup(new List<string>(tokens));
-                if (newAgenda == null)
-                {
-                    newAgenda = new Stack<ActiveItem>();
-                    this.trie.Add(new List<string>(tokens), newAgenda);
-                }
-
-                newAgenda.Push(i);
-            }
-            else if (sym is SymbolCat) 
-            {
-                // TempLog.LogMessageToFile("Case before <d,r>");
-                SymbolCat arg = (SymbolCat)sym;
-                int d = arg.Arg;
-                int r = arg.Label;
-                int bd = item.Domain[d];
-
-                // PREDICT
-                if (this.active.Count >= this.position) 
-                {
-                    if (this.AddActiveSet(bd, r, item, this.active[this.position]))
+                    var sym = lin[item.dot];
+                    if (sym is SymbolCat)
                     {
-                        foreach (Production prod in this.chart.GetProductions(bd)) 
+                        var newSym = (SymbolCat)sym;
+                        var fid = item.args[newSym.Arg];
+                        var label = newSym.Label;
+                        var items = this.chart.lookupAC(fid, label);
+                        
+                        if (items == null)
                         {
-                            if (prod is ProductionApply)
+                            var rules = this.chart.expandForest(fid);
+                            
+                            foreach(ProductionApply rule in rules)
                             {
-                                ProductionApply ap = (ProductionApply)prod;
-                                ActiveItem it = new ActiveItem(this.position, bd, ap.Function, ap.Domain(), r, 0);
-                                this.agenda.Push(it);
-                            } 
-                            else if (prod is ProductionExtern)
-                            {
-                                // TODO
-                                ProductionExtern ep = (ProductionExtern)prod;
-                                /* TODO this is wrong
-                                ActiveItem it = new ActiveItem(this.position, bd, ep.Function, prod.Domain(), r, 0);
-                                this.agenda.Push(it);*/
+                                var newAI = new ActiveItem(this.chart.offset, 0, rule.Function, rule.Function.Sequences[label].ToList<Symbol>(), rule.Domain().ToList<int>(), fid, label);
+                                agenda.Add(newAI);
                             }
-                            else
-                            {
-                                // Coerce production, which GetProductions should handle
-                                // TODO throw exception
-                            }
+
+                            List<ActiveItem> temp = new List<ActiveItem>();
+                            temp.Add(item);
+                            this.chart.insertAC(fid, label, temp);
                         }
-                    }
-
-                    // COMBINE
-                    int? cat = this.chart.GetCategory(bd, r, this.position, this.position);
-
-                    if (cat.HasValue) 
-                    {
-                        List<int> newDomain = new List<int>(b);
-                        newDomain[d] = cat.Value;
-
-                        // TODO: FIX!
-                        ActiveItem it = new ActiveItem(j, a, f, newDomain.ToArray(), l, p + 1);
-                        this.agenda.Push(it);
-
-                        // TempLog.LogMessageToFile("Adding to agenda: " + it.ToString());
-                    }
-                }
-            }
-            else if (sym is SymbolLit)
-            {
-                /*TODO notice a lot of this is just test...
-                TempLog.LogMessageToFile("Case before {d,r}");*/
-                SymbolLit litSym = (SymbolLit)sym;
-                int d = litSym.Arg;
-                int r = litSym.Label;
-                int bd = item.Domain[d];
-
-                // LITERAL
-                if (this.active.Count >= this.position)
-                {
-                    if (this.AddActiveSet(bd, r, item, this.active[this.position]))
-                    {
-                        foreach (Production prod in this.chart.GetProductions(bd))
+                        else
                         {
-                            if (prod is ProductionConst)
+                            bool isMember = false;
+                            foreach (ActiveItem ai in items)
                             {
-                                ProductionConst pc = (ProductionConst)prod;
-                                ActiveItem ai2 = item.shiftOverTokn();
-                                Stack<ActiveItem> aistack = new Stack<ActiveItem>();
-                                aistack.Push(ai2);
-                                List<string> tokens = pc.tokens;
-
-                                if (pc.tokens.Count > 1 && currentToken == string.Empty || currentToken == pc.tokens[0])
+                                if (ai.Equals(item))
                                 {
-                                    pc.removeFirstToken();
-                                    this.trie.Add(pc.tokens, aistack);
+                                    isMember = true;
+                                    break;
+                                }
+                            }
+
+                            if (!isMember)
+                            {
+                                items.Add(item);
+
+                                var fid2 = this.chart.lookupPC(fid, label, this.chart.offset);
+                                if (fid2.HasValue)
+                                {
+                                    agenda.Add(item.shiftOverArg(newSym.Arg, fid2.Value));
                                 }
                             }
                         }
                     }
+                    else if (sym is SymbolLit)
+                    {
+                        var newSym = (SymbolLit)sym;
+                        var fid = item.args[newSym.Arg];
+
+                        List<Production> rules;
+                        if (this.chart.forest.ContainsKey(fid))
+                        {
+                            rules = this.chart.forest[fid];
+                        }
+                        else
+                        {
+                            rules = new List<Production>();
+                        }
+
+                        if (rules.Count > 0)
+                        {
+                            if (rules[0] is ProductionConst)
+                            {
+                                ProductionConst pc = (ProductionConst)rules[0];
+                                List<string> tokens = new List<string>(pc.tokens);
+                                ActiveItem ai2 = item.shiftOverTokn();
+                                if (pc.tokens.Count > 0 && (currentToken == string.Empty || tokens[0] == currentToken))
+                                {
+                                    tokens.RemoveAt(0);
+                                    Trie tt = new Trie();
+                                    tt.value = new List<ActiveItem>() { ai2 };
+                                    this.currentAcc = this.currentAcc.insertChain1(tokens, tt);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            List<Production> newProd = new List<Production>();
+                            
+                            Symbol[][] syms = new Symbol[0][];
+                            if (fid == -1)
+                            {
+                                // If string
+                                string token = "\"" + this.currentToken + "\"";                              
+                                ConcreteFunction newFun = new ConcreteFunction(token, syms);
+                                newProd.Add(new ProductionConst(this.chart.nextId, newFun, new List<string>() { token }, -1));    // nextId´+??
+                            }
+                            else if (fid == -2)
+                            {
+                                // If int
+                                int i = 0;
+                                if (int.TryParse(this.currentToken, out i))
+                                {
+                                    ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
+                                    newProd.Add(new ProductionConst(this.chart.nextId, newFun, new List<string>() { this.currentToken }, -2));
+                                }
+                            }
+                            else if (fid == -3)
+                            {
+                                // If float
+                                float f = 0;
+                                if (float.TryParse(this.currentToken, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out f))
+                                {
+                                    ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
+                                    newProd.Add( new ProductionConst(this.chart.nextId, newFun, new List<string>() { this.currentToken }, -3));
+                                }
+                            }
+
+                            if (newProd.Count > 0)
+                            {
+                                var currentProd = (ProductionConst)newProd[0];
+                                fid = this.chart.nextId++;
+                                this.chart.forest[fid] = newProd;
+
+                                var tokens2 = new List<string>(currentProd.tokens); 
+                                var item2 = item.shiftOverArg(newSym.Arg, fid);
+
+                                if (tokens2.Count > 0 && (this.currentToken == string.Empty || tokens2[0] == this.currentToken))
+                                {
+                                    tokens2.RemoveAt(0);
+                                    Trie tt = new Trie();
+                                    tt.value = new List<ActiveItem>() { item2 };
+                                    this.currentAcc = this.currentAcc.insertChain1(tokens2, tt);
+                                }
+                            }
+                        }
+                    }
+                    else if (sym is SymbolKS)
+                    {
+                        var newSym = (SymbolKS)sym;
+                        var tokens = new List<string>(newSym.Tokens.ToList<string>());
+                        var ai = item.shiftOverTokn();
+                        if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
+                        {
+                            tokens.RemoveAt(0);
+                            Trie tt = new Trie();
+                            tt.value = new List<ActiveItem>() { ai };
+                            this.currentAcc = this.currentAcc.insertChain1(tokens, tt);
+                        }
+                    }
+                    else if (sym is SymbolKP)
+                    {
+                        var newSym = (SymbolKP)sym;
+                        var pitem = item.shiftOverTokn();
+                        var tokens = newSym.Tokens.ToList<string>();
+                        if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
+                        {
+                            tokens.RemoveAt(0);
+                            Trie tt = new Trie();
+                            tt.value = new List<ActiveItem>() { pitem };
+                            this.currentAcc = this.currentAcc.insertChain1(tokens, tt);
+                        }
+
+                        foreach ( Alternative alt in newSym.Alts)
+                        {
+                            tokens = new List<string>(alt.Alt1.ToList<string>());
+                            if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
+                            {
+                                tokens.RemoveAt(0);
+                                Trie tt = new Trie();
+                                tt.value = new List<ActiveItem>() { pitem };
+                                this.currentAcc = this.currentAcc.insertChain1(tokens, tt);
+                            }
+                        }
+                    }
+                    else if (sym is SymbolVar)
+                    {
+                        var newSym = (SymbolVar)sym;
+                        // TODO Not implemented
+                        throw new NotImplementedException();
+                    }
+                }
+                else
+                {
+                    int? tempfid = this.chart.lookupPC(item.fid, item.lbl, item.offset);
+                    if (!tempfid.HasValue)
+                    {
+                        int fid = this.chart.nextId++;
+
+                        var items = this.chart.lookupACo(item.offset, item.fid, item.lbl);
+                        if (items != null)
+                        {
+                            foreach (ActiveItem pitem in items)
+                            {
+                                var temp = pitem.seq[pitem.dot];
+                                if (temp is SymbolCat)
+                                {
+                                    var arg = ((SymbolCat)temp).Arg;
+                                    agenda.Add(pitem.shiftOverArg(arg, fid));
+
+                                }
+                                else if (temp is SymbolLit)
+                                {
+                                    var arg = ((SymbolLit)temp).Arg;
+                                    agenda.Add(pitem.shiftOverArg(arg, fid));
+                                }
+                            }
+                        }
+
+                        this.chart.insertPC(item.fid, item.lbl, item.offset, fid);
+                        var newProd = new ProductionApply(this.chart.nextId, item.fun, item.args.ToArray<int>());
+                        if (this.chart.forest.ContainsKey(fid))
+                        {
+                            this.chart.forest[fid].Add(newProd);
+                        }
+                        else
+                        {
+                            this.chart.forest[fid] = new List<Production>() { newProd };
+                        }
+                    }
                     else
                     {
-                        Symbol[][] syms = new Symbol[0][];
-                        ProductionConst prodConst = null;
-                        // -1 String 
-                        if (item.Category == -1)
+                        int fid = tempfid.Value;
+                        var labels = this.chart.labelsAC(fid);
+                        foreach(int k in labels.Keys)
                         {
-                            ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
-                            //int newcat = this.chart.GenerateFreshCategory();    // check with a first
-                            List<string> tokens = new List<string>() { this.currentToken };
-                            prodConst = new ProductionConst(this.chart.GetFreshCategory(a,l,j,this.position), newFun, tokens, -1);
+                            var newAI = new ActiveItem(this.chart.offset, 0, item.fun, item.fun.Sequences[k].ToList<Symbol>(), item.args, fid, k);
+                            agenda.Add(newAI);
                         }
-                        // -2 Int
-                        else if (item.Category == -2)
+
+                        var rules = this.chart.forest[fid];
+                        var rule = new ProductionApply(this.chart.nextId, item.fun, item.args.ToArray<int>());
+                        bool isMember = false;
+                        foreach(Production p in rules)
                         {
-                            int i = 0;
-                            if (int.TryParse(this.currentToken, out i))
+                            if (p is ProductionApply)
                             {
-                                ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
-                                //int newcat = this.chart.GenerateFreshCategory();    // check with a first
-                                List<string> tokens = new List<string>() { this.currentToken };
-                                prodConst = new ProductionConst(this.chart.GetFreshCategory(a, l, j, this.position), newFun, tokens, -2);
+                                if (rule.Equals((ProductionApply)p))
+                                {
+                                    isMember = true;
+                                }
                             }
-                            // TODO throw exception
                         }
-                        // -3 Float
-                        else if (item.Category == -3)
+                        
+                        if (!isMember)
                         {
-                            float fl = 0;
-                            if (float.TryParse(this.currentToken, out fl))
-                            {
-                                ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
-                                //int newcat = this.chart.GenerateFreshCategory();    // check with a first
-                                List<string> tokens = new List<string>() { this.currentToken };
-                                prodConst = new ProductionConst(this.chart.GetFreshCategory(a, l, j, this.position), newFun, tokens, -3);
-                            }
-                             // TODO throw exception
-                        }
-
-                        if (prodConst != null)
-                        {
-                            // TODO is this enough?
-                            this.chart.AddProduction(prodConst);
-                            // shift over args
-                            var nargs = new List<int>();
-                            foreach (int k in item.Domain)
-                            {
-                                nargs.Add(k);
-                            }
-                            //var item2 = item.shiftOverArg(newSym.Arg, fid);
-                            nargs[litSym.Arg] = item.Category;
-                           //  return new ActiveItem2(this.offset, this.dot + 1, this.fun, this.seq, nargs, this.fid, this.lbl);
-
-                        }
-                    }   
-
-                }
-            }
-            else if (sym is SymbolVar)
-            {
-                /* TODO implement
-                High-order argument
-                TempLog.LogMessageToFile("Case before <d,$r>");*/
-            }
-            else
-            {
-                // TempLog.LogMessageToFile("Case at the end");
-                int? cat = this.chart.GetCategory(a, l, j, this.position);
-                if (!cat.HasValue)
-                {
-                    // COMPLETE
-                    int n = this.chart.GenerateFreshCategory(a, l, j, this.position);
-
-                    // COMBINE
-                    foreach (ActiveItem ai in this.GetActiveSet(a, l, this.active[j]))
-                    {
-                        ActiveItem ip = ai;
-                        int d = ((SymbolCat)ai.CurrentSymbol()).Arg;
-                        List<int> domain = new List<int>(ip.Domain);
-
-                        // TempLog.LogMessageToFile("Combine with " + ip.ToString() + "(" + domain[d] + ")");
-                        domain[d] = n;
-
-                        ActiveItem i = new ActiveItem(ip.Begin, ip.Category, ip.Function, domain.ToArray(), ip.Constituent, ip.Position + 1);
-                        this.agenda.Push(i);
-                    }
-
-                    this.chart.AddProduction(n, f, b);
-                }
-                else
-                {
-                    // PREDICT
-                    HashSet<ActiveItem> items = this.GetActiveSet(cat.Value, this.active[this.position]);
-                    foreach (ActiveItem ai in items)
-                    {
-                        int r = ((SymbolCat)ai.CurrentSymbol()).Label;
-                        ActiveItem i = new ActiveItem(this.position, cat.Value, f, b, r, 0);
-                        this.agenda.Push(i);
-                    }
-
-                    this.chart.AddProduction(cat.Value, f, b);
-                }
-            }
-        }
-
-        /// <summary>
-        /// Ads an active item to the active set.
-        /// </summary>
-        /// <param name="cat">The category.</param>
-        /// <param name="cons">The part.</param>
-        /// <param name="item">The active item.</param>
-        /// <param name="currentActive">Current active set.</param>
-        /// <returns>True if added successfully.</returns>
-        private bool AddActiveSet(int cat, int cons, ActiveItem item, Dictionary<int, Dictionary<int, HashSet<ActiveItem>>> currentActive)
-        {
-            Dictionary<int, HashSet<ActiveItem>> map;
-            if (currentActive.TryGetValue(cat, out map))
-            {
-                HashSet<ActiveItem> activeItems;
-                if (map.TryGetValue(cons, out activeItems))
-                {
-                    foreach (ActiveItem ai in activeItems)
-                    {
-                        if (ai.Equals(item))
-                        {
-                            return false;
+                            rules.Add(rule);
                         }
                     }
-
-                    activeItems.Add(item);
-                }
-                else
-                {
-                    activeItems = new HashSet<ActiveItem> { item };
-                    map.Add(cons, activeItems);
                 }
             }
-            else
-            {
-                map = new Dictionary<int, HashSet<ActiveItem>>();
-                HashSet<ActiveItem> activeItems = new HashSet<ActiveItem> { item };
-                map.Add(cons, activeItems);
-                currentActive.Add(cat, map);
-            }
-
-            return true;
-        }
-
-        /// <summary>
-        /// Gets the current active set.
-        /// </summary>
-        /// <param name="cat">Current category.</param>
-        /// <param name="currentActive">The dictionary with ActiveItems</param>
-        /// <returns>Returns a HashSet with active items.</returns>
-        private HashSet<ActiveItem> GetActiveSet(int cat, Dictionary<int, Dictionary<int, HashSet<ActiveItem>>> currentActive)
-        {
-            HashSet<ActiveItem> ai = new HashSet<ActiveItem>();
-            Dictionary<int, HashSet<ActiveItem>> map;
-            if (currentActive.TryGetValue(cat, out map))
-            {
-                foreach (int key in map.Keys)
-                {
-                    foreach (ActiveItem i in map[key])
-                    {
-                        ai.Add(i);
-                    }
-                }
-            }
-
-            return ai;
-        }
-
-        /// <summary>
-        /// Gets an active set from the list of current active sets..
-        /// </summary>
-        /// <param name="cat">The category.</param>
-        /// <param name="cons">The constituent.</param>
-        /// <param name="currentActive">The dictionary with the sets.</param>
-        /// <returns>A hashset with the active items.</returns>
-        private HashSet<ActiveItem> GetActiveSet(int cat, int cons, Dictionary<int, Dictionary<int, HashSet<ActiveItem>>> currentActive)
-        {
-            HashSet<ActiveItem> ai = new HashSet<ActiveItem>();
-            Dictionary<int, HashSet<ActiveItem>> map;
-            if (currentActive.TryGetValue(cat, out map))
-            {
-                HashSet<ActiveItem> aitmp;
-                if (map.TryGetValue(cons, out aitmp))
-                {
-                    return aitmp;
-                }
-            }
-
-            return ai;
         }
     }
 }

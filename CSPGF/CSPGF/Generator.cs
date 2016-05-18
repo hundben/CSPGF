@@ -75,7 +75,7 @@ namespace CSPGF
             var pre = this.ps.Predict();
             while (pre.Count != 0)
             {
-                this.ps.Scan(pre[this.ran.Next(pre.Count - 1)]);
+                this.ps.Next(pre[this.ran.Next(pre.Count - 1)]);
                 pre = this.ps.Predict();
             }
 
