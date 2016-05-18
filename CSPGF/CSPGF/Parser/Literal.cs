@@ -39,8 +39,9 @@ namespace CSPGF.Parse
         /// Initializes a new instance of the Literal class.
         /// </summary>
         /// <param name="value">The value.</param>
-        public Literal(string value)
+        public Literal(string value, int type)
         {
+            this.Type = type;
             this.Value = value;
         }
 
@@ -48,5 +49,7 @@ namespace CSPGF.Parse
         /// Gets the value.
         /// </summary>
         public string Value { get; private set; }
+
+        public int Type { get; private set; }
     }
 }

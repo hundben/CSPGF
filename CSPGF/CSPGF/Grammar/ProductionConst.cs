@@ -13,12 +13,14 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="fId"></param>
         /// <param name="tokens"></param>
-        public ProductionConst(int fId, ConcreteFunction function, List<string> tokens) : base(0, fId)
+        public ProductionConst(int fId, ConcreteFunction function, List<string> tokens, int type) : base(0, fId)
         {
+            this.type = type;   // -1, -2, -3 TODO maybe change to something better later
             this.tokens = tokens;
             this.fun = function;
         }
 
+        public int type = 0;
         public List<string> tokens;
         public ConcreteFunction fun;
 

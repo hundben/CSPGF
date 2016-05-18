@@ -220,7 +220,7 @@ namespace CSPGF.Parse
                                 // If string
                                 string token = "\"" + this.currentToken + "\"";                              
                                 ConcreteFunction newFun = new ConcreteFunction(token, syms);
-                                newProd.Add(new ProductionConst(this.chart.nextId, newFun, new List<string>() { token }));    // nextId´+??
+                                newProd.Add(new ProductionConst(this.chart.nextId, newFun, new List<string>() { token }, -1));    // nextId´+??
                             }
                             else if (fid == -2)
                             {
@@ -229,7 +229,7 @@ namespace CSPGF.Parse
                                 if (int.TryParse(this.currentToken, out i))
                                 {
                                     ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
-                                    newProd.Add(new ProductionConst(this.chart.nextId, newFun, new List<string>() { this.currentToken }));
+                                    newProd.Add(new ProductionConst(this.chart.nextId, newFun, new List<string>() { this.currentToken }, -2));
                                 }
                             }
                             else if (fid == -3)
@@ -239,7 +239,7 @@ namespace CSPGF.Parse
                                 if (float.TryParse(this.currentToken, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out f))
                                 {
                                     ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
-                                    newProd.Add( new ProductionConst(this.chart.nextId, newFun, new List<string>() { this.currentToken }));
+                                    newProd.Add( new ProductionConst(this.chart.nextId, newFun, new List<string>() { this.currentToken }, -3));
                                 }
                             }
 

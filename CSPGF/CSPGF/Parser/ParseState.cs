@@ -352,7 +352,7 @@ namespace CSPGF.Parse
                             ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
                             //int newcat = this.chart.GenerateFreshCategory();    // check with a first
                             List<string> tokens = new List<string>() { this.currentToken };
-                            prodConst = new ProductionConst(this.chart.GetFreshCategory(a,l,j,this.position), newFun, tokens);
+                            prodConst = new ProductionConst(this.chart.GetFreshCategory(a,l,j,this.position), newFun, tokens, -1);
                         }
                         // -2 Int
                         else if (item.Category == -2)
@@ -363,7 +363,7 @@ namespace CSPGF.Parse
                                 ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
                                 //int newcat = this.chart.GenerateFreshCategory();    // check with a first
                                 List<string> tokens = new List<string>() { this.currentToken };
-                                prodConst = new ProductionConst(this.chart.GetFreshCategory(a, l, j, this.position), newFun, tokens);
+                                prodConst = new ProductionConst(this.chart.GetFreshCategory(a, l, j, this.position), newFun, tokens, -2);
                             }
                             // TODO throw exception
                         }
@@ -376,7 +376,7 @@ namespace CSPGF.Parse
                                 ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
                                 //int newcat = this.chart.GenerateFreshCategory();    // check with a first
                                 List<string> tokens = new List<string>() { this.currentToken };
-                                prodConst = new ProductionConst(this.chart.GetFreshCategory(a, l, j, this.position), newFun, tokens);
+                                prodConst = new ProductionConst(this.chart.GetFreshCategory(a, l, j, this.position), newFun, tokens, -3);
                             }
                              // TODO throw exception
                         }

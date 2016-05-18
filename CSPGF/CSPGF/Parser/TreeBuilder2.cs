@@ -117,7 +117,7 @@ namespace CSPGF.Parse
             else if (p is ProductionConst)
             {
                 var pc = (ProductionConst)p;
-                temp.Add(new Literal(pc.tokens[0]));
+                temp.Add(new Literal(pc.tokens[0], pc.type));
             }
 
             return temp;

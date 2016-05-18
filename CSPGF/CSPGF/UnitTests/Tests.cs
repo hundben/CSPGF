@@ -69,32 +69,6 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// Simple test to test literals.
-        /// </summary>
-        [Fact]
-        public void LiteralTest1()
-        {
-            string check = string.Empty;
-            try
-            {
-                AdvancedTranslator at = new AdvancedTranslator("../../PGF examples/MiniLit.pgf");
-                at.SetInputLanguage("MiniLitCnc");
-                at.SetOutputLanguage("MiniLitCnc");
-                at.Scan("flt");
-                at.Scan("(");
-                at.Scan("1.2");
-                at.Scan(")");
-                check = at.Translate().Trim();
-            }
-            catch (Exception e)
-            {
-                output.WriteLine("Error:" + e.StackTrace.ToString());
-            }
-
-            Assert.Equal("flt ( 1.2 )", check);
-        }
-
-        /// <summary>
         /// A simple translation test from English to Swedish.
         /// </summary>
         [Fact]

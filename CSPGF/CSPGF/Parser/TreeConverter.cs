@@ -32,6 +32,7 @@ namespace CSPGF.Parse
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
 
     /// <summary>
@@ -103,8 +104,23 @@ namespace CSPGF.Parse
             }
             else if (t is Literal) 
             {
+                // TODO WRONG! should check type
                 Literal lit = (Literal)t;
-                return new Trees.Absyn.Literal(new Trees.Absyn.StringLiteral(lit.Value));
+                if (lit.Type == -1)
+                {
+                    return new Trees.Absyn.Literal(new Trees.Absyn.StringLiteral(lit.Value));
+                }
+                else if (lit.Type == -2)
+                {
+                    return new Trees.Absyn.Literal(new Trees.Absyn.IntLiteral(int.Parse(lit.Value, NumberFormatInfo.InvariantInfo)));   // we have already parsed it once so should be ok
+                }
+                else if (lit.Type == -3)
+                {
+                    return new Trees.Absyn.Literal(new Trees.Absyn.FloatLiteral(float.Parse(lit.Value, NumberFormatInfo.InvariantInfo)));
+                }
+
+                
+
             }
             else if (t is MetaVariable) 
             {
