@@ -286,8 +286,8 @@ namespace CSPGF.Parse
                             else if (fid == -3)
                             {
                                 // If float
-                                float f = 0;
-                                if (float.TryParse(this.currentToken, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out f))
+                                double f = 0;
+                                if (double.TryParse(this.currentToken, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out f))
                                 {
                                     ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
                                     newProd.Add(new ProductionConst(newFun, new List<string>() { this.currentToken }, -3));

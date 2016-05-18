@@ -131,8 +131,7 @@ namespace CSPGF
                 output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
             }
 
-            // 1.20000004768372 because float... TODO change to double
-            Assert.Equal("flt ( 1.20000004768372 )", check);
+            Assert.Equal("flt ( 1.2 )", check);
         }
 
         [Fact]

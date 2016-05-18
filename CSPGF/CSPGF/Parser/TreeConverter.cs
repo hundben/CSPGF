@@ -116,7 +116,7 @@ namespace CSPGF.Parse
                 }
                 else if (lit.Type == -3)
                 {
-                    return new Trees.Absyn.Literal(new Trees.Absyn.FloatLiteral(float.Parse(lit.Value, NumberFormatInfo.InvariantInfo)));
+                    return new Trees.Absyn.Literal(new Trees.Absyn.FloatLiteral(double.Parse(lit.Value, NumberFormatInfo.InvariantInfo)));
                 }
             }
             else if (t is MetaVariable) 
