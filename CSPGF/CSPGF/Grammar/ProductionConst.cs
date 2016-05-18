@@ -58,7 +58,7 @@ namespace CSPGF.Grammar
         /// <param name="function">The corresponding concrete function.</param>
         /// <param name="tokens">List of tokens.</param>
         /// <param name="type">The type of the literal, same as FId for literals.</param>
-        public ProductionConst(ConcreteFunction function, List<string> tokens, int type) : base(0, -4)
+        public ProductionConst(ConcreteFunction function, List<string> tokens, int type) : base(0, -5)
         {
             this.Type = type;
             this.Tokens = tokens;

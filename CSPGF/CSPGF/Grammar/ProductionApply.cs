@@ -60,7 +60,7 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="function">The concrete function</param>
         /// <param name="domain">The domain</param>
-        public ProductionApply(ConcreteFunction function, int[] domain) : base(0, -4)
+        public ProductionApply(ConcreteFunction function, int[] domain) : base(0, -5)
         {
             this.Function = function;
             this.dom = domain;
