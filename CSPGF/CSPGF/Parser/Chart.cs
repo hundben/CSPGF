@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="Chart2.cs" company="None">
+// <copyright file="Chart.cs" company="None">
 //  Copyright (c) 2011-2016, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -28,49 +28,79 @@
 // </copyright>
 //-----------------------------------------------------------------------
 
-using CSPGF.Grammar;
-using System.Collections.Generic;
-
 namespace CSPGF.Parse
 {
-    class Chart
+    using System.Collections.Generic;
+    using CSPGF.Grammar;
+    
+    /// <summary>
+    /// The chart, used to store data used by ParseState.
+    /// </summary>
+    internal class Chart
     {
+        /// <summary>
+        /// List of active items
+        /// </summary>
         private Dictionary<int, Dictionary<int, List<ActiveItem>>> active;
-        private List<Dictionary<int, Dictionary<int, List<ActiveItem>>>> actives;
-        private Dictionary<string, int> passive;
-        public Dictionary<int, List<Production>> forest;
-        public int nextId;
-        public int offset;
 
+        /// <summary>
+        /// List of active items
+        /// </summary>
+        private List<Dictionary<int, Dictionary<int, List<ActiveItem>>>> actives;
+
+        /// <summary>
+        /// List of passive items
+        /// </summary>
+        private Dictionary<string, int> passive;
+
+        /// <summary>
+        /// Initializes a new instance of the Chart class.
+        /// </summary>
+        /// <param name="concrete">The concrete grammar we want to use.</param>
         public Chart(Concrete concrete)
         {
             this.active = new Dictionary<int, Dictionary<int, List<ActiveItem>>>();
             this.actives = new List<Dictionary<int, Dictionary<int, List<ActiveItem>>>>();
             this.passive = new Dictionary<string, int>();
-            this.forest = new Dictionary<int, List<Production>>();
-            this.nextId = concrete.FId; //  TODO fix so that it uses totalFID instead
-            this.offset = 0;
+            this.Forest = new Dictionary<int, List<Production>>();
+            this.NextId = concrete.FId; // TODO fix so that it uses totalFID instead
+            this.Offset = 0;
 
             // TODO check if we need to copy or not (copy now to be safe)
-            foreach(KeyValuePair<int, List<Production>> entry in concrete.Productions)
+            foreach (KeyValuePair<int, List<Production>> entry in concrete.Productions)
             {
                 var temp = new List<Production>();
-                foreach(Production p in entry.Value)
+                foreach (Production p in entry.Value)
                 {
                     temp.Add(p);
                 }
 
-                this.forest.Add(entry.Key, temp);
+                this.Forest.Add(entry.Key, temp);
             }
         }
-        
+
         /// <summary>
-        /// 
+        /// Gets or sets the list of productions
         /// </summary>
-        /// <param name="fid"></param>
-        /// <param name="label"></param>
-        /// <returns></returns>
-        public List<ActiveItem> lookupAC(int fid, int label)
+        public Dictionary<int, List<Production>> Forest { get; set; }
+
+        /// <summary>
+        /// Gets or sets the next id to be used.
+        /// </summary>
+        public int NextId { get; set; }
+
+        /// <summary>
+        /// Gets or sets the current offset.
+        /// </summary>
+        public int Offset { get; set; }
+
+        /// <summary>
+        /// Looks up an ActiveItem.
+        /// </summary>
+        /// <param name="fid">The FId used.</param>
+        /// <param name="label">The label used.</param>
+        /// <returns>A list of ActiveItems</returns>
+        public List<ActiveItem> LookupAC(int fid, int label)
         {
             if (this.active.ContainsKey(fid))
             {
@@ -84,16 +114,15 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// 
+        /// Looks up an ActiveItem and also use the offset.
         /// </summary>
-        /// <param name="offset"></param>
-        /// <param name="fid"></param>
-        /// <param name="label"></param>
-        /// <returns></returns>
-        public List<ActiveItem> lookupACo(int offset, int fid, int label)
+        /// <param name="offset">The offset used.</param>
+        /// <param name="fid">The FId used.</param>
+        /// <param name="label">The label used.</param>
+        /// <returns>A list of ActiveItems</returns>
+        public List<ActiveItem> LookupACo(int offset, int fid, int label)
         {
-            //var tmp;
-            if (offset == this.offset)
+            if (offset == this.Offset)
             {
                 try
                 {
@@ -118,22 +147,22 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// 
+        /// Returns the labels for a certain FId.
         /// </summary>
-        /// <param name="fid"></param>
-        /// <returns></returns>
-        public Dictionary<int, List<ActiveItem>> labelsAC(int fid)
+        /// <param name="fid">The FId used.</param>
+        /// <returns>A dictionary with all the ActiveItems.</returns>
+        public Dictionary<int, List<ActiveItem>> LabelsAC(int fid)
         {
             return this.active[fid];
         }
 
         /// <summary>
-        /// 
+        /// Insert an ActiveItem.
         /// </summary>
-        /// <param name="fid"></param>
-        /// <param name="label"></param>
-        /// <param name="items"></param>
-        public void insertAC(int fid, int label, List<ActiveItem> items)
+        /// <param name="fid">The corresponding FId.</param>
+        /// <param name="label">The label.</param>
+        /// <param name="items">The list of items to be inserted.</param>
+        public void InsertAC(int fid, int label, List<ActiveItem> items)
         {
             if (this.active.ContainsKey(fid))
             {
@@ -148,13 +177,13 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// TODO change label to correct type
+        /// Find a passive item.
         /// </summary>
-        /// <param name="fid"></param>
-        /// <param name="label"></param>
-        /// <param name="offset"></param>
-        /// <returns></returns>
-        public int? lookupPC(int fid, int label, int offset)
+        /// <param name="fid">The FId used.</param>
+        /// <param name="label">The label used.</param>
+        /// <param name="offset">The offset used.</param>
+        /// <returns>The id of the passive item.</returns>
+        public int? LookupPC(int fid, int label, int offset)
         {
             string key = fid + "." + label + "-" + offset;
             if (this.passive.ContainsKey(key))
@@ -166,39 +195,39 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// TODO change label to correct type
+        /// Insert a new passive item.
         /// </summary>
-        /// <param name="fid1"></param>
-        /// <param name="label"></param>
-        /// <param name="offset"></param>
-        /// <param name="fid2"></param>
-        public void insertPC(int fid1, int label, int offset, int fid2)
+        /// <param name="fid1">The first FId used</param>
+        /// <param name="label">The label used.</param>
+        /// <param name="offset">The offset used.</param>
+        /// <param name="fid2">The second FId used.</param>
+        public void InsertPC(int fid1, int label, int offset, int fid2)
         {
             string key = fid1 + "." + label + "-" + offset;
             this.passive[key] = fid2;
         }
 
         /// <summary>
-        /// 
+        /// Shift one step.
         /// </summary>
-        public void shift()
+        public void Shift()
         {
             this.actives.Add(this.active);
             this.active = new Dictionary<int, Dictionary<int, List<ActiveItem>>>();
             this.passive = new Dictionary<string, int>();
-            this.offset++;
+            this.Offset++;
         }
 
         /// <summary>
-        /// 
+        /// Expands the forest. Also takes care of ProductionCoerce
         /// </summary>
-        /// <param name="fid"></param>
-        /// <returns></returns>
-        public List<Production> expandForest(int fid)
+        /// <param name="fid">The FId used.</param>
+        /// <returns>A list of productions.</returns>
+        public List<Production> ExpandForest(int fid)
         {
             var rules = new List<Production>();
 
-            foreach (Production p in this.forest[fid])
+            foreach (Production p in this.Forest[fid])
             {
                 if (p is ProductionApply || p is ProductionConst)
                 {
@@ -207,10 +236,9 @@ namespace CSPGF.Parse
                 else if (p is ProductionCoerce) 
                 {
                     ProductionCoerce pc = (ProductionCoerce)p;
-                    var moreRules = expandForest(pc.InitId);
-                    foreach(Production p2 in moreRules)
+                    var moreRules = this.ExpandForest(pc.InitId);
+                    foreach (Production p2 in moreRules)
                     {
-
                         rules.Add((ProductionApply)p2);
                     }
                 }

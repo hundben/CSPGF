@@ -118,9 +118,6 @@ namespace CSPGF.Parse
                 {
                     return new Trees.Absyn.Literal(new Trees.Absyn.FloatLiteral(float.Parse(lit.Value, NumberFormatInfo.InvariantInfo)));
                 }
-
-                
-
             }
             else if (t is MetaVariable) 
             {

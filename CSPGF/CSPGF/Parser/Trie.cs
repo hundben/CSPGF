@@ -33,97 +33,107 @@ namespace CSPGF.Parse
     using System.Collections.Generic;
     using System.Linq;
 
-    class Trie
+    /// <summary>
+    /// The parse tree.
+    /// </summary>
+    internal class Trie
     {
-        public List<ActiveItem> value;
-        public Dictionary<string, Trie> items;
-
         /// <summary>
-        /// 
+        /// Initializes a new instance of the Trie class.
         /// </summary>
         public Trie()
         {
-            value = new List<ActiveItem>();
-            items = new Dictionary<string, Trie>();
+            this.Value = new List<ActiveItem>();
+            this.Items = new Dictionary<string, Trie>();
         }
 
         /// <summary>
-        /// 
+        /// Gets or sets the value.
         /// </summary>
-        /// <param name="keys"></param>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public Trie insertChain(List<string> keys, Trie obj)
-        {
-            var node = this;
-            foreach(string key in keys)
-            {
-                Trie nnode;
-                if (this.items.ContainsKey(key))
-                {
-                    nnode = node.items[key];
-                }
-                else
-                {
-                    nnode = new Trie();
-                    node.items[key] = nnode;
-                }
-
-                node = nnode;
-            }
-
-            node.value = obj.value; 
-            return node;
-        }
+        public List<ActiveItem> Value { get; set; }
 
         /// <summary>
-        /// 
+        /// Gets or sets the items.
         /// </summary>
-        /// <param name="keys"></param>
-        /// <param name="obj"></param>
-        /// <returns></returns>
-        public Trie insertChain1(List<string> keys, Trie obj)
+        public Dictionary<string, Trie> Items { get; set; }
+
+        /// <summary>
+        /// Inserts a new tree for each token in keys.
+        /// </summary>
+        /// <param name="keys">The list of keys.</param>
+        /// <param name="obj">The tree.</param>
+        /// <returns>The new tree.</returns>
+        public Trie InsertChain(List<string> keys, Trie obj)
         {
             var node = this;
             foreach (string key in keys)
             {
                 Trie nnode;
-                if (this.items.ContainsKey(key))
+                if (this.Items.ContainsKey(key))
                 {
-                    nnode = node.items[key];
+                    nnode = node.Items[key];
                 }
                 else
                 {
                     nnode = new Trie();
-                    node.items[key] = nnode;
+                    node.Items[key] = nnode;
+                }
+
+                node = nnode;
+            }
+
+            node.Value = obj.Value; 
+            return node;
+        }
+
+        /// <summary>
+        /// Inserts a chain of trees.
+        /// </summary>
+        /// <param name="keys">The list of tokens.</param>
+        /// <param name="obj">The tree used.</param>
+        /// <returns>The new tree.</returns>
+        public Trie InsertChain1(List<string> keys, Trie obj)
+        {
+            var node = this;
+            foreach (string key in keys)
+            {
+                Trie nnode;
+                if (this.Items.ContainsKey(key))
+                {
+                    nnode = node.Items[key];
+                }
+                else
+                {
+                    nnode = new Trie();
+                    node.Items[key] = nnode;
                 }
 
                 node = nnode;
             }
             
-            if (node.value.Count == 0)
+            if (node.Value.Count == 0)
             {
-                node.value = new List<ActiveItem>();
-                node.value.AddRange(obj.value);
+                node.Value = new List<ActiveItem>();
+                node.Value.AddRange(obj.Value);
             }
             else
             {
-                node.value.AddRange(obj.value);
+                node.Value.AddRange(obj.Value);
             }
 
             return node;
         }
 
         /// <summary>
-        /// 
+        /// Looks for a tree for the corresponding token.
         /// </summary>
-        /// <param name="keys"></param>
-        /// <param name="items"></param>
-        public Trie lookup(string key)
+        /// <param name="key">The token.</param>
+        /// <returns>The corresponding tree.</returns>
+        public Trie Lookup(string key)
         {
-            if (this.items.ContainsKey(key))
+            if (this.Items.ContainsKey(key))
             {
-                return this.items[key];
+                return this.Items[key];
             }
             else
             {
@@ -132,17 +142,18 @@ namespace CSPGF.Parse
         }
 
         /// <summary>
-        /// 
+        /// Checks if the tree is empty.
         /// </summary>
-        /// <returns></returns>
-        public bool isEmpty()
+        /// <returns>Returns true if empty.</returns>
+        public bool IsEmpty()
         {
             // TODO value should not be null
-            if (this.value.Count != 0)
+            if (this.Value.Count != 0)
             {
                 return false;
             }
-            if (items.Count > 0)
+
+            if (this.Items.Count > 0)
             {
                 return false;
             }
@@ -156,7 +167,7 @@ namespace CSPGF.Parse
         /// <returns>A list of predictions</returns>
         public List<string> Predict()
         {
-            return this.items.Keys.ToList<string>();
+            return this.Items.Keys.ToList<string>();
         }
     }
 }

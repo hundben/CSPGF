@@ -44,15 +44,14 @@ namespace CSPGF.Parse
         /// </summary>
         /// <param name="chart">The current chart.</param>
         /// <param name="startCat">The start category.</param>
-        /// <param name="length">The length</param>
         /// <returns>A list of trees.</returns>
         public List<Tree> BuildTrees(Chart chart, ConcreteCategory startCat)
         {
             List<Tree> temp = new List<Tree>();
             for (int catID = startCat.FirstFID; catID < startCat.LastFID + 1; catID++)
             {
-                int? cat = chart.lookupPC(catID, 0, 0); //  TODO what should last value be?
-                //int? cat = chart.GetCategory(catID, 0, 0, chart.nextId);    // TODO length=nextId? nope
+                int? cat = chart.LookupPC(catID, 0, 0); // TODO what should last value be?
+                // int? cat = chart.GetCategory(catID, 0, 0, chart.nextId); TODO length=nextId? nope
                 if (cat.HasValue)
                 {
                     temp.AddRange(this.MkTreesForCat(cat.Value, chart));
@@ -71,7 +70,7 @@ namespace CSPGF.Parse
         public List<Tree> MkTreesForCat(int cat, Chart chart)
         {
             List<Tree> temp = new List<Tree>();
-            foreach (Production p in chart.expandForest(cat))  // TODO check if correct
+            foreach (Production p in chart.ExpandForest(cat))
             {
                 temp.AddRange(this.MkTreesForProduction(p, chart));
             }
