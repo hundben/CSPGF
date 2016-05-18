@@ -35,7 +35,7 @@ namespace CSPGF.Linearize
     using System.Linq;
     using Grammar;
     using Trees.Absyn;
-
+    using System.Globalization;
     /// <summary>
     /// Linearizer for use with the Parser
     /// </summary>
@@ -417,6 +417,31 @@ namespace CSPGF.Linearize
                 if (tree is Function)
                 {
                     return this.Apply(xs, mbcty, mbfid, ((Function)tree).Ident_, es);
+                }
+                else if (tree is Trees.Absyn.Literal)
+                {
+                    // TODO check if correct?
+                    var lit = (Trees.Absyn.Literal)tree;
+                    string token = "?";
+                    if (lit.Lit_ is FloatLiteral)
+                    {
+                        token = ((FloatLiteral)lit.Lit_).Double_.ToString(CultureInfo.InvariantCulture);
+                    }
+                    else if (lit.Lit_ is IntLiteral)
+                    {
+                        token = ((IntLiteral)lit.Lit_).Integer_.ToString(CultureInfo.InvariantCulture);
+                    }
+                    else if (lit.Lit_ is StringLiteral)
+                    {
+                        token = ((StringLiteral)lit.Lit_).String_;
+                    }
+             
+                    string[] tokens = { token };
+                    List<BracketedToken> bt = new List<BracketedToken>() { new LeafKS(tokens) };
+                    List<List<BracketedToken>> btt = new List<List<BracketedToken>>() { bt };
+                    LinTriple lt = new LinTriple(mbfid, mbcty, btt);
+                    List<LinTriple> llt = new List<LinTriple>() { lt };
+                    return llt;
                 }
                 else
                 {
