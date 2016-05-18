@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CSPGF.Grammar;
+using System.Globalization;
 
 namespace CSPGF.Parse
 {
@@ -84,6 +85,9 @@ namespace CSPGF.Parse
         /// <returns>A list of the trees.</returns>
         public List<Trees.Absyn.Tree> GetTrees()
         {
+            this.currentToken = string.Empty;
+            this.process(this.items.value);
+
             TreeBuilder2 tb = new TreeBuilder2();
             TreeConverter tc = new TreeConverter();
             List<Trees.Absyn.Tree> trees = new List<Trees.Absyn.Tree>();
@@ -196,7 +200,7 @@ namespace CSPGF.Parse
                                 string token = "\"" + this.currentToken + "\"";                              
                                 tokens.Add(token);
                                 ConcreteFunction newFun = new ConcreteFunction(token, syms);
-                                newProd.Add(new ProductionConst(this.chart.nextId++, newFun, tokens));
+                                newProd.Add(new ProductionConst(this.chart.nextId, newFun, tokens));    // nextId´+??
                             }
                             else if (fid == -2)
                             {
@@ -206,18 +210,18 @@ namespace CSPGF.Parse
                                 {
                                     tokens.Add(this.currentToken);
                                     ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
-                                    newProd.Add(new ProductionConst(this.chart.nextId++, newFun, tokens));
+                                    newProd.Add(new ProductionConst(this.chart.nextId, newFun, tokens));
                                 }
                             }
                             else if (fid == -3)
                             {
                                 // If float
                                 float f = 0;
-                                if (float.TryParse(this.currentToken, out f))
+                                if (float.TryParse(this.currentToken, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out f))
                                 {
                                     tokens.Add(this.currentToken);
                                     ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
-                                    newProd.Add( new ProductionConst(this.chart.nextId++, newFun, tokens));
+                                    newProd.Add( new ProductionConst(this.chart.nextId, newFun, tokens));
                                 }
                             }
 
@@ -298,26 +302,37 @@ namespace CSPGF.Parse
                     {
                         int fid = this.chart.nextId++;
 
+                        // TODO fix this
                         var items = this.chart.lookupACo(item.offset, item.fid, item.lbl);
-                        foreach(ActiveItem2 pitem in items)
+                        if (items != null)
                         {
-                            var temp = pitem.seq[pitem.dot];
-                            if (temp is SymbolCat)
+                            foreach (ActiveItem2 pitem in items)
                             {
-                                var arg = ((SymbolCat)temp).Arg;
-                                agenda.Add(pitem.shiftOverArg(arg, fid));
+                                var temp = pitem.seq[pitem.dot];
+                                if (temp is SymbolCat)
+                                {
+                                    var arg = ((SymbolCat)temp).Arg;
+                                    agenda.Add(pitem.shiftOverArg(arg, fid));
 
-                            }
-                            else if (temp is SymbolLit)
-                            {
-                                var arg = ((SymbolLit)temp).Arg;
-                                agenda.Add(pitem.shiftOverArg(arg, fid));
+                                }
+                                else if (temp is SymbolLit)
+                                {
+                                    var arg = ((SymbolLit)temp).Arg;
+                                    agenda.Add(pitem.shiftOverArg(arg, fid));
+                                }
                             }
                         }
 
                         this.chart.insertPC(item.fid, item.lbl, item.offset, fid);
-                        var newProd = new ProductionApply(this.chart.nextId++, item.fun, item.args.ToArray<int>());
-                        this.chart.forest[fid].Add(newProd);
+                        var newProd = new ProductionApply(this.chart.nextId, item.fun, item.args.ToArray<int>());   // fid++??? why fid here? TODO remove
+                        if (this.chart.forest.ContainsKey(fid))
+                        {
+                            this.chart.forest[fid].Add(newProd);
+                        }
+                        else
+                        {
+                            this.chart.forest[fid] = new List<Production>() { newProd };
+                        }
                     }
                     else
                     {
@@ -330,7 +345,7 @@ namespace CSPGF.Parse
                         }
 
                         var rules = this.chart.forest[fid];
-                        var rule = new ProductionApply(this.chart.nextId++, item.fun, item.args.ToArray<int>());
+                        var rule = new ProductionApply(this.chart.nextId, item.fun, item.args.ToArray<int>());  // TODO remove fid
                         bool isMember = false;
                         foreach(Production p in rules)
                         {
