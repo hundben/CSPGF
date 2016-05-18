@@ -56,6 +56,17 @@ namespace CSPGF.Grammar
         }
 
         /// <summary>
+        /// Initializes a new instance of the ProductionApply class.
+        /// </summary>
+        /// <param name="function">The concrete function</param>
+        /// <param name="domain">The domain</param>
+        public ProductionApply(ConcreteFunction function, int[] domain) : base(0, -4)
+        {
+            this.Function = function;
+            this.dom = domain;
+        }
+
+        /// <summary>
         /// Gets the concrete function.
         /// </summary>
         public ConcreteFunction Function { get; private set; }

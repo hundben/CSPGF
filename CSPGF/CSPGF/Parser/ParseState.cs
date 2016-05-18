@@ -250,9 +250,9 @@ namespace CSPGF.Parse
                             if (rules[0] is ProductionConst)
                             {
                                 ProductionConst pc = (ProductionConst)rules[0];
-                                List<string> tokens = new List<string>(pc.tokens);
+                                List<string> tokens = new List<string>(pc.Tokens);
                                 ActiveItem ai2 = item.ShiftOverTokn();
-                                if (pc.tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
+                                if (pc.Tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
                                 {
                                     tokens.RemoveAt(0);
                                     Trie tt = new Trie();
@@ -271,7 +271,7 @@ namespace CSPGF.Parse
                                 // If string
                                 string token = "\"" + this.currentToken + "\"";                              
                                 ConcreteFunction newFun = new ConcreteFunction(token, syms);
-                                newProd.Add(new ProductionConst(this.chart.NextId, newFun, new List<string>() { token }, -1));    // nextId´+??
+                                newProd.Add(new ProductionConst(newFun, new List<string>() { token }, -1));    // nextId´+??
                             }
                             else if (fid == -2)
                             {
@@ -280,7 +280,7 @@ namespace CSPGF.Parse
                                 if (int.TryParse(this.currentToken, out i))
                                 {
                                     ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
-                                    newProd.Add(new ProductionConst(this.chart.NextId, newFun, new List<string>() { this.currentToken }, -2));
+                                    newProd.Add(new ProductionConst(newFun, new List<string>() { this.currentToken }, -2));
                                 }
                             }
                             else if (fid == -3)
@@ -290,7 +290,7 @@ namespace CSPGF.Parse
                                 if (float.TryParse(this.currentToken, NumberStyles.Number, NumberFormatInfo.InvariantInfo, out f))
                                 {
                                     ConcreteFunction newFun = new ConcreteFunction(this.currentToken, syms);
-                                    newProd.Add(new ProductionConst(this.chart.NextId, newFun, new List<string>() { this.currentToken }, -3));
+                                    newProd.Add(new ProductionConst(newFun, new List<string>() { this.currentToken }, -3));
                                 }
                             }
 
@@ -300,7 +300,7 @@ namespace CSPGF.Parse
                                 fid = this.chart.NextId++;
                                 this.chart.Forest[fid] = newProd;
 
-                                var tokens2 = new List<string>(currentProd.tokens); 
+                                var tokens2 = new List<string>(currentProd.Tokens); 
                                 var item2 = item.ShiftOverArg(newSym.Arg, fid);
 
                                 if (tokens2.Count > 0 && (this.currentToken == string.Empty || tokens2[0] == this.currentToken))
@@ -386,7 +386,7 @@ namespace CSPGF.Parse
                         }
 
                         this.chart.InsertPC(item.FId, item.Lbl, item.Offset, fid);
-                        var newProd = new ProductionApply(this.chart.NextId, item.Fun, item.Args.ToArray<int>());
+                        var newProd = new ProductionApply(item.Fun, item.Args.ToArray<int>());
                         if (this.chart.Forest.ContainsKey(fid))
                         {
                             this.chart.Forest[fid].Add(newProd);
@@ -407,7 +407,7 @@ namespace CSPGF.Parse
                         }
 
                         var rules = this.chart.Forest[fid];
-                        var rule = new ProductionApply(this.chart.NextId, item.Fun, item.Args.ToArray<int>());
+                        var rule = new ProductionApply(item.Fun, item.Args.ToArray<int>());
                         bool isMember = false;
                         foreach (Production p in rules)
                         {
