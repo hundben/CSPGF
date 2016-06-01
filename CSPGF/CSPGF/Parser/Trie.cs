@@ -65,7 +65,7 @@ namespace CSPGF.Parse
         /// <returns>The new tree.</returns>
         public Trie InsertChain(List<string> keys, Trie obj)
         {
-            var node = this;
+            var node = this;        // TODO check if correct
             foreach (string key in keys)
             {
                 Trie nnode;
@@ -94,7 +94,7 @@ namespace CSPGF.Parse
         /// <returns>The new tree.</returns>
         public Trie InsertChain1(List<string> keys, Trie obj)
         {
-            var node = this;
+            var node = this;    // TODO this is wrong? copy?
             foreach (string key in keys)
             {
                 Trie nnode;

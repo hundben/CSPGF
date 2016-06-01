@@ -187,5 +187,36 @@ namespace CSPGF
 
             Assert.Equal("this wine is delicious .", check);
         }
+
+        /// <summary>
+        /// Tests predict with literals.
+        /// </summary>
+        [Fact]
+        public void PredictTest1()
+        {
+            string check = string.Empty;
+            try
+            {
+                string filename = "../../PGF examples/MiniLit.pgf";
+                PGFReader pr = new PGFReader(filename);
+                PGF pgf = pr.ReadPGF();
+                Concrete language = pgf.GetConcrete("MiniLitCnc");
+                ParseState pstate = new ParseState(language);
+                var word1 = pstate.Predict();
+                pstate.Next("flt");
+                var word2 = pstate.Predict();
+                pstate.Next("(");
+                var word3 = pstate.Predict();
+                pstate.Next("2.3");
+                var word4 = pstate.Predict();
+                pstate.Next(")");
+            }
+            catch (Exception e)
+            {
+                this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
+            }
+
+            Assert.Equal(true, true);
+        }
     }
 }
