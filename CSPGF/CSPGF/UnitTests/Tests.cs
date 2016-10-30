@@ -236,7 +236,7 @@ namespace CSPGF
             string check = string.Empty;
             try
             {
-                string filename = "../../PGF examples/Phrasebook.pgf";
+                string filename = "../../PGF examples/Phrasebook_new.pgf";
                 PGFReader pr = new PGFReader(filename);
                 PGF pgf = pr.ReadPGF();
                 Concrete language_from = pgf.GetConcrete("PhrasebookEng");

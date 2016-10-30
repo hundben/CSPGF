@@ -32,6 +32,7 @@ namespace CSPGF.Grammar
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel;
     using System.IO;
     using System.Linq;
 
@@ -916,10 +917,24 @@ namespace CSPGF.Grammar
             return wids;
         }
 
-        private int GetUInt32()
+        private UInt32 GetUInt32()
         {
-            UInt32 ui = this.binreader.ReadUInt32();
-            return (int)((ui & 0x000000FFU) << 24 | (ui & 0x0000FF00U) << 8 | (ui & 0x00FF0000U) >> 8 | (ui & 0xFF000000U) >> 24);
+            List<Byte> bytes = new List<byte>();
+            UInt32 u = 0;
+            byte b = 0x80;
+            int shift = 0;
+            do
+            {
+                b = this.binreader.ReadByte();
+                u |= (uint)(b & ~0x80) << shift;
+                shift += 7;
+
+            } while ((b & 0x80) != 0);
+
+            return u;
+
+            //UInt32 ui = this.binreader.ReadUInt32();
+            //return (int)((ui & 0x000000FFU) << 24 | (ui & 0x0000FF00U) << 8 | (ui & 0x00FF0000U) >> 8 | (ui & 0xFF000000U) >> 24);
         }
 
         /// <summary>
@@ -928,22 +943,10 @@ namespace CSPGF.Grammar
         /// <returns>Returns the integer</returns>
         private int GetInt()
         {
-            // TODO ERROR HERE
-            return GetUInt32();
-            /*
-            // return this.binreader.ReadInt32();
-            // long -> int
-            int rez = this.inputstream.ReadByte();
-            if (rez <= 0x7f)
-            {
-                return rez;
-            }
-
-            int ii = this.GetInt();
-            rez = (ii << 7) | (rez & 0x7f);
-            return rez;
-
-            // return (int)this.binreader.ReadUInt32();*/
+            uint t = GetUInt32();
+            byte[] b = BitConverter.GetBytes(t);
+            int t2 = BitConverter.ToInt32(b, 0);
+            return t2;
         }
 
         /// <summary>
