@@ -123,6 +123,37 @@ namespace CSPGF
             Assert.Equal(check.Equals("this wine is delicious ."), true);
         }
 
+        [Fact]
+        public void TestNewFoodsPGF()
+        {
+            string check = string.Empty;
+
+            try
+            {
+                string filename = "../../PGF examples/Foods_new.pgf";
+                PGFReader pr = new PGFReader(filename);
+                PGF pgf = pr.ReadPGF();
+                Concrete language = pgf.GetConcrete("FoodsEng");
+                ParseState pstate = new ParseState(language);
+                pstate.Next("these");
+                pstate.Next("fish");
+                pstate.Next("are");
+                pstate.Next("delicious");
+                //pstate.Next(".");
+
+                var currentLin = new Linearize.Linearizer(pgf, language);
+                List<Trees.Absyn.Tree> lt = pstate.GetTrees();
+                Trees.Absyn.Tree t = lt[0];
+                check = currentLin.LinearizeString(t);
+            }
+            catch (Exception e)
+            {
+                this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
+            }
+
+            Assert.Equal(check.Equals("these fish are delicious"), true);
+        }
+
         /// <summary>
         /// A simple test to test that literals works
         /// </summary>
