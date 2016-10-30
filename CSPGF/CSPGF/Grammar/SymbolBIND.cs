@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="SymbolKP.cs" company="None">
+// <copyright file="SymbolBind.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -33,58 +33,22 @@ namespace CSPGF.Grammar
     using System;
 
     /// <summary>
-    /// Alternative Token Symbol
+    /// SymbolBind
     /// </summary>
     [Serializable]
-    internal class SymbolKP : Symbol // SymKP
+    internal class SymbolBind : Symbol
     {
         /// <summary>
-        /// Initializes a new instance of the SymbolKP class.
+        /// Initializes a new instance of the SymbolBind class.
+        /// Same as SymbolArg
         /// </summary>
-        /// <param name="toks">List of tokens</param>
-        /// <param name="alts">List of alternatives</param>
-        public SymbolKP(Symbol[] toks, Alternative[] alts)
+        public SymbolBind()
         {
-            this.Tokens = toks;
-            this.Alts = alts;
         }
 
-
-        public Symbol[] Tokens { get; private set; }
-        /// <summary>
-        /// Gets the list of Alternatives
-        /// </summary>
-        public Alternative[] Alts { get; private set; }
-
-        /// <summary>
-        /// Returns true if terminal.
-        /// </summary>
-        /// <returns>Returns true if terminal</returns>
-        public bool IsTerminal()
-        {
-            return true;
-        }
-
-        /// <summary>
-        /// Pretty prints the contents of this class
-        /// </summary>
-        /// <returns>Returns a string containing debug information</returns>
         public override string ToString()
         {
-            string sb = "SymbolKP[pre { ";
-            foreach (Symbol s in this.Tokens) 
-            {
-                sb += s + " ";
-            }
-
-            sb += "; ";
-            foreach (Alternative a in this.Alts) 
-            {
-                sb += a + "; ";
-            }
-
-            sb += "}]";
-            return sb;
+            return "SymbolBind";
         }
     }
 }

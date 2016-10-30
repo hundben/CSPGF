@@ -329,9 +329,9 @@ namespace CSPGF.Linearize
                     }
                 }
                 
-                foreach (string i in ((LeafKP)bt).DefaultTokens.Reverse())
+                foreach (Symbol i in ((LeafKP)bt).DefaultTokens.Reverse())
                 {
-                    rez.Add(i);
+                    rez.Add(i.ToString()); //TODO FIX
                 }
 
                 return rez;

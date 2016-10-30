@@ -577,27 +577,25 @@ namespace CSPGF.Grammar
                     symb = new SymbolKS(new string[] { sym });
                     break;
                 case 4: // alternative tokens
-                    var listsymb = this.GetListSymbol();
-                    var listalt = this.GetListAlternative();
-                    symb = new SymbolKP(null, null);
+                    symb = new SymbolKP(GetListSymbol(), GetListAlternative());
                     break;
                 case 5: //PGF_SYMBOL_BIND
-                    symb = null;
+                    symb = new SymbolBind();
                     break;
                 case 6: //PGF_SYMBOL_SOFT_BIND
-                    symb = null;
+                    symb = new SymbolSoftBind();
                     break;
                 case 7: //PGF_SYMBOL_NE
-                    symb = null;
+                    symb = new SymbolNE();
                     break;
                 case 8: //PGF_SYMBOL_SOFT_SPACE
-                    symb = null;
+                    symb = new SymbolSoftSpace();
                     break;
                 case 9: //PGF_SYMBOL_CAPIT
-                    symb = null;
+                    symb = new SymbolCapit();
                     break;
                 case 10: //PGF_SYMBOL_ALL_CAPIT
-                    symb = null;
+                    symb = new SymbolAllCapit();
                     break;
                 default:
                     throw new PGFException("Invalid tag for symbols : " + sel);

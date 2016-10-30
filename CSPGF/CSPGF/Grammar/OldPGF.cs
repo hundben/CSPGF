@@ -574,7 +574,7 @@ namespace CSPGF.Grammar
                     symb = new SymbolKS(this.GetListString());
                     break;
                 case 4: // alternative tokens
-                    symb = new SymbolKP(this.GetListString(), this.GetListAlternative());
+                    symb = new SymbolKP(null,/*this.GetListString()*/ this.GetListAlternative());
                     break;
                 default:
                     throw new PGFException("Invalid tag for symbols : " + sel);
