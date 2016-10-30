@@ -61,7 +61,7 @@ namespace CSPGF.Grammar
         private bool disposed;
 
         /// <summary>
-        /// Initializes a new instance of the NewPGF class.
+        /// Initializes a new instance of the PGF class.
         /// </summary>
         /// <param name="ms">MemoryStream for reading the PGF file</param>
         /// <param name="br">BinaryReader for reading the PGF file</param>
@@ -72,7 +72,7 @@ namespace CSPGF.Grammar
         }
 
         /// <summary>
-        /// Finalizes an instance of the NewPGF class.
+        /// Finalizes an instance of the PGF class.
         /// </summary>
         ~PGF()
         {
@@ -145,13 +145,7 @@ namespace CSPGF.Grammar
         /// <returns>Abstract grammar</returns>
         internal Abstract GetAbstract()
         {
-            var ident = this.GetIdent();
-            var flag = this.GetListFlag();
-            var absfun = this.GetListAbsFun();
-            var abscat = this.GetListAbsCat();
-
-            return new Abstract(ident, flag, absfun, abscat);
-            //return new Abstract(this.GetIdent(), this.GetListFlag(), this.GetListAbsFun(), this.GetListAbsCat());
+            return new Abstract(this.GetIdent(), this.GetListFlag(), this.GetListAbsFun(), this.GetListAbsCat());
         }
 
         /// <summary>
@@ -261,7 +255,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the AbsCat</returns>
         private AbstractCategory GetAbsCat()
         {
-            return new AbstractCategory(GetIdent(), GetListHypo(), this.GetListCatFun(),this.GetDouble());
+            return new AbstractCategory(this.GetIdent(), this.GetListHypo(), this.GetListCatFun(), this.GetDouble());
         }
 
         /// <summary>
@@ -425,7 +419,7 @@ namespace CSPGF.Grammar
             switch (sel)
             {
                 case 0: // application pattern
-                    patt = new PatternApp(this.GetIdent(), GetListPattern());
+                    patt = new PatternApp(this.GetIdent(), this.GetListPattern());
                     break;
                 case 1: // variable pattern
                     patt = new PatternVar(this.GetIdent());
@@ -577,24 +571,24 @@ namespace CSPGF.Grammar
                     symb = new SymbolKS(new string[] { sym });
                     break;
                 case 4: // alternative tokens
-                    symb = new SymbolKP(GetListSymbol(), GetListAlternative());
+                    symb = new SymbolKP(this.GetListSymbol(), this.GetListAlternative());
                     break;
-                case 5: //PGF_SYMBOL_BIND
+                case 5: // PGF_SYMBOL_BIND
                     symb = new SymbolBind();
                     break;
-                case 6: //PGF_SYMBOL_SOFT_BIND
+                case 6: // PGF_SYMBOL_SOFT_BIND
                     symb = new SymbolSoftBind();
                     break;
-                case 7: //PGF_SYMBOL_NE
+                case 7: // PGF_SYMBOL_NE
                     symb = new SymbolNE();
                     break;
-                case 8: //PGF_SYMBOL_SOFT_SPACE
+                case 8: // PGF_SYMBOL_SOFT_SPACE
                     symb = new SymbolSoftSpace();
                     break;
-                case 9: //PGF_SYMBOL_CAPIT
+                case 9: // PGF_SYMBOL_CAPIT
                     symb = new SymbolCapit();
                     break;
-                case 10: //PGF_SYMBOL_ALL_CAPIT
+                case 10: // PGF_SYMBOL_ALL_CAPIT
                     symb = new SymbolAllCapit();
                     break;
                 default:
@@ -908,13 +902,12 @@ namespace CSPGF.Grammar
         }
 
         /// <summary>
-        /// TODO
+        /// Reads an unsigned Integer
         /// </summary>
-        /// <returns></returns>
-        private UInt32 GetUInt32()
+        /// <returns>Unsigned 32bit Integer</returns>
+        private uint GetUInt32()
         {
-            List<Byte> bytes = new List<byte>();
-            UInt32 u = 0;
+            uint u = 0;
             byte b = 0x80;
             int shift = 0;
             do
@@ -922,8 +915,8 @@ namespace CSPGF.Grammar
                 b = this.binreader.ReadByte();
                 u |= (uint)(b & ~0x80) << shift;
                 shift += 7;
-
-            } while ((b & 0x80) != 0);
+            }
+            while ((b & 0x80) != 0);
 
             return u;
         }
@@ -934,7 +927,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the integer</returns>
         private int GetInt()
         {
-            uint t = GetUInt32();
+            uint t = this.GetUInt32();
             byte[] b = BitConverter.GetBytes(t);
             int t2 = BitConverter.ToInt32(b, 0);
             return t2;

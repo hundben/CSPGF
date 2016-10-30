@@ -46,6 +46,10 @@ namespace CSPGF.Grammar
         {
         }
 
+        /// <summary>
+        /// ToString method
+        /// </summary>
+        /// <returns>A string representation of this object.</returns>
         public override string ToString()
         {
             return "SymbolSoftBind";

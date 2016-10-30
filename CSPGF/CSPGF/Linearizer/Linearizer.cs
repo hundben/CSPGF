@@ -32,10 +32,11 @@ namespace CSPGF.Linearize
 {
     using System;
     using System.Collections.Generic;
+    using System.Globalization;
     using System.Linq;
     using Grammar;
     using Trees.Absyn;
-    using System.Globalization;
+    
     /// <summary>
     /// Linearizer for use with the Parser
     /// </summary>
@@ -331,7 +332,7 @@ namespace CSPGF.Linearize
                 
                 foreach (Symbol i in ((LeafKP)bt).DefaultTokens.Reverse())
                 {
-                    rez.Add(i.ToString()); //TODO FIX
+                    rez.Add(i.ToString()); // TODO FIX
                 }
 
                 return rez;

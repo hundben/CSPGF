@@ -49,8 +49,11 @@ namespace CSPGF.Grammar
             this.Alts = alts;
         }
 
-
+        /// <summary>
+        /// Gets a list of Symbols
+        /// </summary>
         public Symbol[] Tokens { get; private set; }
+
         /// <summary>
         /// Gets the list of Alternatives
         /// </summary>

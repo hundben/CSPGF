@@ -195,7 +195,6 @@ namespace CSPGF
         [Fact]
         public void PredictTest1()
         {
-
             bool check = false;
 
             try

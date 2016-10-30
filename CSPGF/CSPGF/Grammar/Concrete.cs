@@ -53,11 +53,12 @@ namespace CSPGF.Grammar
         /// <param name="name">Name of concrete grammar</param>
         /// <param name="flags">Grammar flags</param>
         /// <param name="linDefs">Default linearization definitions</param>
+        /// <param name="linRefs">Default linearization references</param>
         /// <param name="prods">List of production sets</param>
         /// <param name="cncCats">Dictionary containing concrete categories</param>
         /// <param name="fId">Function id</param>
         /// <param name="defaultStartCat">Default starting category</param>
-        public Concrete(string name, Dictionary<string, Literal> flags, LinDef[] linDefs, LinDef[] linrefs, ProductionSet[] prods, Dictionary<string, ConcreteCategory> cncCats, int fId, string defaultStartCat)
+        public Concrete(string name, Dictionary<string, Literal> flags, LinDef[] linDefs, LinDef[] linRefs, ProductionSet[] prods, Dictionary<string, ConcreteCategory> cncCats, int fId, string defaultStartCat)
         {
             this.Name = name;
             this.flags = flags;

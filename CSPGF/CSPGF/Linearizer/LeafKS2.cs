@@ -36,19 +36,20 @@ namespace CSPGF.Linearize
     internal class LeafKS2 : BracketedToken
     {
         /// <summary>
-        /// Initializes a new instance of the LeafKS class.
+        /// Initializes a new instance of the LeafKS2 class.
         /// </summary>
         /// <param name="tokens">List of tokens</param>
+        /// <param name="tag">Tag for the leaf</param>
         public LeafKS2(string[] tokens, string tag)
         {
             this.Tokens = tokens;
-            this.tag = tag;
+            this.Tag = tag;
         }
 
         /// <summary>
         /// Gets the tag
         /// </summary>
-        public string tag { get; private set; }
+        public string Tag { get; private set; }
 
         /// <summary>
         /// Gets the list of tokens
