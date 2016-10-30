@@ -30,6 +30,7 @@
 
 namespace CSPGF.Parse
 {
+    using Grammar;
     using System.Collections.Generic;
     using System.Linq;
 
@@ -165,9 +166,73 @@ namespace CSPGF.Parse
         /// Used to predict the next correct tokens
         /// </summary>
         /// <returns>A list of predictions</returns>
-        public List<string> Predict()
+        public List<string> Predict(Chart chart)
         {
-            return this.Items.Keys.ToList<string>();
+            List<string> tokens = new List<string>();
+            foreach(ActiveItem ai in this.Value)
+            {
+                if (ai.Seq.Count > ai.Dot)
+                {
+                    Symbol s = ai.Seq[ai.Dot];
+                    if (s is SymbolKS)
+                    {
+                        SymbolKS sks = (SymbolKS)s;
+                        if (sks.Tokens.Length > 0)
+                        {
+                            tokens.Add(sks.Tokens[0]);
+                        }
+                    }
+                    else if (s is SymbolKP)
+                    {
+                        SymbolKP skp = (SymbolKP)s;
+                        if (skp.Tokens.Length > 0)
+                        {
+                            tokens.Add(skp.Tokens[0]);
+                        }
+                    }
+                    else if (s is SymbolLit)
+                    {
+                        SymbolLit slit = (SymbolLit)s;
+                        int arg = ai.Args[slit.Arg];
+                        if (arg == -1)
+                        {
+                            // String
+                            tokens.Add("\"STRING\"");
+                        }
+                        else if (arg == -2)
+                        {
+                            // Int
+                            tokens.Add("123");
+                        }
+                        else if (arg == -3)
+                        {
+                            // Float
+                            tokens.Add("3.14");
+                        }
+                        else if (arg == -4)
+                        {
+                            // Var
+                            tokens.Add("\"VARIABLE\"");
+                        }
+                    }
+                    else if (s is SymbolCat)
+                    {
+                        SymbolCat scat = (SymbolCat)s;
+                        int fid = ai.Args[scat.Arg];
+                        List<Production> prods = chart.ExpandForest(fid);
+                        foreach(Production p in prods)
+                        {
+                            if (p is ProductionApply)
+                            {
+                                var papp = (ProductionApply)p;
+                                
+                            }
+                        }
+                    }
+                }
+            }
+
+            return tokens;
         }
     }
 }

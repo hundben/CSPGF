@@ -144,7 +144,13 @@ namespace CSPGF.Grammar
         /// <returns>Abstract grammar</returns>
         internal Abstract GetAbstract()
         {
-            return new Abstract(this.GetIdent(), this.GetListFlag(), this.GetListAbsFun(), this.GetListAbsCat());
+            var ident = this.GetIdent();
+            var flag = this.GetListFlag();
+            var absfun = this.GetListAbsFun();
+            var abscat = this.GetListAbsCat();
+
+            return new Abstract(ident, flag, absfun, abscat);
+            //return new Abstract(this.GetIdent(), this.GetListFlag(), this.GetListAbsFun(), this.GetListAbsCat());
         }
 
         /// <summary>
@@ -901,12 +907,20 @@ namespace CSPGF.Grammar
             CategoryFunction[] wids = new CategoryFunction[nb];
             for (int i = 0; i < nb; i++)
             {
-                double w = this.GetDouble();
+                double w = this.GetDouble(); // TODO check if wrong?
                 string s = this.GetIdent();
                 wids[i] = new CategoryFunction(s, w);
             }
 
             return wids;
+        }
+
+        private UInt32 GetUInt()
+        {
+            UInt32 ui = this.binreader.ReadUInt32();
+            
+
+            return 0;
         }
 
         /// <summary>
@@ -915,6 +929,9 @@ namespace CSPGF.Grammar
         /// <returns>Returns the integer</returns>
         private int GetInt()
         {
+            // TODO ERROR HERE
+
+
             // return this.binreader.ReadInt32();
             // long -> int
             int rez = this.inputstream.ReadByte();

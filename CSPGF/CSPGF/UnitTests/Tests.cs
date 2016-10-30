@@ -194,7 +194,9 @@ namespace CSPGF
         [Fact]
         public void PredictTest1()
         {
-            string check = string.Empty;
+
+            bool check = false;
+
             try
             {
                 string filename = "../../PGF examples/MiniLit.pgf";
@@ -210,13 +212,88 @@ namespace CSPGF
                 pstate.Next("2.3");
                 var word4 = pstate.Predict();
                 pstate.Next(")");
+
+                // Check if we get the correct answeres
+                if (word1[0].Equals("flt") && word2[0].Equals("(") && word3[0].Equals("3.14") && word4[0].Equals(")"))
+                {
+                    check = true;
+                }
+            }
+            catch (Exception e)
+            {
+                this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
+            }
+         
+            Assert.Equal(check, true);
+        }
+
+        /// <summary>
+        /// Another translation test from English to Swedish. For the more complete phrasebook.
+        /// </summary>
+        [Fact]
+        public void TranslationTest2()
+        {
+            string check = string.Empty;
+            try
+            {
+                string filename = "../../PGF examples/Phrasebook.pgf";
+                PGFReader pr = new PGFReader(filename);
+                PGF pgf = pr.ReadPGF();
+                Concrete language_from = pgf.GetConcrete("PhrasebookEng");
+                Concrete language_to = pgf.GetConcrete("PhrasebookSwe");
+                ParseState pstate = new ParseState(language_from);
+                pstate.Next("our");
+                pstate.Next("children");
+                pstate.Next("want");
+                pstate.Next("to");
+                pstate.Next("go");
+                pstate.Next("to");
+                pstate.Next("the");
+                pstate.Next("hotel");
+                pstate.Next(".");
+                var currentLin = new Linearize.Linearizer(pgf, language_to);
+                List<Trees.Absyn.Tree> lt = pstate.GetTrees();
+                Trees.Absyn.Tree t = lt[0];
+                check = currentLin.LinearizeString(t);
             }
             catch (Exception e)
             {
                 this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
             }
 
-            Assert.Equal(true, true);
+            Assert.Equal(check.Equals("det här vinet är läckert ."), true); // TODO change here
+        }
+        /// <summary>
+        /// Another predict test
+        /// </summary>
+        [Fact]
+        public void PredictTest2()
+        {
+            bool check = false;
+            try
+            {
+                string filename = "../../PGF examples/Phrasebook.pgf";
+                PGFReader pr = new PGFReader(filename);
+                PGF pgf = pr.ReadPGF();
+                Concrete language = pgf.GetConcrete("PhrasebookEng");
+                ParseState pstate = new ParseState(language);
+                var words1 = pstate.Predict();
+                pstate.Next("this");
+                var words2 = pstate.Predict();
+                pstate.Next("wine");
+                var words3 = pstate.Predict();
+                pstate.Next("is");
+                var words4 = pstate.Predict();
+                pstate.Next("delicious");
+                var words5 = pstate.Predict();
+                pstate.Next(".");
+            }
+            catch (Exception e)
+            {
+                this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
+            }
+
+            Assert.Equal(check, true);
         }
     }
 }

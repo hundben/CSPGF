@@ -129,7 +129,7 @@ namespace CSPGF.Parse
         public List<string> Predict()
         {
             // TODO check if correct
-            return this.items.Predict();
+            return this.items.Predict(this.chart);
         }
 
         /// <summary>
