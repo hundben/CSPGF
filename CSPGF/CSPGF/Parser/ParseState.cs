@@ -313,6 +313,37 @@ namespace CSPGF.Parse
                             }
                         }
                     }
+                    else if (sym is SymbolKP)
+                    {
+                        var newSym = (SymbolKP)sym;
+                        var pitem = item.ShiftOverTokn();
+                        var tokens = newSym.Tokens.ToList<string>();
+
+                        if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
+                        {
+                            tokens.RemoveAt(0);
+                            Trie tt = new Trie();
+                            tt.Value = new List<ActiveItem>() { pitem };
+                            this.currentAcc = this.currentAcc.InsertChain1(tokens, tt);
+                        }
+
+                        foreach (Alternative alt in newSym.Alts)
+                        {
+                            Symbol[] currentSym = alt.Alt1;
+                            //currentSym[0];
+                            //alt.Alt2
+                            // TODO fix this
+
+                            tokens = new List<string>(alt.Alt2.ToList<string>());
+                            if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
+                            {
+                                tokens.RemoveAt(0);
+                                Trie tt = new Trie();
+                                tt.Value = new List<ActiveItem>() { pitem };
+                                this.currentAcc = this.currentAcc.InsertChain1(tokens, tt);
+                            }
+                        }
+                    }
                     else if (sym is SymbolKS)
                     {
                         var newSym = (SymbolKS)sym;
@@ -324,31 +355,6 @@ namespace CSPGF.Parse
                             Trie tt = new Trie();
                             tt.Value = new List<ActiveItem>() { ai };
                             this.currentAcc = this.currentAcc.InsertChain1(tokens, tt);
-                        }
-                    }
-                    else if (sym is SymbolKP)
-                    {
-                        var newSym = (SymbolKP)sym;
-                        var pitem = item.ShiftOverTokn();
-                        var tokens = newSym.Tokens.ToList<string>();
-                        if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
-                        {
-                            tokens.RemoveAt(0);
-                            Trie tt = new Trie();
-                            tt.Value = new List<ActiveItem>() { pitem };
-                            this.currentAcc = this.currentAcc.InsertChain1(tokens, tt);
-                        }
-
-                        foreach (Alternative alt in newSym.Alts)
-                        {
-                            tokens = new List<string>(alt.Alt1.ToList<string>());
-                            if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
-                            {
-                                tokens.RemoveAt(0);
-                                Trie tt = new Trie();
-                                tt.Value = new List<ActiveItem>() { pitem };
-                                this.currentAcc = this.currentAcc.InsertChain1(tokens, tt);
-                            }
                         }
                     }
                     else if (sym is SymbolVar)
