@@ -32,6 +32,7 @@ namespace CSPGF.Grammar
 {
     using System;
     using System.Collections.Generic;
+
     /// <summary>
     /// Concrete function
     /// </summary>
@@ -65,14 +66,14 @@ namespace CSPGF.Grammar
         public void FixSymbols()
         {
             List<List<Symbol>> syms = new List<List<Symbol>>();
-            foreach(Symbol[] st in this.Sequences)
+            foreach (Symbol[] st in this.Sequences)
             {
                 var temp = new List<Symbol>();
-                foreach(Symbol sym in st)
+                foreach (Symbol sym in st)
                 {
                     if (sym is SymbolKS)
                     {
-                        foreach(string token in ((SymbolKS)sym).Tokens)
+                        foreach (string token in ((SymbolKS)sym).Tokens)
                         {
                             string[] tmp2 = { token };
                             temp.Add(new SymbolKS(tmp2));
@@ -96,7 +97,6 @@ namespace CSPGF.Grammar
             }
 
             this.Sequences = seqs;
-
         }
 
         /// <summary>

@@ -115,7 +115,9 @@
     <Compile Include="Grammar\SymbolSoftSpace.cs" />
     <Compile Include="Grammar\SymbolSoftBind.cs" />
     <Compile Include="Grammar\SymbolNE.cs" />
-    <Compile Include="Grammar\SymbolBind.cs" />
+    <Compile Include="Grammar\SymbolBind.cs">
+      <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
+    </Compile>
     <Compile Include="Grammar\SymbolLit.cs" />
     <Compile Include="Linearizer\LeafKS2.cs" />
     <Compile Include="Linearizer\Linearizer.cs" />
