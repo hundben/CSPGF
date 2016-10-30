@@ -82,7 +82,7 @@ namespace CSPGF.Grammar
         /// Starts reading the PGF object
         /// </summary>
         /// <returns>PGF object</returns>
-        public PGF ReadPGF()
+        public CSPGF.PGF ReadPGF()
         {
             Dictionary<string, int> index = null;
             for (int i = 0; i < 2; i++)
@@ -92,19 +92,14 @@ namespace CSPGF.Grammar
 
             if (this.version[0] == 1)
             {
-                OldPGF pgf = new OldPGF(this.inputstream, this.binreader);
-                Dictionary<string, Literal> flags = pgf.GetFlags(index);
-                Abstract abs = pgf.GetAbstract();
-                PGF pgfobj = new PGF(this.version[0], this.version[1], flags, abs, pgf.GetConcretes(abs.StartCat(), index));
-                pgf.Dispose();
-                return pgfobj;
+                throw new PGFException("This library does not support version 1.x of the PGF format.");
             }
             else if (this.version[0] == 2 && this.version[1] == 1)
             {
-                NewPGF pgf = new NewPGF(this.inputstream, this.binreader);
+                PGF pgf = new PGF(this.inputstream, this.binreader);
                 Dictionary<string, Literal> flags = pgf.GetFlags(index);
                 Abstract abs = pgf.GetAbstract();
-                PGF pgfobj = new PGF(this.version[0], this.version[1], flags, abs, pgf.GetConcretes(abs.StartCat(), index));
+                CSPGF.PGF pgfobj = new CSPGF.PGF(this.version[0], this.version[1], flags, abs, pgf.GetConcretes(abs.StartCat(), index));
                 pgf.Dispose();
                 return pgfobj;
             }

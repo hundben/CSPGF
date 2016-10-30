@@ -1,5 +1,5 @@
 ﻿//-----------------------------------------------------------------------
-// <copyright file="NewPGF.cs" company="None">
+// <copyright file="PGF.cs" company="None">
 //  Copyright (c) 2011, Christian Ståhlfors (christian.stahlfors@gmail.com), 
 //   Erik Bergström (erktheorc@gmail.com) 
 //  All rights reserved.
@@ -38,7 +38,7 @@ namespace CSPGF.Grammar
     /// <summary>
     /// Reads an PGF object
     /// </summary>
-    internal class NewPGF : IDisposable
+    internal class PGF : IDisposable
     {
         /// <summary>
         /// Main input stream to read from
@@ -65,7 +65,7 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="ms">MemoryStream for reading the PGF file</param>
         /// <param name="br">BinaryReader for reading the PGF file</param>
-        internal NewPGF(MemoryStream ms, BinaryReader br)
+        internal PGF(MemoryStream ms, BinaryReader br)
         {
             this.inputstream = ms;
             this.binreader = br;
@@ -74,7 +74,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Finalizes an instance of the NewPGF class.
         /// </summary>
-        ~NewPGF()
+        ~PGF()
         {
             this.Dispose(false);
         }
