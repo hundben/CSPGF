@@ -57,43 +57,10 @@ namespace CSPGF
         }
 
         /// <summary>
-        /// A simple translation test from English to Swedish.
-        /// </summary>
-        [Fact]
-        public void TranslationTest1()
-        {
-            string check = string.Empty;
-            try
-            {
-                string filename = "../../PGF examples/Phrasebook.pgf";
-                PGFReader pr = new PGFReader(filename);
-                PGF pgf = pr.ReadPGF();
-                Concrete language_from = pgf.GetConcrete("PhrasebookEng");
-                Concrete language_to = pgf.GetConcrete("PhrasebookSwe");
-                ParseState pstate = new ParseState(language_from);
-                pstate.Next("this");
-                pstate.Next("wine");
-                pstate.Next("is");
-                pstate.Next("delicious");
-                pstate.Next(".");
-                var currentLin = new Linearize.Linearizer(pgf, language_to);
-                List<Trees.Absyn.Tree> lt = pstate.GetTrees();
-                Trees.Absyn.Tree t = lt[0];
-                check = currentLin.LinearizeString(t);
-            }
-            catch (Exception e)
-            {
-                this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
-            }
-
-            Assert.Equal(check.Equals("det här vinet är läckert ."), true);
-        }
-
-        /// <summary>
         /// A simple test to try to parse the new version of the PGF file format.
         /// </summary>
         [Fact]
-        public void TestNewPGF()
+        public void TestPhrasebookNew()
         {
             string check = string.Empty;
 
@@ -121,6 +88,71 @@ namespace CSPGF
             }
 
             Assert.Equal(check.Equals("this wine is delicious ."), true);
+        }
+
+        [Fact]
+        public void TestNewFoodsPGF()
+        {
+            string check = string.Empty;
+
+            try
+            {
+                string filename = "../../PGF examples/Foods_new.pgf";
+                PGFReader pr = new PGFReader(filename);
+                PGF pgf = pr.ReadPGF();
+                Concrete language = pgf.GetConcrete("FoodsEng");
+                ParseState pstate = new ParseState(language);
+                pstate.Next("these");
+                pstate.Next("fish");
+                pstate.Next("are");
+                pstate.Next("delicious");
+                //pstate.Next(".");
+                //この 魚は おいしい
+
+                var currentLin = new Linearize.Linearizer(pgf, language);
+                List<Trees.Absyn.Tree> lt = pstate.GetTrees();
+                Trees.Absyn.Tree t = lt[0];
+                check = currentLin.LinearizeString(t);
+            }
+            catch (Exception e)
+            {
+                this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
+            }
+
+            Assert.Equal(check.Equals("these fish are delicious"), true);
+        }
+
+
+        [Fact]
+        public void TestNewFoodsTranslate()
+        {
+            string check = string.Empty;
+
+            try
+            {
+                string filename = "../../PGF examples/Foods_new.pgf";
+                PGFReader pr = new PGFReader(filename);
+                PGF pgf = pr.ReadPGF();
+                Concrete language = pgf.GetConcrete("FoodsEng");
+                ParseState pstate = new ParseState(language);
+                pstate.Next("these");
+                pstate.Next("fish");
+                pstate.Next("are");
+                pstate.Next("delicious");
+                //pstate.Next(".");
+                //この 魚は おいしい
+
+                var currentLin = new Linearize.Linearizer(pgf, pgf.GetConcrete("FoodsJpn"));
+                List<Trees.Absyn.Tree> lt = pstate.GetTrees();
+                Trees.Absyn.Tree t = lt[0];
+                check = currentLin.LinearizeString(t);
+            }
+            catch (Exception e)
+            {
+                this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
+            }
+
+            Assert.Equal(check.Equals("この 魚は おいしい"), true);
         }
 
         /// <summary>
@@ -154,38 +186,6 @@ namespace CSPGF
             }
 
             Assert.Equal("flt ( 1.2 )", check);
-        }
-
-        /// <summary>
-        /// A small test to check if the parser and linearizer works.
-        /// </summary>
-        [Fact]
-        public void ParserStandardTest()
-        {
-            string check = string.Empty;
-            try
-            {
-                string filename = "../../PGF examples/Phrasebook.pgf";
-                PGFReader pr = new PGFReader(filename);
-                PGF pgf = pr.ReadPGF();
-                Concrete language = pgf.GetConcrete("PhrasebookEng");
-                ParseState pstate = new ParseState(language);
-                pstate.Next("this");
-                pstate.Next("wine");
-                pstate.Next("is");
-                pstate.Next("delicious");
-                pstate.Next(".");
-                var currentLin = new Linearize.Linearizer(pgf, language);
-                List<Trees.Absyn.Tree> lt = pstate.GetTrees();
-                Trees.Absyn.Tree t = lt[0];
-                check = currentLin.LinearizeString(t);
-            }
-            catch (Exception e)
-            {
-                this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
-            }
-
-            Assert.Equal("this wine is delicious .", check);
         }
 
         /// <summary>
@@ -231,7 +231,7 @@ namespace CSPGF
         /// Another translation test from English to Swedish. For the more complete phrasebook.
         /// </summary>
         [Fact]
-        public void TranslationTest2()
+        public void TestPhrasebookNew2()
         {
             string check = string.Empty;
             try
@@ -262,38 +262,6 @@ namespace CSPGF
             }
 
             Assert.Equal(check.Equals("det här vinet är läckert ."), true); // TODO change here
-        }
-        /// <summary>
-        /// Another predict test
-        /// </summary>
-        [Fact]
-        public void PredictTest2()
-        {
-            bool check = false;
-            try
-            {
-                string filename = "../../PGF examples/Phrasebook.pgf";
-                PGFReader pr = new PGFReader(filename);
-                PGF pgf = pr.ReadPGF();
-                Concrete language = pgf.GetConcrete("PhrasebookEng");
-                ParseState pstate = new ParseState(language);
-                var words1 = pstate.Predict();
-                pstate.Next("this");
-                var words2 = pstate.Predict();
-                pstate.Next("wine");
-                var words3 = pstate.Predict();
-                pstate.Next("is");
-                var words4 = pstate.Predict();
-                pstate.Next("delicious");
-                var words5 = pstate.Predict();
-                pstate.Next(".");
-            }
-            catch (Exception e)
-            {
-                this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
-            }
-
-            Assert.Equal(check, true);
         }
     }
 }

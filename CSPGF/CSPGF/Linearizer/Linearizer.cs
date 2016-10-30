@@ -44,7 +44,7 @@ namespace CSPGF.Linearize
         /// <summary>
         /// The current PGF-file
         /// </summary>
-        private readonly PGF pgf;
+        private readonly CSPGF.PGF pgf;
 
         /// <summary>
         /// The current Concrete grammar
@@ -65,7 +65,7 @@ namespace CSPGF.Linearize
         /// </summary>
         /// <param name="pgf">PGF-file containing the concrete grammar</param>
         /// <param name="concrete">Concrete grammar</param>
-        public Linearizer(PGF pgf, Concrete concrete)
+        public Linearizer(CSPGF.PGF pgf, Concrete concrete)
         {
             this.pgf = pgf;
             this.cnc = concrete;

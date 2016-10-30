@@ -108,10 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Generator.cs" />
-    <Compile Include="Grammar\OldPGF.cs">
-      <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
-    </Compile>
-    <Compile Include="Grammar\NewPGF.cs" />
+    <Compile Include="Grammar\PGF.cs" />
     <Compile Include="Grammar\ProductionExtern.cs" />
     <Compile Include="Grammar\SymbolAllCapit.cs" />
     <Compile Include="Grammar\SymbolCapit.cs" />
