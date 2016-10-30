@@ -49,7 +49,7 @@ namespace CSPGF.Linearize
         /// </summary>
         /// <param name="strs">List of strings</param>
         /// <param name="alts">List of Alternatives</param>
-        public LeafKP(string[] strs, Alternative[] alts)
+        public LeafKP(Symbol[] strs, Alternative[] alts)
         {
             this.DefaultTokens = strs;
             this.Alternatives = alts;
@@ -58,7 +58,7 @@ namespace CSPGF.Linearize
         /// <summary>
         /// Gets a list of Tokens
         /// </summary>
-        public string[] DefaultTokens { get; private set; }
+        public Symbol[] DefaultTokens { get; private set; }
 
         /// <summary>
         /// Gets a list of the Alternatives
@@ -72,7 +72,7 @@ namespace CSPGF.Linearize
         public override string ToString()
         {
             string rez = "string names : [";
-            foreach (string str in this.DefaultTokens) 
+            foreach (Symbol str in this.DefaultTokens) 
             {
                 rez += " " + str;
             }
