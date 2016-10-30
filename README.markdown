@@ -10,11 +10,22 @@ Features
 * Works in both mono and .NET.
 * Literal categories
 
+Known Issues
+------------
+We are currently fixing these.
+
+* Predict does not work
+* Recovery does not work at the moment
+* Wrong tree-structure with literals inside of linearizer (LeafKS instead of Literal). Should not matter for normal use.
+* No support for pgf 2.x
+
 Missing features
 ----------------
-* Better API
+The missing features below will most likely never be implemented.
+
 * High-order syntax
 * Dependent types
+* External functions
 
 How to build
 ------------

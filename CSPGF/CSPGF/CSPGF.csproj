@@ -107,7 +107,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AdvancedTranslator.cs" />
     <Compile Include="Generator.cs" />
     <Compile Include="Grammar\OldPGF.cs">
       <ExcludeFromStyleCop>False</ExcludeFromStyleCop>
@@ -197,7 +196,6 @@
     <Compile Include="Grammar\PatternVar.cs" />
     <Compile Include="Grammar\CategoryFunction.cs" />
     <Compile Include="Grammar\PatternWildCard.cs" />
-    <Compile Include="SimpleTranslator.cs" />
     <Compile Include="UnitTests\Tests.cs" />
     <Compile Include="Trees\AbstractVisitSkeleton.cs">
       <ExcludeFromStyleCop>True</ExcludeFromStyleCop>
