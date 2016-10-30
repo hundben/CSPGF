@@ -58,6 +58,7 @@ namespace CSPGF
 
         /// <summary>
         /// A simple test to try to parse the new version of the PGF file format.
+        /// This should not pass since we do not have support for everything in Phrasebook.pgf
         /// </summary>
         [Fact]
         public void TestPhrasebookNew()
@@ -195,7 +196,6 @@ namespace CSPGF
         [Fact]
         public void PredictTest1()
         {
-
             bool check = false;
 
             try
@@ -230,6 +230,7 @@ namespace CSPGF
 
         /// <summary>
         /// Another translation test from English to Swedish. For the more complete phrasebook.
+        /// This should not work yet but it should read the file.
         /// </summary>
         [Fact]
         public void TestPhrasebookNew2()
@@ -262,7 +263,7 @@ namespace CSPGF
                 this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
             }
 
-            Assert.Equal(check.Equals("det här vinet är läckert ."), true); // TODO change here
+            Assert.Equal(check.Equals("våra barn vill gå till hotellet ."), true);
         }
     }
 }

@@ -331,11 +331,11 @@ namespace CSPGF.Parse
                             }
                             else if (newSymbol is SymbolSoftBind)
                             {
-
+                                // Ignore
                             }
                             else if (newSymbol is SymbolSoftSpace)
                             {
-
+                                // Ignore
                             }
                             else if (newSymbol is SymbolCapit)
                             {
@@ -347,7 +347,7 @@ namespace CSPGF.Parse
                             }
                             else
                             {
-
+                                // If new token just ignore
                             }                             
                         }
                         
@@ -361,11 +361,9 @@ namespace CSPGF.Parse
 
                         foreach (Alternative alt in newSym.Alts)
                         {
+                            // TODO check if needed
                             Symbol[] currentSym = alt.Alt1;
-                            //currentSym[0];
-                            //alt.Alt2
-                            // TODO fix this
-
+                            
                             tokens = new List<string>(alt.Alt2.ToList<string>());
                             if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
                             {
