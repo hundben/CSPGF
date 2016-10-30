@@ -33,6 +33,7 @@ namespace CSPGF.Grammar
     using System;
     using System.Collections.Generic;
     using System.IO;
+    using System.Linq;
 
     /// <summary>
     /// Reads an PGF object
@@ -915,12 +916,10 @@ namespace CSPGF.Grammar
             return wids;
         }
 
-        private UInt32 GetUInt()
+        private int GetUInt32()
         {
             UInt32 ui = this.binreader.ReadUInt32();
-            
-
-            return 0;
+            return (int)((ui & 0x000000FFU) << 24 | (ui & 0x0000FF00U) << 8 | (ui & 0x00FF0000U) >> 8 | (ui & 0xFF000000U) >> 24);
         }
 
         /// <summary>
@@ -930,8 +929,8 @@ namespace CSPGF.Grammar
         private int GetInt()
         {
             // TODO ERROR HERE
-
-
+            return GetUInt32();
+            /*
             // return this.binreader.ReadInt32();
             // long -> int
             int rez = this.inputstream.ReadByte();
@@ -944,7 +943,7 @@ namespace CSPGF.Grammar
             rez = (ii << 7) | (rez & 0x7f);
             return rez;
 
-            // return (int)this.binreader.ReadUInt32();
+            // return (int)this.binreader.ReadUInt32();*/
         }
 
         /// <summary>
@@ -969,7 +968,37 @@ namespace CSPGF.Grammar
         /// <returns>Returns the double</returns>
         private double GetDouble()
         {
-            return this.binreader.ReadDouble();
+            /*UInt64 ui = this.binreader.ReadUInt64();
+
+            ulong sign = ui >> 63;
+            ulong rawexp = ui >> 52 & 0x7ff;
+            UInt64 mantissa = ui & 0xfffffffffffff;
+            double ret;
+
+            if (rawexp == 0x7ff)
+            {
+                ret = (mantissa == 0) ? double.PositiveInfinity : double.NaN;
+            }
+            else
+            {
+                ulong ul = 1 << 52;
+                UInt64 m = rawexp != 0 ? ul | mantissa : mantissa << 1;
+                ret = m*Math.Pow(2, rawexp - 1075);
+                //ret = ldexp((double)m, rawexp - 1075);
+            }
+            return sign != 0 ? ret*-1.0 : ret;*/
+
+
+
+            byte[] bytes = this.binreader.ReadBytes(8).Reverse().ToArray();
+            return BitConverter.ToDouble(bytes, 0);
+
+            //UInt64 ui = this.binreader.ReadUInt64();
+            //return Convert.ToDouble(((ui & 0x00000000000000FFUL) << 56 | (ui & 0x000000000000FF00UL) << 40 
+            //    | (ui & 0x0000000000FF0000UL) << 24 | (ui & 0x00000000FF000000UL) << 8 
+            //   | (ui & 0x000000FF00000000UL) >> 8 | (ui & 0x0000FF0000000000UL) >> 24 
+            //  | (ui & 0x00FF000000000000UL) >> 40 | (ui & 0xFF00000000000000UL) >> 56));
+            //return this.binreader.ReadDouble
         }
     }
 }
