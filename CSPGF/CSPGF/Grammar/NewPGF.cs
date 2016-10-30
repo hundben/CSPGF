@@ -32,7 +32,6 @@ namespace CSPGF.Grammar
 {
     using System;
     using System.Collections.Generic;
-    using System.ComponentModel;
     using System.IO;
     using System.Linq;
 
@@ -262,11 +261,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the AbsCat</returns>
         private AbstractCategory GetAbsCat()
         {
-            var ident = this.GetIdent();
-            var hypos = this.GetListHypo();
-            //var crap = this.GetInt();
-
-            return new AbstractCategory(ident, hypos, this.GetListCatFun(),this.GetDouble());
+            return new AbstractCategory(GetIdent(), GetListHypo(), this.GetListCatFun(),this.GetDouble());
         }
 
         /// <summary>
@@ -373,9 +368,7 @@ namespace CSPGF.Grammar
             switch (sel)
             {
                 case 0: // lambda abstraction
-                    int bt = this.inputstream.ReadByte();
-                    bool btype = bt != 0;
-                    expr = new ExprLambda(btype, this.GetIdent(), this.GetExpr());
+                    expr = new ExprLambda(this.inputstream.ReadByte() != 0, this.GetIdent(), this.GetExpr());
                     break;
                 case 1: // expression application
                     expr = new ExprApp(this.GetExpr(), this.GetExpr());
@@ -396,8 +389,7 @@ namespace CSPGF.Grammar
                     expr = new ExprTyped(this.GetExpr(), this.GetType2());
                     break;
                 case 7: // implicit argument
-                    Expr ee = this.GetExpr();
-                    expr = new ExprImpl(ee);
+                    expr = new ExprImpl(this.GetExpr());
                     break;
                 default:
                     throw new PGFException("Invalid tag for expressions : " + sel);
@@ -433,9 +425,7 @@ namespace CSPGF.Grammar
             switch (sel)
             {
                 case 0: // application pattern
-                    string absFun = this.GetIdent();
-                    Pattern[] patts = this.GetListPattern();
-                    patt = new PatternApp(absFun, patts);
+                    patt = new PatternApp(this.GetIdent(), GetListPattern());
                     break;
                 case 1: // variable pattern
                     patt = new PatternVar(this.GetIdent());
@@ -505,7 +495,7 @@ namespace CSPGF.Grammar
 
             // We don't need the lindefs for now but again we need to
             // parse them to skip them
-            return new Concrete(name, flags, this.GetListLinDef(), this.GetListProductionSet(cncFuns), this.GetListCncCat(), this.GetInt(), startCat);
+            return new Concrete(name, flags, this.GetListLinDef(), this.GetListLinDef() /*LinRefs*/, this.GetListProductionSet(cncFuns), this.GetListCncCat(), this.GetInt(), startCat);
         }
 
         /// <summary>
@@ -583,10 +573,13 @@ namespace CSPGF.Grammar
                     symb = new SymbolVar(this.GetInt(), this.GetInt());
                     break;
                 case 3: // sequence of tokens
-                    symb = new SymbolKS(this.GetListString());
+                    string sym = this.GetString();
+                    symb = new SymbolKS(new string[] { sym });
                     break;
                 case 4: // alternative tokens
-                    symb = new SymbolKP(this.GetListString(), this.GetListAlternative());
+                    var listsymb = this.GetListSymbol();
+                    var listalt = this.GetListAlternative();
+                    symb = new SymbolKP(null, null);
                     break;
                 case 5: //PGF_SYMBOL_BIND
                     symb = null;
@@ -635,7 +628,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the Alternative</returns>
         private Alternative GetAlternative()
         {
-            return new Alternative(this.GetListString(), this.GetListString());
+            return new Alternative(this.GetListSymbol(), this.GetListString());
         }
 
         /// <summary>
@@ -894,32 +887,9 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <returns>Returns the identifier</returns>
         private string GetIdent()
-        {
-            /*
-            int numChar = this.GetInt();
-            byte[] bytes = new byte[numChar];
-            this.inputstream.Read(bytes, 0, numChar);
-            System.Text.Encoding enc = System.Text.Encoding.ASCII;  
-            return enc.GetString(bytes);*/
+        { 
             return System.Text.Encoding.UTF8.GetString(this.binreader.ReadBytes(this.GetInt()));
         }
-
-        /*
-        /// <summary>
-        /// Reads a list of identifiers
-        /// </summary>
-        /// <returns>List of identifiers</returns>
-        private string[] GetListIdent()
-        {
-            int nb = this.GetInt();
-            string[] tmp = new string[nb];
-            for (int i = 0; i < nb; i++)
-            {
-                tmp[i] = this.GetIdent();
-            }
-
-            return tmp;
-        } */
 
         /// <summary>
         /// Reads a list of CatFuns
@@ -958,9 +928,6 @@ namespace CSPGF.Grammar
             } while ((b & 0x80) != 0);
 
             return u;
-
-            //UInt32 ui = this.binreader.ReadUInt32();
-            //return (int)((ui & 0x000000FFU) << 24 | (ui & 0x0000FF00U) << 8 | (ui & 0x00FF0000U) >> 8 | (ui & 0xFF000000U) >> 24);
         }
 
         /// <summary>
@@ -997,37 +964,8 @@ namespace CSPGF.Grammar
         /// <returns>Returns the double</returns>
         private double GetDouble()
         {
-            /*UInt64 ui = this.binreader.ReadUInt64();
-
-            ulong sign = ui >> 63;
-            ulong rawexp = ui >> 52 & 0x7ff;
-            UInt64 mantissa = ui & 0xfffffffffffff;
-            double ret;
-
-            if (rawexp == 0x7ff)
-            {
-                ret = (mantissa == 0) ? double.PositiveInfinity : double.NaN;
-            }
-            else
-            {
-                ulong ul = 1 << 52;
-                UInt64 m = rawexp != 0 ? ul | mantissa : mantissa << 1;
-                ret = m*Math.Pow(2, rawexp - 1075);
-                //ret = ldexp((double)m, rawexp - 1075)
-            }
-            return sign != 0 ? ret*-1.0 : ret;*/
-
-
-
             byte[] bytes = this.binreader.ReadBytes(8).Reverse().ToArray();
             return BitConverter.ToDouble(bytes, 0);
-
-            //UInt64 ui = this.binreader.ReadUInt64();
-            //return Convert.ToDouble(((ui & 0x00000000000000FFUL) << 56 | (ui & 0x000000000000FF00UL) << 40 
-            //    | (ui & 0x0000000000FF0000UL) << 24 | (ui & 0x00000000FF000000UL) << 8 
-            //   | (ui & 0x000000FF00000000UL) >> 8 | (ui & 0x0000FF0000000000UL) >> 24 
-            //  | (ui & 0x00FF000000000000UL) >> 40 | (ui & 0xFF00000000000000UL) >> 56));
-            //return this.binreader.ReadDouble
         }
     }
 }

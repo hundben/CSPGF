@@ -57,7 +57,7 @@ namespace CSPGF.Grammar
         /// <param name="cncCats">Dictionary containing concrete categories</param>
         /// <param name="fId">Function id</param>
         /// <param name="defaultStartCat">Default starting category</param>
-        public Concrete(string name, Dictionary<string, Literal> flags, LinDef[] linDefs, ProductionSet[] prods, Dictionary<string, ConcreteCategory> cncCats, int fId, string defaultStartCat)
+        public Concrete(string name, Dictionary<string, Literal> flags, LinDef[] linDefs, LinDef[] linrefs, ProductionSet[] prods, Dictionary<string, ConcreteCategory> cncCats, int fId, string defaultStartCat)
         {
             this.Name = name;
             this.flags = flags;

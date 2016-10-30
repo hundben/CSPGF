@@ -493,7 +493,7 @@ namespace CSPGF.Grammar
 
             // We don't need the lindefs for now but again we need to
             // parse them to skip them
-            return new Concrete(name, flags, this.GetListLinDef(), this.GetListProductionSet(cncFuns), this.GetListCncCat(), this.GetInt(), startCat);
+            return new Concrete(name, flags, this.GetListLinDef(), null, this.GetListProductionSet(cncFuns), this.GetListCncCat(), this.GetInt(), startCat);
         }
 
         /// <summary>
@@ -605,7 +605,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the Alternative</returns>
         private Alternative GetAlternative()
         {
-            return new Alternative(this.GetListString(), this.GetListString());
+            return new Alternative(null, this.GetListString());
         }
 
         /// <summary>

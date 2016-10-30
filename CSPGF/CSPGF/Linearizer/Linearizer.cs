@@ -319,9 +319,9 @@ namespace CSPGF.Linearize
                     {
                         if (after.StartsWith(str))
                         {
-                            foreach (string i in alt.Alt1.Reverse())
+                            foreach (Symbol i in alt.Alt1.Reverse())
                             {
-                                rez.Add(i);
+                                rez.Add(i.ToString()); // TODO: Kolla upp om detta är ok
                             }
 
                             return rez;

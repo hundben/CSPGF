@@ -43,7 +43,7 @@ namespace CSPGF.Grammar
         /// </summary>
         /// <param name="alt1">Normal tokens</param>
         /// <param name="alt2">List of prefixes</param>
-        public Alternative(string[] alt1, string[] alt2)
+        public Alternative(Symbol[] alt1, string[] alt2)
         {
             this.Alt1 = alt1;
             this.Alt2 = alt2;
@@ -54,7 +54,7 @@ namespace CSPGF.Grammar
         /// <summary>
         /// Gets a list of tokens
         /// </summary>
-        public string[] Alt1 { get; private set; }  // Check: Rename to tokens instead?
+        public Symbol[] Alt1 { get; private set; }  // Check: Rename to tokens instead?
 
         /// <summary>
         /// Gets a list of prefixes
@@ -68,7 +68,7 @@ namespace CSPGF.Grammar
         public override string ToString()
         {
             string sb = string.Empty;
-            foreach (string t in this.Alt1)
+            foreach (Symbol t in this.Alt1)
             {
                 sb += t + " ";
             }
