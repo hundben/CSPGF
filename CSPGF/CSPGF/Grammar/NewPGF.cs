@@ -262,7 +262,11 @@ namespace CSPGF.Grammar
         /// <returns>Returns the AbsCat</returns>
         private AbstractCategory GetAbsCat()
         {
-            return new AbstractCategory(this.GetIdent(), this.GetListHypo(), this.GetListCatFun());
+            var ident = this.GetIdent();
+            var hypos = this.GetListHypo();
+            //var crap = this.GetInt();
+
+            return new AbstractCategory(ident, hypos, this.GetListCatFun(),this.GetDouble());
         }
 
         /// <summary>
@@ -583,6 +587,24 @@ namespace CSPGF.Grammar
                     break;
                 case 4: // alternative tokens
                     symb = new SymbolKP(this.GetListString(), this.GetListAlternative());
+                    break;
+                case 5: //PGF_SYMBOL_BIND
+                    symb = null;
+                    break;
+                case 6: //PGF_SYMBOL_SOFT_BIND
+                    symb = null;
+                    break;
+                case 7: //PGF_SYMBOL_NE
+                    symb = null;
+                    break;
+                case 8: //PGF_SYMBOL_SOFT_SPACE
+                    symb = null;
+                    break;
+                case 9: //PGF_SYMBOL_CAPIT
+                    symb = null;
+                    break;
+                case 10: //PGF_SYMBOL_ALL_CAPIT
+                    symb = null;
                     break;
                 default:
                     throw new PGFException("Invalid tag for symbols : " + sel);
@@ -917,6 +939,10 @@ namespace CSPGF.Grammar
             return wids;
         }
 
+        /// <summary>
+        /// TODO
+        /// </summary>
+        /// <returns></returns>
         private UInt32 GetUInt32()
         {
             List<Byte> bytes = new List<byte>();
@@ -987,7 +1013,7 @@ namespace CSPGF.Grammar
                 ulong ul = 1 << 52;
                 UInt64 m = rawexp != 0 ? ul | mantissa : mantissa << 1;
                 ret = m*Math.Pow(2, rawexp - 1075);
-                //ret = ldexp((double)m, rawexp - 1075);
+                //ret = ldexp((double)m, rawexp - 1075)
             }
             return sign != 0 ? ret*-1.0 : ret;*/
 

@@ -254,7 +254,7 @@ namespace CSPGF.Grammar
         /// <returns>Returns the AbsCat</returns>
         private AbstractCategory GetAbsCat()
         {
-            return new AbstractCategory(this.GetIdent(), this.GetListHypo(), this.GetListCatFun());
+            return new AbstractCategory(this.GetIdent(), this.GetListHypo(), this.GetListCatFun(), 0.0);
         }
 
         /// <summary>

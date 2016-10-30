@@ -41,11 +41,12 @@ namespace CSPGF.Grammar
         /// <param name="name">Name of category</param>
         /// <param name="hypos">List of hypos</param>
         /// <param name="functions">List of weightedidents</param>
-        public AbstractCategory(string name, Hypo[] hypos, CategoryFunction[] functions)
+        public AbstractCategory(string name, Hypo[] hypos, CategoryFunction[] functions, double weight)
         {
             this.Name = name;
             this.Hypos = hypos;
             this.Functions = functions;
+            this.Weight = weight;
         }
 
         /// <summary>
@@ -62,6 +63,11 @@ namespace CSPGF.Grammar
         /// Gets a list of WeightedIdents
         /// </summary>
         public CategoryFunction[] Functions { get; private set; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public double Weight { get; private set; }
 
         /// <summary>
         /// Pretty prints the contents of this class
