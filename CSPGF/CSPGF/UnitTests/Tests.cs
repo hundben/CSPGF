@@ -90,6 +90,9 @@ namespace CSPGF
             Assert.Equal(check.Equals("this wine is delicious ."), true);
         }
 
+        /// <summary>
+        /// Simple test of the Foods grammar.
+        /// </summary>
         [Fact]
         public void TestNewFoodsPGF()
         {
@@ -106,8 +109,6 @@ namespace CSPGF
                 pstate.Next("fish");
                 pstate.Next("are");
                 pstate.Next("delicious");
-                //pstate.Next(".");
-                //この 魚は おいしい
 
                 var currentLin = new Linearize.Linearizer(pgf, language);
                 List<Trees.Absyn.Tree> lt = pstate.GetTrees();
@@ -122,7 +123,9 @@ namespace CSPGF
             Assert.Equal(check.Equals("these fish are delicious"), true);
         }
 
-
+        /// <summary>
+        /// Simple translation test using the Foods grammar.
+        /// </summary>
         [Fact]
         public void TestNewFoodsTranslate()
         {
@@ -139,8 +142,6 @@ namespace CSPGF
                 pstate.Next("fish");
                 pstate.Next("are");
                 pstate.Next("delicious");
-                //pstate.Next(".");
-                //この 魚は おいしい
 
                 var currentLin = new Linearize.Linearizer(pgf, pgf.GetConcrete("FoodsJpn"));
                 List<Trees.Absyn.Tree> lt = pstate.GetTrees();
