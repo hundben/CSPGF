@@ -317,8 +317,40 @@ namespace CSPGF.Parse
                     {
                         var newSym = (SymbolKP)sym;
                         var pitem = item.ShiftOverTokn();
-                        var tokens = newSym.Tokens.ToList<string>();
+                        var tokens = new List<string>();
+                        foreach (Symbol newSymbol in newSym.Tokens)
+                        {
+                            if (newSymbol is SymbolKS)
+                            {
+                                // TODO is this correct?
+                                tokens.AddRange(((SymbolKS)newSymbol).Tokens);
+                            }
+                            else if (newSymbol is SymbolBind)
+                            {
+                                tokens.Add("&+");
+                            }
+                            else if (newSymbol is SymbolSoftBind)
+                            {
 
+                            }
+                            else if (newSymbol is SymbolSoftSpace)
+                            {
+
+                            }
+                            else if (newSymbol is SymbolCapit)
+                            {
+                                tokens.Add("&|");
+                            }
+                            else if (newSymbol is SymbolAllCapit)
+                            {
+                                tokens.Add("&|");
+                            }
+                            else
+                            {
+
+                            }                             
+                        }
+                        
                         if (tokens.Count > 0 && (this.currentToken == string.Empty || tokens[0] == this.currentToken))
                         {
                             tokens.RemoveAt(0);

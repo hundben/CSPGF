@@ -187,7 +187,40 @@ namespace CSPGF.Parse
                         SymbolKP skp = (SymbolKP)s;
                         if (skp.Tokens.Length > 0)
                         {
-                            tokens.Add(skp.Tokens[0]);
+                            // TODO check if correct, before [0]
+
+                            foreach (Symbol newSymbol in skp.Tokens)
+                            {
+                                if (newSymbol is SymbolKS)
+                                {
+                                    // TODO is this correct?
+                                    tokens.AddRange(((SymbolKS)newSymbol).Tokens);
+                                }
+                                else if (newSymbol is SymbolBind)
+                                {
+                                    tokens.Add("&+");
+                                }
+                                else if (newSymbol is SymbolSoftBind)
+                                {
+
+                                }
+                                else if (newSymbol is SymbolSoftSpace)
+                                {
+
+                                }
+                                else if (newSymbol is SymbolCapit)
+                                {
+                                    tokens.Add("&|");
+                                }
+                                else if (newSymbol is SymbolAllCapit)
+                                {
+                                    tokens.Add("&|");
+                                }
+                                else
+                                {
+
+                                }
+                            }
                         }
                     }
                     else if (s is SymbolLit)
