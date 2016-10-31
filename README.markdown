@@ -9,6 +9,7 @@ Features
 * All the features from [JPGF][2].
 * Works in both mono and .NET.
 * Literal categories
+* Supports PGF 2.x (not the older 1.x)
 
 Known Issues
 ------------
@@ -17,7 +18,6 @@ We are currently fixing these.
 * Predict does not work
 * Recovery does not work at the moment
 * Wrong tree-structure with literals inside of linearizer (LeafKS instead of Literal). Should not matter for normal use.
-* No support for pgf 2.x
 
 Missing features
 ----------------
