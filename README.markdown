@@ -22,9 +22,12 @@ Missing features
 ----------------
 The missing features below will most likely never be implemented.
 
-* High-order syntax
+* High-order abstract syntax variables
+* Type checking and inference
 * Dependent types
 * External functions
+* Random syntax trees
+* Linearization of incomplete trees
 
 How to build
 ------------
