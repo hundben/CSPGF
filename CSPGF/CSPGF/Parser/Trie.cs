@@ -162,6 +162,26 @@ namespace CSPGF.Parse
             return true;
         }
 
+        public List<string> Predict2(Chart chart)
+        {
+            List<string> tokens = new List<string>();
+
+            foreach(ActiveItem ai in this.Value)
+            {
+                foreach(int arg in ai.Args)
+                {
+                    // Get all the arguments
+                    foreach(Production p in chart.ExpandForest(arg))
+                    {
+                        // TODO 
+                    }
+                }
+
+            }
+
+            return tokens;
+        }
+
         /// <summary>
         /// Used to predict the next correct tokens
         /// </summary>

@@ -265,5 +265,40 @@ namespace CSPGF
 
             Assert.Equal(check.Equals("våra barn vill gå till hotellet ."), true);
         }
+        /// <summary>
+        /// Simple translation test using the Foods grammar.
+        /// </summary>
+        [Fact]
+        public void TestFoodsPredict()
+        {
+            string check = string.Empty;
+
+            try
+            {
+                string filename = "../../PGF examples/Foods_new.pgf";
+                PGFReader pr = new PGFReader(filename);
+                PGF pgf = pr.ReadPGF();
+                Concrete language = pgf.GetConcrete("FoodsEng");
+                ParseState pstate = new ParseState(language);
+                //var foods = pstate.Predict();
+                pstate.Next("these");
+                var blah = pstate.Predict();
+                pstate.Next("fish");
+                pstate.Next("are");
+                pstate.Next("delicious");
+
+                var currentLin = new Linearize.Linearizer(pgf, pgf.GetConcrete("FoodsJpn"));
+                List<Trees.Absyn.Tree> lt = pstate.GetTrees();
+                Trees.Absyn.Tree t = lt[0];
+                check = currentLin.LinearizeString(t);
+            }
+            catch (Exception e)
+            {
+                this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
+            }
+
+            Assert.Equal(check.Equals("この 魚は おいしい"), true);
+        }
+
     }
 }
