@@ -31,8 +31,10 @@
 namespace CSPGF.Parse
 {
     using Grammar;
+    using System;
     using System.Collections.Generic;
     using System.Linq;
+    using System.Text;
 
     /// <summary>
     /// The parse tree.
@@ -162,17 +164,185 @@ namespace CSPGF.Parse
             return true;
         }
 
-        public List<string> Predict2(Chart chart)
+        /// <summary>
+        /// Converts a literal argument to a string, only for predict
+        /// </summary>
+        /// <param name="arg">Argument to convert</param>
+        /// <returns>Argument converted to string</returns>
+        private String LitToString(int arg)
+        {
+            if (arg == -1)
+            {
+                // String
+                return "\"STRING\"";
+            }
+            else if (arg == -2)
+            {
+                // Int
+                return "123";
+            }
+            else if (arg == -3)
+            {
+                // Float
+                return "3.14";
+            }
+            else if (arg == -4)
+            {
+                // Var
+                return "\"VARIABLE\"";
+            }
+            else
+            {
+                return "\"UNKNOWN\"";
+            }
+        }
+
+        /// <summary>
+        /// Checks symbols and adds tokens for the corresponding ones and adds arguments to check
+        /// </summary>
+        /// <param name="symbol">The symbol to check</param>
+        /// <param name="oldargs">List of arguments for active item</param>
+        /// <returns></returns>
+        private Tuple<List<String>, Tuple<int, int>> ExpandSymbol(Symbol symbol, List<int> oldargs)
+        {
+            int arg = -100;
+            int cons = -100;
+            var tokens = new List<String>();
+            if (symbol is SymbolKP)
+            {
+                var symkp = symbol as SymbolKP;
+                // TODO
+            }
+            else if (symbol is SymbolKS)
+            {
+                var symks = symbol as SymbolKS;
+                var temp = new StringBuilder();
+                foreach (var token in symks.Tokens)
+                {
+                    temp.Append(token);
+                    temp.Append(" ");
+                }
+
+                tokens.Add(temp.ToString().Trim());
+            }
+            else if (symbol is SymbolCat)
+            {
+                var symcat = symbol as SymbolCat;
+                arg  = symcat.Arg;
+                cons = symcat.Label;
+            }
+            else if (symbol is SymbolLit)
+            {
+                var symlit = symbol as SymbolLit;
+                tokens.Add(LitToString(oldargs[symlit.Arg]));
+            }
+            else if (symbol is SymbolAllCapit)
+            {
+                tokens.Add("&|");
+            }
+            else if (symbol is SymbolBind)
+            {
+                tokens.Add("&+");
+            }
+            else if (symbol is SymbolCapit)
+            {
+                tokens.Add("&|");
+            }
+            else if (symbol is SymbolNE)
+            {
+                // TODO check haskell version and the correct one
+            }
+            else if (symbol is SymbolSoftBind)
+            {
+                // TODO check haskell version and add the correct one
+            }
+            else if (symbol is SymbolSoftSpace)
+            {
+                // TODO check haskell version and add the correct one
+            }
+            else if (symbol is SymbolVar)
+            {
+                // TODO check haskell version and add the correct one
+            }
+
+            return new Tuple<List<string>, Tuple<int, int>>(tokens, new Tuple<int, int>(arg, cons));
+        }
+
+
+        /// <summary>
+        /// Creates a list of predicted next tokens
+        /// </summary>
+        /// <param name="chart">The current chart</param>
+        /// <returns>A list of tokens</returns>
+        public List<string> Predict(Chart chart)
         {
             List<string> tokens = new List<string>();
 
+            var allArgs = new HashSet<int>();
+
             foreach(ActiveItem ai in this.Value)
             {
-                foreach(int arg in ai.Args)
+                if (ai.Seq.Count == 0)
                 {
-                    // Get all the arguments
-                    foreach(Production p in chart.ExpandForest(arg))
+                    continue;
+                }
+
+                var temp = ExpandSymbol(ai.Seq[ai.Dot], ai.Args);
+                tokens.AddRange(temp.Item1);
+
+                var currentArgs = new List<int>();
+                var currentCons = new List<int>();
+
+                // If we have arguments add them to stack TODO maybe use a real stack here
+                if (temp.Item2.Item1 >= 0) {
+                    currentArgs.Add(ai.Args[temp.Item2.Item1]);
+                    currentCons.Add(temp.Item2.Item2);
+                }
+
+                // Check if we have symbolcat to check
+                while ( currentArgs.Count > 0 )
+                {
+                    var arg = currentArgs[0];
+                    currentArgs.RemoveAt(0);
+                    var cons = currentCons[0];
+                    currentCons.RemoveAt(0);
+
+                    // Skipp arg if we have already checked it
+                    if (allArgs.Contains(arg)) {
+                        continue;
+                    }
+                    // Add to list of checked arguments
+                    allArgs.Add(arg);
+
+                    // Get all the Functions that corresponds to the argument
+                    var tempForest = chart.ExpandForest(arg);
+                    foreach(Production p in tempForest)
                     {
+                        if (p is ProductionApply) {
+                            var papp = p as ProductionApply;
+                            var seqs = papp.Function.Sequences;
+                            var domain = papp.Domain();
+                            foreach (var seq in seqs)
+                            {
+                                var symbol = seq[0];
+                                var tup = ExpandSymbol(symbol, ai.Args);
+                                tokens.AddRange(tup.Item1);
+                                if (tup.Item2.Item1 >= 0)
+                                {
+                                    currentArgs.Add(domain[tup.Item2.Item1]);
+                                    currentCons.Add(tup.Item2.Item2);
+                                }
+                            }
+                        }
+                        else if (p is ProductionConst)
+                        {
+                            var pconst = p as ProductionConst;
+                            
+                        }
+                        else
+                        {
+                            throw new System.InvalidOperationException("Unhandled production of type: " + p.GetType());
+                        }
                         // TODO 
                     }
                 }
@@ -186,7 +356,7 @@ namespace CSPGF.Parse
         /// Used to predict the next correct tokens
         /// </summary>
         /// <returns>A list of predictions</returns>
-        public List<string> Predict(Chart chart)
+        public List<string> Predict_Old(Chart chart)
         {
             List<string> tokens = new List<string>();
             foreach(ActiveItem ai in this.Value)

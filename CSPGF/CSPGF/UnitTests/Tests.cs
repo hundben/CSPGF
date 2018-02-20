@@ -88,7 +88,7 @@ namespace CSPGF
                 this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
             }
 
-            Assert.Equal(check.Equals("this wine is delicious ."), true);
+            Assert.Equal("this wine is delicious .", actual: check);
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace CSPGF
                 this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
             }
 
-            Assert.Equal(check.Equals("these fish are delicious"), true);
+            Assert.Equal("these fish are delicious", actual: check);
         }
 
         /// <summary>
@@ -154,7 +154,7 @@ namespace CSPGF
                 this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
             }
 
-            Assert.Equal(check.Equals("この 魚は おいしい"), true);
+            Assert.Equal("この 魚は おいしい", actual: check);
         }
 
         /// <summary>
@@ -225,7 +225,7 @@ namespace CSPGF
                 this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
             }
          
-            Assert.Equal(check, true);
+            Assert.True(check);
         }
 
         /// <summary>
@@ -263,7 +263,8 @@ namespace CSPGF
                 this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
             }
 
-            Assert.Equal(check.Equals("våra barn vill gå till hotellet ."), true);
+            Assert.Equal("våra barn vill gå till hotellet .", actual: check);
+            //Assert.Equal(true, check.Equals("våra barn vill gå till hotellet ."));
         }
         /// <summary>
         /// Simple translation test using the Foods grammar.
@@ -280,7 +281,7 @@ namespace CSPGF
                 PGF pgf = pr.ReadPGF();
                 Concrete language = pgf.GetConcrete("FoodsEng");
                 ParseState pstate = new ParseState(language);
-                //var foods = pstate.Predict();
+                var foods = pstate.Predict();
                 pstate.Next("these");
                 var blah = pstate.Predict();
                 pstate.Next("fish");
@@ -297,7 +298,7 @@ namespace CSPGF
                 this.output.WriteLine("Error:" + e.Message + " | " + e.StackTrace.ToString());
             }
 
-            Assert.Equal(check.Equals("この 魚は おいしい"), true);
+            Assert.Equal("この 魚は おいしい", actual: check);
         }
 
     }

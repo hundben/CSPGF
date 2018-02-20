@@ -128,7 +128,6 @@ namespace CSPGF.Parse
         /// <returns>A list of predictions.</returns>
         public List<string> Predict()
         {
-            // TODO check if correct
             return this.items.Predict(this.chart);
         }
 
