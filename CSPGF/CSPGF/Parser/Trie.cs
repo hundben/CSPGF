@@ -212,6 +212,7 @@ namespace CSPGF.Parse
             {
                 var symkp = symbol as SymbolKP;
                 // TODO
+                // Has a list of symbols... check how to use it
             }
             else if (symbol is SymbolKS)
             {
@@ -268,7 +269,6 @@ namespace CSPGF.Parse
             return new Tuple<List<string>, Tuple<int, int>>(tokens, new Tuple<int, int>(arg, cons));
         }
 
-
         /// <summary>
         /// Creates a list of predicted next tokens
         /// </summary>
@@ -322,137 +322,28 @@ namespace CSPGF.Parse
                             var papp = p as ProductionApply;
                             var seqs = papp.Function.Sequences;
                             var domain = papp.Domain();
-                            foreach (var seq in seqs)
+                            var seq = seqs[cons];
+                            var symbol = seq[0];
+                            var tup = ExpandSymbol(symbol, ai.Args);
+                            tokens.AddRange(tup.Item1);
+                            if (tup.Item2.Item1 >= 0)
                             {
-                                var symbol = seq[0];
-                                var tup = ExpandSymbol(symbol, ai.Args);
-                                tokens.AddRange(tup.Item1);
-                                if (tup.Item2.Item1 >= 0)
-                                {
-                                    currentArgs.Add(domain[tup.Item2.Item1]);
-                                    currentCons.Add(tup.Item2.Item2);
-                                }
+                                currentArgs.Add(domain[tup.Item2.Item1]);
+                                currentCons.Add(tup.Item2.Item2);
                             }
                         }
                         else if (p is ProductionConst)
                         {
                             var pconst = p as ProductionConst;
-                            
+                            // TODO check the rest of the production
                         }
                         else
                         {
                             throw new System.InvalidOperationException("Unhandled production of type: " + p.GetType());
                         }
-                        // TODO 
                     }
                 }
 
-            }
-
-            return tokens;
-        }
-
-        /// <summary>
-        /// Used to predict the next correct tokens
-        /// </summary>
-        /// <returns>A list of predictions</returns>
-        public List<string> Predict_Old(Chart chart)
-        {
-            List<string> tokens = new List<string>();
-            foreach(ActiveItem ai in this.Value)
-            {
-                if (ai.Seq.Count > ai.Dot)
-                {
-                    Symbol s = ai.Seq[ai.Dot];
-                    if (s is SymbolKS)
-                    {
-                        SymbolKS sks = (SymbolKS)s;
-                        if (sks.Tokens.Length > 0)
-                        {
-                            tokens.Add(sks.Tokens[0]);
-                        }
-                    }
-                    else if (s is SymbolKP)
-                    {
-                        SymbolKP skp = (SymbolKP)s;
-                        if (skp.Tokens.Length > 0)
-                        {
-                            // TODO check if correct, before [0]
-
-                            foreach (Symbol newSymbol in skp.Tokens)
-                            {
-                                if (newSymbol is SymbolKS)
-                                {
-                                    // TODO is this correct?
-                                    tokens.AddRange(((SymbolKS)newSymbol).Tokens);
-                                }
-                                else if (newSymbol is SymbolBind)
-                                {
-                                    tokens.Add("&+");
-                                }
-                                else if (newSymbol is SymbolSoftBind)
-                                {
-
-                                }
-                                else if (newSymbol is SymbolSoftSpace)
-                                {
-
-                                }
-                                else if (newSymbol is SymbolCapit)
-                                {
-                                    tokens.Add("&|");
-                                }
-                                else if (newSymbol is SymbolAllCapit)
-                                {
-                                    tokens.Add("&|");
-                                }
-                                else
-                                {
-
-                                }
-                            }
-                        }
-                    }
-                    else if (s is SymbolLit)
-                    {
-                        SymbolLit slit = (SymbolLit)s;
-                        int arg = ai.Args[slit.Arg];
-                        if (arg == -1)
-                        {
-                            // String
-                            tokens.Add("\"STRING\"");
-                        }
-                        else if (arg == -2)
-                        {
-                            // Int
-                            tokens.Add("123");
-                        }
-                        else if (arg == -3)
-                        {
-                            // Float
-                            tokens.Add("3.14");
-                        }
-                        else if (arg == -4)
-                        {
-                            // Var
-                            tokens.Add("\"VARIABLE\"");
-                        }
-                    }
-                    else if (s is SymbolCat)
-                    {
-                        SymbolCat scat = (SymbolCat)s;
-                        int fid = ai.Args[scat.Arg];
-                        List<Production> prods = chart.ExpandForest(fid);
-                        foreach(Production p in prods)
-                        {
-                            if (p is ProductionApply)
-                            {
-                                var papp = (ProductionApply)p;
-                                
-                            }
-                        }
-                    }
-                }
             }
 
             return tokens;

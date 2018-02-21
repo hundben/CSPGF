@@ -264,7 +264,6 @@ namespace CSPGF
             }
 
             Assert.Equal("våra barn vill gå till hotellet .", actual: check);
-            //Assert.Equal(true, check.Equals("våra barn vill gå till hotellet ."));
         }
         /// <summary>
         /// Simple translation test using the Foods grammar.
@@ -273,25 +272,48 @@ namespace CSPGF
         public void TestFoodsPredict()
         {
             string check = string.Empty;
+            string check2 = string.Empty;
 
+            var pred1 = new List<string>();
+            var pred2 = new List<string>();
+            var pred3 = new List<string>();
             try
             {
                 string filename = "../../PGF examples/Foods_new.pgf";
                 PGFReader pr = new PGFReader(filename);
                 PGF pgf = pr.ReadPGF();
                 Concrete language = pgf.GetConcrete("FoodsEng");
-                ParseState pstate = new ParseState(language);
-                var foods = pstate.Predict();
-                pstate.Next("these");
-                var blah = pstate.Predict();
-                pstate.Next("fish");
-                pstate.Next("are");
-                pstate.Next("delicious");
 
-                var currentLin = new Linearize.Linearizer(pgf, pgf.GetConcrete("FoodsJpn"));
-                List<Trees.Absyn.Tree> lt = pstate.GetTrees();
-                Trees.Absyn.Tree t = lt[0];
-                check = currentLin.LinearizeString(t);
+                {
+                    // First test
+                    ParseState pstate = new ParseState(language);
+                    pred1 = pstate.Predict();
+                    pstate.Next("these");
+                    pred2 = pstate.Predict();
+                    pstate.Next("fish");
+                    pstate.Next("are");
+                    pstate.Next("delicious");
+
+                    var currentLin = new Linearize.Linearizer(pgf, pgf.GetConcrete("FoodsJpn"));
+                    List<Trees.Absyn.Tree> lt = pstate.GetTrees();
+                    Trees.Absyn.Tree t = lt[0];
+                    check = currentLin.LinearizeString(t);
+                }
+
+                // Test number 2
+                {
+                    ParseState pstate = new ParseState(language);
+                    pstate.Next("this");
+                    pred3 = pstate.Predict();
+                    pstate.Next("fish");
+                    pstate.Next("is");
+                    pstate.Next("delicious");
+
+                    var currentLin = new Linearize.Linearizer(pgf, pgf.GetConcrete("FoodsJpn"));
+                    List<Trees.Absyn.Tree> lt = pstate.GetTrees();
+                    Trees.Absyn.Tree t = lt[0];
+                    check2 = currentLin.LinearizeString(t);
+                }
             }
             catch (Exception e)
             {
@@ -299,6 +321,9 @@ namespace CSPGF
             }
 
             Assert.Equal("この 魚は おいしい", actual: check);
+            Assert.Equal(4, pred1.Count);
+            Assert.Equal(11, pred2.Count);
+            Assert.Equal(11, pred3.Count);
         }
 
     }

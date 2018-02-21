@@ -15,7 +15,7 @@ Known Issues
 ------------
 We are currently fixing these.
 
-* Predict does not work
+* Predict is only tested for simple grammars (might work but not tested)
 * Wrong tree-structure with literals inside of linearizer (LeafKS instead of Literal). Should not matter for normal use.
 
 Missing features
